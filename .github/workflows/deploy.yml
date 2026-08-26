@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "*.zip"
+      - "photo-sizing.css"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
@@ -42,6 +43,10 @@ jobs:
           if [ ! -f _site/index.html ]; then
             echo "index.html was not found at the root of the ZIP."
             exit 1
+          fi
+          if [ -f photo-sizing.css ]; then
+            cp photo-sizing.css _site/photo-sizing.css
+            sed -i 's#</head>#  <link rel="stylesheet" href="photo-sizing.css" />\n</head>#' _site/index.html
           fi
           touch _site/.nojekyll
           printf 'ibizavipmove.com\n' > _site/CNAME
