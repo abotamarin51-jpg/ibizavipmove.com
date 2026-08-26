@@ -1,0 +1,18 @@
+/* Ibiza VIP Move — refined image proportions */
+.service-grid{min-height:440px}
+.service-image{overflow:hidden;min-height:440px}
+.service-image img{min-height:0;height:100%;object-fit:cover;object-position:center}
+.journey-visual{height:400px}
+
+@media(max-width:980px){
+  .service-grid,.service-grid.reverse{min-height:0}
+  .service-image{min-height:300px;height:300px}
+  .service-image img{height:100%;min-height:0}
+  .journey-visual{height:310px}
+}
+
+@media(max-width:640px){
+  .service-image{min-height:220px;height:220px}
+  .service-image img{height:220px;min-height:0}
+  .journey-visual{height:250px}
+}
