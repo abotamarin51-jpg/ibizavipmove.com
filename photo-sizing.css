@@ -1,28 +1,59 @@
-/* Ibiza VIP Move — preserve original photo proportions without oversized crops */
-.service-grid{min-height:620px}
-.service-image{
-  min-height:620px;
-  overflow:hidden;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  background:#0b1117;
-  padding:0 24px;
-}
-.service-image img{
-  width:auto;
-  height:620px;
-  max-width:100%;
-  max-height:620px;
-  min-height:0;
-  object-fit:contain;
-  object-position:center;
+/* Ibiza VIP Move — premium service imagery, no gaps, no white bands */
+.service-block{
+  margin:0 !important;
+  border-bottom:1px solid rgba(255,255,255,.06);
 }
 
-/* Journey image uses its real landscape ratio */
+.service-grid{min-height:520px}
+.service-image{
+  min-height:520px;
+  padding:0 !important;
+  overflow:hidden;
+  background-color:#0b1117;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
+}
+.service-image img{display:none !important}
+
+/* New high-resolution service imagery */
+.services > article.service-block:nth-of-type(1) .service-image{
+  background-image:url("https://images.unsplash.com/photo-1601560896164-834d6f61ea66?auto=format&fit=crop&w=2400&q=88");
+  background-position:center 52%;
+}
+.services > article.service-block:nth-of-type(2) .service-image{
+  background-image:url("https://images.unsplash.com/photo-1774579892259-4c8ebee38789?auto=format&fit=crop&w=2400&q=88");
+  background-position:center 55%;
+}
+.services > article.service-block:nth-of-type(3) .service-image{
+  background-image:url("https://images.unsplash.com/photo-1778107295992-345ca9e7eb3d?auto=format&fit=crop&w=2400&q=88");
+  background-position:center 48%;
+}
+.services > article.service-block:nth-of-type(4) .service-image{
+  background-image:url("https://images.unsplash.com/photo-1750509167766-a23a9e953563?auto=format&fit=crop&w=2400&q=88");
+  background-position:center 58%;
+}
+.services > article.service-block:nth-of-type(5) .service-image{
+  background-image:url("https://images.unsplash.com/photo-1770541025973-dfc3c4c23fad?auto=format&fit=crop&w=2400&q=88");
+  background-position:center 50%;
+}
+.services > article.service-block:nth-of-type(6) .service-image{
+  background-image:url("https://images.unsplash.com/photo-1485230405346-71acb9518d9c?auto=format&fit=crop&w=2400&q=88");
+  background-position:center 52%;
+}
+.services > article.service-block:nth-of-type(7) .service-image{
+  background-image:url("https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=2400&q=88");
+  background-position:center 52%;
+}
+.services > article.service-block:nth-of-type(8) .service-image{
+  background-image:url("https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=2400&q=88");
+  background-position:center 55%;
+}
+
+/* Journey image */
 .journey-visual{
   height:auto;
-  aspect-ratio:1554/961;
+  aspect-ratio:16/10;
   overflow:hidden;
 }
 .journey-visual img{
@@ -35,31 +66,20 @@
   .service-grid,.service-grid.reverse{min-height:0}
   .service-image{
     min-height:0;
+    width:100%;
     height:auto;
-    padding:24px 0;
+    aspect-ratio:16/9;
   }
-  .service-image img{
-    width:min(68vw,260px);
-    height:auto;
-    max-height:none;
-    min-height:0;
-    object-fit:contain;
-  }
-  .journey-visual{height:auto;aspect-ratio:1554/961}
 }
 
 @media(max-width:640px){
+  .service-block{margin:0 !important}
   .service-image{
-    min-height:0;
+    width:100%;
     height:auto;
-    padding:20px 0;
-  }
-  .service-image img{
-    width:min(68vw,255px);
-    height:auto;
-    max-height:none;
     min-height:0;
-    object-fit:contain;
+    aspect-ratio:16/9;
+    padding:0 !important;
   }
-  .journey-visual{height:auto;aspect-ratio:1554/961}
+  .journey-visual{height:auto;aspect-ratio:16/10}
 }
