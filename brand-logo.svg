@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1050 230" role="img" aria-labelledby="title desc">
+<title id="title">Ibiza VIP Move</title><desc id="desc">Ibiza VIP Move Luxury Concierge and Private Chauffeur</desc>
+<g fill="none" stroke="#B99158" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" transform="translate(105 105)">
+  <path d="M0 32C-28 7-42-15-42-43c0-41 23-69 42-69s42 28 42 69c0 28-14 50-42 75Z"/>
+  <path d="M0 24C-22 4-33-14-33-36c0-32 18-54 33-54s33 22 33 54c0 22-11 40-33 60Z"/>
+  <path d="M0 16C-16 1-24-12-24-29c0-24 13-41 24-41s24 17 24 41c0 17-8 30-24 45Z"/>
+  <path d="M0 8C-10-2-15-10-15-21c0-15 8-26 15-26s15 11 15 26c0 11-5 19-15 29Z"/>
+  <g transform="rotate(90)">
+    <path d="M0 32C-28 7-42-15-42-43c0-41 23-69 42-69s42 28 42 69c0 28-14 50-42 75Z"/><path d="M0 24C-22 4-33-14-33-36c0-32 18-54 33-54s33 22 33 54c0 22-11 40-33 60Z"/><path d="M0 16C-16 1-24-12-24-29c0-24 13-41 24-41s24 17 24 41c0 17-8 30-24 45Z"/><path d="M0 8C-10-2-15-10-15-21c0-15 8-26 15-26s15 11 15 26c0 11-5 19-15 29Z"/>
+  </g>
+  <g transform="rotate(180)">
+    <path d="M0 32C-28 7-42-15-42-43c0-41 23-69 42-69s42 28 42 69c0 28-14 50-42 75Z"/><path d="M0 24C-22 4-33-14-33-36c0-32 18-54 33-54s33 22 33 54c0 22-11 40-33 60Z"/><path d="M0 16C-16 1-24-12-24-29c0-24 13-41 24-41s24 17 24 41c0 17-8 30-24 45Z"/><path d="M0 8C-10-2-15-10-15-21c0-15 8-26 15-26s15 11 15 26c0 11-5 19-15 29Z"/>
+  </g>
+  <g transform="rotate(270)">
+    <path d="M0 32C-28 7-42-15-42-43c0-41 23-69 42-69s42 28 42 69c0 28-14 50-42 75Z"/><path d="M0 24C-22 4-33-14-33-36c0-32 18-54 33-54s33 22 33 54c0 22-11 40-33 60Z"/><path d="M0 16C-16 1-24-12-24-29c0-24 13-41 24-41s24 17 24 41c0 17-8 30-24 45Z"/><path d="M0 8C-10-2-15-10-15-21c0-15 8-26 15-26s15 11 15 26c0 11-5 19-15 29Z"/>
+  </g>
+</g>
+<text x="205" y="112" fill="#B99158" font-family="Cormorant Garamond, Georgia, Times New Roman, serif" font-size="70" font-weight="400" letter-spacing="3">IBIZA VIP MOVE</text>
+<text x="210" y="157" fill="#B99158" font-family="Manrope, Arial, sans-serif" font-size="17" font-weight="500" letter-spacing="5">LUXURY CONCIERGE &amp; PRIVATE CHAUFFEUR</text>
+</svg>
