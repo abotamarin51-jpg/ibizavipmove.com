@@ -4,8 +4,9 @@ on:
   push:
     branches: [main]
     paths:
-      - "*.zip"
-      - "photo-sizing.css"
+      - "premium_site.py"
+      - "premium.css"
+      - "premium.js"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
@@ -28,28 +29,21 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Prepare Ibiza VIP Move website
+      - name: Build premium Ibiza VIP Move website
         shell: bash
         run: |
           set -euo pipefail
-          ZIP_FILE="$(find . -maxdepth 1 -type f -name '*.zip' -print | head -n 1)"
-          if [ -z "$ZIP_FILE" ]; then
-            echo "No ZIP file found in repository root."
-            exit 1
-          fi
           rm -rf _site
-          mkdir -p _site
-          unzip -q "$ZIP_FILE" -d _site
-          if [ ! -f _site/index.html ]; then
-            echo "index.html was not found at the root of the ZIP."
-            exit 1
-          fi
-          if [ -f photo-sizing.css ]; then
-            cp photo-sizing.css _site/photo-sizing.css
-            sed -i 's#</head>#  <link rel="stylesheet" href="photo-sizing.css" />\n</head>#' _site/index.html
-          fi
-          touch _site/.nojekyll
+          python3 premium_site.py
+          mkdir -p _site/assets
+          cp premium.css _site/assets/premium.css
+          cp premium.js _site/assets/premium.js
+          test -f _site/index.html
+          test -f _site/services/index.html
+          test -f _site/contact/index.html
+          test -f _site/sitemap.xml
           printf 'ibizavipmove.com\n' > _site/CNAME
+          touch _site/.nojekyll
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
