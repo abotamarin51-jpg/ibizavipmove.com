@@ -8,6 +8,7 @@ on:
       - "premium.css"
       - "premium.js"
       - "brand-logo.jpg"
+      - "brand-logo.svg"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
@@ -40,11 +41,13 @@ jobs:
           cp premium.css _site/assets/premium.css
           cp premium.js _site/assets/premium.js
           cp brand-logo.jpg _site/assets/brand-logo.jpg
+          cp brand-logo.svg _site/assets/brand-logo.svg
           test -f _site/index.html
           test -f _site/services/index.html
           test -f _site/contact/index.html
           test -f _site/sitemap.xml
           test -f _site/assets/brand-logo.jpg
+          test -f _site/assets/brand-logo.svg
           printf 'ibizavipmove.com\n' > _site/CNAME
           touch _site/.nojekyll
 
