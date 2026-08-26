@@ -1,0 +1,59 @@
+name: Deploy Ibiza VIP Move
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "*.zip"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Prepare Ibiza VIP Move website
+        shell: bash
+        run: |
+          set -euo pipefail
+          ZIP_FILE="$(find . -maxdepth 1 -type f -name '*.zip' -print | head -n 1)"
+          if [ -z "$ZIP_FILE" ]; then
+            echo "No ZIP file found in repository root."
+            exit 1
+          fi
+          rm -rf _site
+          mkdir -p _site
+          unzip -q "$ZIP_FILE" -d _site
+          if [ ! -f _site/index.html ]; then
+            echo "index.html was not found at the root of the ZIP."
+            exit 1
+          fi
+          touch _site/.nojekyll
+          printf 'ibizavipmove.com\n' > _site/CNAME
+
+      - name: Configure GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload website artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
