@@ -90,7 +90,6 @@ for path in ROOT.rglob('*.html'):
     canonical = canonical_match.group(1) if canonical_match else BASE + '/'
     is_home = canonical.rstrip('/') == BASE
 
-    # Make the official domain unmistakable for branded search results.
     if is_home:
         text = re.sub(r'<title>.*?</title>', f'<title>{HOME_TITLE}</title>', text, count=1, flags=re.I | re.S)
         for attr, value in (
@@ -138,12 +137,10 @@ for path in ROOT.rglob('*.html'):
         entity_tag = '<script type="application/ld+json">' + json.dumps(ENTITY_SCHEMA, ensure_ascii=False) + '</script>'
         text = text.replace('</head>', entity_tag + '</head>')
 
-    # Strengthen internal navigation using only existing footer markup.
     footer_old = '<a href="/services/">Services</a><a href="/partners/">Travel Partners</a><a href="/about/">About</a><a href="/contact/">Request Concierge</a>'
     footer_new = '<a href="/services/">Services</a><a href="/private-concierge-ibiza/">Concierge</a><a href="/partners/">Travel Partners</a><a href="/about/">About</a><a href="/contact/">Request Concierge</a>'
     text = text.replace(footer_old, footer_new)
 
-    # Mobile accessibility: keep the close control above the open menu and explicitly connect it.
     text = text.replace(
         '<button class="menu-btn" aria-label="Open menu">Menu</button>',
         '<button class="menu-btn" aria-label="Open menu" aria-controls="mobileMenu">Menu</button>',
@@ -198,6 +195,9 @@ a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,te
 }
 '''.strip() + '\n'
 (ROOT / 'assets' / 'ui-fixes.css').write_text(ui_css, encoding='utf-8')
+
+# Publish an official resource that partners and media can cite and link to.
+import media_partner_page
 
 # Convert only below-the-fold service-card backgrounds to native lazy-loaded images.
 import lazy_cards
