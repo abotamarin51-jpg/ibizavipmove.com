@@ -5,6 +5,7 @@ on:
     branches: [main]
     paths:
       - "premium_site.py"
+      - "trust_enhance.py"
       - "postprocess_site.py"
       - "legal_pages.py"
       - "authority_enhance.py"
@@ -96,6 +97,7 @@ jobs:
               path.write_text(text, encoding='utf-8')
           PY
 
+          python3 trust_enhance.py
           python3 postprocess_site.py
           python3 legal_pages.py
           python3 authority_enhance.py
@@ -131,6 +133,7 @@ jobs:
           html_files = list(Path('_site').rglob('*.html'))
           combined = '\n'.join(p.read_text(encoding='utf-8') for p in html_files)
           contact = Path('_site/contact/index.html').read_text(encoding='utf-8')
+          partners = Path('_site/partners/index.html').read_text(encoding='utf-8')
           home = Path('_site/index.html').read_text(encoding='utf-8')
           privacy = Path('_site/privacy/index.html').read_text(encoding='utf-8')
           sitemap = Path('_site/sitemap.xml').read_text(encoding='utf-8')
@@ -149,6 +152,9 @@ jobs:
               'legal footer links present': '/privacy/' in home and '/terms/' in home and '/cookies/' in home,
               'privacy page has current contact': '+34 600 703 303' in privacy,
               'legal pages included in sitemap': all(f'https://ibizavipmove.com/{slug}/' in sitemap for slug in ('privacy','terms','cookies')),
+              'partner workflow visible': 'Built for professional partners' in partners and 'Partner workflow' in partners,
+              'contact next steps visible': 'What happens next' in contact and 'From first message to coordinated stay.' in contact,
+              'home partner trust reinforced': 'Client-facing or discreet behind-the-scenes coordination' in home,
           }
 
           for name, ok in checks.items():
