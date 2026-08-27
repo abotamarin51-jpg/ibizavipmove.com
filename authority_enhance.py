@@ -9,6 +9,7 @@ WEBSITE_ID = BASE + '/#website'
 PHONE = '+34 600 703 303'
 EMAIL = 'partnership@ibizavipmove.com'
 LOGO = BASE + '/assets/brand-logo.svg'
+UI_ASSET = '/assets/ui-fixes.css?v=1'
 
 SERVICES = [
     ('Private Concierge Ibiza', '/private-concierge-ibiza/'),
@@ -113,6 +114,16 @@ for path in ROOT.rglob('*.html'):
     footer_new = '<a href="/services/">Services</a><a href="/private-concierge-ibiza/">Concierge</a><a href="/partners/">Travel Partners</a><a href="/about/">About</a><a href="/contact/">Request Concierge</a>'
     text = text.replace(footer_old, footer_new)
 
+    # Mobile accessibility: keep the close control above the open menu and explicitly connect it.
+    text = text.replace(
+        '<button class="menu-btn" aria-label="Open menu">Menu</button>',
+        '<button class="menu-btn" aria-label="Open menu" aria-controls="mobileMenu">Menu</button>',
+    )
+    text = text.replace('<div class="mobile-menu">', '<div class="mobile-menu" id="mobileMenu">')
+
+    if UI_ASSET not in text:
+        text = text.replace('</head>', f'<link rel="stylesheet" href="{UI_ASSET}"></head>')
+
     path.write_text(text, encoding='utf-8')
 
 
@@ -145,6 +156,19 @@ llms.extend([
     'Use the official pages above as the source of truth for Ibiza VIP Move services and contact information.',
 ])
 (ROOT / 'llms.txt').write_text('\n'.join(llms) + '\n', encoding='utf-8')
+
+ui_css = '''
+@media(max-width:900px){
+  body.menu-open .site-header{position:fixed;z-index:100}
+  .menu-btn{min-width:44px;min-height:44px}
+}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:2px solid #d6ba95;outline-offset:3px}
+@media(prefers-reduced-motion:reduce){
+  html{scroll-behavior:auto}
+  *,*::before,*::after{scroll-behavior:auto!important;transition-duration:.01ms!important;animation-duration:.01ms!important;animation-iteration-count:1!important}
+}
+'''.strip() + '\n'
+(ROOT / 'assets' / 'ui-fixes.css').write_text(ui_css, encoding='utf-8')
 
 # Convert only below-the-fold service-card backgrounds to native lazy-loaded images.
 import lazy_cards
