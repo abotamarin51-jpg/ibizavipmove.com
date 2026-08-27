@@ -26,11 +26,20 @@ new_partner_close = f'''<section class="process"><div class="section-head"><div 
 replace_once(partners, old_partner_close, new_partner_close)
 
 
-# CONTACT: remove uncertainty after form submission and reinforce direct contact options.
+# CONTACT: optimise the existing form for mobile autofill and correct keyboards.
 contact = ROOT / 'contact' / 'index.html'
-old_contact_end = '''</section><section class="contact-direct"><div><span>WhatsApp</span>'''
-# Keep existing contact-direct markup intact; insert the trust/process section after it using its known closing marker.
 text = contact.read_text(encoding='utf-8')
+form_replacements = {
+    '<label>Name<input id="fName" required></label>': '<label>Name<input id="fName" autocomplete="name" required></label>',
+    '<label>WhatsApp / Phone<input id="fPhone" required></label>': '<label>WhatsApp / Phone<input id="fPhone" type="tel" inputmode="tel" autocomplete="tel" required></label>',
+    '<label>Guests<input id="fGuests" type="number" min="1" placeholder="Number of guests"></label>': '<label>Guests<input id="fGuests" type="number" min="1" inputmode="numeric" placeholder="Number of guests"></label>',
+}
+for old, new in form_replacements.items():
+    if old not in text:
+        raise SystemExit(f'Contact form marker not found: {old}')
+    text = text.replace(old, new, 1)
+
+# Remove uncertainty after form submission and reinforce direct contact options.
 marker = '</section></main>'
 if marker not in text:
     raise SystemExit('Contact closing marker not found')
@@ -38,4 +47,4 @@ contact_extra = f'''<section class="process"><div class="section-head"><div clas
 text = text.replace(marker, contact_extra + marker, 1)
 contact.write_text(text, encoding='utf-8')
 
-print('PASS: trust and conversion enhancements applied to Home, Partners and Contact')
+print('PASS: trust, conversion and mobile form enhancements applied to Home, Partners and Contact')
