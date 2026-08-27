@@ -5,10 +5,12 @@ on:
     branches: [main]
     paths:
       - "premium_site.py"
+      - "postprocess_site.py"
       - "premium.css"
       - "premium.js"
       - "brand-logo.jpg"
       - "brand-logo.svg"
+      - "brand-mark.svg"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
@@ -42,8 +44,8 @@ jobs:
           cp premium.js _site/assets/premium.js
           cp brand-logo.jpg _site/assets/brand-logo.jpg
           cp brand-logo.svg _site/assets/brand-logo.svg
+          cp brand-mark.svg _site/assets/brand-mark.svg
 
-          # Keep final website imagery on our own domain instead of hotlinking third-party sites.
           curl -LfsS --retry 3 'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/villa.jpg
           curl -LfsS --retry 3 'https://images.unsplash.com/photo-1774579892259-4c8ebee38789?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/yacht.jpg
           curl -LfsS --retry 3 'https://images.unsplash.com/photo-1697642192099-a46869979196?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/aviation.jpg
@@ -78,11 +80,15 @@ jobs:
               path.write_text(text, encoding='utf-8')
           PY
 
+          python3 postprocess_site.py
+
           test -f _site/index.html
           test -f _site/services/index.html
           test -f _site/contact/index.html
+          test -f _site/404.html
           test -f _site/sitemap.xml
           test -f _site/assets/brand-logo.svg
+          test -f _site/assets/brand-mark.svg
           test -s _site/assets/images/villa.jpg
           test -s _site/assets/images/yacht.jpg
           test -s _site/assets/images/aviation.jpg
