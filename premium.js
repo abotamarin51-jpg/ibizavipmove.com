@@ -1,10 +1,19 @@
 const menuBtn=document.querySelector('.menu-btn');
 const mobileMenu=document.querySelector('.mobile-menu');
+
+function setMenu(open){
+  if(!menuBtn||!mobileMenu)return;
+  mobileMenu.classList.toggle('open',open);
+  document.body.classList.toggle('menu-open',open);
+  menuBtn.textContent=open?'Close':'Menu';
+  menuBtn.setAttribute('aria-expanded',open?'true':'false');
+}
+
 if(menuBtn&&mobileMenu){
-  menuBtn.addEventListener('click',()=>{
-    mobileMenu.classList.toggle('open');
-    menuBtn.textContent=mobileMenu.classList.contains('open')?'Close':'Menu';
-  });
+  menuBtn.setAttribute('aria-expanded','false');
+  menuBtn.addEventListener('click',()=>setMenu(!mobileMenu.classList.contains('open')));
+  mobileMenu.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>setMenu(false)));
+  document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false);});
 }
 
 const WHATSAPP='https://wa.me/34600703303';
