@@ -12,7 +12,7 @@ OLD_WA = 'https://wa.me/34613756211'
 NEW_PHONE_DISPLAY = '+34 600 703 303'
 NEW_PHONE_TEL = '+34600703303'
 NEW_WA = 'https://wa.me/34600703303'
-ASSET_VERSION = '7'
+ASSET_VERSION = '8'
 BASE = 'https://ibizavipmove.com'
 
 base_tags = '''<link rel="icon" href="/assets/brand-mark.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/brand-mark.svg"><meta name="theme-color" content="#090e13"><meta property="og:site_name" content="Ibiza VIP Move"><meta property="og:locale" content="en_GB">'''
@@ -21,6 +21,77 @@ old_wordmark = '<a class="wordmark" href="/"><span class="mark">IVM</span><span>
 new_wordmark = f'<a class="wordmark" href="/" aria-label="Ibiza VIP Move home"><img src="/assets/brand-logo.svg?v={ASSET_VERSION}" alt="Ibiza VIP Move" style="display:block;width:auto;height:50px;max-width:245px;object-fit:contain"></a>'
 old_footer_brand = '<div class="footer-brand">IBIZA VIP MOVE</div>'
 new_footer_brand = f'<div class="footer-brand"><img src="/assets/brand-logo.svg?v={ASSET_VERSION}" alt="Ibiza VIP Move" style="display:block;width:auto;height:52px;max-width:260px;object-fit:contain"></div>'
+
+SEO = {
+    '': (
+        'Luxury Concierge Ibiza | Chauffeur, Villas & Yachts | Ibiza VIP Move',
+        'Luxury concierge in Ibiza for private chauffeur, villas, yachts, private aviation, nightlife, security and bespoke lifestyle support.'
+    ),
+    'services': (
+        'Luxury Concierge Services Ibiza | Ibiza VIP Move',
+        'Explore luxury concierge services in Ibiza including private chauffeur, villas, yachts, aviation, security, nightlife, staffing and wellness.'
+    ),
+    'private-concierge-ibiza': (
+        'Private Concierge Ibiza | Luxury Lifestyle Management | Ibiza VIP Move',
+        'Private concierge in Ibiza for high-touch lifestyle management, transport, reservations, villas, yachts and discreet on-island coordination.'
+    ),
+    'private-chauffeur-ibiza': (
+        'Private Chauffeur Ibiza | Luxury Driver Service | Ibiza VIP Move',
+        'Private chauffeur service in Ibiza for airport transfers, hourly drivers, villas, marinas, nightlife and discreet luxury transportation.'
+    ),
+    'luxury-villas-ibiza': (
+        'Luxury Villa Concierge Ibiza | Private Stays | Ibiza VIP Move',
+        'Luxury villa concierge in Ibiza with private stay sourcing, pre-arrival preparation, housekeeping coordination and in-villa lifestyle support.'
+    ),
+    'yacht-charter-ibiza': (
+        'Yacht Charter Ibiza & Formentera | Ibiza VIP Move',
+        'Luxury yacht charter in Ibiza and Formentera with private coordination, crew and marina support, catering and day-charter planning.'
+    ),
+    'private-aviation-ibiza': (
+        'Private Jet & Aviation Concierge Ibiza | Ibiza VIP Move',
+        'Private aviation concierge in Ibiza with jet, FBO, airport handling, luggage and ground transport coordination for smooth arrivals and departures.'
+    ),
+    'restaurants-nightlife-ibiza': (
+        'VIP Restaurants & Nightlife Ibiza | Ibiza VIP Move',
+        'VIP restaurant, beach club and nightlife concierge in Ibiza with reservations, tables, daybeds and private transport coordination.'
+    ),
+    'private-security-ibiza': (
+        'Private Security & Close Protection Ibiza | Ibiza VIP Move',
+        'Private security and close protection in Ibiza with discreet support for principals, families, nightlife, events and secure transport coordination.'
+    ),
+    'private-chef-staffing-ibiza': (
+        'Private Chef & Villa Staffing Ibiza | Ibiza VIP Move',
+        'Private chefs and villa staffing in Ibiza including butlers, waiters, housekeeping and family support coordinated around your private stay.'
+    ),
+    'luxury-car-rental-ibiza': (
+        'Luxury Car Rental Ibiza | Supercar Concierge | Ibiza VIP Move',
+        'Luxury and supercar rental in Ibiza with SUVs, executive vehicles, sports cars and discreet delivery to your villa, hotel or marina.'
+    ),
+    'wellness-ibiza': (
+        'Private Wellness & Beauty Ibiza | Ibiza VIP Move',
+        'Private wellness and beauty services in Ibiza including massage, trainers, yoga, hair, makeup and recovery sessions at your villa or hotel.'
+    ),
+    'private-events-ibiza': (
+        'Private Events Ibiza | Luxury Event Concierge | Ibiza VIP Move',
+        'Private event concierge in Ibiza for villa dinners, celebrations, proposals, entertainment, DJs, production, décor and guest logistics.'
+    ),
+    'bespoke-concierge-ibiza': (
+        'Bespoke Concierge Ibiza | Luxury Lifestyle Support | Ibiza VIP Move',
+        'Bespoke concierge in Ibiza for personal shopping, special access, last-minute sourcing, reservations and tailor-made private requests.'
+    ),
+    'partners': (
+        'Ibiza Concierge Partner for Travel Advisors & Family Offices | Ibiza VIP Move',
+        'B2B Ibiza concierge support for family offices, personal assistants, luxury travel advisors, hospitality partners and international concierge firms.'
+    ),
+    'about': (
+        'About Ibiza VIP Move | Private Concierge Ibiza',
+        'Discover Ibiza VIP Move, a private concierge and lifestyle management service focused on discreet, responsive and precise Ibiza coordination.'
+    ),
+    'contact': (
+        'Request Private Concierge Ibiza | Ibiza VIP Move',
+        'Request private concierge support in Ibiza for chauffeur, villas, yachts, aviation, security, nightlife or a complete bespoke itinerary.'
+    ),
+}
 
 def grab(pattern, text, default=''):
     match = re.search(pattern, text, re.I | re.S)
@@ -83,12 +154,39 @@ for path in ROOT.rglob('*.html'):
     text = re.sub(r'href="/assets/premium\.css\?v=\d+"', f'href="/assets/premium.css?v={ASSET_VERSION}"', text)
     text = re.sub(r'src="/assets/premium\.js\?v=\d+"', f'src="/assets/premium.js?v={ASSET_VERSION}"', text)
 
+    canonical = grab(r'<link\s+rel="canonical"\s+href="([^"]*)"', text, BASE + '/')
+    current_slug = canonical.replace(BASE, '').strip('/')
+
+    # One clear high-intent search target per page, without adding visible keyword-heavy copy.
+    if current_slug in SEO:
+        seo_title, seo_desc = SEO[current_slug]
+        text = re.sub(r'<title>.*?</title>', f'<title>{escape(seo_title)}</title>', text, count=1, flags=re.I | re.S)
+        text = re.sub(
+            r'(<meta\s+name="description"\s+content=")[^"]*(")',
+            lambda m: m.group(1) + escape(seo_desc) + m.group(2),
+            text,
+            count=1,
+            flags=re.I,
+        )
+        text = re.sub(
+            r'(<meta\s+property="og:title"\s+content=")[^"]*(")',
+            lambda m: m.group(1) + escape(seo_title) + m.group(2),
+            text,
+            count=1,
+            flags=re.I,
+        )
+        text = re.sub(
+            r'(<meta\s+property="og:description"\s+content=")[^"]*(")',
+            lambda m: m.group(1) + escape(seo_desc) + m.group(2),
+            text,
+            count=1,
+            flags=re.I,
+        )
+
     title = grab(r'<title>(.*?)</title>', text, 'Ibiza VIP Move')
     desc = grab(r'<meta\s+name="description"\s+content="([^"]*)"', text, 'Private concierge and luxury lifestyle management in Ibiza.')
-    canonical = grab(r'<link\s+rel="canonical"\s+href="([^"]*)"', text, BASE + '/')
     og_image = grab(r'<meta\s+property="og:image"\s+content="([^"]*)"', text, BASE + '/assets/images/villa.jpg')
     page_name = title.split('|')[0].strip()
-    current_slug = canonical.replace(BASE, '').strip('/')
 
     # Give direct WhatsApp CTAs contextual, pre-filled messages while keeping the form custom.
     interest = service_label(canonical, page_name)
@@ -139,6 +237,28 @@ for path in ROOT.rglob('*.html'):
             'name': 'Ibiza VIP Move',
             'url': BASE + '/',
             'inLanguage': 'en',
+        })
+        schemas.append({
+            '@context': 'https://schema.org',
+            '@type': 'ProfessionalService',
+            'name': 'Ibiza VIP Move',
+            'url': BASE + '/',
+            'telephone': NEW_PHONE_DISPLAY,
+            'email': 'partnership@ibizavipmove.com',
+            'areaServed': {'@type': 'Place', 'name': 'Ibiza, Spain'},
+            'description': desc,
+            'hasOfferCatalog': {
+                '@type': 'OfferCatalog',
+                'name': 'Luxury Concierge Services in Ibiza',
+                'itemListElement': [
+                    {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': 'Private Chauffeur Ibiza'}},
+                    {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': 'Luxury Villas Ibiza'}},
+                    {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': 'Yacht Charter Ibiza'}},
+                    {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': 'Private Aviation Ibiza'}},
+                    {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': 'Private Security Ibiza'}},
+                    {'@type': 'Offer', 'itemOffered': {'@type': 'Service', 'name': 'Private Events Ibiza'}},
+                ],
+            },
         })
     else:
         schemas.append({
