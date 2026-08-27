@@ -48,12 +48,26 @@ for path in ROOT.rglob('*.html'):
     og_image = grab(r'<meta\s+property="og:image"\s+content="([^"]*)"', text, BASE + '/assets/images/villa.jpg')
     page_name = title.split('|')[0].strip()
 
+    # Social crawlers are more reliable with absolute image URLs.
+    if og_image.startswith('/'):
+        og_image_absolute = BASE + og_image
+        text = re.sub(
+            r'(<meta\s+property="og:image"\s+content=")[^"]*(")',
+            lambda m: m.group(1) + og_image_absolute + m.group(2),
+            text,
+            count=1,
+            flags=re.I,
+        )
+    else:
+        og_image_absolute = og_image
+
     social_tags = (
         base_tags
+        + f'<meta property="og:image:secure_url" content="{escape(og_image_absolute)}">'
         + f'<meta property="og:image:alt" content="{escape(page_name)} · Ibiza VIP Move">'
         + f'<meta name="twitter:title" content="{escape(title)}">'
         + f'<meta name="twitter:description" content="{escape(desc)}">'
-        + f'<meta name="twitter:image" content="{escape(og_image)}">'
+        + f'<meta name="twitter:image" content="{escape(og_image_absolute)}">'
     )
     if og_image.startswith('/assets/'):
         social_tags += f'<link rel="preload" as="image" href="{escape(og_image)}">'
