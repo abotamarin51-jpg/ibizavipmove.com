@@ -6,6 +6,7 @@ on:
     paths:
       - "premium_site.py"
       - "trust_enhance.py"
+      - "international_pages.py"
       - "postprocess_site.py"
       - "legal_pages.py"
       - "authority_enhance.py"
@@ -50,8 +51,6 @@ jobs:
           cp brand-logo.svg _site/assets/brand-logo.svg
           cp brand-mark.svg _site/assets/brand-mark.svg
 
-          # Preserve the exact imagery already published on Ibiza VIP Move.
-          # Only fall back to the original source if the live copy is unavailable.
           fetch_image() {
             name="$1"
             fallback="$2"
@@ -98,6 +97,7 @@ jobs:
           PY
 
           python3 trust_enhance.py
+          python3 international_pages.py
           python3 postprocess_site.py
           python3 legal_pages.py
           python3 authority_enhance.py
@@ -106,6 +106,10 @@ jobs:
           test -f _site/index.html
           test -f _site/services/index.html
           test -f _site/contact/index.html
+          test -f _site/international-clients/index.html
+          test -f _site/fr/index.html
+          test -f _site/de/index.html
+          test -f _site/ar/index.html
           test -f _site/privacy/index.html
           test -f _site/terms/index.html
           test -f _site/cookies/index.html
@@ -135,6 +139,10 @@ jobs:
           contact = Path('_site/contact/index.html').read_text(encoding='utf-8')
           partners = Path('_site/partners/index.html').read_text(encoding='utf-8')
           home = Path('_site/index.html').read_text(encoding='utf-8')
+          intl = Path('_site/international-clients/index.html').read_text(encoding='utf-8')
+          fr = Path('_site/fr/index.html').read_text(encoding='utf-8')
+          de = Path('_site/de/index.html').read_text(encoding='utf-8')
+          ar = Path('_site/ar/index.html').read_text(encoding='utf-8')
           privacy = Path('_site/privacy/index.html').read_text(encoding='utf-8')
           sitemap = Path('_site/sitemap.xml').read_text(encoding='utf-8')
           llms = Path('_site/llms.txt').read_text(encoding='utf-8')
@@ -155,6 +163,12 @@ jobs:
               'partner workflow visible': 'Built for professional partners' in partners and 'Partner workflow' in partners,
               'contact next steps visible': 'What happens next' in contact and 'From first message to coordinated stay.' in contact,
               'home partner trust reinforced': 'Client-facing or discreet behind-the-scenes coordination' in home,
+              'international hub visible': 'International Private Clients & Partners' in intl and 'One Ibiza-based point of contact' in intl,
+              'French landing page valid': '<html lang="fr"' in fr and 'Conciergerie de luxe' in fr,
+              'German landing page valid': '<html lang="de"' in de and 'Luxus Concierge' in de,
+              'Arabic landing page valid': '<html lang="ar" dir="rtl"' in ar and 'كونسيرج' in ar,
+              'hreflang set on home': all(f'hreflang="{lang}"' in home for lang in ('en','fr','de','ar','x-default')),
+              'international pages in sitemap': all(f'https://ibizavipmove.com/{slug}/' in sitemap for slug in ('fr','de','ar','international-clients')),
           }
 
           for name, ok in checks.items():
