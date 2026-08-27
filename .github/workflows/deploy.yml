@@ -6,6 +6,8 @@ on:
     paths:
       - "premium_site.py"
       - "postprocess_site.py"
+      - "authority_enhance.py"
+      - "validate_site.py"
       - "premium.css"
       - "premium.js"
       - "brand-logo.jpg"
@@ -94,12 +96,16 @@ jobs:
           PY
 
           python3 postprocess_site.py
+          python3 authority_enhance.py
+          python3 validate_site.py
 
           test -f _site/index.html
           test -f _site/services/index.html
           test -f _site/contact/index.html
           test -f _site/404.html
           test -f _site/sitemap.xml
+          test -f _site/robots.txt
+          test -f _site/llms.txt
           test -f _site/assets/brand-logo.svg
           test -f _site/assets/brand-mark.svg
           test -s _site/assets/images/villa.jpg
@@ -120,6 +126,7 @@ jobs:
           combined = '\n'.join(p.read_text(encoding='utf-8') for p in html_files)
           contact = Path('_site/contact/index.html').read_text(encoding='utf-8')
           home = Path('_site/index.html').read_text(encoding='utf-8')
+          llms = Path('_site/llms.txt').read_text(encoding='utf-8')
 
           checks = {
               'old display number removed': '+34 613 75 62 11' not in combined,
@@ -129,6 +136,8 @@ jobs:
               'logo referenced on homepage': '/assets/brand-logo.svg' in home,
               'logo asset exists': Path('_site/assets/brand-logo.svg').is_file() and Path('_site/assets/brand-logo.svg').stat().st_size > 0,
               'absolute social image present': 'https://ibizavipmove.com/assets/images/' in home,
+              'unified organization id present': 'https://ibizavipmove.com/#organization' in combined,
+              'llms.txt identifies official site': 'Official website: https://ibizavipmove.com/' in llms,
           }
 
           for name, ok in checks.items():
