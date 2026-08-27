@@ -6,6 +6,7 @@ on:
     paths:
       - "premium_site.py"
       - "postprocess_site.py"
+      - "legal_pages.py"
       - "authority_enhance.py"
       - "validate_site.py"
       - "premium.css"
@@ -96,16 +97,21 @@ jobs:
           PY
 
           python3 postprocess_site.py
+          python3 legal_pages.py
           python3 authority_enhance.py
           python3 validate_site.py
 
           test -f _site/index.html
           test -f _site/services/index.html
           test -f _site/contact/index.html
+          test -f _site/privacy/index.html
+          test -f _site/terms/index.html
+          test -f _site/cookies/index.html
           test -f _site/404.html
           test -f _site/sitemap.xml
           test -f _site/robots.txt
           test -f _site/llms.txt
+          test -f _site/assets/legal.css
           test -f _site/assets/brand-logo.svg
           test -f _site/assets/brand-mark.svg
           test -s _site/assets/images/villa.jpg
@@ -126,6 +132,8 @@ jobs:
           combined = '\n'.join(p.read_text(encoding='utf-8') for p in html_files)
           contact = Path('_site/contact/index.html').read_text(encoding='utf-8')
           home = Path('_site/index.html').read_text(encoding='utf-8')
+          privacy = Path('_site/privacy/index.html').read_text(encoding='utf-8')
+          sitemap = Path('_site/sitemap.xml').read_text(encoding='utf-8')
           llms = Path('_site/llms.txt').read_text(encoding='utf-8')
 
           checks = {
@@ -138,6 +146,9 @@ jobs:
               'absolute social image present': 'https://ibizavipmove.com/assets/images/' in home,
               'unified organization id present': 'https://ibizavipmove.com/#organization' in combined,
               'llms.txt identifies official site': 'Official website: https://ibizavipmove.com/' in llms,
+              'legal footer links present': '/privacy/' in home and '/terms/' in home and '/cookies/' in home,
+              'privacy page has current contact': '+34 600 703 303' in privacy,
+              'legal pages included in sitemap': all(f'https://ibizavipmove.com/{slug}/' in sitemap for slug in ('privacy','terms','cookies')),
           }
 
           for name, ok in checks.items():
