@@ -100,12 +100,29 @@ jobs:
           test -s _site/assets/images/wellness.jpg
           test -s _site/assets/images/bespoke.jpg
 
-          # Regression checks: never publish the old contact details or a missing logo.
-          ! grep -R -F '+34 613 75 62 11' _site --include='*.html'
-          ! grep -R -F '34613756211' _site --include='*.html'
-          grep -F -q '+34 600 703 303' _site/contact/index.html
-          grep -F -q '34600703303' _site/contact/index.html
-          grep -F -q '/assets/brand-logo.svg?v=6' _site/index.html
+          python3 - <<'PY'
+          from pathlib import Path
+
+          html_files = list(Path('_site').rglob('*.html'))
+          combined = '\n'.join(p.read_text(encoding='utf-8') for p in html_files)
+          contact = Path('_site/contact/index.html').read_text(encoding='utf-8')
+          home = Path('_site/index.html').read_text(encoding='utf-8')
+
+          checks = {
+              'old display number removed': '+34 613 75 62 11' not in combined,
+              'old WhatsApp number removed': '34613756211' not in combined,
+              'new phone number present': '+34 600 703 303' in contact,
+              'new WhatsApp number present': '34600703303' in contact,
+              'logo referenced on homepage': '/assets/brand-logo.svg' in home,
+              'logo asset exists': Path('_site/assets/brand-logo.svg').is_file() and Path('_site/assets/brand-logo.svg').stat().st_size > 0,
+          }
+
+          for name, ok in checks.items():
+              print(f"{'PASS' if ok else 'FAIL'}: {name}")
+          failed = [name for name, ok in checks.items() if not ok]
+          if failed:
+              raise SystemExit('Validation failed: ' + ', '.join(failed))
+          PY
 
           printf 'ibizavipmove.com\n' > _site/CNAME
           touch _site/.nojekyll
