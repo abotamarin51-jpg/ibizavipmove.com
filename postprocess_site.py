@@ -26,6 +26,10 @@ def grab(pattern, text, default=''):
     match = re.search(pattern, text, re.I | re.S)
     return match.group(1).strip() if match else default
 
+def clean_html(value):
+    value = re.sub(r'<[^>]+>', ' ', value)
+    return re.sub(r'\s+', ' ', value).strip()
+
 def service_label(canonical, page_name):
     path = canonical.replace(BASE, '').strip('/')
     labels = {
@@ -48,6 +52,21 @@ def service_label(canonical, page_name):
     }
     return labels.get(path, 'private concierge support in Ibiza')
 
+service_paths = {
+    'private-chauffeur-ibiza',
+    'luxury-villas-ibiza',
+    'yacht-charter-ibiza',
+    'private-aviation-ibiza',
+    'restaurants-nightlife-ibiza',
+    'private-security-ibiza',
+    'private-chef-staffing-ibiza',
+    'luxury-car-rental-ibiza',
+    'wellness-ibiza',
+    'private-events-ibiza',
+    'bespoke-concierge-ibiza',
+    'private-concierge-ibiza',
+}
+
 for path in ROOT.rglob('*.html'):
     text = path.read_text(encoding='utf-8')
 
@@ -64,22 +83,18 @@ for path in ROOT.rglob('*.html'):
     text = re.sub(r'href="/assets/premium\.css\?v=\d+"', f'href="/assets/premium.css?v={ASSET_VERSION}"', text)
     text = re.sub(r'src="/assets/premium\.js\?v=\d+"', f'src="/assets/premium.js?v={ASSET_VERSION}"', text)
 
-    # Page-specific social metadata for WhatsApp, iMessage and social platforms.
     title = grab(r'<title>(.*?)</title>', text, 'Ibiza VIP Move')
     desc = grab(r'<meta\s+name="description"\s+content="([^"]*)"', text, 'Private concierge and luxury lifestyle management in Ibiza.')
     canonical = grab(r'<link\s+rel="canonical"\s+href="([^"]*)"', text, BASE + '/')
     og_image = grab(r'<meta\s+property="og:image"\s+content="([^"]*)"', text, BASE + '/assets/images/villa.jpg')
     page_name = title.split('|')[0].strip()
+    current_slug = canonical.replace(BASE, '').strip('/')
 
     # Give direct WhatsApp CTAs contextual, pre-filled messages while keeping the form custom.
     interest = service_label(canonical, page_name)
     wa_message = f"Hello Ibiza VIP Move, I'm interested in {interest}. Could you please help me with availability and the next steps? Thank you."
     contextual_wa = NEW_WA + '?text=' + quote(wa_message)
-    text = re.sub(
-        rf'href="{re.escape(NEW_WA)}"',
-        f'href="{contextual_wa}"',
-        text,
-    )
+    text = re.sub(rf'href="{re.escape(NEW_WA)}"', f'href="{contextual_wa}"', text)
 
     # Social crawlers are more reliable with absolute image URLs.
     if og_image.startswith('/'):
@@ -105,7 +120,7 @@ for path in ROOT.rglob('*.html'):
     if og_image.startswith('/assets/'):
         social_tags += f'<link rel="preload" as="image" href="{escape(og_image)}">'
 
-    # Extra WebPage/Breadcrumb structured data without inventing address or credentials.
+    # Core WebPage and breadcrumb data.
     webpage_schema = {
         '@context': 'https://schema.org',
         '@type': 'WebPage',
@@ -116,6 +131,7 @@ for path in ROOT.rglob('*.html'):
         'inLanguage': 'en',
     }
     schemas = [webpage_schema]
+
     if canonical.rstrip('/') == BASE:
         schemas.append({
             '@context': 'https://schema.org',
@@ -133,6 +149,44 @@ for path in ROOT.rglob('*.html'):
                 {'@type': 'ListItem', 'position': 2, 'name': page_name, 'item': canonical},
             ],
         })
+
+    # Service schema for commercial service pages.
+    if current_slug in service_paths:
+        schemas.append({
+            '@context': 'https://schema.org',
+            '@type': 'Service',
+            'name': page_name,
+            'serviceType': service_label(canonical, page_name),
+            'description': desc,
+            'url': canonical,
+            'areaServed': {'@type': 'Place', 'name': 'Ibiza, Spain'},
+            'provider': {
+                '@type': 'ProfessionalService',
+                'name': 'Ibiza VIP Move',
+                'url': BASE,
+                'telephone': NEW_PHONE_DISPLAY,
+                'email': 'partnership@ibizavipmove.com',
+            },
+        })
+
+    # FAQ schema mirrors only questions and answers already visible on the page.
+    faq_items = []
+    for match in re.finditer(r'<details>\s*<summary>(.*?)</summary>\s*<p>(.*?)</p>\s*</details>', text, re.I | re.S):
+        question = clean_html(match.group(1))
+        answer = clean_html(match.group(2))
+        if question and answer:
+            faq_items.append({
+                '@type': 'Question',
+                'name': question,
+                'acceptedAnswer': {'@type': 'Answer', 'text': answer},
+            })
+    if faq_items:
+        schemas.append({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            'mainEntity': faq_items,
+        })
+
     schema_tags = ''.join(f'<script type="application/ld+json">{json.dumps(s, ensure_ascii=False)}</script>' for s in schemas)
 
     if 'property="og:site_name"' not in text:
@@ -141,3 +195,6 @@ for path in ROOT.rglob('*.html'):
 
 not_found = f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Page not found | Ibiza VIP Move</title><meta name="robots" content="noindex"><link rel="icon" href="/assets/brand-mark.svg" type="image/svg+xml"><meta name="theme-color" content="#090e13"><link rel="stylesheet" href="/assets/premium.css?v={ASSET_VERSION}"></head><body style="background:#090e13;color:#fff;min-height:100vh;display:grid;place-items:center;margin:0"><main style="text-align:center;padding:32px;max-width:760px"><img src="/assets/brand-logo.svg?v={ASSET_VERSION}" alt="Ibiza VIP Move" style="width:min(420px,80vw);height:auto;margin:0 auto 54px"><div class="kicker light">404 · Ibiza VIP Move</div><h1 style="color:#fff;font-size:clamp(54px,9vw,100px)">This page has moved.</h1><p style="color:rgba(255,255,255,.65);max-width:560px;margin:28px auto">Return to the private side of Ibiza or contact our concierge team directly.</p><div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap"><a class="btn gold" href="/">Return home</a><a class="btn ghost" href="{NEW_WA}?text={quote('Hello Ibiza VIP Move, I would like private concierge assistance in Ibiza.')}">WhatsApp Concierge</a></div></main></body></html>'''
 (ROOT/'404.html').write_text(not_found, encoding='utf-8')
+
+# Run the full SEO/integrity audit as part of every build.
+import validate_site
