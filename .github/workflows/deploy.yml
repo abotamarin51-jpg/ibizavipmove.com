@@ -105,7 +105,7 @@ jobs:
           ! grep -R -F '34613756211' _site --include='*.html'
           grep -F -q '+34 600 703 303' _site/contact/index.html
           grep -F -q '34600703303' _site/contact/index.html
-          grep -F -q '/assets/brand-logo.svg?v=5' _site/index.html
+          grep -F -q '/assets/brand-logo.svg?v=6' _site/index.html
 
           printf 'ibizavipmove.com\n' > _site/CNAME
           touch _site/.nojekyll
