@@ -37,17 +37,62 @@ jobs:
           set -euo pipefail
           rm -rf _site
           python3 premium_site.py
-          mkdir -p _site/assets
+          mkdir -p _site/assets/images
           cp premium.css _site/assets/premium.css
           cp premium.js _site/assets/premium.js
           cp brand-logo.jpg _site/assets/brand-logo.jpg
           cp brand-logo.svg _site/assets/brand-logo.svg
+
+          # Keep final website imagery on our own domain instead of hotlinking third-party sites.
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/villa.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1774579892259-4c8ebee38789?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/yacht.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1697642192099-a46869979196?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/aviation.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1770816307692-79f4cc6a6404?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/chauffeur.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1744313930610-1649242d1fcd?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/nightlife.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1773580995586-b0195c43386c?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/security.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/chef.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1781184307914-00ea8c9b3f6f?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/events.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/wellness.jpg
+          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/bespoke.jpg
+
+          python3 - <<'PY'
+          from pathlib import Path
+          replacements = {
+              'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=2400&q=88': '/assets/images/villa.jpg',
+              'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=2200&q=88': '/assets/images/villa.jpg',
+              'https://www.charteranddreams.com/wp-content/uploads/2024/01/a-gran-abe.jpg': '/assets/images/yacht.jpg',
+              'https://tempusmagazine.co.uk/app/uploads/news_images/9440624415.jpg': '/assets/images/aviation.jpg',
+              'https://admin.londonvipchauffeur.co.uk/uploads/mercedes_benz_v_class_chauffeur_driver_5a5bdd584e.jpg': '/assets/images/chauffeur.jpg',
+              'https://www.lucasfox.es/blog-images/containers/assets/blog/ibiza-beach-club-%282%29.png/945bd1461891e4848aeda100d02ad638/ibiza-beach-club-%282%29.png': '/assets/images/nightlife.jpg',
+              'https://www.kleininvestigations.com/wp-content/uploads/2019/07/personal-protection-800x1035.jpg': '/assets/images/security.jpg',
+              'https://www.tombenzon.com/media/pages/blog/the-art-of-in-villa-dining-securin/e42c0fe7b0-1775741021/hero-the-art-of-in-villa-dining-securin-1000x562-crop-50-50.jpg': '/assets/images/chef.jpg',
+              'https://www.almabeachibiza.es/img/article-eventos.jpg': '/assets/images/events.jpg',
+              'https://cdn.prod.website-files.com/675442d885557b7a328aa0aa/69813fcc610f09fb2962f68b_Luxury%20Shopping%20Trip%20Chauffeur%20in%20Mercedes%20V%20Class-m%402x.jpg': '/assets/images/chauffeur.jpg',
+              'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=2200&q=88': '/assets/images/wellness.jpg',
+              'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=88': '/assets/images/bespoke.jpg',
+          }
+          for path in Path('_site').rglob('*.html'):
+              text = path.read_text(encoding='utf-8')
+              for old, new in replacements.items():
+                  text = text.replace(old, new)
+              path.write_text(text, encoding='utf-8')
+          PY
+
           test -f _site/index.html
           test -f _site/services/index.html
           test -f _site/contact/index.html
           test -f _site/sitemap.xml
-          test -f _site/assets/brand-logo.jpg
           test -f _site/assets/brand-logo.svg
+          test -s _site/assets/images/villa.jpg
+          test -s _site/assets/images/yacht.jpg
+          test -s _site/assets/images/aviation.jpg
+          test -s _site/assets/images/chauffeur.jpg
+          test -s _site/assets/images/nightlife.jpg
+          test -s _site/assets/images/security.jpg
+          test -s _site/assets/images/chef.jpg
+          test -s _site/assets/images/events.jpg
+          test -s _site/assets/images/wellness.jpg
+          test -s _site/assets/images/bespoke.jpg
           printf 'ibizavipmove.com\n' > _site/CNAME
           touch _site/.nojekyll
 
