@@ -46,16 +46,29 @@ jobs:
           cp brand-logo.svg _site/assets/brand-logo.svg
           cp brand-mark.svg _site/assets/brand-mark.svg
 
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/villa.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1774579892259-4c8ebee38789?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/yacht.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1697642192099-a46869979196?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/aviation.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1770816307692-79f4cc6a6404?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/chauffeur.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1744313930610-1649242d1fcd?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/nightlife.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1773580995586-b0195c43386c?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/security.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/chef.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1781184307914-00ea8c9b3f6f?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/events.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/wellness.jpg
-          curl -LfsS --retry 3 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=82' -o _site/assets/images/bespoke.jpg
+          # Preserve the exact imagery already published on Ibiza VIP Move.
+          # Only fall back to the original source if the live copy is unavailable.
+          fetch_image() {
+            name="$1"
+            fallback="$2"
+            live="https://ibizavipmove.com/assets/images/${name}.jpg"
+            target="_site/assets/images/${name}.jpg"
+            if ! curl -LfsS --retry 2 --connect-timeout 10 "$live" -o "$target"; then
+              echo "Live ${name}.jpg unavailable; using source fallback"
+              curl -LfsS --retry 3 --connect-timeout 15 "$fallback" -o "$target"
+            fi
+          }
+
+          fetch_image villa 'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=1800&q=82'
+          fetch_image yacht 'https://images.unsplash.com/photo-1774579892259-4c8ebee38789?auto=format&fit=crop&w=1800&q=82'
+          fetch_image aviation 'https://images.unsplash.com/photo-1697642192099-a46869979196?auto=format&fit=crop&w=1800&q=82'
+          fetch_image chauffeur 'https://images.unsplash.com/photo-1770816307692-79f4cc6a6404?auto=format&fit=crop&w=1800&q=82'
+          fetch_image nightlife 'https://images.unsplash.com/photo-1744313930610-1649242d1fcd?auto=format&fit=crop&w=1800&q=82'
+          fetch_image security 'https://images.unsplash.com/photo-1773580995586-b0195c43386c?auto=format&fit=crop&w=1800&q=82'
+          fetch_image chef 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=82'
+          fetch_image events 'https://images.unsplash.com/photo-1781184307914-00ea8c9b3f6f?auto=format&fit=crop&w=1800&q=82'
+          fetch_image wellness 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1800&q=82'
+          fetch_image bespoke 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=82'
 
           python3 - <<'PY'
           from pathlib import Path
@@ -115,6 +128,7 @@ jobs:
               'new WhatsApp number present': '34600703303' in contact,
               'logo referenced on homepage': '/assets/brand-logo.svg' in home,
               'logo asset exists': Path('_site/assets/brand-logo.svg').is_file() and Path('_site/assets/brand-logo.svg').stat().st_size > 0,
+              'absolute social image present': 'https://ibizavipmove.com/assets/images/' in home,
           }
 
           for name, ok in checks.items():
