@@ -19,8 +19,31 @@ if(menuBtn&&mobileMenu){
 const WHATSAPP='https://wa.me/34600703303';
 const f=document.getElementById('conciergeForm');
 if(f){
+  const arrival=document.getElementById('fArrival');
+  const departure=document.getElementById('fDeparture');
+  const today=new Date();
+  const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
+
+  if(arrival){
+    arrival.min=localToday;
+  }
+  if(departure){
+    departure.min=localToday;
+  }
+  if(arrival&&departure){
+    const syncDepartureMin=()=>{
+      departure.min=arrival.value||localToday;
+      if(departure.value&&arrival.value&&departure.value<arrival.value){
+        departure.value='';
+      }
+    };
+    arrival.addEventListener('change',syncDepartureMin);
+    syncDepartureMin();
+  }
+
   f.addEventListener('submit',e=>{
     e.preventDefault();
+    if(!f.reportValidity())return;
     const g=id=>document.getElementById(id)?.value||'';
     const lines=[
       'Hello Ibiza VIP Move,',
