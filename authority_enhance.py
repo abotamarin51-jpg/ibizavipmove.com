@@ -49,11 +49,8 @@ ENTITY_SCHEMA = {
 def enhance_schema(data):
     if not isinstance(data, dict):
         return data
-
     schema_type = data.get('@type')
-
     if schema_type == 'ProfessionalService' and data.get('name') == 'Ibiza VIP Move':
-        # Preserve page-specific catalog/description while making the entity globally consistent.
         enriched = dict(ENTITY_SCHEMA)
         enriched.update(data)
         enriched['@id'] = ENTITY_ID
@@ -65,12 +62,10 @@ def enhance_schema(data):
         enriched['contactPoint'] = ENTITY_SCHEMA['contactPoint']
         enriched['knowsAbout'] = ENTITY_SCHEMA['knowsAbout']
         return enriched
-
     if schema_type == 'WebSite':
         data['@id'] = WEBSITE_ID
         data['publisher'] = {'@id': ENTITY_ID}
         return data
-
     if schema_type == 'WebPage':
         url = data.get('url', BASE + '/')
         data['@id'] = url.rstrip('/') + '/#webpage' if url != BASE + '/' else BASE + '/#webpage'
@@ -78,23 +73,16 @@ def enhance_schema(data):
         data['about'] = {'@id': ENTITY_ID}
         data['publisher'] = {'@id': ENTITY_ID}
         return data
-
     if schema_type == 'Service':
         url = data.get('url', BASE + '/')
         data['@id'] = url.rstrip('/') + '/#service'
         data['provider'] = {'@id': ENTITY_ID}
         return data
-
-    if schema_type == 'FAQPage':
-        # URL is not stored in the FAQ object, so its @id is attached later from the canonical.
-        return data
-
     return data
 
 
 for path in ROOT.rglob('*.html'):
     text = path.read_text(encoding='utf-8')
-
     canonical_match = re.search(r'<link\s+rel="canonical"\s+href="([^"]+)"', text, re.I)
     canonical = canonical_match.group(1) if canonical_match else BASE + '/'
 
@@ -116,25 +104,14 @@ for path in ROOT.rglob('*.html'):
         flags=re.I | re.S,
     )
 
-    # Make sure the same official business entity is explicitly defined on every indexable page.
     if ENTITY_ID not in text:
         entity_tag = '<script type="application/ld+json">' + json.dumps(ENTITY_SCHEMA, ensure_ascii=False) + '</script>'
         text = text.replace('</head>', entity_tag + '</head>')
 
-    # Strengthen real internal navigation without changing layout or adding a new section.
+    # Strengthen internal navigation using only existing footer markup.
     footer_old = '<a href="/services/">Services</a><a href="/partners/">Travel Partners</a><a href="/about/">About</a><a href="/contact/">Request Concierge</a>'
     footer_new = '<a href="/services/">Services</a><a href="/private-concierge-ibiza/">Concierge</a><a href="/partners/">Travel Partners</a><a href="/about/">About</a><a href="/contact/">Request Concierge</a>'
     text = text.replace(footer_old, footer_new)
-
-    # Turn existing FAQ wording into useful contextual internal links; wording and design stay the same.
-    text = text.replace(
-        'Most clients use us to coordinate multiple services through one point of contact.',
-        'Most clients use us to coordinate <a href="/services/">multiple services</a> through <a href="/private-concierge-ibiza/">one point of contact</a>.'
-    )
-    text = text.replace(
-        'We regularly work with representatives and can coordinate directly or white-label the local execution where appropriate.',
-        'We regularly work with <a href="/partners/">representatives</a> and can coordinate directly or white-label the local execution where appropriate.'
-    )
 
     path.write_text(text, encoding='utf-8')
 
