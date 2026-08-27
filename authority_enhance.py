@@ -10,6 +10,8 @@ PHONE = '+34 600 703 303'
 EMAIL = 'partnership@ibizavipmove.com'
 LOGO = BASE + '/assets/brand-logo.svg'
 UI_ASSET = '/assets/ui-fixes.css?v=1'
+HOME_TITLE = 'Ibiza VIP Move | Official Luxury Concierge Ibiza'
+HOME_DESC = 'Official website of Ibiza VIP Move, providing private concierge, chauffeur, villas, yachts, private aviation, security and luxury lifestyle support in Ibiza.'
 
 SERVICES = [
     ('Private Concierge Ibiza', '/private-concierge-ibiza/'),
@@ -86,6 +88,27 @@ for path in ROOT.rglob('*.html'):
     text = path.read_text(encoding='utf-8')
     canonical_match = re.search(r'<link\s+rel="canonical"\s+href="([^"]+)"', text, re.I)
     canonical = canonical_match.group(1) if canonical_match else BASE + '/'
+    is_home = canonical.rstrip('/') == BASE
+
+    # Make the official domain unmistakable for branded search results.
+    if is_home:
+        text = re.sub(r'<title>.*?</title>', f'<title>{HOME_TITLE}</title>', text, count=1, flags=re.I | re.S)
+        for attr, value in (
+            ('name="description"', HOME_DESC),
+            ('property="og:title"', HOME_TITLE),
+            ('property="og:description"', HOME_DESC),
+            ('name="twitter:title"', HOME_TITLE),
+            ('name="twitter:description"', HOME_DESC),
+        ):
+            text = re.sub(
+                rf'(<meta\s+{attr}\s+content=")[^"]*(")',
+                lambda m, value=value: m.group(1) + value + m.group(2),
+                text,
+                count=1,
+                flags=re.I,
+            )
+        if 'name="application-name"' not in text:
+            text = text.replace('</head>', '<meta name="application-name" content="Ibiza VIP Move"></head>')
 
     def rewrite_jsonld(match):
         raw = match.group(1)
@@ -96,6 +119,12 @@ for path in ROOT.rglob('*.html'):
         data = enhance_schema(data)
         if isinstance(data, dict) and data.get('@type') == 'FAQPage':
             data['@id'] = canonical.rstrip('/') + '/#faq'
+        if is_home and isinstance(data, dict):
+            if data.get('@type') == 'WebPage':
+                data['name'] = 'Ibiza VIP Move'
+                data['description'] = HOME_DESC
+            elif data.get('@type') == 'ProfessionalService' and data.get('name') == 'Ibiza VIP Move':
+                data['description'] = HOME_DESC
         return '<script type="application/ld+json">' + json.dumps(data, ensure_ascii=False) + '</script>'
 
     text = re.sub(
