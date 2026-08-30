@@ -53,6 +53,11 @@ def footer():
 def shell(body,title,desc,path,img=None):
     return '<!doctype html><html lang="en">'+head(title,desc,path,img)+f'<body>{header()}<main>{body}</main>{footer()}</body></html>'
 
+def legacy_redirect(target):
+    """Keep retired service URLs useful on static GitHub Pages hosting."""
+    url = BASE + target
+    return f'''<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Private Chauffeur Ibiza | Ibiza VIP Move</title><meta name="description" content="This Ibiza VIP Move service page has moved to our current private chauffeur and luxury transportation page in Ibiza."><meta name="robots" content="noindex,follow"><link rel="canonical" href="{url}"><meta http-equiv="refresh" content="0;url={url}"><link rel="stylesheet" href="/assets/premium.css?v=1"><script type="application/ld+json">{{"@context":"https://schema.org","@type":"WebPage","name":"Private Chauffeur Ibiza","url":"{url}"}}</script></head><body><main style="min-height:100vh;display:grid;place-items:center;padding:32px;text-align:center"><div><img src="/assets/brand-logo.svg" alt="Ibiza VIP Move" style="width:min(360px,80vw);height:auto"><h1>This service page has moved.</h1><p>Continue to our private chauffeur and luxury transportation service in Ibiza.</p><a class="btn dark" href="{target}">Open Private Chauffeur Ibiza</a></div></main></body></html>'''
+
 def cards():
     out=[]
     for slug,name,tag,img,items in SERVICES:
@@ -216,6 +221,9 @@ def build():
         d=root/slug; d.mkdir(parents=True,exist_ok=True); (d/'index.html').write_text(html,encoding='utf-8')
     for s,n,t,i,items in SERVICES:
         d=root/s; d.mkdir(parents=True,exist_ok=True); (d/'index.html').write_text(service_page(s,n,t,i,items),encoding='utf-8')
+    for legacy in ('services/chauffeur', 'services/transfers'):
+        d=root/legacy; d.mkdir(parents=True,exist_ok=True)
+        (d/'index.html').write_text(legacy_redirect('/private-chauffeur-ibiza/'),encoding='utf-8')
     urls=['/','/services/','/private-concierge-ibiza/','/about/','/partners/','/contact/']+[f'/{x[0]}/' for x in SERVICES]
     sm=''.join(f'<url><loc>{BASE}{u}</loc><changefreq>weekly</changefreq><priority>{"1.0" if u=="/" else "0.8"}</priority></url>' for u in urls)
     (root/'sitemap.xml').write_text('<?xml version="1.0" encoding="UTF-8"?><urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">'+sm+'</urlset>',encoding='utf-8')

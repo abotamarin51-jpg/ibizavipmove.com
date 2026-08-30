@@ -8,7 +8,11 @@ OLD_WA = '34613756211'
 NEW_PHONE = '+34 600 703 303'
 NEW_WA = '34600703303'
 
-pages = sorted(p for p in ROOT.rglob('index.html'))
+all_pages = sorted(p for p in ROOT.rglob('index.html'))
+pages = [
+    p for p in all_pages
+    if not re.search(r'<meta\s+name="robots"\s+content="[^"]*noindex', p.read_text(encoding='utf-8'), re.I)
+]
 if not pages:
     raise SystemExit('No indexable HTML pages were generated')
 

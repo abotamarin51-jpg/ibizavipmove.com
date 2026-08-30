@@ -105,6 +105,8 @@ jobs:
 
           test -f _site/index.html
           test -f _site/services/index.html
+          test -f _site/services/chauffeur/index.html
+          test -f _site/services/transfers/index.html
           test -f _site/contact/index.html
           test -f _site/international-clients/index.html
           test -f _site/fr/index.html
@@ -120,6 +122,8 @@ jobs:
           test -f _site/assets/legal.css
           test -f _site/assets/brand-logo.svg
           test -f _site/assets/brand-mark.svg
+          grep -q 'url=https://ibizavipmove.com/private-chauffeur-ibiza/' _site/services/chauffeur/index.html
+          grep -q 'url=https://ibizavipmove.com/private-chauffeur-ibiza/' _site/services/transfers/index.html
           test -s _site/assets/images/villa.jpg
           test -s _site/assets/images/yacht.jpg
           test -s _site/assets/images/aviation.jpg
