@@ -68,12 +68,131 @@ def service_index():
     return shell(body,'Luxury Concierge Services in Ibiza | Ibiza VIP Move','Explore private chauffeur, villas, yachts, aviation, security, nightlife, staffing, wellness, events and bespoke concierge services in Ibiza.','/services/',IMG['nightlife'])
 
 def service_page(slug,name,tag,img,items):
+    content = {
+        'private-chauffeur-ibiza': {
+            'heading': 'Private chauffeur service built around your Ibiza itinerary.',
+            'lead': 'Arrange an Ibiza private chauffeur for airport arrivals, hourly or full-day driving, villas, hotels, marinas, yacht connections, restaurants and nightlife. The route, timings, passengers, luggage and vehicle requirements are clarified before confirmation.',
+            'detail': 'A chauffeur booking can cover one transfer or several movements under one brief. For complex stays, transport can be coordinated alongside reservations, security, private aviation and other concierge requirements.',
+            'faqs': [
+                ('Can I book a private driver by the hour in Ibiza?', 'Hourly, half-day, full-day and multi-day chauffeur requests can be assessed subject to the itinerary and confirmed availability. Share the dates, pickup points, estimated schedule, passengers and luggage.'),
+                ('Do you coordinate Ibiza Airport transfers?', 'Yes. Airport pickup or departure transport can be included, with the flight, meeting point, destination, passengers and luggage confirmed before travel.'),
+                ('Can the chauffeur cover villas, hotels, yachts and clubs?', 'Yes. A confirmed itinerary may include villas, hotels, marinas, yacht connections, restaurants, beach clubs and nightlife venues across Ibiza.'),
+            ],
+        },
+        'luxury-villas-ibiza': {
+            'heading': 'Luxury villa concierge from selection to daily support.',
+            'lead': 'Coordinate an Ibiza villa stay around the guests, preferred area, dates, privacy requirements and the services needed before arrival. Requests may include villa sourcing, provisioning, housekeeping, chefs, wellness, chauffeur transport and guest logistics.',
+            'detail': 'We focus on the complete stay rather than a property alone. Availability, terms and supplier details are confirmed for the specific request before any reservation is accepted.',
+            'faqs': [
+                ('Can you help source a luxury villa in Ibiza?', 'Villa requests can be assessed around dates, guest count, preferred areas, room requirements, amenities and budget. Suitable options and applicable terms are confirmed for the brief.'),
+                ('Can you prepare the villa before arrival?', 'Pre-arrival requests may include provisioning, housekeeping, staffing, transport planning and other practical details, subject to confirmation.'),
+                ('Can villa concierge be combined with a chauffeur or yacht?', 'Yes. Villa support can be coordinated with private chauffeur transport, yacht requests, dining, wellness, staffing and other services under one itinerary.'),
+            ],
+        },
+        'yacht-charter-ibiza': {
+            'heading': 'Ibiza yacht charter coordinated around the full day.',
+            'lead': 'Plan a private yacht or day charter from Ibiza with the guest count, preferred date, departure marina, route, vessel style and onboard requirements clarified before options are presented.',
+            'detail': 'The yacht day can be aligned with villa or hotel pickup, marina timing, catering requests, restaurant plans and the return journey. Formentera can be requested where suitable for the confirmed charter and conditions.',
+            'faqs': [
+                ('Can you arrange a yacht charter from Ibiza to Formentera?', 'Formentera routes can be requested. The vessel, marina, schedule, route and operating conditions must be confirmed for the selected charter.'),
+                ('Can transport to and from the marina be included?', 'Yes. Private chauffeur transport can be coordinated around the confirmed departure and return times.'),
+                ('What information is needed for a yacht request?', 'Send the date, guest count, preferred duration, departure area, vessel preferences and any catering, restaurant or special requirements.'),
+            ],
+        },
+        'private-aviation-ibiza': {
+            'heading': 'Ground coordination around private aviation in Ibiza.',
+            'lead': 'Align private aviation arrivals and departures with chauffeur transport, luggage requirements, villa or hotel movements and the wider client itinerary.',
+            'detail': 'The flight reference, terminal or handling details, passenger count, luggage and ground destination are clarified with the relevant parties. Access and handling remain subject to the confirmed operator and airport procedures.',
+            'faqs': [
+                ('Can you coordinate a chauffeur with a private flight?', 'Yes. Ground transport can be planned around the confirmed flight information, passenger requirements and final destination.'),
+                ('Do you provide aircraft handling?', 'We coordinate the concierge and ground elements of the brief. Aviation handling, airside access and operator services are subject to the relevant licensed providers and airport procedures.'),
+                ('Can private aviation support be part of a full Ibiza itinerary?', 'Yes. It can be aligned with villas, yachts, security, staffing, reservations and on-island chauffeur requirements.'),
+            ],
+        },
+        'restaurants-nightlife-ibiza': {
+            'heading': 'Restaurant reservations, VIP tables and nightlife logistics.',
+            'lead': 'Coordinate restaurant reservations, beach-club daybeds, VIP table requests and private transport around the guest profile, dates, party size and preferred atmosphere.',
+            'detail': 'Access, minimum spend, deposits, cancellation terms and table location depend on the venue and date. Nothing is represented as confirmed until the venue or relevant supplier has accepted the request.',
+            'faqs': [
+                ('Can you book restaurant reservations in Ibiza?', 'Restaurant requests can be coordinated around the date, time, party size, dietary needs and preferred style. Availability and booking terms depend on the venue.'),
+                ('Can you arrange VIP tables at Ibiza clubs?', 'VIP table requests can be submitted for the chosen date and party size. Availability, table position, minimum spend and entry conditions are confirmed by the venue.'),
+                ('Can nightlife transport be coordinated as well?', 'Yes. Chauffeur transport can be planned around confirmed restaurant, beach-club and nightlife reservations.'),
+            ],
+        },
+        'private-security-ibiza': {
+            'heading': 'Discreet private security and close-protection coordination.',
+            'lead': 'Security requests are assessed around the principal or family, dates, movements, venues, transport, events and any relevant risk or privacy considerations.',
+            'detail': 'The final team, scope and operating plan depend on the brief and applicable requirements. Security can be coordinated with chauffeur movements, villas, nightlife, events and private aviation.',
+            'faqs': [
+                ('Can I request a bodyguard or close protection in Ibiza?', 'Private security and close-protection requests can be assessed for principals, families, events and scheduled movements. Share the dates, profile, itinerary and scope required.'),
+                ('Can security travel with the client and chauffeur?', 'Secure transport coordination can be included where appropriate to the confirmed brief and operating plan.'),
+                ('Is private security available for nightlife or events?', 'Nightlife and event support can be requested. Staffing, access, timing and scope must be confirmed for the specific venue and itinerary.'),
+            ],
+        },
+        'private-chef-staffing-ibiza': {
+            'heading': 'Private chefs and villa staff matched to the stay.',
+            'lead': 'Coordinate private chefs, butlers, waiters, housekeeping and family support around the property, dates, guest count, service style and daily schedule.',
+            'detail': 'Menus, dietary requirements, hours, staffing levels, access and working conditions are clarified before the service is confirmed.',
+            'faqs': [
+                ('Can you arrange a private chef at an Ibiza villa?', 'Private chef requests can be coordinated around dates, guest count, meal plan, dietary requirements, kitchen facilities and preferred service style.'),
+                ('Can you organise additional villa staff?', 'Butlers, waiters, housekeeping and family-support requests can be assessed according to the property, schedule and required duties.'),
+                ('Can staffing be coordinated for only one dinner?', 'Single occasions and longer stays can both be requested, subject to the specific brief and confirmed availability.'),
+            ],
+        },
+        'luxury-car-rental-ibiza': {
+            'heading': 'Luxury car rental selected around the client and itinerary.',
+            'lead': 'Request executive cars, luxury SUVs, sports cars or supercars with delivery details, dates, driver requirements and preferred model category clarified in advance.',
+            'detail': 'Vehicle availability, deposit, insurance, mileage, licence requirements and delivery terms depend on the selected supplier and booking.',
+            'faqs': [
+                ('Can a luxury car be delivered to my villa or hotel?', 'Delivery and collection can be requested for a confirmed Ibiza address, subject to the selected vehicle and supplier terms.'),
+                ('Can I request a specific model?', 'A preferred make or model can be requested, although the exact vehicle remains subject to availability and written confirmation.'),
+                ('Is a chauffeur available instead of self-drive rental?', 'Yes. If you prefer not to drive, request a private chauffeur service coordinated around the itinerary.'),
+            ],
+        },
+        'wellness-ibiza': {
+            'heading': 'Private wellness and beauty brought to your Ibiza stay.',
+            'lead': 'Coordinate massage, yoga, personal training, hair, makeup, beauty and recovery sessions at a suitable villa or hotel around the guest schedule.',
+            'detail': 'Practitioner availability, treatment suitability, access, setup and cancellation terms are confirmed for each request.',
+            'faqs': [
+                ('Can wellness services come to an Ibiza villa?', 'In-villa sessions can be requested where the property and service setup are suitable. Access and space requirements are confirmed beforehand.'),
+                ('Can you coordinate hair and makeup for an event?', 'Hair, makeup and beauty requests can be planned around the event time, number of guests and preferred look.'),
+                ('Can several wellness sessions be scheduled during a stay?', 'Yes. A multi-day schedule can be requested and aligned with the wider itinerary.'),
+            ],
+        },
+        'private-events-ibiza': {
+            'heading': 'Private events in Ibiza with the logistics aligned.',
+            'lead': 'Coordinate villa dinners, celebrations, proposals and private occasions around the venue, guest count, timing, food, entertainment, production, décor and transport.',
+            'detail': 'The event scope, property permissions, suppliers, sound restrictions and operational requirements must be confirmed before execution.',
+            'faqs': [
+                ('Can you organise a private villa event in Ibiza?', 'Villa event requests can be assessed around the property, permissions, guest count, timings and production requirements.'),
+                ('Can you coordinate entertainment and a DJ?', 'Entertainment, DJs, sound, décor and production can be requested as part of the confirmed event brief.'),
+                ('Can guest transport be included?', 'Yes. Chauffeur and multi-vehicle transport can be coordinated around arrivals, departures and the confirmed event schedule.'),
+            ],
+        },
+        'bespoke-concierge-ibiza': {
+            'heading': 'Bespoke concierge for requests that do not fit a standard menu.',
+            'lead': 'Use one Ibiza contact for personal shopping, gifts, special sourcing, itinerary changes, access requests and other private-client needs.',
+            'detail': 'We assess what is feasible, clarify the required timing and present the next step. Availability, access and supplier terms remain subject to confirmation.',
+            'faqs': [
+                ('What is a bespoke concierge request?', 'It is a private request that falls outside a standard service, such as sourcing, gifting, itinerary support or a time-sensitive local need.'),
+                ('Can you help with last-minute requests?', 'Last-minute requests can be assessed, but feasibility and availability depend on the timing and requirement.'),
+                ('Can bespoke support be added to full-stay concierge?', 'Yes. It can sit alongside transport, villas, yachts, dining, staffing and other confirmed services.'),
+            ],
+        },
+    }
+    page = content.get(slug, {
+        'heading': 'Private coordination built around your schedule.',
+        'lead': 'Every request is coordinated around the client, the itinerary and the level of support required.',
+        'detail': 'Share the dates, guests, priorities and practical requirements so the relevant details can be clarified before confirmation.',
+        'faqs': [],
+    })
     bullets=''.join(f'<li>{x}</li>' for x in items)
-    body=f'''<section class="page-hero service-hero" style="--hero:url('{IMG[img]}')"><div><div class="kicker light">Ibiza VIP Move · Private Service</div><h1>{name}</h1><p>{tag}</p><a class="btn gold" href="{WA}">Request this service</a></div></section><section class="editorial service-detail"><div><div class="kicker dark">Private coordination</div><h2>Handled around your schedule.</h2></div><div><p class="large">Every request is coordinated around the client, the itinerary and the level of support required. Our role is to keep the experience simple while managing the moving parts behind the scenes.</p><ul class="premium-list">{bullets}</ul></div></section><section class="process"><div class="section-head"><div class="kicker dark">How it works</div><h2>Simple for you. Detailed behind the scenes.</h2></div><div class="process-grid"><article><span>01</span><h3>Brief</h3><p>Share dates, guests, preferences and priorities.</p></article><article><span>02</span><h3>Curate</h3><p>We align the most suitable options and logistics.</p></article><article><span>03</span><h3>Confirm</h3><p>Once approved, we coordinate every relevant detail.</p></article><article><span>04</span><h3>Support</h3><p>We remain available as plans evolve during the stay.</p></article></div></section><section class="faq"><div class="section-head"><div class="kicker dark">Private client FAQ</div><h2>Before you book.</h2></div><details><summary>How far in advance should I request this service?</summary><p>For peak Ibiza dates, earlier is always better. We also handle last-minute requests whenever suitable availability exists.</p></details><details><summary>Can this be combined with other Ibiza VIP Move services?</summary><p>Yes. Most clients use us to coordinate multiple services through one point of contact.</p></details><details><summary>Can a PA, travel advisor or family office book on behalf of a client?</summary><p>Yes. We regularly work with representatives and can coordinate directly or white-label the local execution where appropriate.</p></details></section><section class="closing-simple"><h2>Request {name}</h2><p>Send us your dates and requirements for a tailored response.</p><a class="btn dark" href="{WA}">WhatsApp Concierge</a></section>'''
+    faq_html=''.join(f'<details><summary>{escape(q)}</summary><p>{escape(a)}</p></details>' for q,a in page['faqs'])
+    body=f'''<section class="page-hero service-hero" style="--hero:url('{IMG[img]}')"><div><div class="kicker light">Ibiza VIP Move · Private Service</div><h1>{name}</h1><p>{tag}</p><a class="btn gold" href="{WA}">Request this service</a></div></section><section class="editorial service-detail"><div><div class="kicker dark">Private coordination</div><h2>{page['heading']}</h2></div><div><p class="large">{page['lead']}</p><p>{page['detail']}</p><ul class="premium-list">{bullets}</ul></div></section><section class="process"><div class="section-head"><div class="kicker dark">How it works</div><h2>Simple for you. Detailed behind the scenes.</h2></div><div class="process-grid"><article><span>01</span><h3>Brief</h3><p>Share dates, guests, preferences and priorities.</p></article><article><span>02</span><h3>Clarify</h3><p>We confirm the operational details needed for the request.</p></article><article><span>03</span><h3>Confirm</h3><p>Availability, scope and applicable terms are agreed in writing.</p></article><article><span>04</span><h3>Coordinate</h3><p>The service is aligned with the confirmed Ibiza itinerary.</p></article></div></section><section class="faq"><div class="section-head"><div class="kicker dark">Private client FAQ</div><h2>Before you book.</h2></div>{faq_html}<details><summary>Can this be combined with other Ibiza VIP Move services?</summary><p>Yes. Multiple confirmed services can be coordinated through one point of contact and aligned around the same itinerary.</p></details></section><section class="closing-simple"><h2>Request {name}</h2><p>Send the dates, guest count and practical requirements for a tailored response.</p><a class="btn dark" href="{WA}">WhatsApp Concierge</a></section>'''
     return shell(body,f'{name} in Ibiza | Ibiza VIP Move',f'{name} in Ibiza with private coordination, discreet support and tailored concierge service.',f'/{slug}/',IMG[img])
 
 def concierge():
-    body=f'''<section class="page-hero" style="--hero:url('{IMG['bespoke']}')"><div><div class="kicker light">Private Concierge Ibiza</div><h1>Your stay,<br><em>managed as one.</em></h1><p>One dedicated contact coordinating transport, reservations, villas, yachts, staff and the unexpected.</p><a class="btn gold" href="{WA}">Start your brief</a></div></section><section class="editorial"><div><div class="kicker dark">Our approach</div><h2>Less coordination for you.<br>More control behind the scenes.</h2></div><div><p class="large">Ibiza VIP Move is designed for clients who do not want to manage ten different suppliers. We centralise communication, align timing and keep the experience moving.</p><p>From a simple weekend to a complex family or executive stay, the service scales around the itinerary.</p></div></section><section class="dark-panel"><div class="kicker light">What we manage</div><h2>Arrival to departure.</h2><div class="trust-grid"><div><b>Before arrival</b><p>Villa readiness, transport, reservations, provisioning and schedule alignment.</p></div><div><b>During the stay</b><p>Daily transport, dining, yacht days, nightlife, staff, wellness and spontaneous requests.</p></div><div><b>Complex logistics</b><p>Multiple guests, changing schedules, airport movements and multi-vehicle coordination.</p></div><div><b>Departure</b><p>Final transport, luggage timing and private aviation or commercial airport coordination.</p></div></div></section><section class="closing-simple"><h2>Build your Ibiza brief.</h2><a class="btn dark" href="{WA}">Speak to Concierge</a></section>'''
+    body=f'''<section class="page-hero" style="--hero:url('{IMG['bespoke']}')"><div><div class="kicker light">Luxury Concierge Ibiza</div><h1>Private concierge in Ibiza,<br><em>managed as one.</em></h1><p>One dedicated contact coordinating chauffeur transport, restaurant reservations, VIP tables, villas, yachts, security, staff and the unexpected.</p><a class="btn gold" href="{WA}">Start your brief</a></div></section><section class="editorial"><div><div class="kicker dark">Our approach</div><h2>Less coordination for you.<br>More control behind the scenes.</h2></div><div><p class="large">Ibiza VIP Move is a private concierge for clients who do not want to manage separate suppliers throughout their stay. We centralise communication, align timing and keep the confirmed itinerary moving.</p><p>From a restaurant reservation or airport movement to a complex family, executive or multi-day stay, the service scales around the brief.</p><a class="text-link" href="/services/">Explore all Ibiza concierge services →</a></div></section><section class="dark-panel"><div class="kicker light">What we manage</div><h2>Arrival to departure.</h2><div class="trust-grid"><div><b>Before arrival</b><p>Villa readiness, chauffeur transport, reservations, provisioning and schedule alignment.</p></div><div><b>During the stay</b><p>Daily transport, dining, VIP tables, yacht days, nightlife, staff, wellness and evolving requests.</p></div><div><b>Complex logistics</b><p>Multiple guests, changing schedules, airport movements, security and multi-vehicle coordination.</p></div><div><b>Departure</b><p>Final transport, luggage timing and private aviation or commercial airport coordination.</p></div></div></section><section class="faq"><div class="section-head"><div class="kicker dark">Concierge FAQ</div><h2>Planning private services in Ibiza.</h2></div><details><summary>What can a private concierge arrange in Ibiza?</summary><p>Requests may include chauffeur transport, villas, yachts, private aviation support, restaurant reservations, VIP tables, beach clubs, security, private chefs, staffing, wellness, events and bespoke needs.</p></details><details><summary>Can I use the concierge for only one reservation?</summary><p>Yes. You can request one defined service or coordinate a complete stay through the same point of contact.</p></details><details><summary>Can a PA, family office or travel advisor contact you?</summary><p>Yes. International private-client representatives and travel partners can send the brief directly and agree the preferred communication structure.</p></details><details><summary>Are reservations or access guaranteed?</summary><p>No. Availability, access, deposits, minimum spend and supplier terms are confirmed for each request before it is treated as booked.</p></details></section><section class="closing-simple"><h2>Build your Ibiza brief.</h2><p>Send your dates, guests and priorities to begin.</p><a class="btn dark" href="{WA}">Speak to Concierge</a></section>'''
     return shell(body,'Private Concierge Ibiza | Ibiza VIP Move','High-touch private concierge and lifestyle management in Ibiza for private clients, PAs, family offices and travel advisors.','/private-concierge-ibiza/',IMG['bespoke'])
 
 def about():
