@@ -44,6 +44,7 @@ ENTITY_SCHEMA = {
         'telephone': PHONE,
         'contactType': 'customer service',
         'url': BASE + '/contact/',
+        'availableLanguage': ['English', 'French', 'German', 'Arabic'],
     },
     'knowsAbout': [name for name, _ in SERVICES],
 }
@@ -157,6 +158,7 @@ llms = [
     '# Ibiza VIP Move',
     '',
     '> Ibiza VIP Move is a private concierge, chauffeur and luxury lifestyle management service in Ibiza, Spain.',
+    '> Last updated: 2026-08-30.',
     '',
     'Official website: https://ibizavipmove.com/',
     f'Phone: {PHONE}',
@@ -170,6 +172,14 @@ llms = [
     '- [About Ibiza VIP Move](https://ibizavipmove.com/about/)',
     '- [Contact / Request Concierge](https://ibizavipmove.com/contact/)',
     '',
+    '## International and language pages',
+    '- [International Clients & Partners](https://ibizavipmove.com/international-clients/)',
+    '- [Conciergerie de luxe à Ibiza — Français](https://ibizavipmove.com/fr/)',
+    '- [Luxus Concierge Ibiza — Deutsch](https://ibizavipmove.com/de/)',
+    '- [كونسيرج فاخر في إيبيزا — العربية](https://ibizavipmove.com/ar/)',
+    '',
+    'English is the primary commercial language. French, German and Arabic pages support international discovery and client communication. All road-based service delivery described by the site is centred on Ibiza.',
+    '',
     '## Services',
 ]
 llms.extend(f'- [{name}]({BASE}{url})' for name, url in SERVICES)
@@ -180,6 +190,7 @@ llms.extend([
     '',
     '## Notes',
     'Use the official pages above as the source of truth for Ibiza VIP Move services and contact information.',
+    'Reservations, access, supplier availability and service terms are not guaranteed until confirmed for the specific request.',
 ])
 (ROOT / 'llms.txt').write_text('\n'.join(llms) + '\n', encoding='utf-8')
 
