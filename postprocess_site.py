@@ -93,6 +93,21 @@ SEO = {
     ),
 }
 
+SERVICE_ALIASES = {
+    'private-concierge-ibiza': ['Concierge Ibiza', 'Luxury Concierge Ibiza', 'VIP Concierge Ibiza'],
+    'private-chauffeur-ibiza': ['Chauffeur Service Ibiza', 'Private Driver Ibiza', 'Luxury Transportation Ibiza'],
+    'luxury-villas-ibiza': ['Luxury Villas Ibiza', 'Villa Concierge Ibiza', 'Private Villa Ibiza'],
+    'yacht-charter-ibiza': ['Yacht Charter Ibiza', 'Luxury Yacht Ibiza', 'Formentera Yacht Charter'],
+    'private-aviation-ibiza': ['Private Jet Ibiza', 'Aviation Concierge Ibiza', 'FBO Ground Coordination Ibiza'],
+    'restaurants-nightlife-ibiza': ['Restaurant Reservations Ibiza', 'VIP Tables Ibiza', 'Ibiza Nightlife Concierge'],
+    'private-security-ibiza': ['Private Security Ibiza', 'Close Protection Ibiza', 'Bodyguard Ibiza'],
+    'private-chef-staffing-ibiza': ['Private Chef Ibiza', 'Villa Staffing Ibiza', 'Butler Service Ibiza'],
+    'luxury-car-rental-ibiza': ['Luxury Car Rental Ibiza', 'Supercar Rental Ibiza', 'Executive Car Ibiza'],
+    'wellness-ibiza': ['Private Wellness Ibiza', 'Villa Massage Ibiza', 'Beauty Concierge Ibiza'],
+    'private-events-ibiza': ['Private Events Ibiza', 'Villa Events Ibiza', 'Luxury Event Concierge Ibiza'],
+    'bespoke-concierge-ibiza': ['Bespoke Concierge Ibiza', 'Lifestyle Management Ibiza', 'VIP Services Ibiza'],
+}
+
 def grab(pattern, text, default=''):
     match = re.search(pattern, text, re.I | re.S)
     return match.group(1).strip() if match else default
@@ -277,6 +292,7 @@ for path in ROOT.rglob('*.html'):
             '@type': 'Service',
             'name': page_name,
             'serviceType': service_label(canonical, page_name),
+            'alternateName': SERVICE_ALIASES.get(current_slug, []),
             'description': desc,
             'url': canonical,
             'areaServed': {'@type': 'Place', 'name': 'Ibiza, Spain'},
