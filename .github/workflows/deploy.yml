@@ -11,6 +11,7 @@ on:
       - "legal_pages.py"
       - "authority_enhance.py"
       - "image_markup_enhance.py"
+      - "upgrade_visual_assets.py"
       - "validate_site.py"
       - "build_site.sh"
       - "premium.css"
@@ -42,7 +43,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Build and validate website
-        run: bash build_site.sh
+        run: |
+          bash build_site.sh
+          python3 upgrade_visual_assets.py
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
