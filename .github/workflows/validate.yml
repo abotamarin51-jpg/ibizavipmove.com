@@ -23,9 +23,11 @@ on:
       - "phase19_enhance.py"
       - "phase20_enhance.py"
       - "phase21_enhance.py"
+      - "phase22_enhance.py"
       - "editorial-black.css"
       - "editorial-inner.css"
       - "editorial-multilingual.css"
+      - "premium-motion.css"
       - "submit_indexnow.py"
       - "validate_site.py"
       - "build_site.sh"
@@ -63,6 +65,7 @@ jobs:
           python3 phase19_enhance.py
           python3 phase20_enhance.py
           python3 phase21_enhance.py
+          python3 phase22_enhance.py
           python3 validate_site.py
       - name: Upload validated preview artifact
         uses: actions/upload-artifact@v4
