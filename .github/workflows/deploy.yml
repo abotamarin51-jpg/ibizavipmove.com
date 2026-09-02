@@ -51,32 +51,33 @@ jobs:
           cp brand-logo.svg _site/assets/brand-logo.svg
           cp brand-mark.svg _site/assets/brand-mark.svg
 
+          # Curated high-resolution editorial imagery. We intentionally fetch
+          # from the source set on every build so an older live asset cannot
+          # silently override the new visual direction.
           fetch_image() {
             name="$1"
-            fallback="$2"
-            live="https://ibizavipmove.com/assets/images/${name}.jpg"
+            source="$2"
             target="_site/assets/images/${name}.jpg"
-            if ! curl -LfsS --retry 2 --connect-timeout 10 "$live" -o "$target"; then
-              echo "Live ${name}.jpg unavailable; using source fallback"
-              curl -LfsS --retry 3 --connect-timeout 15 "$fallback" -o "$target"
-            fi
+            curl -LfsS --retry 3 --connect-timeout 15 "$source" -o "$target"
+            test -s "$target"
           }
 
-          fetch_image villa 'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=1800&q=82'
-          fetch_image yacht 'https://images.unsplash.com/photo-1774579892259-4c8ebee38789?auto=format&fit=crop&w=1800&q=82'
-          fetch_image aviation 'https://images.unsplash.com/photo-1697642192099-a46869979196?auto=format&fit=crop&w=1800&q=82'
-          fetch_image chauffeur 'https://images.unsplash.com/photo-1770816307692-79f4cc6a6404?auto=format&fit=crop&w=1800&q=82'
-          fetch_image nightlife 'https://images.unsplash.com/photo-1744313930610-1649242d1fcd?auto=format&fit=crop&w=1800&q=82'
-          fetch_image security 'https://images.unsplash.com/photo-1773580995586-b0195c43386c?auto=format&fit=crop&w=1800&q=82'
-          fetch_image chef 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=82'
-          fetch_image events 'https://images.unsplash.com/photo-1781184307914-00ea8c9b3f6f?auto=format&fit=crop&w=1800&q=82'
-          fetch_image wellness 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=1800&q=82'
-          fetch_image bespoke 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=1800&q=82'
+          fetch_image hero 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2400&q=90&fm=jpg'
+          fetch_image villa 'https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2400&q=90&fm=jpg'
+          fetch_image yacht 'https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2400&q=90&fm=jpg'
+          fetch_image aviation 'https://images.unsplash.com/photo-1773554644657-2c9a9ecc95f9?auto=format&fit=crop&w=2400&q=90&fm=jpg'
+          fetch_image chauffeur 'https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2400&q=90&fm=jpg'
+          fetch_image nightlife 'https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=2200&q=90&fm=jpg'
+          fetch_image security 'https://images.unsplash.com/photo-1773580995586-b0195c43386c?auto=format&fit=crop&w=2200&q=88&fm=jpg'
+          fetch_image chef 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=2200&q=88&fm=jpg'
+          fetch_image events 'https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=2200&q=90&fm=jpg'
+          fetch_image wellness 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=2200&q=88&fm=jpg'
+          fetch_image bespoke 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=88&fm=jpg'
 
           python3 - <<'PY'
           from pathlib import Path
           replacements = {
-              'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=2400&q=88': '/assets/images/villa.jpg',
+              'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=2400&q=88': '/assets/images/hero.jpg',
               'https://images.unsplash.com/photo-1757439402359-aed14d39fc1b?auto=format&fit=crop&w=2200&q=88': '/assets/images/villa.jpg',
               'https://www.charteranddreams.com/wp-content/uploads/2024/01/a-gran-abe.jpg': '/assets/images/yacht.jpg',
               'https://tempusmagazine.co.uk/app/uploads/news_images/9440624415.jpg': '/assets/images/aviation.jpg',
@@ -124,6 +125,7 @@ jobs:
           test -f _site/assets/brand-mark.svg
           grep -q 'url=https://ibizavipmove.com/private-chauffeur-ibiza/' _site/services/chauffeur/index.html
           grep -q 'url=https://ibizavipmove.com/private-chauffeur-ibiza/' _site/services/transfers/index.html
+          test -s _site/assets/images/hero.jpg
           test -s _site/assets/images/villa.jpg
           test -s _site/assets/images/yacht.jpg
           test -s _site/assets/images/aviation.jpg
@@ -173,6 +175,7 @@ jobs:
               'Arabic landing page valid': '<html lang="ar" dir="rtl"' in ar and 'كونسيرج' in ar,
               'hreflang set on home': all(f'hreflang="{lang}"' in home for lang in ('en','fr','de','ar','x-default')),
               'international pages in sitemap': all(f'https://ibizavipmove.com/{slug}/' in sitemap for slug in ('fr','de','ar','international-clients')),
+              'hero uses dedicated editorial asset': '/assets/images/hero.jpg' in home,
           }
 
           for name, ok in checks.items():
