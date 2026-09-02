@@ -26,6 +26,7 @@ on:
       - "phase22_enhance.py"
       - "phase23_enhance.py"
       - "phase24_enhance.py"
+      - "phase25_enhance.py"
       - "editorial-black.css"
       - "editorial-inner.css"
       - "editorial-multilingual.css"
@@ -80,6 +81,7 @@ jobs:
           python3 phase22_enhance.py
           python3 phase23_enhance.py
           python3 phase24_enhance.py
+          python3 phase25_enhance.py
           python3 validate_site.py
 
       - name: Configure GitHub Pages
