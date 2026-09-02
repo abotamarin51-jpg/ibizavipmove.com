@@ -1,0 +1,137 @@
+/* Phase 27 — Quintessentially-scale typography for Ibiza VIP Move
+   Typeface stack: Neue Haas Grotesk first (licensed/system availability), then Helvetica Neue / Manrope / Arial fallbacks.
+   No font binaries are bundled. */
+
+:root{
+  --ivm-display:"Neue Haas Grotesk Display Pro","Neue Haas Grotesk Display","Neue Haas Grotesk","Helvetica Neue",Manrope,Arial,sans-serif;
+  --ivm-text:"Neue Haas Grotesk Text Pro","Neue Haas Grotesk Text","Neue Haas Grotesk","Helvetica Neue",Manrope,Arial,sans-serif;
+}
+
+html,body,button,input,select,textarea{font-family:var(--ivm-text)}
+body{font-size:18px;line-height:1.55;font-weight:400;letter-spacing:-.006em}
+
+h1,h2,h3,h4,h5,h6,
+.ivm-editorial-home .hero-content h1,
+.ivm-manifesto h2,
+.ivm-chapter h2,
+.ivm-private-office h2,
+.ivm-black-book h2,
+.ivm-book-card h3,
+.ivm-final-request h2,
+.page-hero h1,
+.editorial h2,
+.dark-panel h2,
+.process h2,
+.closing-simple h2{
+  font-family:var(--ivm-display)!important;
+  font-style:normal!important;
+  font-weight:300!important;
+  letter-spacing:-.035em!important;
+}
+
+/* Navigation / labels — restrained luxury scale */
+.site-header nav,
+.site-header nav a,
+.mobile-menu a,
+.kicker,
+.ivm-chapter-number,
+.ivm-chapter h2 small,
+.ivm-book-card span,
+.btn,
+.nav-cta,
+.ivm-chapter-link{
+  font-family:var(--ivm-text)!important;
+  font-weight:500!important;
+  text-transform:uppercase;
+}
+
+.site-header{height:84px}
+.site-header nav{gap:26px;font-size:12.5px;letter-spacing:.12em}
+.site-header nav>a:not(.nav-cta){letter-spacing:.12em}
+.nav-cta,.btn{font-size:12.5px;letter-spacing:.12em;min-height:50px}
+.kicker{font-size:12px;letter-spacing:.15em}
+
+/* Quintessentially-like hero hierarchy */
+.ivm-editorial-home .hero-content{padding-top:160px}
+.ivm-editorial-home .hero-content h1{
+  font-size:clamp(64px,6vw,82px)!important;
+  line-height:.98!important;
+  max-width:900px!important;
+  letter-spacing:-.04em!important;
+}
+.ivm-editorial-home .hero-content h1 em{font-style:normal!important;font-weight:300!important}
+.ivm-editorial-home .hero-content>p{
+  font-family:var(--ivm-text)!important;
+  font-size:18px!important;
+  line-height:1.55!important;
+  max-width:620px!important;
+  letter-spacing:-.005em;
+}
+.ivm-editorial-home .hero-index a{font-size:12px;letter-spacing:.14em}
+
+/* Main editorial scale */
+.ivm-manifesto h2{font-size:clamp(46px,4.3vw,56px)!important;line-height:1.02!important;max-width:720px}
+.ivm-manifesto p{font-family:var(--ivm-text)!important;font-size:18px!important;line-height:1.58!important;font-weight:400}
+.ivm-manifesto .manifesto-note{font-size:16px;line-height:1.65}
+
+.ivm-chapter h2{font-size:clamp(46px,4.4vw,56px)!important;line-height:1.02!important;letter-spacing:-.035em!important}
+.ivm-chapter h2 small{font-size:12px;letter-spacing:.14em;margin-bottom:18px}
+.ivm-chapter-number{font-size:12px;letter-spacing:.14em}
+.ivm-chapter p{font-size:17px;line-height:1.6;max-width:560px}
+.ivm-chapter-link{font-size:12px;letter-spacing:.12em}
+
+.ivm-private-office h2{font-size:clamp(46px,4.4vw,56px)!important;line-height:1.02!important}
+.ivm-private-office p{font-size:17px;line-height:1.62}
+.ivm-private-office .office-rule span{font-size:12px;letter-spacing:.11em}
+
+.ivm-black-book h2{font-size:clamp(50px,4.8vw,62px)!important;line-height:.98!important}
+.ivm-black-book .black-book-intro{font-family:var(--ivm-text)!important;font-size:18px!important;line-height:1.58!important}
+.ivm-book-card h3{font-size:34px!important;line-height:1.05!important}
+.ivm-book-card p{font-size:16px;line-height:1.6}
+.ivm-book-card span,.ivm-book-card b{font-size:12px;letter-spacing:.12em}
+
+.ivm-final-request h2{font-size:clamp(52px,5.2vw,68px)!important;line-height:.98!important;max-width:840px}
+.ivm-final-request p{font-size:17px;line-height:1.62}
+
+/* Internal pages */
+.page-hero h1,
+body.ivm-editorial-inner .page-hero h1,
+body.ivm-black-book-page .page-hero h1{
+  font-size:clamp(60px,5.8vw,76px)!important;
+  line-height:.98!important;
+  letter-spacing:-.04em!important;
+}
+.page-hero p{font-size:18px!important;line-height:1.55!important;max-width:650px}
+.editorial h2,.dark-panel h2,.process h2,.closing-simple h2{
+  font-size:clamp(44px,4.2vw,56px)!important;
+  line-height:1.02!important;
+}
+.editorial p,.dark-panel p,.process p,.closing-simple p{font-size:17px;line-height:1.62}
+
+/* Preserve elegant spacing instead of oversized typography */
+.ivm-manifesto{padding-top:115px;padding-bottom:110px}
+.ivm-chapter-copy{padding-top:90px;padding-bottom:90px}
+.ivm-private-office{padding-top:105px;padding-bottom:105px}
+.ivm-black-book{padding-top:110px;padding-bottom:100px}
+
+@media(max-width:900px){
+  body{font-size:17px}
+  .site-header{height:76px}
+  .mobile-menu a{font-size:13px;letter-spacing:.12em}
+  .ivm-editorial-home .hero-content h1{font-size:clamp(48px,12vw,58px)!important;line-height:1!important}
+  .ivm-editorial-home .hero-content>p{font-size:17px!important}
+  .ivm-editorial-home .hero-index a{font-size:11px}
+  .page-hero h1,body.ivm-editorial-inner .page-hero h1,body.ivm-black-book-page .page-hero h1{font-size:clamp(44px,10.5vw,52px)!important}
+  .ivm-manifesto h2,.ivm-chapter h2,.ivm-private-office h2,.editorial h2,.dark-panel h2,.process h2,.closing-simple h2{font-size:clamp(36px,8.5vw,42px)!important}
+  .ivm-black-book h2{font-size:clamp(40px,9vw,48px)!important}
+  .ivm-final-request h2{font-size:clamp(44px,10vw,52px)!important}
+}
+
+@media(max-width:600px){
+  .ivm-editorial-home .hero-content{padding-top:128px}
+  .ivm-editorial-home .hero-content h1{font-size:48px!important}
+  .ivm-editorial-home .hero-content>p{font-size:16px!important;line-height:1.55!important}
+  .btn,.nav-cta{font-size:12px}
+  .kicker{font-size:11px}
+  .ivm-chapter p,.ivm-private-office p,.ivm-final-request p,.editorial p,.dark-panel p,.process p,.closing-simple p{font-size:16px}
+}
