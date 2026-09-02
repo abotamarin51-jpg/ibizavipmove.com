@@ -2,11 +2,11 @@ from pathlib import Path
 from urllib.request import Request, urlopen
 
 ASSETS = {
-    "aviation": "https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=88&w=2600",
-    "security": "https://images.pexels.com/photos/38702227/pexels-photo-38702227.jpeg?auto=compress&cs=tinysrgb&w=2200",
-    "chef": "https://images.pexels.com/photos/12258207/pexels-photo-12258207.png?cs=srgb&dl=pexels-paolino96-12258207.jpg&fm=jpg",
-    "wellness": "https://images.pexels.com/photos/35884502/pexels-photo-35884502.jpeg?cs=srgb&dl=pexels-marine-fougere-2159237528-35884502.jpg&fm=jpg",
-    "bespoke": "https://images.pexels.com/photos/8387121/pexels-photo-8387121.jpeg?cs=srgb&dl=pexels-ron-lach-8387121.jpg&fm=jpg",
+    "aviation": "https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=86&w=2200",
+    "security": "https://images.pexels.com/photos/38702227/pexels-photo-38702227.jpeg?auto=compress&cs=tinysrgb&w=1900",
+    "chef": "https://images.pexels.com/photos/12258207/pexels-photo-12258207.jpeg?auto=compress&cs=tinysrgb&w=1900",
+    "wellness": "https://images.pexels.com/photos/35884502/pexels-photo-35884502.jpeg?auto=compress&cs=tinysrgb&w=1900",
+    "bespoke": "https://images.pexels.com/photos/8387121/pexels-photo-8387121.jpeg?auto=compress&cs=tinysrgb&w=1900",
 }
 
 out = Path("_site/assets/images")
