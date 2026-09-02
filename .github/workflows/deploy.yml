@@ -14,6 +14,7 @@ on:
       - "upgrade_visual_assets.py"
       - "phase11_enhance.py"
       - "phase12_enhance.py"
+      - "phase13_enhance.py"
       - "validate_site.py"
       - "build_site.sh"
       - "premium.css"
@@ -51,6 +52,7 @@ jobs:
           python3 upgrade_visual_assets.py
           python3 phase11_enhance.py
           python3 phase12_enhance.py
+          python3 phase13_enhance.py
           python3 validate_site.py
 
       - name: Configure GitHub Pages
