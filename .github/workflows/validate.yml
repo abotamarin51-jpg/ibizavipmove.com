@@ -24,6 +24,7 @@ on:
       - "phase20_enhance.py"
       - "phase21_enhance.py"
       - "phase22_enhance.py"
+      - "phase23_enhance.py"
       - "editorial-black.css"
       - "editorial-inner.css"
       - "editorial-multilingual.css"
@@ -66,6 +67,7 @@ jobs:
           python3 phase20_enhance.py
           python3 phase21_enhance.py
           python3 phase22_enhance.py
+          python3 phase23_enhance.py
           python3 validate_site.py
       - name: Upload validated preview artifact
         uses: actions/upload-artifact@v4
