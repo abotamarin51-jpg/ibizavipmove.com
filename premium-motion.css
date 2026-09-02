@@ -1,0 +1,16 @@
+/* Phase 22 — lightweight editorial motion and premium navigation polish */
+.site-header{transition:background-color .28s ease,border-color .28s ease,backdrop-filter .28s ease,box-shadow .28s ease}
+.site-header.is-scrolled{position:fixed;background:rgba(7,7,6,.86);border-bottom-color:rgba(255,255,255,.11);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 10px 34px rgba(0,0,0,.10)}
+html.ivm-motion-ready .ivm-reveal{opacity:0;transform:translateY(22px);transition:opacity .72s cubic-bezier(.2,.65,.2,1),transform .72s cubic-bezier(.2,.65,.2,1);transition-delay:var(--ivm-delay,0ms)}
+html.ivm-motion-ready .ivm-reveal.is-visible{opacity:1;transform:none}
+.ivm-chapter-link,.text-link,.intel-card b,.ivm-book-card b{transition:opacity .22s ease,letter-spacing .22s ease}
+.ivm-chapter-link:hover,.text-link:hover,.intel-card:hover b,.ivm-book-card:hover b{letter-spacing:.24em;opacity:1}
+@media(max-width:900px){
+  .mobile-menu.open{background:#070706!important;padding-top:112px!important;gap:0!important}
+  .mobile-menu.open a{padding:15px 0;border-bottom:1px solid rgba(255,255,255,.10);font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(28px,8vw,42px);font-weight:400;line-height:1.05;color:#f2eee5}
+  .mobile-menu.open a:last-child{margin-top:18px;border:1px solid rgba(255,255,255,.35);padding:16px 14px;font-family:Manrope,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;font-size:9px;text-transform:uppercase;letter-spacing:.2em;text-align:center}
+}
+@media(prefers-reduced-motion:reduce){
+  .site-header,.ivm-chapter-link,.text-link,.intel-card b,.ivm-book-card b{transition:none!important}
+  html.ivm-motion-ready .ivm-reveal{opacity:1!important;transform:none!important;transition:none!important}
+}
