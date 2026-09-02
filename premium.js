@@ -96,3 +96,42 @@ if(f){
     window.location.href=WHATSAPP+'?text='+encodeURIComponent(lines.join('\n'));
   });
 }
+
+// Phase 22 — lightweight premium interaction layer.
+const ivmReduceMotion=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+const ivmHeader=document.querySelector('.site-header');
+if(ivmHeader){
+  const syncHeader=()=>ivmHeader.classList.toggle('is-scrolled',window.scrollY>36);
+  syncHeader();
+  window.addEventListener('scroll',syncHeader,{passive:true});
+}
+
+if(!ivmReduceMotion&&'IntersectionObserver' in window){
+  document.documentElement.classList.add('ivm-motion-ready');
+  const revealSelector=[
+    '.ivm-manifesto-inner',
+    '.ivm-chapter-copy',
+    '.ivm-private-office-inner',
+    '.ivm-black-book-head',
+    '.ivm-book-card',
+    '.ivm-final-request-inner',
+    'body.ivm-editorial-inner .editorial > *',
+    'body.ivm-editorial-inner .process-grid > *',
+    'body.ivm-black-book-article .article-body > section',
+    'body.ivm-black-book-article .article-cta'
+  ].join(',');
+  const revealEls=[...document.querySelectorAll(revealSelector)];
+  revealEls.forEach((el,i)=>{
+    el.classList.add('ivm-reveal');
+    el.style.setProperty('--ivm-delay',`${Math.min(i%4,3)*55}ms`);
+  });
+  const io=new IntersectionObserver(entries=>{
+    entries.forEach(entry=>{
+      if(entry.isIntersecting){
+        entry.target.classList.add('is-visible');
+        io.unobserve(entry.target);
+      }
+    });
+  },{threshold:.08,rootMargin:'0px 0px -7% 0px'});
+  revealEls.forEach(el=>io.observe(el));
+}
