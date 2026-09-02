@@ -21,7 +21,9 @@ on:
       - "phase17_enhance.py"
       - "phase18_enhance.py"
       - "phase19_enhance.py"
+      - "phase20_enhance.py"
       - "editorial-black.css"
+      - "editorial-inner.css"
       - "submit_indexnow.py"
       - "validate_site.py"
       - "build_site.sh"
@@ -67,6 +69,7 @@ jobs:
           python3 phase17_enhance.py
           python3 phase18_enhance.py
           python3 phase19_enhance.py
+          python3 phase20_enhance.py
           python3 validate_site.py
 
       - name: Configure GitHub Pages
