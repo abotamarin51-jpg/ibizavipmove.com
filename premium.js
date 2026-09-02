@@ -99,19 +99,18 @@ function ivmContextLabel(){
 const WHATSAPP='https://wa.me/34600703303';
 function ivmWhatsAppMessage(){
   const lang=(document.documentElement.lang||'en').toLowerCase().split('-')[0];
-  const context=ivmContextLabel();
   const templates={
-    en:`Hello Ibiza VIP Move,\n\nI would like to request private assistance in Ibiza.\n\nInterest: ${context}\n\nPlease let me know the next steps. Thank you.`,
-    es:`Hola Ibiza VIP Move,\n\nMe gustaría solicitar asistencia privada en Ibiza.\n\nInterés: ${context}\n\nPor favor, indíquenme los próximos pasos. Gracias.`,
-    fr:`Bonjour Ibiza VIP Move,\n\nJe souhaite demander une assistance privée à Ibiza.\n\nDemande : ${context}\n\nMerci de m’indiquer les prochaines étapes.`,
-    de:`Hallo Ibiza VIP Move,\n\nich möchte private Unterstützung auf Ibiza anfragen.\n\nInteresse: ${context}\n\nBitte teilen Sie mir die nächsten Schritte mit. Vielen Dank.`,
-    ar:`مرحباً Ibiza VIP Move،\n\nأرغب في طلب مساعدة خاصة في إيبيزا.\n\nالطلب: ${context}\n\nيرجى إخباري بالخطوات التالية. شكراً.`
+    en:`Hello Ibiza VIP Move,\n\nI would like to arrange private concierge assistance for an upcoming stay in Ibiza.\n\nPlease let me know the best way to share my dates and requirements.\n\nThank you.`,
+    es:`Hola Ibiza VIP Move,\n\nMe gustaría organizar asistencia de concierge privado para una próxima estancia en Ibiza.\n\nPor favor, indíquenme la mejor forma de compartir mis fechas y necesidades.\n\nMuchas gracias.`,
+    fr:`Bonjour Ibiza VIP Move,\n\nJe souhaite organiser une assistance de conciergerie privée pour un prochain séjour à Ibiza.\n\nMerci de m’indiquer la meilleure façon de vous communiquer mes dates et mes besoins.\n\nMerci.`,
+    de:`Hallo Ibiza VIP Move,\n\nich möchte für einen bevorstehenden Aufenthalt auf Ibiza einen privaten Concierge-Service anfragen.\n\nBitte teilen Sie mir mit, wie ich Ihnen meine Reisedaten und Anforderungen am besten übermitteln kann.\n\nVielen Dank.`,
+    ar:`مرحباً Ibiza VIP Move،\n\nأرغب في ترتيب خدمة كونسيرج خاصة لإقامة قادمة في إيبيزا.\n\nيرجى إخباري بأفضل طريقة لمشاركة التواريخ والمتطلبات الخاصة بي.\n\nشكراً.`
   };
   return templates[lang]||templates.en;
 }
 
-// Add useful context to generic WhatsApp CTAs while preserving any deliberately
-// prefilled WhatsApp link already authored on the site.
+// Keep generic WhatsApp CTAs polished and neutral. Deliberately prefilled
+// form submissions remain untouched and may include details supplied by the client.
 document.querySelectorAll('a[href^="https://wa.me/34600703303"]').forEach(a=>{
   try{
     const u=new URL(a.href);
