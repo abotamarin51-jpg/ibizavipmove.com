@@ -1,0 +1,124 @@
+/* Phase 27 — Quintessentially-inspired typography proportions
+   Uses licensed-safe web/system equivalents rather than copying proprietary font files. */
+:root{
+  --ivm-display:"Cormorant Garamond",Georgia,"Times New Roman",serif;
+  --ivm-ui:"Helvetica Neue",Helvetica,Arial,sans-serif;
+}
+
+body{
+  font-family:var(--ivm-ui);
+  font-size:15px;
+  font-weight:300;
+  line-height:1.65;
+  letter-spacing:.005em;
+}
+
+h1,h2,h3,.faq summary,.trust-grid b,.contact-direct a,.contact-direct strong,.footer-brand{
+  font-family:var(--ivm-display);
+  font-weight:400;
+  letter-spacing:-.018em;
+}
+
+h1{font-size:clamp(50px,5.8vw,80px);line-height:.98}
+h2{font-size:clamp(40px,4.5vw,62px);line-height:1}
+h3{font-size:clamp(27px,2.4vw,35px);line-height:1.05}
+
+.site-header nav,
+.menu-btn,
+.btn,
+.kicker,
+.hero-proof,
+.ivm-chapter-number,
+.ivm-chapter h2 small,
+.ivm-chapter-link,
+.ivm-book-card span,
+.ivm-book-card b,
+.footer-grid h4,
+.footer-bottom,
+label{
+  font-family:var(--ivm-ui);
+  font-weight:400;
+}
+
+.site-header nav{font-size:9px;letter-spacing:.16em}
+.kicker{font-size:9px;letter-spacing:.28em;font-weight:500}
+.btn{font-size:9px;letter-spacing:.16em;font-weight:500}
+
+.hero p,.page-hero p{font-size:15px;line-height:1.72}
+
+/* Homepage — scale down the oversized campaign typography to a refined concierge proportion. */
+.ivm-editorial-home .hero-content{width:min(1240px,92vw)}
+.ivm-editorial-home .hero-content h1{
+  font-size:clamp(56px,6.2vw,86px);
+  line-height:.95;
+  letter-spacing:-.025em;
+  max-width:820px;
+}
+.ivm-editorial-home .hero-content>p{font-family:var(--ivm-ui);font-size:15px;line-height:1.72;max-width:610px}
+.ivm-editorial-home .hero-index a{font-family:var(--ivm-ui);font-size:8px;letter-spacing:.18em}
+
+.ivm-manifesto h2{font-size:clamp(45px,4.8vw,66px);line-height:1}
+.ivm-manifesto p{font-family:var(--ivm-display);font-size:clamp(24px,2.2vw,32px);line-height:1.3}
+.ivm-manifesto .manifesto-note{font-family:var(--ivm-ui);font-size:12px;line-height:1.72}
+
+.ivm-chapter h2{font-size:clamp(46px,4.8vw,68px);line-height:.98;letter-spacing:-.022em}
+.ivm-chapter h2 small{font-family:var(--ivm-ui);font-size:9px;letter-spacing:.2em}
+.ivm-chapter p{font-family:var(--ivm-ui);font-size:13px;line-height:1.75}
+
+.ivm-private-office h2{font-size:clamp(44px,4.6vw,64px);line-height:1}
+.ivm-private-office p{font-family:var(--ivm-ui);font-size:13px;line-height:1.75}
+
+.ivm-black-book h2{font-size:clamp(50px,5.4vw,76px);line-height:.96;letter-spacing:-.022em}
+.ivm-black-book .black-book-intro{font-family:var(--ivm-display);font-size:clamp(24px,2.2vw,32px);line-height:1.28}
+.ivm-book-card h3{font-size:clamp(31px,3vw,40px);line-height:1.02}
+.ivm-book-card p{font-family:var(--ivm-ui);font-size:13px;line-height:1.7}
+
+.ivm-final-request h2{font-size:clamp(52px,5.8vw,82px);line-height:.97;letter-spacing:-.024em}
+.ivm-final-request p{font-family:var(--ivm-ui);font-size:13px;line-height:1.75}
+
+/* Inner pages */
+body.ivm-editorial-inner .page-hero h1{
+  font-size:clamp(54px,6vw,82px);
+  line-height:.97;
+  letter-spacing:-.024em;
+  max-width:900px;
+}
+body.ivm-editorial-inner .page-hero p{font-family:var(--ivm-ui);font-size:15px;line-height:1.72}
+body.ivm-editorial-inner .editorial h2,
+body.ivm-editorial-inner .process .section-head h2,
+body.ivm-editorial-inner .faq .section-head h2{font-size:clamp(42px,4.7vw,64px);line-height:1}
+body.ivm-editorial-inner .editorial .large{font-family:var(--ivm-display);font-size:clamp(25px,2.4vw,34px);line-height:1.28}
+body.ivm-editorial-inner .process-grid h3{font-size:31px}
+body.ivm-editorial-inner .faq summary{font-size:28px;line-height:1.2}
+body.ivm-editorial-inner .closing-simple h2{font-size:clamp(44px,4.9vw,68px);line-height:1}
+body.ivm-editorial-contact .contact-hero h1{font-size:clamp(52px,5.8vw,78px);line-height:.98}
+
+/* General components */
+.service-card-copy h3{font-size:34px;line-height:1.04}
+.trust-grid b{font-size:25px;line-height:1.08}
+.faq summary{font-size:27px}
+.contact-direct a,.contact-direct strong{font-size:22px}
+.footer-brand{font-size:30px}
+
+@media(max-width:600px){
+  body{font-size:14px}
+  h1{font-size:44px}
+  h2{font-size:38px}
+  h3{font-size:27px}
+  .ivm-editorial-home .hero-content h1{font-size:clamp(47px,13.5vw,58px);line-height:.97}
+  .ivm-editorial-home .hero-content>p{font-size:14px}
+  .ivm-manifesto h2{font-size:42px}
+  .ivm-manifesto p{font-size:25px}
+  .ivm-chapter h2{font-size:46px}
+  .ivm-private-office h2{font-size:43px}
+  .ivm-black-book h2{font-size:48px}
+  .ivm-book-card h3{font-size:33px}
+  .ivm-final-request h2{font-size:50px}
+  body.ivm-editorial-inner .page-hero h1{font-size:48px}
+  body.ivm-editorial-inner .page-hero p{font-size:14px}
+  body.ivm-editorial-inner .editorial h2,
+  body.ivm-editorial-inner .process .section-head h2,
+  body.ivm-editorial-inner .faq .section-head h2{font-size:42px}
+  body.ivm-editorial-contact .contact-hero h1{font-size:47px}
+  .mobile-menu.open{font-family:var(--ivm-display);font-size:30px}
+}
