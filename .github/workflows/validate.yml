@@ -11,6 +11,7 @@ on:
       - "legal_pages.py"
       - "authority_enhance.py"
       - "image_markup_enhance.py"
+      - "upgrade_visual_assets.py"
       - "validate_site.py"
       - "build_site.sh"
       - "premium.css"
@@ -32,7 +33,9 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
       - name: Build and validate website without deploying
-        run: bash build_site.sh
+        run: |
+          bash build_site.sh
+          python3 upgrade_visual_assets.py
       - name: Upload validated preview artifact
         uses: actions/upload-artifact@v4
         with:
