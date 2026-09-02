@@ -16,6 +16,8 @@ on:
       - "phase12_enhance.py"
       - "phase13_enhance.py"
       - "phase14_enhance.py"
+      - "phase15_enhance.py"
+      - "submit_indexnow.py"
       - "validate_site.py"
       - "build_site.sh"
       - "premium.css"
@@ -55,6 +57,7 @@ jobs:
           python3 phase12_enhance.py
           python3 phase13_enhance.py
           python3 phase14_enhance.py
+          python3 phase15_enhance.py
           python3 validate_site.py
 
       - name: Configure GitHub Pages
@@ -70,3 +73,7 @@ jobs:
       - name: Deploy to GitHub Pages
         id: deployment
         uses: actions/deploy-pages@v4
+
+      - name: Notify IndexNow
+        if: success()
+        run: python3 submit_indexnow.py
