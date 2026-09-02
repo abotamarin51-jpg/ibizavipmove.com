@@ -7,6 +7,7 @@ ASSETS = {
     "chef": "https://images.pexels.com/photos/12258207/pexels-photo-12258207.png?cs=srgb&dl=pexels-paolino96-12258207.jpg&fm=jpg",
     "wellness": "https://images.pexels.com/photos/35884502/pexels-photo-35884502.jpeg?auto=compress&cs=tinysrgb&w=1900",
     "bespoke": "https://images.pexels.com/photos/8387121/pexels-photo-8387121.jpeg?auto=compress&cs=tinysrgb&w=1900",
+    "private-office": "https://images.pexels.com/photos/27901676/pexels-photo-27901676.jpeg?cs=srgb&dl=pexels-arina-shabalina-1697416785-27901676.jpg&fm=jpg",
 }
 
 out = Path("_site/assets/images")
