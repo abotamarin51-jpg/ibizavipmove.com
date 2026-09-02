@@ -16,36 +16,127 @@ if(menuBtn&&mobileMenu){
   document.addEventListener('keydown',e=>{if(e.key==='Escape')setMenu(false);});
 }
 
-// First-party conversion readiness. These events stay local unless a future
-// GA4/GTM setup explicitly consumes window.dataLayer. No analytics endpoint is
-// loaded here, so this does not introduce third-party tracking by itself.
+// First-party conversion readiness. Nothing below sends data to an analytics
+// provider by itself. Events stay in dataLayer / local CustomEvents until a
+// future verified GA4/GTM property explicitly consumes them.
 window.dataLayer=window.dataLayer||[];
+const IVM_ATTR_KEY='ivm_attribution_v1';
+const IVM_UTM_KEYS=['utm_source','utm_medium','utm_campaign','utm_content','utm_term'];
+
+function ivmReadAttribution(){
+  let saved={};
+  try{saved=JSON.parse(sessionStorage.getItem(IVM_ATTR_KEY)||'{}')||{};}catch(_){saved={};}
+  const params=new URLSearchParams(window.location.search);
+  const incoming={};
+  IVM_UTM_KEYS.forEach(k=>{if(params.get(k))incoming[k]=params.get(k).slice(0,160);});
+  if(params.get('gclid'))incoming.gclid='present';
+  if(params.get('gbraid'))incoming.gbraid='present';
+  if(params.get('wbraid'))incoming.wbraid='present';
+  if(!saved.landing_page)saved.landing_page=window.location.pathname;
+  if(!saved.referrer_host&&document.referrer){
+    try{
+      const ref=new URL(document.referrer);
+      if(ref.hostname!==window.location.hostname)saved.referrer_host=ref.hostname.slice(0,160);
+    }catch(_){}
+  }
+  saved={...saved,...incoming};
+  try{sessionStorage.setItem(IVM_ATTR_KEY,JSON.stringify(saved));}catch(_){}
+  return saved;
+}
+
+const ivmAttribution=ivmReadAttribution();
+
+function ivmPlacement(a){
+  if(!a)return'unknown';
+  if(a.closest('.site-header'))return'header';
+  if(a.closest('.mobile-bar'))return'mobile_bar';
+  if(a.closest('.hero,.page-hero'))return'hero';
+  if(a.closest('.ivm-chapter'))return'service_chapter';
+  if(a.closest('.ivm-final-request,.closing-cta,.closing-simple'))return'final_cta';
+  if(a.closest('footer'))return'footer';
+  return'inline';
+}
+
 function ivmTrack(type,detail={}){
   const payload={
     event:'ivm_conversion',
     conversion_type:type,
     page_path:window.location.pathname,
+    page_title:document.title.slice(0,160),
     page_language:document.documentElement.lang||'en',
+    ...ivmAttribution,
     ...detail
   };
   window.dataLayer.push(payload);
   window.dispatchEvent(new CustomEvent('ivm:conversion',{detail:payload}));
 }
 
+function ivmContextLabel(){
+  const path=window.location.pathname;
+  const labels={
+    '/':'Private concierge in Ibiza',
+    '/private-concierge-ibiza/':'Private Concierge',
+    '/private-chauffeur-ibiza/':'Private Chauffeur & Transportation',
+    '/luxury-villas-ibiza/':'Luxury Villas & Private Stays',
+    '/yacht-charter-ibiza/':'Yachts & Charters',
+    '/private-aviation-ibiza/':'Private Aviation',
+    '/restaurants-nightlife-ibiza/':'Dining, Beach Clubs & Nightlife',
+    '/private-security-ibiza/':'Security & Close Protection',
+    '/private-chef-staffing-ibiza/':'Private Chefs & Villa Staffing',
+    '/luxury-car-rental-ibiza/':'Luxury & Supercar Rental',
+    '/wellness-ibiza/':'Wellness & Beauty',
+    '/private-events-ibiza/':'Private Events & Celebrations',
+    '/bespoke-concierge-ibiza/':'Lifestyle & Bespoke Requests',
+    '/private-office/':'Private Office',
+    '/partners/':'B2B Partnership',
+    '/international-clients/':'International Client Support'
+  };
+  if(labels[path])return labels[path];
+  const h1=document.querySelector('h1');
+  return(h1?.textContent||'Private concierge in Ibiza').replace(/\s+/g,' ').trim().slice(0,120);
+}
+
+const WHATSAPP='https://wa.me/34600703303';
+function ivmWhatsAppMessage(){
+  const lang=(document.documentElement.lang||'en').toLowerCase().split('-')[0];
+  const context=ivmContextLabel();
+  const templates={
+    en:`Hello Ibiza VIP Move,\n\nI would like to request private assistance in Ibiza.\n\nInterest: ${context}\n\nPlease let me know the next steps. Thank you.`,
+    es:`Hola Ibiza VIP Move,\n\nMe gustaría solicitar asistencia privada en Ibiza.\n\nInterés: ${context}\n\nPor favor, indíquenme los próximos pasos. Gracias.`,
+    fr:`Bonjour Ibiza VIP Move,\n\nJe souhaite demander une assistance privée à Ibiza.\n\nDemande : ${context}\n\nMerci de m’indiquer les prochaines étapes.`,
+    de:`Hallo Ibiza VIP Move,\n\nich möchte private Unterstützung auf Ibiza anfragen.\n\nInteresse: ${context}\n\nBitte teilen Sie mir die nächsten Schritte mit. Vielen Dank.`,
+    ar:`مرحباً Ibiza VIP Move،\n\nأرغب في طلب مساعدة خاصة في إيبيزا.\n\nالطلب: ${context}\n\nيرجى إخباري بالخطوات التالية. شكراً.`
+  };
+  return templates[lang]||templates.en;
+}
+
+// Add useful context to generic WhatsApp CTAs while preserving any deliberately
+// prefilled WhatsApp link already authored on the site.
+document.querySelectorAll('a[href^="https://wa.me/34600703303"]').forEach(a=>{
+  try{
+    const u=new URL(a.href);
+    if(!u.searchParams.get('text'))a.href=WHATSAPP+'?text='+encodeURIComponent(ivmWhatsAppMessage());
+  }catch(_){}
+});
+
 document.addEventListener('click',e=>{
   const a=e.target.closest('a');
   if(!a)return;
   const href=(a.getAttribute('href')||'').trim();
+  const common={link_text:(a.textContent||'').replace(/\s+/g,' ').trim().slice(0,80),cta_placement:ivmPlacement(a)};
   if(href.startsWith('https://wa.me/')){
-    ivmTrack('whatsapp_click',{link_text:(a.textContent||'').trim().slice(0,80)});
+    ivmTrack('whatsapp_click',{...common,service_context:ivmContextLabel()});
   }else if(href.startsWith('tel:')){
-    ivmTrack('phone_click',{link_text:(a.textContent||'').trim().slice(0,80)});
+    ivmTrack('phone_click',common);
   }else if(href.startsWith('mailto:')){
-    ivmTrack('email_click',{link_text:(a.textContent||'').trim().slice(0,80)});
+    ivmTrack('email_click',common);
+  }else if(href==='/contact/'||href==='https://ibizavipmove.com/contact/'){
+    ivmTrack('request_concierge_click',common);
+  }else if(href==='/partners/'||href==='https://ibizavipmove.com/partners/'){
+    ivmTrack('partner_interest_click',common);
   }
 });
 
-const WHATSAPP='https://wa.me/34600703303';
 const f=document.getElementById('conciergeForm');
 if(f){
   const arrival=document.getElementById('fArrival');
@@ -53,18 +144,12 @@ if(f){
   const today=new Date();
   const localToday=new Date(today.getTime()-today.getTimezoneOffset()*60000).toISOString().slice(0,10);
 
-  if(arrival){
-    arrival.min=localToday;
-  }
-  if(departure){
-    departure.min=localToday;
-  }
+  if(arrival)arrival.min=localToday;
+  if(departure)departure.min=localToday;
   if(arrival&&departure){
     const syncDepartureMin=()=>{
       departure.min=arrival.value||localToday;
-      if(departure.value&&arrival.value&&departure.value<arrival.value){
-        departure.value='';
-      }
+      if(departure.value&&arrival.value&&departure.value<arrival.value)departure.value='';
     };
     arrival.addEventListener('change',syncDepartureMin);
     syncDepartureMin();
@@ -75,7 +160,7 @@ if(f){
     if(!f.reportValidity())return;
     const g=id=>document.getElementById(id)?.value||'';
     const service=g('fService')||'Full Concierge';
-    ivmTrack('private_brief_submit',{service});
+    ivmTrack('private_brief_submit',{service,cta_placement:'contact_form'});
     const lines=[
       'Hello Ibiza VIP Move,',
       '',
