@@ -1,0 +1,146 @@
+/* Phase 19 — Ibiza VIP Move editorial luxury system
+   Visual direction: cinematic Ibiza, black / ivory / sand, restrained private-club typography. */
+:root{
+  --ivm-black:#080807;
+  --ivm-black-soft:#11110f;
+  --ivm-ivory:#f2eee5;
+  --ivm-ivory-2:#e8e0d3;
+  --ivm-sand:#c3a47d;
+  --ivm-sand-soft:#d8c4a7;
+  --ivm-stone:#8e887f;
+  --ivm-hairline:rgba(255,255,255,.14);
+  --ivm-darkline:rgba(14,14,12,.15);
+}
+body{background:var(--ivm-ivory);color:#11110f}
+.site-header{height:88px;border-bottom:1px solid var(--ivm-hairline);background:linear-gradient(180deg,rgba(5,5,4,.46),rgba(5,5,4,0));padding:0 3.5vw}
+.site-header nav{gap:24px;font-size:8px;letter-spacing:.22em}
+.site-header nav>a:not(.nav-cta){opacity:.78;transition:opacity .25s ease}
+.site-header nav>a:not(.nav-cta):hover{opacity:1}
+.nav-cta{border-color:rgba(255,255,255,.42);padding:12px 17px;background:rgba(8,8,7,.14);backdrop-filter:blur(8px)}
+.btn{border-radius:0;min-height:52px;letter-spacing:.22em;font-size:9px}
+.btn.gold{background:var(--ivm-sand);color:#0c0c0b}
+.btn.gold:hover{background:#d0b18a}
+.btn.ghost{border-color:rgba(255,255,255,.48);background:rgba(0,0,0,.08)}
+.btn.dark{background:var(--ivm-black);color:var(--ivm-ivory)}
+.kicker{font-size:8px;letter-spacing:.34em}
+.kicker.light{color:var(--ivm-sand-soft)}
+.kicker.dark{color:#896f52}
+footer{background:#060605}
+.mobile-bar a:first-child{background:var(--ivm-ivory);color:var(--ivm-black)}
+.mobile-bar a:last-child{background:var(--ivm-black);color:var(--ivm-ivory)}
+
+/* Home — editorial hero */
+body.ivm-editorial-home{background:var(--ivm-black)}
+.ivm-editorial-home .site-header{position:absolute}
+.ivm-editorial-home .hero.editorial-hero{min-height:100svh;align-items:flex-end;background:#050504;isolation:isolate;overflow:hidden}
+.ivm-editorial-home .hero-picture{position:absolute;inset:0;z-index:-3;width:100%;height:100%}
+.ivm-editorial-home .hero-picture img{width:100%;height:100%;object-fit:cover;object-position:center 54%;filter:saturate(.72) contrast(1.07) brightness(.78)}
+.ivm-editorial-home .editorial-hero:before{content:"";position:absolute;inset:0;z-index:-2;background:linear-gradient(90deg,rgba(5,5,4,.83) 0%,rgba(5,5,4,.52) 40%,rgba(5,5,4,.16) 74%,rgba(5,5,4,.06) 100%)}
+.ivm-editorial-home .editorial-hero:after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(5,5,4,.03) 45%,rgba(5,5,4,.78) 100%)}
+.ivm-editorial-home .hero-content{width:min(1380px,93vw);padding:190px 0 55px}
+.ivm-editorial-home .hero-content h1{font-size:clamp(68px,9vw,146px);max-width:1110px;letter-spacing:-.055em;line-height:.86;font-weight:400}
+.ivm-editorial-home .hero-content h1 em{font-weight:400;color:var(--ivm-sand-soft)}
+.ivm-editorial-home .hero-content>p{font-size:15px;max-width:590px;line-height:1.8;color:rgba(255,255,255,.72);margin:30px 0 30px}
+.ivm-editorial-home .hero-actions{gap:10px}
+.ivm-editorial-home .hero-index{display:grid;grid-template-columns:repeat(6,1fr);margin-top:64px;border-top:1px solid rgba(255,255,255,.18)}
+.ivm-editorial-home .hero-index a{padding:18px 5px 0 0;font-size:8px;text-transform:uppercase;letter-spacing:.26em;color:rgba(255,255,255,.48);transition:color .25s ease}
+.ivm-editorial-home .hero-index a:hover{color:#fff}
+
+/* Home — manifesto */
+.ivm-manifesto{background:var(--ivm-ivory);padding:145px 4vw 135px;color:#10100e}
+.ivm-manifesto-inner{width:min(1240px,92vw);margin:auto;display:grid;grid-template-columns:.58fr 1.42fr;gap:100px;align-items:start}
+.ivm-manifesto h2{font-size:clamp(58px,6.5vw,94px);max-width:900px;font-weight:400}
+.ivm-manifesto p{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(28px,2.6vw,42px);line-height:1.2;margin:0;color:#34312c;max-width:760px}
+.ivm-manifesto .manifesto-note{font-family:Manrope,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;font-size:11px;line-height:1.8;letter-spacing:.03em;color:#716b62;margin-top:34px;max-width:610px}
+
+/* Home — six editorial chapters */
+.ivm-chapters{background:var(--ivm-black)}
+.ivm-chapter{display:grid;grid-template-columns:58% 42%;min-height:78vh;border-top:1px solid rgba(255,255,255,.08);background:var(--ivm-black);color:var(--ivm-ivory)}
+.ivm-chapter:nth-child(even){grid-template-columns:42% 58%;background:var(--ivm-ivory);color:#11110f}
+.ivm-chapter:nth-child(even) .chapter-media{order:2}
+.ivm-chapter-media{min-height:680px;overflow:hidden;position:relative;background:#111}
+.ivm-chapter-media:after{content:"";position:absolute;inset:0;box-shadow:inset 0 0 0 1px rgba(255,255,255,.04);pointer-events:none}
+.ivm-chapter-media img{width:100%;height:100%;object-fit:cover;filter:saturate(.76) contrast(1.045);transition:transform 1.1s cubic-bezier(.19,.7,.18,1),filter .8s ease}
+.ivm-chapter:hover .ivm-chapter-media img{transform:scale(1.018);filter:saturate(.88) contrast(1.05)}
+.ivm-chapter-copy{padding:clamp(64px,8vw,128px) clamp(40px,6vw,96px);display:flex;flex-direction:column;justify-content:center;position:relative}
+.ivm-chapter:nth-child(even) .ivm-chapter-copy{order:1}
+.ivm-chapter-number{font-size:8px;letter-spacing:.3em;text-transform:uppercase;color:var(--ivm-sand);margin-bottom:36px}
+.ivm-chapter h2{font-size:clamp(62px,6.5vw,102px);font-weight:400;letter-spacing:-.05em;margin-bottom:24px;color:inherit}
+.ivm-chapter h2 small{display:block;font-family:Manrope,-apple-system,BlinkMacSystemFont,"Helvetica Neue",Arial,sans-serif;font-size:9px;line-height:1;text-transform:uppercase;letter-spacing:.27em;font-weight:500;margin-bottom:16px;color:var(--ivm-sand)}
+.ivm-chapter p{max-width:510px;font-size:13px;line-height:1.85;color:rgba(255,255,255,.58)}
+.ivm-chapter:nth-child(even) p{color:#6f695f}
+.ivm-chapter-link{display:inline-flex;align-items:center;gap:16px;margin-top:22px;width:max-content;text-transform:uppercase;letter-spacing:.2em;font-size:8px;border-bottom:1px solid currentColor;padding-bottom:7px;opacity:.82}
+
+/* Private office interlude */
+.ivm-private-office{background:#13120f;color:var(--ivm-ivory);padding:130px 4vw}
+.ivm-private-office-inner{width:min(1240px,92vw);margin:auto;display:grid;grid-template-columns:1.15fr .85fr;gap:110px;align-items:end}
+.ivm-private-office h2{font-size:clamp(55px,6vw,88px);font-weight:400;max-width:780px;color:var(--ivm-ivory)}
+.ivm-private-office p{font-size:13px;line-height:1.9;color:rgba(255,255,255,.58);max-width:530px}
+.ivm-private-office .office-rule{border-top:1px solid rgba(255,255,255,.13);margin:28px 0;padding-top:24px;display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+.ivm-private-office .office-rule span{font-size:8px;text-transform:uppercase;letter-spacing:.16em;color:rgba(255,255,255,.48)}
+
+/* The Ibiza Black Book */
+.ivm-black-book{background:#d9cbb8;color:#11110f;padding:140px 4vw 125px}
+.ivm-black-book-head{width:min(1240px,92vw);margin:0 auto 65px;display:grid;grid-template-columns:.72fr 1.28fr;gap:80px;align-items:end}
+.ivm-black-book h2{font-size:clamp(66px,7.5vw,112px);font-weight:400;line-height:.86;max-width:850px}
+.ivm-black-book .black-book-intro{font-family:"Cormorant Garamond",Georgia,serif;font-size:clamp(25px,2.35vw,37px);line-height:1.18;color:#4a4238;max-width:590px;margin:0}
+.ivm-black-book-grid{width:min(1240px,92vw);margin:auto;display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid rgba(17,17,15,.18);border-bottom:1px solid rgba(17,17,15,.18)}
+.ivm-book-card{padding:36px 34px 40px;border-right:1px solid rgba(17,17,15,.18);min-height:360px;display:flex;flex-direction:column}
+.ivm-book-card:last-child{border-right:0}
+.ivm-book-card span{font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:#766047}
+.ivm-book-card h3{font-size:43px;font-weight:400;line-height:1;margin:26px 0 18px}
+.ivm-book-card p{font-size:12px;line-height:1.8;color:#655c51;flex:1}
+.ivm-book-card b{font-size:8px;text-transform:uppercase;letter-spacing:.2em;font-weight:600}
+
+/* Final private request */
+.ivm-final-request{min-height:76vh;background:#060605;color:#fff;position:relative;display:flex;align-items:center;padding:110px 4vw;overflow:hidden}
+.ivm-final-request:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,4,.94),rgba(5,5,4,.70) 52%,rgba(5,5,4,.25)),url('/assets/images/events.jpg') center/cover no-repeat;filter:saturate(.55)}
+.ivm-final-request-inner{position:relative;width:min(1240px,92vw);margin:auto}
+.ivm-final-request h2{font-size:clamp(68px,8vw,120px);font-weight:400;color:#fff;max-width:960px;letter-spacing:-.05em}
+.ivm-final-request p{font-size:13px;line-height:1.85;color:rgba(255,255,255,.62);max-width:560px;margin:26px 0 32px}
+
+/* Black Book hub — preserve URL, upgrade visual identity */
+body.ivm-black-book-page .page-hero{background-color:#080807}
+body.ivm-black-book-page .page-hero h1{font-size:clamp(68px,8vw,118px)}
+
+@media(max-width:1050px){
+  .ivm-chapter,.ivm-chapter:nth-child(even){grid-template-columns:1fr 1fr}
+  .ivm-private-office-inner{gap:60px}
+  .ivm-black-book-head{grid-template-columns:1fr;gap:28px}
+}
+@media(max-width:900px){
+  .ivm-editorial-home .site-header nav{display:none}
+  .ivm-editorial-home .hero-index{grid-template-columns:repeat(3,1fr);row-gap:12px}
+  .ivm-manifesto-inner,.ivm-private-office-inner{grid-template-columns:1fr;gap:38px}
+  .ivm-chapter,.ivm-chapter:nth-child(even){grid-template-columns:1fr;min-height:0}
+  .ivm-chapter:nth-child(even) .ivm-chapter-media,.ivm-chapter:nth-child(even) .ivm-chapter-copy{order:initial}
+  .ivm-chapter-media{min-height:58vw;max-height:620px}
+  .ivm-black-book-grid{grid-template-columns:1fr}
+  .ivm-book-card{border-right:0;border-bottom:1px solid rgba(17,17,15,.18);min-height:0}
+  .ivm-book-card:last-child{border-bottom:0}
+}
+@media(max-width:600px){
+  .ivm-editorial-home .hero-content{width:calc(100% - 34px);padding:140px 0 34px}
+  .ivm-editorial-home .hero-content h1{font-size:clamp(58px,18vw,78px);line-height:.88}
+  .ivm-editorial-home .hero-content>p{font-size:13px;margin:24px 0}
+  .ivm-editorial-home .hero-index{grid-template-columns:repeat(2,1fr);margin-top:42px}
+  .ivm-editorial-home .hero-index a{padding-top:13px}
+  .ivm-manifesto{padding:85px 18px}
+  .ivm-manifesto-inner{width:100%}
+  .ivm-manifesto h2{font-size:56px}
+  .ivm-manifesto p{font-size:30px}
+  .ivm-chapter-media{min-height:56vh}
+  .ivm-chapter-copy{padding:68px 22px 75px}
+  .ivm-chapter h2{font-size:62px}
+  .ivm-private-office{padding:82px 18px}
+  .ivm-private-office-inner{width:100%}
+  .ivm-private-office h2{font-size:54px}
+  .ivm-private-office .office-rule{grid-template-columns:1fr;gap:12px}
+  .ivm-black-book{padding:88px 18px 82px}
+  .ivm-black-book-head,.ivm-black-book-grid{width:100%}
+  .ivm-black-book h2{font-size:64px}
+  .ivm-book-card{padding:30px 4px 34px}
+  .ivm-final-request{min-height:74vh;padding:86px 18px}
+  .ivm-final-request-inner{width:100%}
+  .ivm-final-request h2{font-size:64px}
+}
