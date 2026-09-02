@@ -13,6 +13,7 @@ on:
       - "image_markup_enhance.py"
       - "upgrade_visual_assets.py"
       - "phase11_enhance.py"
+      - "phase12_enhance.py"
       - "validate_site.py"
       - "build_site.sh"
       - "premium.css"
@@ -21,6 +22,7 @@ on:
       - "brand-logo.jpg"
       - "brand-logo.svg"
       - "brand-mark.svg"
+      - "favicon.svg"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
@@ -48,6 +50,7 @@ jobs:
           bash build_site.sh
           python3 upgrade_visual_assets.py
           python3 phase11_enhance.py
+          python3 phase12_enhance.py
           python3 validate_site.py
 
       - name: Configure GitHub Pages
