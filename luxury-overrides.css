@@ -1,0 +1,11 @@
+/* Phase 10 visual refinement: image-first, editorial, discreet luxury. */
+.hero.hero-with-media{background-image:none!important;overflow:hidden;isolation:isolate}
+.hero.hero-with-media .hero-media{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center 58%;z-index:-2;filter:saturate(.92) contrast(1.035) brightness(.92);transform:scale(1.001)}
+.hero.hero-with-media:before{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(90deg,rgba(5,9,13,.82) 0%,rgba(5,9,13,.50) 42%,rgba(5,9,13,.12) 74%,rgba(5,9,13,.04) 100%)}
+.hero.hero-with-media .hero-shade{background:linear-gradient(180deg,rgba(7,11,15,.06),rgba(7,11,15,.28))}
+.service-card-img{height:410px;overflow:hidden;background:none!important}
+.service-card-img img{width:100%;height:100%;object-fit:cover;object-position:center;transition:transform .85s cubic-bezier(.2,.7,.2,1),filter .85s ease;filter:saturate(.9) contrast(1.035)}
+.service-card:hover .service-card-img img{transform:scale(1.035);filter:saturate(.98) contrast(1.045)}
+.page-hero,.closing-cta{background-position:center 54%;background-blend-mode:normal}
+@media(max-width:900px){.service-card-img{height:auto;aspect-ratio:16/10}.hero.hero-with-media .hero-media{object-position:62% center}}
+@media(max-width:600px){.hero.hero-with-media .hero-media{object-position:64% center}.hero.hero-with-media:before{background:linear-gradient(90deg,rgba(5,9,13,.78) 0%,rgba(5,9,13,.48) 60%,rgba(5,9,13,.18) 100%)}.service-card-img{aspect-ratio:4/3}}
