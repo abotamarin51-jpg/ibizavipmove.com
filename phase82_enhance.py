@@ -55,3 +55,6 @@ for lang,path in HOMES.items():
         raise SystemExit(f'Phase 82 homepage self/x-default mismatch: {path}')
 
 print('PASS: Phase 82 homepage hreflang — EN/ES/FR/DE/AR + x-default normalized reciprocally across all five homepages')
+
+# Synchronize final Twitter Card metadata only after canonical/language metadata is stable.
+import phase83_enhance
