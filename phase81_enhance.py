@@ -56,3 +56,6 @@ if len(pages)<120:raise SystemExit(f'Phase 81 image sitemap coverage unexpectedl
 relations=sum(len(v) for _,v in pages)
 if relations<len(pages):raise SystemExit('Phase 81 impossible image relation count')
 print(f'PASS: Phase 81 image discovery — {len(pages)} canonical pages and {relations} real local content-image relations written to image-sitemap.xml')
+
+# Normalize the final multilingual homepage cluster after all earlier generators.
+import phase82_enhance
