@@ -33,7 +33,6 @@ CONTACTS={
 def page_for(path):
     return ROOT/path.strip('/')/'index.html'
 
-# Normalize the Private Members Desk service selector to exactly the full 11-service catalog + Full Concierge.
 for lang,(path,options) in CONTACTS.items():
     file=page_for(path)
     if not file.exists():raise SystemExit(f'Phase 63 contact missing: {path}')
@@ -45,7 +44,6 @@ for lang,(path,options) in CONTACTS.items():
     if tag not in html:html=html.replace('</body>',tag+'</body>',1)
     file.write_text(html,encoding='utf-8')
 
-# Every service page receives the final routing layer after earlier scripts, so it wins deterministically.
 for path in SERVICE_PAGES:
     file=page_for(path)
     if not file.exists():raise SystemExit(f'Phase 63 service missing: {path}')
@@ -54,7 +52,6 @@ for path in SERVICE_PAGES:
     if tag not in html:html=html.replace('</body>',tag+'</body>',1)
     file.write_text(html,encoding='utf-8')
 
-# Validation: 55 service landings + 5 contact desks, no duplicate script and full selector coverage.
 assert len(SERVICE_PAGES)==55
 assert len(CONTACTS)==5
 for path in SERVICE_PAGES:
@@ -69,7 +66,7 @@ for lang,(path,options) in CONTACTS.items():
     assert m,(lang,'select')
     assert m.group(1).count('<option')==12,(lang,'option count')
     for o in options:assert escape(o) in m.group(1),(lang,o)
-    assert 'Luxury & Supercar Rental' in m.group(1) if lang=='en' else True
+    if lang=='en':assert escape('Luxury & Supercar Rental') in m.group(1)
 assert dest.exists() and dest.stat().st_size>4000
 js=source.read_text(encoding='utf-8')
 for key in ('chauffeur','villas','yacht','aviation','access','security','chef','car','wellness','events','bespoke'):assert f"'{key}'" in js or f":'{key}'" in js,key
