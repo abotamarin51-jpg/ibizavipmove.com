@@ -5,6 +5,10 @@ import json
 import re
 import xml.etree.ElementTree as ET
 
+# Phase 76 runs as part of the final read-only gate so supplementary AI/GEO
+# discovery metadata cannot drift away from the canonical site architecture.
+import phase76_geo_audit
+
 ROOT=Path('_site')
 BASE='https://ibizavipmove.com'
 ORG=BASE+'/#organization'
