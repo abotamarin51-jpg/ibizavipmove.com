@@ -44,3 +44,6 @@ for f in ROOT.rglob('*.html'):
 if count!=138:
     raise SystemExit(f'Phase 83 expected 138 indexable pages, updated {count}')
 print('PASS: Phase 83 social sharing — Twitter Cards synchronized with verified Open Graph metadata across all 138 indexable pages')
+
+# Final structured-data language normalization after all multilingual generators.
+import phase84_enhance
