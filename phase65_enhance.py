@@ -4,12 +4,13 @@ import hashlib
 import re
 import shutil
 
-# Phase 77 normalizes Black Book Article semantics, Phase 78 aligns editorial
-# social metadata, then Phase 76 refreshes supplementary AI/GEO discovery from
-# the completed multilingual architecture. Phases 69–70 improve LCP discovery
-# and image layout stability before final asset bundling/gates.
+# Phases 77–79 normalize Black Book/article and page-graph semantics; Phase 76
+# refreshes supplementary AI/GEO discovery from the completed multilingual
+# architecture. Phases 69–70 improve LCP discovery and image layout stability
+# before final asset bundling/gates. None changes approved visible copy/layout.
 import phase77_enhance
 import phase78_enhance
+import phase79_enhance
 import phase76_enhance
 import phase69_enhance
 import phase70_enhance
@@ -83,24 +84,17 @@ for file in ROOT.rglob('*.html'):
 
         spans = [(m.start(), m.end()) for m, _, _ in local]
         first = local[0][0]
-        # Remove from the end so earlier coordinates remain valid.
         for start, end in reversed(spans[1:]):
             html = html[:start] + html[end:]
         html = html[:first.start()] + f'<link rel="stylesheet" href="{bundle_href}">' + html[first.end():]
         css_links_before += len(local)
 
-    # Phase 63 fully supersedes Phase 46 routing across all 55 services and all
-    # five contact desks. Remove the legacy runtime so it cannot overwrite the
-    # localized message/context after Phase 63 executes.
     legacy_count = html.count('/assets/phase46.js?v=46')
     if legacy_count:
         html = re.sub(r'<script\b[^>]*src="/assets/phase46\.js\?v=46"[^>]*></script>', '', html, flags=re.I)
         phase46_removed += legacy_count
 
-    # First-party scripts are at the end of body today; defer makes the intent
-    # explicit and keeps them non-render-blocking if markup placement evolves.
     def defer_script(match):
-        nonlocal_marker = None
         before, src, after = match.group(1), match.group(2), match.group(3)
         attrs = before + after
         if not (src.startswith('/assets/') and urlparse(src).path.endswith('.js')):
@@ -113,7 +107,6 @@ for file in ROOT.rglob('*.html'):
     file.write_text(html, encoding='utf-8')
     indexable_pages += 1
 
-# Validate final production request shape and every first-party asset reference.
 for file in ROOT.rglob('*.html'):
     html = file.read_text(encoding='utf-8')
     if NOINDEX_RE.search(html):
