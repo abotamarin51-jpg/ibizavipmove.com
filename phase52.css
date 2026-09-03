@@ -1,0 +1,14 @@
+/* Phase 52 — International B2B / Private Office bridge */
+.ivm-trade-bridge{background:#171612;color:#f1ece3;padding:82px 4vw;border-top:1px solid rgba(255,255,255,.09)}
+.ivm-trade-bridge-inner{width:min(1180px,92vw);margin:auto;display:grid;grid-template-columns:.86fr 1.14fr;gap:90px;align-items:end}
+.ivm-trade-bridge .eyebrow{font-size:8px;letter-spacing:.25em;text-transform:uppercase;color:#c3a47d;margin-bottom:18px}
+.ivm-trade-bridge h2{font-family:var(--ivm-display,Georgia,serif)!important;font-size:clamp(46px,5vw,74px)!important;line-height:.96!important;font-weight:300!important;color:#f1ece3!important;margin:0}
+.ivm-trade-bridge-copy>p{font-size:12px;line-height:1.85;color:rgba(255,255,255,.62);max-width:610px;margin:0 0 28px}
+.ivm-trade-bridge-links{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(255,255,255,.15);border-bottom:1px solid rgba(255,255,255,.15)}
+.ivm-trade-bridge-link{display:block;padding:24px 28px 25px 0;color:#f1ece3;text-decoration:none}
+.ivm-trade-bridge-link+ .ivm-trade-bridge-link{border-left:1px solid rgba(255,255,255,.15);padding-left:28px}
+.ivm-trade-bridge-link span{display:block;font-size:8px;letter-spacing:.2em;text-transform:uppercase;color:#c3a47d;margin-bottom:9px}
+.ivm-trade-bridge-link strong{display:block;font-family:var(--ivm-display,Georgia,serif);font-size:27px;font-weight:300;line-height:1.05;margin-bottom:9px}
+.ivm-trade-bridge-link small{display:block;font-size:10px;line-height:1.6;color:rgba(255,255,255,.5)}
+@media(max-width:820px){.ivm-trade-bridge-inner{grid-template-columns:1fr;gap:40px}}
+@media(max-width:600px){.ivm-trade-bridge{padding:66px 20px}.ivm-trade-bridge-inner{width:100%}.ivm-trade-bridge-links{grid-template-columns:1fr}.ivm-trade-bridge-link+ .ivm-trade-bridge-link{border-left:0;border-top:1px solid rgba(255,255,255,.15);padding-left:0}.ivm-trade-bridge-link{padding:20px 0}}
