@@ -35,6 +35,7 @@ on:
       - "phase31_enhance.py"
       - "phase32_enhance.py"
       - "phase33_enhance.py"
+      - "phase34_enhance.py"
       - "editorial-black.css"
       - "editorial-inner.css"
       - "editorial-multilingual.css"
@@ -105,6 +106,7 @@ jobs:
           python3 phase31_enhance.py
           python3 phase32_enhance.py
           python3 phase33_enhance.py
+          python3 phase34_enhance.py
           python3 validate_site.py
 
       - name: Configure GitHub Pages
