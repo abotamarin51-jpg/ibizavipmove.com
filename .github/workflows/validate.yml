@@ -62,6 +62,8 @@ on:
       - "phase63.js"
       - "phase64_enhance.py"
       - "phase65_enhance.py"
+      - "phase66_enhance.py"
+      - "phase66.css"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase45_enhance.py"
@@ -175,6 +177,7 @@ jobs:
           python3 phase49_enhance.py
           python3 phase50_enhance.py
           python3 phase64_enhance.py
+          python3 phase66_enhance.py
           python3 phase65_enhance.py
           python3 phase41_quality_gate.py
           python3 validate_site.py
