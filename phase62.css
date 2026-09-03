@@ -1,0 +1,62 @@
+/* Phase 62 — final visual polish for priority journeys. No redesign; only consistency, mobile finish and interaction refinement. */
+body.ivm-final-polish{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body.ivm-final-polish h1,body.ivm-final-polish h2,body.ivm-final-polish .ivm-ref-sub{text-wrap:balance}
+body.ivm-final-polish p{text-wrap:pretty}
+body.ivm-final-polish .site-header{padding-left:max(2.5vw,env(safe-area-inset-left));padding-right:max(2.5vw,env(safe-area-inset-right))}
+body.ivm-final-polish .site-header .wordmark{flex:0 1 auto}
+body.ivm-final-polish .btn,body.ivm-final-polish .nav-cta{transition:transform .22s ease,background-color .22s ease,border-color .22s ease,color .22s ease,opacity .22s ease}
+@media(hover:hover){body.ivm-final-polish .btn:hover,body.ivm-final-polish .nav-cta:hover{transform:translateY(-1px)}}
+body.ivm-final-polish .btn:focus-visible,body.ivm-final-polish .nav-cta:focus-visible,body.ivm-final-polish input:focus-visible,body.ivm-final-polish select:focus-visible,body.ivm-final-polish textarea:focus-visible{outline:2px solid #b99158;outline-offset:3px}
+body.ivm-final-polish img{image-rendering:auto}
+
+/* Homepage: preserve the cinematic composition while tightening hierarchy. */
+body.ivm-final-polish.ivm-editorial-home .ivm-ref-copy{max-width:790px}
+body.ivm-final-polish.ivm-editorial-home .ivm-ref-copy h1{max-width:780px}
+body.ivm-final-polish.ivm-editorial-home .ivm-ref-copy .ivm-ref-sub{max-width:550px}
+body.ivm-final-polish.ivm-editorial-home .ivm-ref-service{transition:background .25s ease,transform .25s ease}
+@media(hover:hover){body.ivm-final-polish.ivm-editorial-home .ivm-ref-service:hover{transform:translateY(-2px)}}
+body.ivm-final-polish.ivm-editorial-home .ivm-ref-panel-copy{max-width:440px}
+body.ivm-final-polish.ivm-editorial-home .ivm-ref-manifesto p{max-width:680px}
+
+/* Signature service pages: consistent editorial rhythm. */
+body.ivm-final-polish.ivm-signature-inner .page-hero h1{max-width:860px}
+body.ivm-final-polish.ivm-signature-inner .page-hero p{max-width:640px}
+body.ivm-final-polish.ivm-signature-inner .editorial .large{max-width:760px}
+body.ivm-final-polish.ivm-signature-inner .process-grid article{display:flex;flex-direction:column}
+body.ivm-final-polish.ivm-signature-inner .process-grid article p{margin-top:auto}
+body.ivm-final-polish.ivm-signature-inner .ivm-related-head p{max-width:620px}
+body.ivm-final-polish.ivm-signature-inner .closing-simple{padding-left:max(4vw,env(safe-area-inset-left));padding-right:max(4vw,env(safe-area-inset-right))}
+
+/* Members desk: make form states feel deliberate and premium. */
+body.ivm-final-polish.ivm-private-desk .ivm-desk-shell,body.ivm-final-polish.ivm-private-desk .ivm-desk-trust{max-width:1320px}
+body.ivm-final-polish.ivm-private-desk .ivm-desk-form input,body.ivm-final-polish.ivm-private-desk .ivm-desk-form select,body.ivm-final-polish.ivm-private-desk .ivm-desk-form textarea{transition:border-color .18s ease,background-color .18s ease}
+body.ivm-final-polish.ivm-private-desk .ivm-desk-form input:focus,body.ivm-final-polish.ivm-private-desk .ivm-desk-form select:focus,body.ivm-final-polish.ivm-private-desk .ivm-desk-form textarea:focus{background:rgba(255,255,255,.18);border-color:#806344}
+body.ivm-final-polish.ivm-private-desk .ivm-desk-form .btn{min-height:48px}
+
+@media(max-width:900px){
+ body.ivm-final-polish .site-header{height:72px}
+ body.ivm-final-polish.ivm-editorial-home .ivm-ref-service:hover{transform:none}
+ body.ivm-final-polish.ivm-signature-inner .editorial{gap:30px}
+}
+
+@media(max-width:600px){
+ body.ivm-final-polish .site-header{padding-left:max(18px,env(safe-area-inset-left));padding-right:max(18px,env(safe-area-inset-right))}
+ body.ivm-final-polish.ivm-editorial-home .ivm-ref-hero-inner{padding-top:112px}
+ body.ivm-final-polish.ivm-editorial-home .ivm-ref-copy{padding-bottom:26px}
+ body.ivm-final-polish.ivm-editorial-home .ivm-ref-copy h1{font-size:clamp(43px,12vw,50px)!important;line-height:.98!important;margin-bottom:24px}
+ body.ivm-final-polish.ivm-editorial-home .ivm-ref-copy .ivm-ref-sub{font-size:15px;line-height:1.55}
+ body.ivm-final-polish.ivm-editorial-home .ivm-ref-service{min-height:126px;padding:17px 9px}
+ body.ivm-final-polish.ivm-editorial-home .ivm-ref-panel{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+ body.ivm-final-polish.ivm-signature-inner .page-hero{padding-top:112px;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+ body.ivm-final-polish.ivm-signature-inner .page-hero>div:not(.page-hero-media){min-height:calc(100svh - 112px)}
+ body.ivm-final-polish.ivm-signature-inner .page-hero h1{font-size:clamp(43px,12vw,50px)!important;line-height:.98!important}
+ body.ivm-final-polish.ivm-signature-inner .editorial,body.ivm-final-polish.ivm-signature-inner .process,body.ivm-final-polish.ivm-signature-inner .faq,body.ivm-final-polish.ivm-signature-inner .dark-panel,body.ivm-final-polish.ivm-signature-inner .ivm-related{padding-top:68px;padding-bottom:68px}
+ body.ivm-final-polish.ivm-signature-inner .closing-simple{padding-top:44px;padding-bottom:44px;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+ body.ivm-final-polish.ivm-private-desk .ivm-desk{padding-top:88px}
+ body.ivm-final-polish.ivm-private-desk .ivm-desk-intro{min-height:500px;padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+ body.ivm-final-polish.ivm-private-desk .ivm-desk-intro h1{font-size:clamp(43px,12vw,50px)!important;line-height:.98!important}
+ body.ivm-final-polish.ivm-private-desk .ivm-desk-form{padding-left:max(20px,env(safe-area-inset-left));padding-right:max(20px,env(safe-area-inset-right))}
+ body.ivm-final-polish .mobile-bar{padding-left:env(safe-area-inset-left);padding-right:env(safe-area-inset-right);padding-bottom:max(8px,env(safe-area-inset-bottom))}
+}
+
+@media(prefers-reduced-motion:reduce){body.ivm-final-polish .btn,body.ivm-final-polish .nav-cta,body.ivm-final-polish .ivm-ref-service,body.ivm-final-polish .ivm-desk-form input,body.ivm-final-polish .ivm-desk-form select,body.ivm-final-polish .ivm-desk-form textarea{transition:none!important;transform:none!important}}
