@@ -19,3 +19,7 @@ for path in localized:
     t=(ROOT/path.strip('/')/'index.html').read_text(encoding='utf-8')
     assert 'ivm-media-links' in t,path
 print('PASS: Phase 72 Media & Partners styling linked across five-language cluster; localized grid verified')
+
+# Phase 73 is intentionally chained here so the homepage chapter targets are
+# restored before language/navigation enhancers and final performance bundling.
+import phase73_enhance
