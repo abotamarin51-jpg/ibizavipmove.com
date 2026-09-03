@@ -70,6 +70,10 @@ on:
       - "phase71_enhance.py"
       - "phase71_metadata_fix.py"
       - "phase71_audit.py"
+      - "phase72_enhance.py"
+      - "phase72.css"
+      - "phase72_style_fix.py"
+      - "phase72_audit.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase45_enhance.py"
@@ -177,6 +181,8 @@ jobs:
           python3 phase68_enhance.py
           python3 phase71_enhance.py
           python3 phase71_metadata_fix.py
+          python3 phase72_enhance.py
+          python3 phase72_style_fix.py
           python3 phase42_enhance.py
           python3 phase43_enhance.py
           python3 phase45_enhance.py
@@ -191,6 +197,7 @@ jobs:
           python3 phase41_quality_gate.py
           python3 validate_site.py
           python3 phase71_audit.py
+          python3 phase72_audit.py
           python3 phase67_final_audit.py
       - name: Upload validated preview artifact
         uses: actions/upload-artifact@v4
