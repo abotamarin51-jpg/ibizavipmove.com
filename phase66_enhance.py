@@ -58,7 +58,9 @@ for path in PAGES:
     file.write_text(html,encoding='utf-8');updated+=1
 
 assert updated==55
-assert signature==7,(signature,'expected 7 protected English signature service pages')
+# Private Concierge is the seventh Phase 31 signature page, but it is not one
+# of the 55 service-cluster landings. The service set therefore contains six.
+assert signature==6,(signature,'expected 6 protected signature service pages')
 for path in PAGES:
     html=file_for(path).read_text(encoding='utf-8')
     assert html.count('ivm-service-finished')==1,path
@@ -70,4 +72,4 @@ for path in PAGES:
     assert 'viewport-fit=cover' in html,path
     assert '<link rel="canonical"' in html,path
 assert DEST.exists() and DEST.stat().st_size>3000
-print(f'PASS: Phase 66 universal luxury finish applied to {updated} service landings; {signature} signature core pages protected from heavy overrides')
+print(f'PASS: Phase 66 universal luxury finish applied to {updated} service landings; {signature} signature core service pages protected from heavy overrides')
