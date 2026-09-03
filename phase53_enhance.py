@@ -54,6 +54,7 @@ COPY = {
   ('Private Office','PA / Family Office','إقامة لضيف رئيسي أو عائلة تحتاج إلى جهة اتصال محلية واحدة.','مرحباً Ibiza VIP Move، أتواصل نيابةً عن Principal / Family Office بخصوص تنسيق خاص في إيبيزا. أرغب في مشاركة تفاصيل الإقامة بشكل خاص.'),
   ('Hospitality','تنسيق الضيوف','لوجستيات خاصة أو دعم متعدد الخدمات للضيوف.','مرحباً Ibiza VIP Move، أتواصل بخصوص تنسيق خاص للضيوف في إيبيزا. أرغب في مناقشة المتطلبات والنطاق التشغيلي.')],
 }
+}
 
 asset = ROOT / 'assets' / 'phase53.css'
 asset.write_text(Path('phase53.css').read_text(encoding='utf-8'), encoding='utf-8')
