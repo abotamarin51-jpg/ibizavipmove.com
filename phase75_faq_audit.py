@@ -3,11 +3,12 @@ from html import unescape
 import json
 import re
 
-# Keep Black Book editorial semantics, social metadata and page-graph hygiene
-# protected inside the post-validate audit layer.
+# Keep Black Book editorial semantics, social metadata, page-graph hygiene and
+# canonical sharing metadata protected inside the post-validate audit layer.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
+import phase80_social_audit
 
 ROOT=Path('_site')
 
