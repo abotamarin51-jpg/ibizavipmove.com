@@ -2,6 +2,10 @@ from pathlib import Path
 from urllib.parse import urlparse
 import re
 
+# Phase 80 aligns Media & Partners social metadata before final performance
+# normalization so previews and canonical URLs are already stable for the gate.
+import phase80_enhance
+
 ROOT=Path('_site')
 NOINDEX_RE=re.compile(r'<meta\s+name="robots"\s+content="[^"]*noindex',re.I)
 CANON_RE=re.compile(r'<link\s+rel="canonical"\s+href="([^"]+)"',re.I)
