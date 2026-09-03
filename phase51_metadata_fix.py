@@ -1,5 +1,5 @@
 from pathlib import Path
-from html import escape
+from html import escape, unescape
 import json
 import re
 
@@ -50,7 +50,7 @@ seen = set()
 for path, expected in PAGES.items():
     html = (ROOT / path.strip('/') / 'index.html').read_text(encoding='utf-8')
     match = re.search(r'<title>(.*?)</title>', html, re.I | re.S)
-    assert match and match.group(1).strip() == expected, path
+    assert match and unescape(match.group(1).strip()) == expected, path
     assert expected not in seen, ('duplicate Phase 51 title', expected)
     seen.add(expected)
     assert f'content="{escape(expected)}"' in html, (path, 'og:title')
