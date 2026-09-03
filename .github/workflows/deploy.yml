@@ -50,6 +50,7 @@ on:
       - "phase47_enhance.py"
       - "phase48_enhance.py"
       - "phase49_enhance.py"
+      - "phase50_enhance.py"
       - "phase41_quality_gate.py"
       - "editorial-black.css"
       - "editorial-inner.css"
@@ -143,6 +144,7 @@ jobs:
           python3 phase47_enhance.py
           python3 phase48_enhance.py
           python3 phase49_enhance.py
+          python3 phase50_enhance.py
           python3 phase41_quality_gate.py
           python3 validate_site.py
 
