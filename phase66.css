@@ -1,49 +1,75 @@
-/* Phase 66 — universal luxury finish for all 55 service landings. */
-body.ivm-service-finished{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility;background:#f2eee5;color:#11110f}
+/* Phase 66 — universal luxury finish for all 55 service landings.
+   Signature English core pages keep their stronger Phase 31/62 composition. */
+body.ivm-service-finished{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
 body.ivm-service-finished h1,body.ivm-service-finished h2,body.ivm-service-finished h3{text-wrap:balance}
 body.ivm-service-finished p{text-wrap:pretty}
-body.ivm-service-finished .page-hero{position:relative;min-height:88svh;overflow:hidden;background:#090908;color:#f3eee5}
-body.ivm-service-finished .page-hero-media{position:absolute;inset:0;z-index:0}
-body.ivm-service-finished .page-hero-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,4,.86) 0%,rgba(5,5,4,.62) 48%,rgba(5,5,4,.22) 100%)}
-body.ivm-service-finished .page-hero-media img{width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.68) contrast(1.06) brightness(.78)}
-body.ivm-service-finished .page-hero>div:not(.page-hero-media){position:relative;z-index:1;min-height:88svh;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:150px max(5vw,env(safe-area-inset-right)) 82px max(5vw,env(safe-area-inset-left));box-sizing:border-box}
-body.ivm-service-finished .page-hero h1{max-width:920px;margin:12px 0 26px;font-size:clamp(58px,7vw,108px);line-height:.92;letter-spacing:-.045em;font-weight:400;color:#f3eee5}
-body.ivm-service-finished .page-hero p{max-width:660px;margin:0 0 30px;font-size:16px;line-height:1.75;color:rgba(255,255,255,.76)}
-body.ivm-service-finished .page-hero .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
-body.ivm-service-finished .editorial,body.ivm-service-finished .process,body.ivm-service-finished .faq,body.ivm-service-finished .ivm-service-faq,body.ivm-service-finished .dark-panel{padding-top:104px;padding-bottom:104px}
-body.ivm-service-finished .editorial{gap:54px}
-body.ivm-service-finished .editorial h2,body.ivm-service-finished .section-head h2{max-width:760px}
-body.ivm-service-finished .editorial .large{max-width:760px;line-height:1.7}
-body.ivm-service-finished .process-grid>article{display:flex;min-height:250px;flex-direction:column}
-body.ivm-service-finished .process-grid>article p{margin-top:auto}
-body.ivm-service-finished .process-grid>article span{font-variant-numeric:tabular-nums}
-body.ivm-service-finished .faq details,body.ivm-service-finished .ivm-service-faq details{transition:background-color .2s ease,border-color .2s ease}
-body.ivm-service-finished .faq summary,body.ivm-service-finished .ivm-service-faq summary{cursor:pointer}
-body.ivm-service-finished .ivm-related{padding-top:96px;padding-bottom:96px}
-body.ivm-service-finished .ivm-related-head p{max-width:640px}
-body.ivm-service-finished .ivm-related-card{min-height:224px}
-body.ivm-service-finished .closing-simple{padding:76px max(5vw,env(safe-area-inset-right)) 76px max(5vw,env(safe-area-inset-left))}
-body.ivm-service-finished .closing-simple h2{max-width:900px;margin-left:auto;margin-right:auto;text-wrap:balance}
-body.ivm-service-finished .closing-simple p{max-width:620px;margin-left:auto;margin-right:auto}
 
-html[dir="rtl"] body.ivm-service-finished .page-hero>div:not(.page-hero-media){align-items:flex-start;text-align:right}
-html[dir="rtl"] body.ivm-service-finished .page-hero-media:after{background:linear-gradient(270deg,rgba(5,5,4,.86) 0%,rgba(5,5,4,.62) 48%,rgba(5,5,4,.22) 100%)}
-html[dir="rtl"] body.ivm-service-finished .page-hero p{margin-left:auto;margin-right:0}
-html[dir="rtl"] body.ivm-service-finished .ivm-related,html[dir="rtl"] body.ivm-service-finished .faq,html[dir="rtl"] body.ivm-service-finished .ivm-service-faq{text-align:right}
+body.ivm-service-finished:not(.ivm-signature-inner){background:#f2eee5;color:#11110f}
+body.ivm-service-finished:not(.ivm-signature-inner) .page-hero{position:relative;min-height:88svh;overflow:hidden;background:#090908;color:#f3eee5}
+body.ivm-service-finished:not(.ivm-signature-inner) .page-hero-media{position:absolute;inset:0;z-index:0}
+body.ivm-service-finished:not(.ivm-signature-inner) .page-hero-media:after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(5,5,4,.86) 0%,rgba(5,5,4,.62) 48%,rgba(5,5,4,.22) 100%)}
+body.ivm-service-finished:not(.ivm-signature-inner) .page-hero-media img{width:100%;height:100%;object-fit:cover;object-position:center;filter:saturate(.68) contrast(1.06) brightness(.78)}
+body.ivm-service-finished:not(.ivm-signature-inner) .page-hero>div:not(.page-hero-media){position:relative;z-index:1;min-height:88svh;display:flex;flex-direction:column;justify-content:flex-end;align-items:flex-start;padding:150px max(5vw,env(safe-area-inset-right)) 82px max(5vw,env(safe-area-inset-left));box-sizing:border-box}
+body.ivm-service-finished:not(.ivm-signature-inner) .page-hero h1{max-width:920px;margin:12px 0 26px;font-size:clamp(58px,7vw,108px);line-height:.92;letter-spacing:-.045em;font-weight:400;color:#f3eee5}
+body.ivm-service-finished:not(.ivm-signature-inner) .page-hero p{max-width:660px;margin:0 0 30px;font-size:16px;line-height:1.75;color:rgba(255,255,255,.76)}
+body.ivm-service-finished:not(.ivm-signature-inner) .page-hero .btn{min-height:48px;display:inline-flex;align-items:center;justify-content:center}
+body.ivm-service-finished:not(.ivm-signature-inner) .editorial,
+body.ivm-service-finished:not(.ivm-signature-inner) .process,
+body.ivm-service-finished:not(.ivm-signature-inner) .faq,
+body.ivm-service-finished:not(.ivm-signature-inner) .ivm-service-faq,
+body.ivm-service-finished:not(.ivm-signature-inner) .dark-panel{padding-top:104px;padding-bottom:104px}
+body.ivm-service-finished:not(.ivm-signature-inner) .editorial{gap:54px}
+body.ivm-service-finished:not(.ivm-signature-inner) .editorial h2,
+body.ivm-service-finished:not(.ivm-signature-inner) .section-head h2{max-width:760px}
+body.ivm-service-finished:not(.ivm-signature-inner) .editorial .large{max-width:760px;line-height:1.7}
+body.ivm-service-finished:not(.ivm-signature-inner) .process-grid>article{display:flex;min-height:250px;flex-direction:column}
+body.ivm-service-finished:not(.ivm-signature-inner) .process-grid>article p{margin-top:auto}
+body.ivm-service-finished:not(.ivm-signature-inner) .process-grid>article span{font-variant-numeric:tabular-nums}
+body.ivm-service-finished:not(.ivm-signature-inner) .faq details,
+body.ivm-service-finished:not(.ivm-signature-inner) .ivm-service-faq details{transition:background-color .2s ease,border-color .2s ease}
+body.ivm-service-finished:not(.ivm-signature-inner) .faq summary,
+body.ivm-service-finished:not(.ivm-signature-inner) .ivm-service-faq summary{cursor:pointer}
+body.ivm-service-finished:not(.ivm-signature-inner) .ivm-related{padding-top:96px;padding-bottom:96px}
+body.ivm-service-finished:not(.ivm-signature-inner) .ivm-related-head p{max-width:640px}
+body.ivm-service-finished:not(.ivm-signature-inner) .ivm-related-card{min-height:224px}
+body.ivm-service-finished:not(.ivm-signature-inner) .closing-simple{padding:76px max(5vw,env(safe-area-inset-right)) 76px max(5vw,env(safe-area-inset-left))}
+body.ivm-service-finished:not(.ivm-signature-inner) .closing-simple h2{max-width:900px;margin-left:auto;margin-right:auto;text-wrap:balance}
+body.ivm-service-finished:not(.ivm-signature-inner) .closing-simple p{max-width:620px;margin-left:auto;margin-right:auto}
+
+html[dir="rtl"] body.ivm-service-finished:not(.ivm-signature-inner) .page-hero>div:not(.page-hero-media){align-items:flex-start;text-align:right}
+html[dir="rtl"] body.ivm-service-finished:not(.ivm-signature-inner) .page-hero-media:after{background:linear-gradient(270deg,rgba(5,5,4,.86) 0%,rgba(5,5,4,.62) 48%,rgba(5,5,4,.22) 100%)}
+html[dir="rtl"] body.ivm-service-finished:not(.ivm-signature-inner) .page-hero p{margin-left:auto;margin-right:0}
+html[dir="rtl"] body.ivm-service-finished:not(.ivm-signature-inner) .ivm-related,
+html[dir="rtl"] body.ivm-service-finished:not(.ivm-signature-inner) .faq,
+html[dir="rtl"] body.ivm-service-finished:not(.ivm-signature-inner) .ivm-service-faq{text-align:right}
 
 @media(max-width:900px){
- body.ivm-service-finished .page-hero,body.ivm-service-finished .page-hero>div:not(.page-hero-media){min-height:82svh}
- body.ivm-service-finished .page-hero>div:not(.page-hero-media){padding-top:128px;padding-bottom:64px}
- body.ivm-service-finished .editorial,body.ivm-service-finished .process,body.ivm-service-finished .faq,body.ivm-service-finished .ivm-service-faq,body.ivm-service-finished .dark-panel{padding-top:82px;padding-bottom:82px}
- body.ivm-service-finished .process-grid>article{min-height:0}
+ body.ivm-service-finished:not(.ivm-signature-inner) .page-hero,
+ body.ivm-service-finished:not(.ivm-signature-inner) .page-hero>div:not(.page-hero-media){min-height:82svh}
+ body.ivm-service-finished:not(.ivm-signature-inner) .page-hero>div:not(.page-hero-media){padding-top:128px;padding-bottom:64px}
+ body.ivm-service-finished:not(.ivm-signature-inner) .editorial,
+ body.ivm-service-finished:not(.ivm-signature-inner) .process,
+ body.ivm-service-finished:not(.ivm-signature-inner) .faq,
+ body.ivm-service-finished:not(.ivm-signature-inner) .ivm-service-faq,
+ body.ivm-service-finished:not(.ivm-signature-inner) .dark-panel{padding-top:82px;padding-bottom:82px}
+ body.ivm-service-finished:not(.ivm-signature-inner) .process-grid>article{min-height:0}
 }
 @media(max-width:600px){
- body.ivm-service-finished .page-hero,body.ivm-service-finished .page-hero>div:not(.page-hero-media){min-height:78svh}
- body.ivm-service-finished .page-hero>div:not(.page-hero-media){padding:112px max(20px,env(safe-area-inset-right)) 48px max(20px,env(safe-area-inset-left))}
- body.ivm-service-finished .page-hero h1{font-size:clamp(42px,12vw,52px);line-height:.98;margin-bottom:22px}
- body.ivm-service-finished .page-hero p{font-size:15px;line-height:1.6;margin-bottom:24px}
- body.ivm-service-finished .editorial,body.ivm-service-finished .process,body.ivm-service-finished .faq,body.ivm-service-finished .ivm-service-faq,body.ivm-service-finished .dark-panel,body.ivm-service-finished .ivm-related{padding-top:66px;padding-bottom:66px}
- body.ivm-service-finished .ivm-related-card{min-height:0}
- body.ivm-service-finished .closing-simple{padding:48px max(20px,env(safe-area-inset-right)) 48px max(20px,env(safe-area-inset-left))}
+ body.ivm-service-finished:not(.ivm-signature-inner) .page-hero,
+ body.ivm-service-finished:not(.ivm-signature-inner) .page-hero>div:not(.page-hero-media){min-height:78svh}
+ body.ivm-service-finished:not(.ivm-signature-inner) .page-hero>div:not(.page-hero-media){padding:112px max(20px,env(safe-area-inset-right)) 48px max(20px,env(safe-area-inset-left))}
+ body.ivm-service-finished:not(.ivm-signature-inner) .page-hero h1{font-size:clamp(42px,12vw,52px);line-height:.98;margin-bottom:22px}
+ body.ivm-service-finished:not(.ivm-signature-inner) .page-hero p{font-size:15px;line-height:1.6;margin-bottom:24px}
+ body.ivm-service-finished:not(.ivm-signature-inner) .editorial,
+ body.ivm-service-finished:not(.ivm-signature-inner) .process,
+ body.ivm-service-finished:not(.ivm-signature-inner) .faq,
+ body.ivm-service-finished:not(.ivm-signature-inner) .ivm-service-faq,
+ body.ivm-service-finished:not(.ivm-signature-inner) .dark-panel,
+ body.ivm-service-finished:not(.ivm-signature-inner) .ivm-related{padding-top:66px;padding-bottom:66px}
+ body.ivm-service-finished:not(.ivm-signature-inner) .ivm-related-card{min-height:0}
+ body.ivm-service-finished:not(.ivm-signature-inner) .closing-simple{padding:48px max(20px,env(safe-area-inset-right)) 48px max(20px,env(safe-area-inset-left))}
 }
-@media(prefers-reduced-motion:reduce){body.ivm-service-finished .faq details,body.ivm-service-finished .ivm-service-faq details{transition:none!important}}
+@media(prefers-reduced-motion:reduce){
+ body.ivm-service-finished:not(.ivm-signature-inner) .faq details,
+ body.ivm-service-finished:not(.ivm-signature-inner) .ivm-service-faq details{transition:none!important}
+}
