@@ -18,8 +18,6 @@ def extract(html,pattern,label,path):
     return unescape(re.sub(r'<[^>]+>',' ',m.group(1))).strip()
 
 def set_meta(html,attr,name,value):
-    # Replace an existing tag regardless of whether property/name appears before
-    # or after content. If missing, add one before </head>.
     patt=re.compile(rf'<meta\b(?=[^>]*\b{attr}="{re.escape(name)}")(?=[^>]*\bcontent="[^"]*")[^>]*>',re.I)
     tag=f'<meta {attr}="{name}" content="{escape(value,quote=True)}">'
     if patt.search(html):return patt.sub(tag,html,count=1)
@@ -48,3 +46,6 @@ for path in PATHS:
     f.write_text(html,encoding='utf-8')
 
 print('PASS: Phase 80 Media & Partners social metadata aligned across EN/ES/FR/DE/AR')
+
+# Rebuild image discovery only after all late page/social normalization has run.
+import phase81_enhance
