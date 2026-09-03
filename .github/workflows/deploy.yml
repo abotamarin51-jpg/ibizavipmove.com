@@ -68,6 +68,7 @@ on:
       - "phase68_enhance.py"
       - "phase68.css"
       - "phase71_enhance.py"
+      - "phase71_metadata_fix.py"
       - "phase71_audit.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
@@ -185,6 +186,7 @@ jobs:
           python3 phase63_enhance.py
           python3 phase68_enhance.py
           python3 phase71_enhance.py
+          python3 phase71_metadata_fix.py
           python3 phase42_enhance.py
           python3 phase43_enhance.py
           python3 phase45_enhance.py
