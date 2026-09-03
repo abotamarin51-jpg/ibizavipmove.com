@@ -3,6 +3,9 @@ from html import unescape
 import json
 import re
 
+# Keep Black Book Article semantics protected inside the post-validate audit layer.
+import phase77_article_audit
+
 ROOT=Path('_site')
 
 PATHS=[
