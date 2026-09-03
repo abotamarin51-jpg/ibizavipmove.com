@@ -27,13 +27,12 @@ PARTNER_CONTACT = {
 }
 
 updated = 0
-entity_scripts = 0
+counts = {'entity_scripts': 0}
 for file in ROOT.rglob('*.html'):
     html = file.read_text(encoding='utf-8')
-    changed = False
+    state = {'changed': False}
 
     def repl(match):
-        nonlocal changed, entity_scripts
         try:
             obj = json.loads(match.group(1))
         except Exception:
@@ -47,17 +46,18 @@ for file in ROOT.rglob('*.html'):
         )
         if not is_entity:
             return match.group(0)
-        entity_scripts += 1
+        counts['entity_scripts'] += 1
         obj['@id'] = ORG
         obj['contactPoint'] = [CLIENT_CONTACT, PARTNER_CONTACT]
-        changed = True
+        state['changed'] = True
         return '<script type="application/ld+json">' + json.dumps(obj, ensure_ascii=False) + '</script>'
 
     html = SCRIPT_RE.sub(repl, html)
-    if changed:
+    if state['changed']:
         file.write_text(html, encoding='utf-8')
         updated += 1
 
+entity_scripts = counts['entity_scripts']
 if entity_scripts == 0:
     raise SystemExit('Phase 55 organization entity not found')
 
@@ -65,8 +65,10 @@ verified = 0
 for file in ROOT.rglob('*.html'):
     html = file.read_text(encoding='utf-8')
     for match in SCRIPT_RE.finditer(html):
-        try: obj = json.loads(match.group(1))
-        except Exception: continue
+        try:
+            obj = json.loads(match.group(1))
+        except Exception:
+            continue
         if not isinstance(obj, dict) or obj.get('@id') != ORG:
             continue
         cps = obj.get('contactPoint')
