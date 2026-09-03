@@ -4,10 +4,11 @@ import hashlib
 import re
 import shutil
 
-# Phase 69 is intentionally executed here, after every visible enhancer and
-# immediately before final asset bundling/gates. This makes CSS-background LCP
-# hero discovery deterministic without changing any page layout.
+# Phases 69–70 intentionally execute here, after every visible enhancer and
+# immediately before final asset bundling/gates. They improve LCP discovery and
+# image layout stability without changing any page design or copy.
 import phase69_enhance
+import phase70_enhance
 
 ROOT = Path('_site')
 ASSETS = ROOT / 'assets'
