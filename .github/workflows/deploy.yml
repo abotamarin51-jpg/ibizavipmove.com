@@ -42,6 +42,7 @@ on:
       - "phase38_enhance.py"
       - "phase39_enhance.py"
       - "phase40_enhance.py"
+      - "phase44_enhance.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase41_quality_gate.py"
@@ -127,6 +128,7 @@ jobs:
           python3 phase38_enhance.py
           python3 phase39_enhance.py
           python3 phase40_enhance.py
+          python3 phase44_enhance.py
           python3 phase42_enhance.py
           python3 phase43_enhance.py
           python3 phase41_quality_gate.py
