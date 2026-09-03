@@ -19,18 +19,21 @@ def patch(match):
         obj=json.loads(match.group(2))
     except Exception:
         return match.group(0)
-    candidates=[]
     if isinstance(obj,dict) and isinstance(obj.get('@graph'),list):
         candidates=[x for x in obj['@graph'] if isinstance(x,dict)]
     elif isinstance(obj,dict):
         candidates=[obj]
+    else:
+        candidates=[]
+    changed=False
     for node in candidates:
         typ=node.get('@type')
         types=typ if isinstance(typ,list) else [typ]
         if 'Service' in types and node.get('@id')==TARGET_ID:
             node['inLanguage']='en'
             updated+=1
-    if not candidates or updated==0:
+            changed=True
+    if not changed:
         return match.group(0)
     return match.group(1)+json.dumps(obj,ensure_ascii=False,separators=(',',':'))+match.group(3)
 
