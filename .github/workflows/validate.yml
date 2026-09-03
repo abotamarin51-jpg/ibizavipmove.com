@@ -51,6 +51,7 @@ on:
       - "phase54_enhance.py"
       - "phase55_enhance.py"
       - "phase56_enhance.py"
+      - "phase57_enhance.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase45_enhance.py"
@@ -145,6 +146,7 @@ jobs:
           python3 phase54_enhance.py
           python3 phase55_enhance.py
           python3 phase56_enhance.py
+          python3 phase57_enhance.py
           python3 phase42_enhance.py
           python3 phase43_enhance.py
           python3 phase45_enhance.py
