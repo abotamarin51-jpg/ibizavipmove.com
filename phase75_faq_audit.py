@@ -4,13 +4,14 @@ import json
 import re
 
 # Keep Black Book editorial semantics, social metadata, page-graph hygiene,
-# canonical sharing metadata, image discovery and global hreflang protected post-validate.
+# canonical sharing metadata, image discovery, hreflang and social cards protected post-validate.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
 import phase80_social_audit
 import phase81_image_audit
 import phase82_hreflang_audit
+import phase83_social_audit
 
 ROOT=Path('_site')
 
