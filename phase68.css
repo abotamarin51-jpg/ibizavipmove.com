@@ -1,0 +1,15 @@
+/* Phase 68 — localized brand-trust pages. */
+body.ivm-brand-trust-localized{-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+body.ivm-brand-trust-localized h1,body.ivm-brand-trust-localized h2,body.ivm-brand-trust-localized h3{text-wrap:balance}
+body.ivm-brand-trust-localized p{text-wrap:pretty}
+html[dir="rtl"] body.ivm-brand-trust-localized .page-hero>div,
+html[dir="rtl"] body.ivm-brand-trust-localized .editorial,
+html[dir="rtl"] body.ivm-brand-trust-localized .process,
+html[dir="rtl"] body.ivm-brand-trust-localized .dark-panel,
+html[dir="rtl"] body.ivm-brand-trust-localized .closing-simple,
+html[dir="rtl"] body.ivm-brand-trust-localized .ivm-about-role-inner,
+html[dir="rtl"] body.ivm-brand-trust-localized .ivm-about-principles-inner,
+html[dir="rtl"] body.ivm-brand-trust-localized .ivm-about-promise-inner{text-align:right;direction:rtl}
+html[dir="rtl"] body.ivm-brand-trust-localized .ivm-about-actions,
+html[dir="rtl"] body.ivm-brand-trust-localized .hero-actions{justify-content:flex-start}
+@media(max-width:600px){body.ivm-brand-trust-localized .page-hero h1{overflow-wrap:anywhere}}
