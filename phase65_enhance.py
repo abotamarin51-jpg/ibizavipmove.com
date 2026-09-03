@@ -4,11 +4,12 @@ import hashlib
 import re
 import shutil
 
-# Phase 77 normalizes Black Book Article semantics, then Phase 76 refreshes
-# supplementary AI/GEO discovery metadata from the completed multilingual
-# architecture. Phases 69–70 improve LCP discovery and image layout stability
-# before final asset bundling/gates. None changes approved visible copy/layout.
+# Phase 77 normalizes Black Book Article semantics, Phase 78 aligns editorial
+# social metadata, then Phase 76 refreshes supplementary AI/GEO discovery from
+# the completed multilingual architecture. Phases 69–70 improve LCP discovery
+# and image layout stability before final asset bundling/gates.
 import phase77_enhance
+import phase78_enhance
 import phase76_enhance
 import phase69_enhance
 import phase70_enhance
