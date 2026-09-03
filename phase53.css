@@ -1,0 +1,15 @@
+/* Phase 53 — Partner brief routing */
+.ivm-partner-routes{background:#f2eee6;color:#171612;padding:78px 4vw;border-top:1px solid rgba(23,22,18,.11)}
+.ivm-partner-routes-inner{width:min(1180px,92vw);margin:auto}
+.ivm-partner-routes-head{display:grid;grid-template-columns:.86fr 1.14fr;gap:90px;align-items:end;margin-bottom:34px}
+.ivm-partner-routes .eyebrow{font-size:8px;letter-spacing:.24em;text-transform:uppercase;color:#8d6d48;margin-bottom:16px}
+.ivm-partner-routes h2{font-family:var(--ivm-display,Georgia,serif)!important;font-size:clamp(42px,4.5vw,66px)!important;line-height:.98!important;font-weight:300!important;margin:0!important;color:#171612!important}
+.ivm-partner-routes-head p{font-size:12px;line-height:1.85;color:rgba(23,22,18,.62);max-width:620px;margin:0}
+.ivm-partner-route-grid{display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid rgba(23,22,18,.16);border-bottom:1px solid rgba(23,22,18,.16)}
+.ivm-partner-route{display:block;padding:24px 22px 25px 0;text-decoration:none;color:#171612}
+.ivm-partner-route+.ivm-partner-route{border-left:1px solid rgba(23,22,18,.16);padding-left:22px}
+.ivm-partner-route span{display:block;font-size:8px;letter-spacing:.19em;text-transform:uppercase;color:#8d6d48;margin-bottom:9px}
+.ivm-partner-route strong{display:block;font-family:var(--ivm-display,Georgia,serif);font-size:24px;font-weight:300;line-height:1.08;margin-bottom:9px}
+.ivm-partner-route small{display:block;font-size:10px;line-height:1.6;color:rgba(23,22,18,.54)}
+@media(max-width:900px){.ivm-partner-routes-head{grid-template-columns:1fr;gap:28px}.ivm-partner-route-grid{grid-template-columns:1fr 1fr}.ivm-partner-route:nth-child(3){border-left:0;border-top:1px solid rgba(23,22,18,.16);padding-left:0}.ivm-partner-route:nth-child(4){border-top:1px solid rgba(23,22,18,.16)}}
+@media(max-width:600px){.ivm-partner-routes{padding:64px 20px}.ivm-partner-routes-inner{width:100%}.ivm-partner-route-grid{grid-template-columns:1fr}.ivm-partner-route+.ivm-partner-route,.ivm-partner-route:nth-child(3),.ivm-partner-route:nth-child(4){border-left:0;border-top:1px solid rgba(23,22,18,.16);padding-left:0}.ivm-partner-route{padding:20px 0}}
