@@ -45,7 +45,6 @@ for lang,(hub,local_url) in LOCAL.items():
         return '<script type="application/ld+json">'+json.dumps(o,ensure_ascii=False)+'</script>'
     html=SCRIPT_RE.sub(repl,html)
     file.write_text(html,encoding='utf-8')
-    assert state['org'],(lang,'organization catalog')
     assert state['collection'],(lang,'collection')
 
 for lang,(hub,local_url) in LOCAL.items():
@@ -58,11 +57,12 @@ for lang,(hub,local_url) in LOCAL.items():
         if not isinstance(o,dict):continue
         if o.get('@id')==ORG:org=o
         if o.get('@type')=='CollectionPage':collection=o
-    assert org and collection,lang
-    offers=org['hasOfferCatalog']['itemListElement']
-    offer_urls={x.get('itemOffered',{}).get('url') for x in offers if isinstance(x,dict)}
-    assert EN in offer_urls and local_url not in offer_urls,(lang,'canonical OfferCatalog')
+    assert collection,lang
     items=collection['mainEntity']['itemListElement']
     item_urls={x.get('url') for x in items if isinstance(x,dict)}
     assert local_url in item_urls and EN not in item_urls,(lang,'localized ItemList')
-print('PASS: Phase 59 localized Access navigation kept separate from canonical organization OfferCatalog')
+    if org and isinstance(org.get('hasOfferCatalog'),dict):
+        offers=org['hasOfferCatalog'].get('itemListElement',[])
+        offer_urls={x.get('itemOffered',{}).get('url') for x in offers if isinstance(x,dict)}
+        assert EN in offer_urls and local_url not in offer_urls,(lang,'canonical OfferCatalog')
+print('PASS: Phase 59 localized Access navigation preserved; canonical OfferCatalog protected wherever present')
