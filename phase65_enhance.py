@@ -4,9 +4,11 @@ import hashlib
 import re
 import shutil
 
-# Phases 69–70 intentionally execute here, after every visible enhancer and
-# immediately before final asset bundling/gates. They improve LCP discovery and
-# image layout stability without changing any page design or copy.
+# Phase 76 refreshes supplementary AI/GEO discovery metadata from the completed
+# multilingual architecture. Phases 69–70 then improve LCP discovery and image
+# layout stability before final asset bundling/gates. None changes page copy or
+# the approved visual composition.
+import phase76_enhance
 import phase69_enhance
 import phase70_enhance
 
