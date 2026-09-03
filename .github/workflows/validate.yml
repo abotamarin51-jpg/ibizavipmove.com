@@ -46,6 +46,7 @@ on:
       - "phase51_enhance.py"
       - "phase51_accessibility_fix.py"
       - "phase51_metadata_fix.py"
+      - "phase52_enhance.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase45_enhance.py"
@@ -73,6 +74,7 @@ on:
       - "phase43.css"
       - "phase45.css"
       - "phase46.js"
+      - "phase52.css"
       - "submit_indexnow.py"
       - "validate_site.py"
       - "build_site.sh"
@@ -133,6 +135,7 @@ jobs:
           python3 phase51_enhance.py
           python3 phase51_accessibility_fix.py
           python3 phase51_metadata_fix.py
+          python3 phase52_enhance.py
           python3 phase42_enhance.py
           python3 phase43_enhance.py
           python3 phase45_enhance.py
