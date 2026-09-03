@@ -20,7 +20,7 @@ for p in HTML:
     if canonical in canonical_to_file: errors.append(f'duplicate canonical output: {canonical} -> {canonical_to_file[canonical]} and {p}')
     canonical_to_file[canonical]=p; indexable.append((p,text,canonical))
 
-# Rebuild sitemap from current indexable canonicals while retaining useful metadata.
+# Keep sitemap exactly aligned with current indexable canonicals while preserving existing metadata.
 sitemap=ROOT/'sitemap.xml'; NS='http://www.sitemaps.org/schemas/sitemap/0.9'; ET.register_namespace('',NS); metadata={}
 if sitemap.exists():
     try:
@@ -57,12 +57,18 @@ for p,text,canonical in indexable:
     for href in re.findall(r'<a\b[^>]*\bhref="([^"]+)"',text,re.I):
         target=internal_target(href)
         if target and not path_exists(target): warnings.append(f'internal target from {p.relative_to(ROOT)}: {href}')
+
+    # Validate local visual assets by URL path, ignoring cache-busting query strings such as ?v=8.
     for src in re.findall(r'<(?:img|source)\b[^>]*(?:src|srcset)="([^"]+)"',text,re.I):
         first=src.split(',')[0].strip().split()[0]
-        if first.startswith('/assets/') and not (ROOT/first.lstrip('/')).exists(): errors.append(f'missing local image/asset in {p.relative_to(ROOT)}: {first}')
+        asset_path=urlparse(first).path
+        if asset_path.startswith('/assets/') and not (ROOT/asset_path.lstrip('/')).exists():
+            errors.append(f'missing local image/asset in {p.relative_to(ROOT)}: {asset_path}')
+
     if 'id="main-content"' not in text: errors.append(f'missing main-content landmark: {p.relative_to(ROOT)}')
     if 'class="ivm-skip-link"' not in text: errors.append(f'missing skip link: {p.relative_to(ROOT)}')
 
+# Five-language clusters introduced in Phases 36–37 must remain complete and reciprocal.
 clusters=[
 ['/luxury-villas-ibiza/','/es/villas-lujo-ibiza/','/fr/villas-luxe-ibiza/','/de/luxusvillen-ibiza/','/ar/luxury-villas-ibiza/'],
 ['/yacht-charter-ibiza/','/es/yate-privado-ibiza/','/fr/location-yacht-ibiza/','/de/yachtcharter-ibiza/','/ar/yacht-charter-ibiza/'],
@@ -91,9 +97,13 @@ for path,form_id in contacts:
     for field in ('fName','fPhone','fArrival','fDeparture','fService','fGuests','fBrief'):
         if f'id="{field}"' not in text: errors.append(f'contact field {field} missing on {path}')
 
-report=['IBIZA VIP MOVE PHASE 41 DIAGNOSTIC',f'Indexable pages: {len(indexable)}',f'Critical errors: {len(errors)}',f'Warnings: {len(warnings)}','']
-report += ['ERRORS:'] + (errors or ['None']) + ['', 'WARNINGS:'] + (warnings or ['None'])
-(ROOT/'quality-report.txt').write_text('\n'.join(report)+'\n',encoding='utf-8')
-for e in errors: print('DIAGNOSTIC ERROR: '+e)
-for w in warnings[:30]: print('DIAGNOSTIC WARN: '+w)
-print(f'DIAGNOSTIC PASS-THROUGH: Phase 41 wrote quality-report.txt with {len(errors)} critical error(s) and {len(warnings)} warning(s); deployment allowed for diagnosis')
+# Diagnostic file was temporary; never ship it in normal production builds.
+report=ROOT/'quality-report.txt'
+if report.exists(): report.unlink()
+
+for warning in warnings[:30]: print('WARN: '+warning)
+if len(warnings)>30: print(f'WARN: {len(warnings)-30} additional noncritical warning(s) suppressed')
+if errors:
+    print('\n'.join('FAIL: '+e for e in errors))
+    raise SystemExit(f'Phase 41 quality gate found {len(errors)} critical issue(s)')
+print(f'PASS: Phase 41 quality gate — {len(indexable)} indexable pages; sitemap aligned; critical assets, accessibility, multilingual clusters, navigation and forms verified; {len(warnings)} noncritical warning(s)')
