@@ -45,6 +45,7 @@ on:
       - "phase44_enhance.py"
       - "phase51_enhance.py"
       - "phase51_accessibility_fix.py"
+      - "phase51_metadata_fix.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase45_enhance.py"
@@ -141,6 +142,7 @@ jobs:
           python3 phase44_enhance.py
           python3 phase51_enhance.py
           python3 phase51_accessibility_fix.py
+          python3 phase51_metadata_fix.py
           python3 phase42_enhance.py
           python3 phase43_enhance.py
           python3 phase45_enhance.py
