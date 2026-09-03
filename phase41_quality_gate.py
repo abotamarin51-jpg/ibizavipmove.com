@@ -53,6 +53,10 @@ def internal_target(href):
     if path.startswith('/assets/') or path in ('/favicon.png','/site.webmanifest','/robots.txt','/sitemap.xml','/image-sitemap.xml','/llms.txt'): return None
     return path
 
+def local_asset_exists(url):
+    path=urlparse(url).path
+    return not path.startswith('/assets/') or (ROOT/path.lstrip('/')).exists()
+
 for p,text,canonical in indexable:
     for href in re.findall(r'<a\b[^>]*\bhref="([^"]+)"',text,re.I):
         target=internal_target(href)
@@ -65,10 +69,25 @@ for p,text,canonical in indexable:
         if asset_path.startswith('/assets/') and not (ROOT/asset_path.lstrip('/')).exists():
             errors.append(f'missing local image/asset in {p.relative_to(ROOT)}: {asset_path}')
 
+    # Stylesheets and scripts are equally critical. A missing CSS file can leave
+    # a page visually broken even when all image checks pass.
+    for href in re.findall(r'<link\b[^>]*\brel="stylesheet"[^>]*\bhref="([^"]+)"',text,re.I):
+        if href.startswith('/assets/') and not local_asset_exists(href):
+            errors.append(f'missing local stylesheet in {p.relative_to(ROOT)}: {urlparse(href).path}')
+    for src in re.findall(r'<script\b[^>]*\bsrc="([^"]+)"',text,re.I):
+        if src.startswith('/assets/') and not local_asset_exists(src):
+            errors.append(f'missing local script in {p.relative_to(ROOT)}: {urlparse(src).path}')
+
+    # Phase 63 superseded Phase 46 at runtime. Shipping both can allow the old
+    # routing code to overwrite localized conversion messages.
+    if '/assets/phase46.js?v=46' in text:
+        errors.append(f'obsolete Phase 46 runtime still referenced: {p.relative_to(ROOT)}')
+
     if 'id="main-content"' not in text: errors.append(f'missing main-content landmark: {p.relative_to(ROOT)}')
     if 'class="ivm-skip-link"' not in text: errors.append(f'missing skip link: {p.relative_to(ROOT)}')
 
-# Five-language clusters introduced in Phases 36–37 must remain complete and reciprocal.
+# Historical five-language clusters remain protected here; Phase 64 adds a
+# stricter all-11-service cluster validation immediately before this gate.
 clusters=[
 ['/luxury-villas-ibiza/','/es/villas-lujo-ibiza/','/fr/villas-luxe-ibiza/','/de/luxusvillen-ibiza/','/ar/luxury-villas-ibiza/'],
 ['/yacht-charter-ibiza/','/es/yate-privado-ibiza/','/fr/location-yacht-ibiza/','/de/yachtcharter-ibiza/','/ar/yacht-charter-ibiza/'],
@@ -106,4 +125,4 @@ if len(warnings)>30: print(f'WARN: {len(warnings)-30} additional noncritical war
 if errors:
     print('\n'.join('FAIL: '+e for e in errors))
     raise SystemExit(f'Phase 41 quality gate found {len(errors)} critical issue(s)')
-print(f'PASS: Phase 41 quality gate — {len(indexable)} indexable pages; sitemap aligned; critical assets, accessibility, multilingual clusters, navigation and forms verified; {len(warnings)} noncritical warning(s)')
+print(f'PASS: Phase 41 quality gate — {len(indexable)} indexable pages; sitemap aligned; images/CSS/JS, accessibility, multilingual clusters, navigation and forms verified; {len(warnings)} noncritical warning(s)')
