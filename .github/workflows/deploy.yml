@@ -57,6 +57,7 @@ on:
       - "phase59_catalog_fix.py"
       - "phase60_enhance.py"
       - "phase61_enhance.py"
+      - "phase62_enhance.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase45_enhance.py"
@@ -87,6 +88,7 @@ on:
       - "phase52.css"
       - "phase53.css"
       - "phase61.css"
+      - "phase62.css"
       - "submit_indexnow.py"
       - "validate_site.py"
       - "build_site.sh"
@@ -168,6 +170,7 @@ jobs:
           python3 phase59_catalog_fix.py
           python3 phase60_enhance.py
           python3 phase61_enhance.py
+          python3 phase62_enhance.py
           python3 phase42_enhance.py
           python3 phase43_enhance.py
           python3 phase45_enhance.py
