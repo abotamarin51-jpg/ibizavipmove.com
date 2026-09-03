@@ -74,6 +74,10 @@ on:
       - "phase72.css"
       - "phase72_style_fix.py"
       - "phase72_audit.py"
+      - "phase73_enhance.py"
+      - "phase73.css"
+      - "phase74_style_fix.py"
+      - "phase74_enhance.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase45_enhance.py"
@@ -183,11 +187,14 @@ jobs:
           python3 phase71_metadata_fix.py
           python3 phase72_enhance.py
           python3 phase72_style_fix.py
+          python3 phase73_enhance.py
           python3 phase42_enhance.py
           python3 phase43_enhance.py
           python3 phase45_enhance.py
           python3 phase46_enhance.py
           python3 phase47_enhance.py
+          python3 phase74_style_fix.py
+          python3 phase74_enhance.py
           python3 phase48_enhance.py
           python3 phase49_enhance.py
           python3 phase50_enhance.py
