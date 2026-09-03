@@ -55,7 +55,6 @@ for path,items in PAGES.items():
         details=''.join(f'<details><summary>{q}</summary><p>{a}</p></details>' for q,a in items)
         section=f'''<section class="ivm-service-faq" aria-label="Service planning questions"><div class="ivm-service-faq-inner"><div class="ivm-service-faq-head"><div class="eyebrow">Before the private brief</div><h2>What clients usually need to know.</h2><p>Short operational answers to the questions that most often shape the first conversation.</p></div><div class="ivm-faq-list">{details}</div></div></section>'''
         html=html.replace('</main>',section+'</main>',1)
-    # Replace any pre-existing FAQPage script; otherwise append a clean one.
     pattern=re.compile(r'<script\s+type="application/ld\+json">(.*?)</script>',re.I|re.S)
     kept=[];cursor=0
     for m in pattern.finditer(html):
@@ -71,8 +70,14 @@ for path,items in PAGES.items():
 
 for path,items in PAGES.items():
     html=(ROOT/path.strip('/')/'index.html').read_text(encoding='utf-8')
-    assert html.count('<details>')==4,path
-    assert html.count('"@type": "FAQPage"')==1,path
+    faq=re.search(r'<section class="ivm-service-faq".*?</section>',html,re.I|re.S)
+    assert faq and faq.group(0).count('<details>')==4,path
+    schemas=[]
+    for m in re.finditer(r'<script\s+type="application/ld\+json">(.*?)</script>',html,re.I|re.S):
+        try:obj=json.loads(m.group(1))
+        except Exception:continue
+        if isinstance(obj,dict) and obj.get('@type')=='FAQPage':schemas.append(obj)
+    assert len(schemas)==1 and len(schemas[0].get('mainEntity',[]))==4,path
     assert STYLE in html,path
     assert html.count('<h1')==1,path
 assert css_dest.exists() and css_dest.stat().st_size>1000
