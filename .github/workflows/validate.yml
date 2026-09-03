@@ -43,6 +43,7 @@ on:
       - "phase39_enhance.py"
       - "phase40_enhance.py"
       - "phase42_enhance.py"
+      - "phase43_enhance.py"
       - "phase41_quality_gate.py"
       - "editorial-black.css"
       - "editorial-inner.css"
@@ -59,6 +60,7 @@ on:
       - "phase38.css"
       - "phase40.css"
       - "phase42.css"
+      - "phase43.css"
       - "submit_indexnow.py"
       - "validate_site.py"
       - "build_site.sh"
@@ -116,6 +118,7 @@ jobs:
           python3 phase39_enhance.py
           python3 phase40_enhance.py
           python3 phase42_enhance.py
+          python3 phase43_enhance.py
           python3 phase41_quality_gate.py
           python3 validate_site.py
       - name: Upload validated preview artifact
