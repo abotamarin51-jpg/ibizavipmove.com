@@ -78,6 +78,11 @@ def repl_main(h,m):
  if n!=1:raise SystemExit('Phase 68 main replacement failed')
  return h
 
+def accessible_shell(h):
+ if 'class="ivm-skip-link"' not in h:h=re.sub(r'(<body\b[^>]*>)',r'\1<a class="ivm-skip-link" href="#main-content">Skip to content</a>',h,count=1,flags=re.I)
+ h=re.sub(r'<main(?![^>]*\bid=)([^>]*)>',r'<main id="main-content"\1>',h,count=1,flags=re.I)
+ return h
+
 def about_main(d):
  cards=''.join(f'<article><span>0{i}</span><h3>{escape(a)}</h3><p>{escape(b)}</p></article>' for i,(a,b) in enumerate(d['cards'],1));steps=''.join(f'<div><span>0{i}</span><strong>{escape(x)}</strong></div>' for i,x in enumerate(d['steps'],1))
  return f'''<main id="main-content"><section class="page-hero"><div class="page-hero-media"><img src="/assets/images/hero-desktop.jpg" alt="Ibiza VIP Move private concierge Ibiza" width="2200" height="1400" fetchpriority="high" decoding="async"></div><div><div class="kicker light">{escape(d['about_kicker'])}</div><h1>{d['about_h1']}</h1><p>{escape(d['about_intro'])}</p><a class="btn gold" href="{d['contact']}">{escape(d['about_cta'])}</a><div class="ivm-about-statement"><span>{escape(d['private'])}</span><p>{escape(d['private_p'])}</p></div></div></section><section class="ivm-about-role"><div class="ivm-about-role-inner"><div><div class="eyebrow">{escape(d['role'])}</div><h2>{d['role_h2']}</h2></div><div><p class="lead">{escape(d['role_lead'])}</p><p>{escape(d['role_p'])}</p><div class="ivm-about-role-rule">{steps}</div></div></div></section><section class="ivm-about-principles"><div class="ivm-about-principles-inner"><div class="ivm-about-principles-head"><div><div class="eyebrow">{escape(d['principles'])}</div><h2>{escape(d['principles_h2'])}</h2></div><p>{escape(d['principles_p'])}</p></div><div class="ivm-about-principle-grid">{cards}</div></div></section><section class="ivm-about-promise"><div class="ivm-about-promise-inner"><div><h2>{escape(d['promise'])}</h2></div><div><p>{escape(d['promise_p'])}</p><div class="ivm-about-actions"><a class="btn dark" href="{d['contact']}">{escape(d['brief'])}</a><a class="btn ghost" href="{d['intl']}">{escape(d['intl_link'])}</a></div></div></div></section></main>'''
@@ -89,7 +94,7 @@ def intl_main(d,lang):
 
 asrc=page('/about/');isrc=page('/international-clients/')
 if not asrc.exists() or not isrc.exists():raise SystemExit('Phase 68 English sources missing')
-ab=asrc.read_text(encoding='utf-8');ib=isrc.read_text(encoding='utf-8')
+ab=accessible_shell(asrc.read_text(encoding='utf-8'));ib=accessible_shell(isrc.read_text(encoding='utf-8'))
 asrc.write_text(meta(ab,'en','/about/','About Ibiza VIP Move | Private Concierge Ibiza','About Ibiza VIP Move: private concierge and lifestyle coordination in Ibiza for private clients, personal assistants, family offices and luxury travel partners.',ABOUT),encoding='utf-8')
 ie=meta(ib,'en','/international-clients/','International Ibiza Concierge for Private Clients & Travel Partners | Ibiza VIP Move','Ibiza concierge support for international private clients, PAs, family offices, luxury travel advisors and concierge partners coordinating stays from abroad.',INTL);isrc.write_text(schemas(ie,'en','/international-clients/','International Ibiza Concierge for Private Clients & Travel Partners | Ibiza VIP Move','Ibiza concierge support for international private clients, PAs, family offices, luxury travel advisors and concierge partners coordinating stays from abroad.','WebPage','International Clients & Partners'),encoding='utf-8')
 created=[]

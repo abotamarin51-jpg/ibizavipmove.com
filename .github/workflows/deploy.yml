@@ -79,6 +79,8 @@ on:
       - "phase74_style_fix.py"
       - "phase74_enhance.py"
       - "phase75_faq_audit.py"
+      - "phase100_enhance.py"
+      - "phase100_audit.py"
       - "phase42_enhance.py"
       - "phase43_enhance.py"
       - "phase45_enhance.py"

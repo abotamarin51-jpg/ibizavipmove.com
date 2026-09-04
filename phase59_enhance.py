@@ -102,6 +102,8 @@ for lang,data in DATA.items():
     for prop,val in [('og:title',data['title']),('og:description',data['desc']),('og:url',canonical),('og:image',BASE+IMAGE)]:
         html=re.sub(rf'(<meta\s+property="{re.escape(prop)}"\s+content=")[^"]*(")',lambda m,v=val:m.group(1)+escape(v)+m.group(2),html,count=1,flags=re.I)
     html=re.sub(r'<main\b[^>]*>.*?</main>',main_html(data),html,count=1,flags=re.I|re.S)
+    if 'class="ivm-skip-link"' not in html:
+        html=re.sub(r'(<body\b[^>]*>)',r'\1<a class="ivm-skip-link" href="#main-content">Skip to content</a>',html,count=1,flags=re.I)
     html=update_schemas(html,lang,data)
     html=html.replace('</head>',alternates()+'</head>',1)
     dest=ROOT/data['path'].strip('/')/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(html,encoding='utf-8')
