@@ -8,7 +8,7 @@ PAGES={
 'es':('/es/private-office/','Concierge Ibiza para Family Offices y Personal Assistants | Ibiza VIP Move','family offices y personal assistants'),
 'fr':('/fr/private-office/','Conciergerie Ibiza pour Family Offices & Personal Assistants | Ibiza VIP Move','family offices et personal assistants'),
 'de':('/de/private-office/','Ibiza Concierge für Family Offices & Personal Assistants | Ibiza VIP Move','family offices und personal assistants'),
-'ar':('/ar/private-office/','كونسيرج إيبيزا للمكاتب العائلية والمساعدين الشخصيين | Ibiza VIP Move','المكاتب العائلية والمساعدين الشخصيين')}
+'ar':('/ar/private-office/','كونسيرج إيبيزا للمكاتب العائلية والمساعدين الشخصيين | Ibiza VIP Move','للمكاتب العائلية والمساعدين الشخصيين')}
 SCRIPT_RE=re.compile(r'<script\s+type=["\']application/ld\+json["\']>(.*?)</script>',re.I|re.S)
 
 def clean(s):
@@ -26,14 +26,12 @@ for lang,(path,title,needle) in PAGES.items():
     if len(h1s)!=1 or needle.lower() not in clean(h1s[0]).lower(): raise SystemExit(f'Phase 90 H1 intent mismatch: {path}')
     if html.count('ivm-family-office-boundary')!=1: raise SystemExit(f'Phase 90 scope boundary mismatch: {path}')
     text=clean(html)
-    # The page must clearly define concierge/operational support and explicitly reject formal advisory positioning.
     required=['concierge'] if lang!='ar' else ['الكونسيرج']
     for n in required:
         if n.lower() not in text.lower(): raise SystemExit(f'Phase 90 concierge scope missing: {path}')
     boundary=re.search(r'<p\b[^>]*class="ivm-family-office-boundary"[^>]*>(.*?)</p>',html,re.I|re.S)
     btext=clean(boundary.group(1)) if boundary else ''
     if lang=='en' and not all(x in btext.lower() for x in ['legal','tax','investment','wealth-management','formal family-office']): raise SystemExit('Phase 90 English scope disambiguation incomplete')
-    # Metadata consistency.
     for attr,name in [('property','og:title'),('name','twitter:title')]:
         m=re.search(rf'<meta\b(?=[^>]*{attr}=["\']{re.escape(name)}["\'])(?=[^>]*content=["\']([^"\']+)["\'])[^>]*>',html,re.I)
         if not m or unescape(m.group(1))!=title: raise SystemExit(f'Phase 90 social title mismatch: {path} {name}')
