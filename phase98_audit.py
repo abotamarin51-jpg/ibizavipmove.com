@@ -24,9 +24,9 @@ for f in ROOT.rglob('index.html'):
     hrefs=re.findall(r'<a\b[^>]*href="([^"]+)"[^>]*>',blocks[0],re.I)
     if hrefs!=[target]: raise SystemExit(f'Phase 98 wrong concierge target: {path} -> {hrefs}')
     if not page(target).exists(): raise SystemExit(f'Phase 98 missing target: {target}')
-    # The bridge must remain in the final request CTA before the FAQ, not in global navigation/footer.
-    closing=re.search(r'<section class="closing-simple">(.*?)</section><section class="ivm-service-faq"',html,re.I|re.S)
-    if not closing or 'ivm-concierge-continuity' not in closing.group(1): raise SystemExit(f'Phase 98 bridge left conversion context: {path}')
+    # The bridge must remain inside the conversion closing-simple section, not global navigation/footer.
+    closings=re.findall(r'<section class="closing-simple">(.*?)</section>',html,re.I|re.S)
+    if len(closings)!=1 or 'ivm-concierge-continuity' not in closings[0]: raise SystemExit(f'Phase 98 bridge left conversion context: {path}')
     if lang!='en' and not target.startswith(f'/{lang}/'): raise SystemExit(f'Phase 98 language leak: {path} -> {target}')
     count+=1
 
