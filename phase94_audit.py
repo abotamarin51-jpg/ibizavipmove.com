@@ -29,7 +29,3 @@ for path in ['/services/','/es/servicios/','/fr/services/','/de/services/','/ar/
     f=ROOT/path.strip('/')/'index.html'
     if not f.exists() or 'ivm-local-coverage' not in f.read_text(encoding='utf-8'):raise SystemExit(f'Phase 94 visible GEO support missing: {path}')
 print(f'PASS: Phase 94 audit — {count} Service entities use the same Ibiza + 8 visible service areas as the Organization GEO model')
-
-# Continue the final protected pipeline with contextual Black Book authority routing.
-import phase95_enhance
-import phase95_audit
