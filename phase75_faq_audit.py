@@ -6,7 +6,8 @@ import re
 # Keep Black Book editorial semantics, social metadata, page-graph hygiene,
 # canonical sharing metadata, image discovery, hreflang, social cards, structured language,
 # search intent, multilingual Ibiza service-area relevance, Google site-name identity,
-# private-concierge decision depth and multilingual concierge-selection guidance protected post-validate.
+# private-concierge decision depth, multilingual concierge-selection guidance,
+# and Family Office / PA concierge intent protected post-validate.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
@@ -23,6 +24,8 @@ import phase88_enhance
 import phase88_audit
 import phase89_enhance
 import phase89_audit
+import phase90_enhance
+import phase90_audit
 
 ROOT=Path('_site')
 
