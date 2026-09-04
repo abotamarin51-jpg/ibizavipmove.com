@@ -42,3 +42,6 @@ if updated!=1:
     raise SystemExit(f'Phase 84 expected exactly one Private Concierge Service node, updated {updated}')
 TARGET.write_text(html,encoding='utf-8')
 print('PASS: Phase 84 structured-data language — Private Concierge Service explicitly normalized to inLanguage=en')
+
+# Separate broad Luxury Concierge Ibiza intent from the narrower Private Concierge landing.
+import phase85_enhance
