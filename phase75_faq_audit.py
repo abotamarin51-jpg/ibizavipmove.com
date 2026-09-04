@@ -4,8 +4,8 @@ import json
 import re
 
 # Keep Black Book editorial semantics, social metadata, page-graph hygiene,
-# canonical sharing metadata, image discovery, hreflang, social cards, structured language and search intent protected post-validate.
-# Phase 85 rerun after final-home H1 selector normalization and concierge planning-depth enhancement.
+# canonical sharing metadata, image discovery, hreflang, social cards, structured language,
+# search intent and multilingual Ibiza service-area relevance protected post-validate.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
@@ -15,6 +15,7 @@ import phase82_hreflang_audit
 import phase83_social_audit
 import phase84_language_audit
 import phase85_audit
+import phase86_audit
 
 ROOT=Path('_site')
 
