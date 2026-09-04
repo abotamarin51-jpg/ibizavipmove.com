@@ -7,6 +7,7 @@ mkdir -p _site/assets/images
 cp premium.css _site/assets/premium.css
 cp premium.js _site/assets/premium.js
 cp luxury-overrides.css _site/assets/luxury-overrides.css
+cp phase86.css _site/assets/phase86.css
 cp brand-logo.jpg _site/assets/brand-logo.jpg
 cp brand-logo.svg _site/assets/brand-logo.svg
 cp brand-mark.svg _site/assets/brand-mark.svg
