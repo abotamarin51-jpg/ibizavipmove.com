@@ -6,6 +6,7 @@ import re
 # Keep Black Book editorial semantics, social metadata, page-graph hygiene,
 # canonical sharing metadata, image discovery, hreflang, social cards, structured language,
 # search intent and multilingual Ibiza service-area relevance protected post-validate.
+# Phase 86 audit uses only the Python standard library for CI portability.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
