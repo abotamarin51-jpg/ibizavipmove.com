@@ -64,7 +64,7 @@ h=set_meta(h,'property','og:description',HOME_DESC)
 h=set_meta(h,'name','twitter:title',HOME_TITLE)
 h=set_meta(h,'name','twitter:description',HOME_DESC)
 h=replace_once(h,r'<div class="kicker light">Private Concierge · Ibiza</div>','<div class="kicker light">Luxury Concierge · Ibiza</div>','home hero kicker')
-h=replace_once(h,r'<h1>Exceptional Ibiza,\s*<br>\s*<em>handled privately\.</em>\s*</h1>','<h1>Luxury concierge in Ibiza,<br><em>handled privately.</em></h1>','home h1')
+h=replace_once(h,r'<h1>Exceptional Ibiza,\s*<br>\s*handled privately\.</h1>','<h1>Luxury concierge in Ibiza,<br>handled privately.</h1>','home h1')
 needle='<h2>One trusted contact for the island.</h2>'
 if needle not in h:raise SystemExit('Phase 85 home trust heading missing')
 h=h.replace(needle,needle+'<p class="ivm-seo-lead">Ibiza VIP Move is a luxury concierge in Ibiza for private clients and professional teams who want one discreet on-island point of coordination.</p>',1)
