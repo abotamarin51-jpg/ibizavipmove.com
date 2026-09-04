@@ -60,9 +60,9 @@ for lang,d in DATA.items():
     if not f.exists():raise SystemExit(f'Phase 97 About page missing: {d["path"]}')
     html=f.read_text(encoding='utf-8')
     if 'ivm-official-facts' in html:raise SystemExit(f'Phase 97 duplicate official facts: {d["path"]}')
-    marker='<section class="closing'
-    pos=html.find(marker)
-    if pos<0:raise SystemExit(f'Phase 97 closing marker missing: {d["path"]}')
+    marker='</main>'
+    pos=html.rfind(marker)
+    if pos<0:raise SystemExit(f'Phase 97 main closing marker missing: {d["path"]}')
     html=html[:pos]+block(d)+html[pos:]
     html=patch_about(html,BASE+d['path'])
     f.write_text(html,encoding='utf-8');count+=1
