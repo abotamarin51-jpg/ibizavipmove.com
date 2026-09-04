@@ -10,7 +10,8 @@ import re
 # Family Office / PA concierge intent, precise Organization and Service GEO,
 # verified external editorial references, the AI/GEO source of truth,
 # Black Book contextual authority routing, localized home authority pathways,
-# official brand facts and service-to-concierge authority bridges protected post-validate.
+# official brand facts and service-to-concierge authority bridges protected post-validate
+# after the universal conversion-section selector fix.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
