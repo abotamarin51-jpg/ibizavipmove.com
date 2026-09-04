@@ -9,8 +9,8 @@ import re
 # private-concierge decision depth, multilingual concierge-selection guidance,
 # Family Office / PA concierge intent, precise Organization and Service GEO,
 # verified external editorial references, the AI/GEO source of truth,
-# Black Book contextual authority routing, localized home authority pathways
-# and official brand facts protected post-validate after the universal About insertion fix.
+# Black Book contextual authority routing, localized home authority pathways,
+# official brand facts and service-to-concierge authority bridges protected post-validate.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
@@ -43,6 +43,8 @@ import phase96_enhance
 import phase96_audit
 import phase97_enhance
 import phase97_audit
+import phase98_enhance
+import phase98_audit
 
 ROOT=Path('_site')
 
