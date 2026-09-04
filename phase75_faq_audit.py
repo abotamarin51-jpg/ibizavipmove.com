@@ -7,7 +7,8 @@ import re
 # canonical sharing metadata, image discovery, hreflang, social cards, structured language,
 # search intent, multilingual Ibiza service-area relevance, Google site-name identity,
 # private-concierge decision depth, multilingual concierge-selection guidance,
-# Family Office / PA concierge intent and precise Organization service-area GEO protected post-validate.
+# Family Office / PA concierge intent, precise Organization service-area GEO,
+# and verified external editorial references protected post-validate.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
@@ -28,6 +29,8 @@ import phase90_enhance
 import phase90_audit
 import phase91_enhance
 import phase91_audit
+import phase92_enhance
+import phase92_audit
 
 ROOT=Path('_site')
 
