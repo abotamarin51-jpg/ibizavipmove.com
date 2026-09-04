@@ -33,10 +33,11 @@ for path,f,html in service_pages:
     lang=lang_for(path); target,question,cta=TARGETS[lang]
     if not page(target).exists(): raise SystemExit(f'Phase 98 concierge target missing: {target}')
     if 'ivm-concierge-continuity' in html: raise SystemExit(f'Phase 98 duplicate bridge: {path}')
-    # All protected service landings have one closing-simple section immediately before the FAQ.
-    pattern=r'(<section class="closing-simple">.*?)(</section><section class="ivm-service-faq")'
+    # Every protected service landing has one conversion closing-simple section.
+    # Do not require FAQ adjacency because a few localized pages have a small intermediary block.
+    pattern=r'(<section class="closing-simple">.*?)(</section>)'
     m=re.search(pattern,html,re.I|re.S)
-    if not m: raise SystemExit(f'Phase 98 closing/FAQ sequence missing: {path}')
+    if not m: raise SystemExit(f'Phase 98 closing section missing: {path}')
     bridge=f'<p class="ivm-concierge-continuity">{question} <a class="text-link" href="{target}">{cta}</a></p>'
     replacement=m.group(1)+bridge+m.group(2)
     html=html[:m.start()]+replacement+html[m.end():]
