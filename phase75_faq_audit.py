@@ -5,6 +5,7 @@ import re
 
 # Keep Black Book editorial semantics, social metadata, page-graph hygiene,
 # canonical sharing metadata, image discovery, hreflang, social cards, structured language and search intent protected post-validate.
+# Phase 85 rerun after final-home H1 selector normalization.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
