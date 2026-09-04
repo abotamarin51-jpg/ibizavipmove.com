@@ -107,3 +107,6 @@ c=c.replace(marker,extra+marker,1)
 CONCIERGE.write_text(c,encoding='utf-8')
 
 print('PASS: Phase 85 search intent — HOME aligned to Luxury Concierge Ibiza; Private Concierge landing deepened with local Ibiza service-area relevance')
+
+# Add multilingual local service-area relevance only after search intent is stable.
+import phase86_enhance
