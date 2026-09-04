@@ -1,26 +1,32 @@
 from pathlib import Path
-from bs4 import BeautifulSoup
+from html import unescape
 import json
 import re
 
 ROOT=Path('_site')
 BASE='https://ibizavipmove.com'
 SCRIPT_RE=re.compile(r'<script\s+type=["\']application/ld\+json["\']>(.*?)</script>',re.I|re.S)
+SECTION_RE=re.compile(r'<section\b[^>]*class=["\'][^"\']*ivm-local-coverage[^"\']*["\'][^>]*>(.*?)</section>',re.I|re.S)
+CARD_RE=re.compile(r'<div\b[^>]*class=["\'][^"\']*ivm-local-area[^"\']*["\'][^>]*>',re.I)
 HUBS={
 'en':'/services/','es':'/es/servicios/','fr':'/fr/services/','de':'/de/services/','ar':'/ar/services/'
 }
 EXPECTED_PLACES={'Eivissa / Ibiza Town','Marina Botafoch / Talamanca','Sant Josep de sa Talaia','Cala Jondal / Es Cubells','Santa Eulària des Riu','Roca Llisa / Cala Llonga','Sant Antoni de Portmany','Santa Gertrudis de Fruitera'}
 
+def clean_text(fragment):
+    text=re.sub(r'<[^>]+>',' ',fragment)
+    return re.sub(r'\s+',' ',unescape(text)).strip()
+
 for lang,path in HUBS.items():
     f=ROOT/path.strip('/')/'index.html'
     if not f.exists():raise SystemExit(f'Phase 86 audit missing hub: {path}')
     html=f.read_text(encoding='utf-8')
-    soup=BeautifulSoup(html,'html.parser')
-    sections=soup.select('section.ivm-local-coverage')
+    sections=SECTION_RE.findall(html)
     if len(sections)!=1:raise SystemExit(f'Phase 86 expected one local coverage section: {path} -> {len(sections)}')
-    cards=sections[0].select('.ivm-local-area')
+    section=sections[0]
+    cards=CARD_RE.findall(section)
     if len(cards)!=8:raise SystemExit(f'Phase 86 expected eight local areas: {path} -> {len(cards)}')
-    text=' '.join(sections[0].stripped_strings)
+    text=clean_text(section)
     for needle in ('Ibiza Town','Marina Botafoch','Sant Josep','Cala Jondal','Es Cubells','Santa Eulària','Sant Antoni','Santa Gertrudis'):
         if needle.lower() not in text.lower():raise SystemExit(f'Phase 86 visible area missing {needle}: {path}')
 
@@ -38,8 +44,10 @@ for lang,path in HUBS.items():
     items=(coll.get('mainEntity') or {}).get('itemListElement') or []
     if len(items)!=11:raise SystemExit(f'Phase 86 service ItemList changed: {path}')
     urls=[x.get('url','') for x in items if isinstance(x,dict)]
+    if len(urls)!=11:raise SystemExit(f'Phase 86 malformed service ItemList: {path}')
     if lang!='en' and not all(u.startswith(BASE+'/'+lang+'/') for u in urls):
-        # Spanish hub uses /es/servicios/ but all service landings still use /es/.
         raise SystemExit(f'Phase 86 cross-language ItemList URL found: {path}')
+    if lang=='en' and any(re.match(rf'^{re.escape(BASE)}/(?:es|fr|de|ar)/',u) for u in urls):
+        raise SystemExit(f'Phase 86 localized URL leaked into English ItemList: {path}')
 
 print('PASS: Phase 86 local Ibiza audit — 5 Services hubs expose 40 visible service-area cards and eight structured Place entities per language without cross-language service links')
