@@ -230,7 +230,9 @@ for path in ROOT.rglob('*.html'):
         + f'<meta name="twitter:description" content="{escape(desc)}">'
         + f'<meta name="twitter:image" content="{escape(og_image_absolute)}">'
     )
-    if og_image.startswith('/assets/'):
+    # The homepage receives a responsive hero preload later in the build.
+    # Avoid downloading its legacy social image as a second high-priority asset.
+    if og_image.startswith('/assets/') and canonical != BASE + '/':
         social_tags += f'<link rel="preload" as="image" href="{escape(og_image)}">'
 
     # Core WebPage and breadcrumb data.
