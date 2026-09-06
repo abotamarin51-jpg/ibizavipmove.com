@@ -37,6 +37,8 @@ COPY = {
         'desc':'Conciergerie privée à Ibiza pour chauffeur, villas, yachts, aviation privée, restaurants, sécurité, wellness et demandes sur mesure via un seul contact.',
         'h1':'Conciergerie privée à Ibiza, gérée comme un seul service.',
         'lead':'Un point de contact unique pour coordonner votre séjour privé à Ibiza, de l’arrivée au départ.',
+        'large':'Un interlocuteur basé à Ibiza relie les éléments confirmés du séjour autour de l’itinéraire des invités.',
+        'availability':'Disponibilités, conditions des prestataires et détails opérationnels restent soumis à confirmation pour chaque demande.',
         'eyebrow':'Conciergerie privée · Ibiza','section':'Du brief à l’exécution.','cta':'Demander une assistance privée',
         'items':[('01','Brief','Dates, invités, priorités, confidentialité et services requis.'),('02','Aligner','Chauffeur, séjour, réservations et partenaires organisés autour du même itinéraire.'),('03','Coordonner','Les détails confirmés restent centralisés dans une seule ligne de communication.'),('04','Adapter','Si le planning change, les éléments concernés sont réévalués avec lui.')],
     },
@@ -45,6 +47,8 @@ COPY = {
         'desc':'Chauffeur privé à Ibiza pour aéroport, villas, hôtels, marinas, restaurants, nightlife, mise à disposition et coordination multi-véhicules.',
         'h1':'Chauffeur privé à Ibiza, autour de votre agenda.',
         'lead':'Mobilité privée pour arrivées, villas, hôtels, marinas, restaurants, nightlife et journées complètes à Ibiza.',
+        'large':'Un point de contact à Ibiza maintient les trajets confirmés alignés avec les horaires, les étapes et les besoins des invités.',
+        'availability':'Disponibilité des véhicules, conditions et détails opérationnels restent soumis à confirmation pour chaque demande.',
         'eyebrow':'Chauffeur privé · Ibiza','section':'Une mobilité privée, clairement coordonnée.','cta':'Demander un chauffeur privé',
         'items':[('01','Aéroport','Arrivées et départs coordonnés avec vol, bagages et destination.'),('02','À l’heure','Mise à disposition autour d’un planning confirmé et de plusieurs étapes.'),('03','Journée complète','Chauffeur privé pour journées complètes et changements de lieux.'),('04','Multi-véhicules','Coordination de groupes, bagages et plusieurs véhicules si nécessaire.')],
     },
@@ -53,6 +57,8 @@ COPY = {
         'desc':'Privater Concierge auf Ibiza für Chauffeur, Villen, Yachten, private Aviation, Restaurants, Security, Wellness und individuelle Wünsche über einen Ansprechpartner.',
         'h1':'Privater Concierge auf Ibiza, zentral koordiniert.',
         'lead':'Ein Ansprechpartner für einen privaten Ibiza-Aufenthalt – von der Ankunft bis zur Abreise.',
+        'large':'Ein Ansprechpartner auf Ibiza hält die bestätigten Bestandteile des Aufenthalts entlang der Reiseroute der Gäste zusammen.',
+        'availability':'Verfügbarkeit, Bedingungen der Anbieter und operative Details müssen für jede konkrete Anfrage bestätigt werden.',
         'eyebrow':'Privater Concierge · Ibiza','section':'Vom Briefing zur Umsetzung.','cta':'Private Unterstützung anfragen',
         'items':[('01','Briefing','Reisedaten, Gäste, Prioritäten, Privatsphäre und benötigte Services.'),('02','Abstimmen','Mobilität, Aufenthalt, Reservierungen und Partner rund um eine Route ausrichten.'),('03','Koordinieren','Bestätigte Details bleiben über einen zentralen Kontakt gebündelt.'),('04','Anpassen','Wenn sich Zeiten ändern, werden die betroffenen Elemente entsprechend neu abgestimmt.')],
     },
@@ -61,6 +67,8 @@ COPY = {
         'desc':'Privater Chauffeur auf Ibiza für Flughafen, Villen, Hotels, Marinas, Restaurants, Nightlife, stundenweise Verfügbarkeit und mehrere Fahrzeuge.',
         'h1':'Privater Chauffeur auf Ibiza, passend zu Ihrem Zeitplan.',
         'lead':'Private Mobilität für Ankünfte, Villen, Hotels, Marinas, Restaurants, Nightlife und ganze Tage auf Ibiza.',
+        'large':'Ein Ansprechpartner auf Ibiza stimmt bestätigte Fahrten mit Zeiten, Zwischenstopps und den Anforderungen der Gäste ab.',
+        'availability':'Fahrzeugverfügbarkeit, Bedingungen und operative Details müssen für jede konkrete Anfrage bestätigt werden.',
         'eyebrow':'Privater Chauffeur · Ibiza','section':'Private Mobilität, klar koordiniert.','cta':'Privaten Chauffeur anfragen',
         'items':[('01','Flughafen','Ankunft und Abflug mit Flug, Gepäck und Ziel abgestimmt.'),('02','Stundenweise','Verfügbarkeit für mehrere Stopps innerhalb eines bestätigten Zeitplans.'),('03','Ganztägig','Privater Chauffeur für ganze Tage und mehrere Ortswechsel.'),('04','Mehrere Fahrzeuge','Koordination von Gruppen, Gepäck und mehreren Fahrzeugen bei Bedarf.')],
     },
@@ -69,6 +77,8 @@ COPY = {
         'desc':'كونسيرج خاص في إيبيزا لتنسيق السائق والفلل واليخوت والطيران الخاص والمطاعم والأمن والعافية والطلبات المخصصة عبر نقطة اتصال واحدة.',
         'h1':'كونسيرج خاص في إيبيزا، بتنسيق مركزي.',
         'lead':'نقطة اتصال واحدة لتنسيق الإقامة الخاصة في إيبيزا من الوصول حتى المغادرة.',
+        'large':'تربط جهة اتصال واحدة في إيبيزا عناصر الإقامة المؤكدة حول برنامج الضيوف وتحافظ على وضوح مسار التنسيق.',
+        'availability':'يبقى التوفر وشروط المورّدين والتفاصيل التشغيلية خاضعاً للتأكيد لكل طلب محدد.',
         'eyebrow':'كونسيرج خاص · إيبيزا','section':'من الطلب إلى التنفيذ.','cta':'طلب مساعدة خاصة',
         'items':[('01','الطلب','التواريخ والضيوف والأولويات والخصوصية والخدمات المطلوبة.'),('02','التنسيق','ربط التنقل والإقامة والحجوزات والشركاء ضمن برنامج واحد.'),('03','الإدارة','الحفاظ على التفاصيل المؤكدة عبر جهة اتصال واحدة.'),('04','التكيف','عند تغيّر التوقيت تتم مراجعة العناصر المرتبطة به.')],
     },
@@ -77,6 +87,8 @@ COPY = {
         'desc':'سائق خاص في إيبيزا للمطار والفلل والفنادق والمراسي والمطاعم والحياة الليلية والحجز بالساعة وتنسيق عدة سيارات.',
         'h1':'سائق خاص في إيبيزا، وفق جدولك.',
         'lead':'تنقل خاص للوصول والمغادرة والفلل والفنادق والمراسي والمطاعم والحياة الليلية والأيام الكاملة في إيبيزا.',
+        'large':'تنسق جهة اتصال واحدة في إيبيزا الرحلات المؤكدة مع المواعيد والمحطات واحتياجات الضيوف.',
+        'availability':'يبقى توفر المركبات والشروط والتفاصيل التشغيلية خاضعاً للتأكيد لكل طلب محدد.',
         'eyebrow':'سائق خاص · إيبيزا','section':'تنقل خاص بتنسيق واضح.','cta':'طلب سائق خاص',
         'items':[('01','المطار','تنسيق الوصول والمغادرة مع الرحلة والأمتعة والوجهة.'),('02','بالساعة','توفر لعدة محطات ضمن جدول مؤكد.'),('03','يوم كامل','سائق خاص ليوم كامل والتنقل بين عدة مواقع.'),('04','عدة سيارات','تنسيق المجموعات والأمتعة وعدة مركبات عند الحاجة.')],
     },
@@ -117,7 +129,7 @@ def head(lang, group, data):
 def body(group,data):
     cards=''.join(f'<article><span>{num}</span><h3>{title}</h3><p>{copy}</p></article>' for num,title,copy in data['items'])
     image=GROUPS[group]['image']
-    return f'''<section class="page-hero" style="--hero:url('{image}')"><div><div class="kicker light">{data['eyebrow']}</div><h1>{data['h1']}</h1><p>{data['lead']}</p><a class="btn gold" href="{WA}">{data['cta']}</a></div></section><section class="editorial"><div><div class="kicker dark">Ibiza VIP Move</div><h2>{data['section']}</h2></div><div><p class="large">One Ibiza-based point of contact keeps the confirmed moving parts aligned around the guest itinerary.</p><p>Availability, supplier terms and operational details remain subject to confirmation for each specific request.</p></div></section><section class="process"><div class="process-grid">{cards}</div></section><section class="closing-simple"><h2>{data['cta']}</h2><a class="btn dark" href="{WA}">WhatsApp Concierge</a></section>'''
+    return f'''<section class="page-hero" style="--hero:url('{image}')"><div><div class="kicker light">{data['eyebrow']}</div><h1>{data['h1']}</h1><p>{data['lead']}</p><a class="btn gold" href="{WA}">{data['cta']}</a></div></section><section class="editorial"><div><div class="kicker dark">Ibiza VIP Move</div><h2>{data['section']}</h2></div><div><p class="large">{data['large']}</p><p>{data['availability']}</p></div></section><section class="process"><div class="process-grid">{cards}</div></section><section class="closing-simple"><h2>{data['cta']}</h2><a class="btn dark" href="{WA}">WhatsApp Concierge</a></section>'''
 
 for (lang,group),data in COPY.items():
     path=GROUPS[group][lang]
@@ -156,6 +168,11 @@ checks=[]
 for path in new_paths:
     file=ROOT/path.strip('/')/'index.html'
     checks.append(file.is_file() and '<h1>' in file.read_text(encoding='utf-8'))
+for lang in ('fr','de','ar'):
+    for group in GROUPS:
+        localized=(ROOT/GROUPS[group][lang].strip('/')/'index.html').read_text(encoding='utf-8')
+        checks.append('One Ibiza-based point of contact' not in localized)
+        checks.append('Availability, supplier terms' not in localized)
 for group in GROUPS:
     en_file=ROOT/GROUPS[group]['en'].strip('/')/'index.html'
     en_text=en_file.read_text(encoding='utf-8')
