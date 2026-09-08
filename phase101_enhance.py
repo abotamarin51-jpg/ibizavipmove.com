@@ -9,15 +9,15 @@ IMG = ROOT / 'assets' / 'images'
 # generator has finished. This improves global transfer/LCP without changing
 # layout, crop, semantics, URLs, alt text or the approved visual direction.
 SOURCES = {
-    'hero.jpg': 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2000&q=78&fm=jpg',
-    'villa.jpg': 'https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2000&q=78&fm=jpg',
+    'hero.jpg': 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2000&q=76&fm=jpg',
+    'villa.jpg': 'https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2000&q=76&fm=jpg',
     'yacht.jpg': 'https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2000&q=78&fm=jpg',
     'chauffeur.jpg': 'https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2000&q=78&fm=jpg',
-    'nightlife.jpg': 'https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=1800&q=78&fm=jpg',
+    'nightlife.jpg': 'https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=1800&q=76&fm=jpg',
     'events.jpg': 'https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=1800&q=78&fm=jpg',
     'chef.jpg': 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=76&fm=jpg',
-    'aviation.jpg': 'https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=80&w=2200',
-    'hero-desktop.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=2200&h=1400&q=78&fm=jpg',
+    'aviation.jpg': 'https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=78&w=2200',
+    'hero-desktop.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=2200&h=1400&q=76&fm=jpg',
     'hero-mobile.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=900&h=1250&q=76&fm=jpg',
 }
 
