@@ -4,6 +4,9 @@ on:
   push:
     branches: [main]
     paths:
+      - "phase*.py"
+      - "phase*.css"
+      - "phase*.js"
       - "premium_site.py"
       - "trust_enhance.py"
       - "international_pages.py"
