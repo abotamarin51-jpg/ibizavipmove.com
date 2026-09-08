@@ -5,7 +5,7 @@ import re
 ROOT = Path('_site')
 
 # Same editorial photos, delivered at dimensions/quality that are ample for modern desktop and mobile.
-# Phase 101 applies the final global-performance delivery pass after later visual generators.
+# Phase 101 applies the final validated global-performance delivery pass after later visual generators.
 OPTIMIZED = {
     'hero': 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2000&q=84&fm=jpg',
     'villa': 'https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2000&q=84&fm=jpg',
