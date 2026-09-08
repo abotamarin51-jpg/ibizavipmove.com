@@ -43,11 +43,12 @@ for name, url in SOURCES.items():
     saved = before[name] - after[name]
     print(f'Phase 101 {name}: {before[name]:,} -> {after[name]:,} bytes (-{saved:,})')
 
-# Keep intrinsic markup truthful for the one asset whose pixel dimensions change.
+# Target the stable LCP asset URL rather than a presentation class, because
+# later visual phases may legitimately normalize classes while keeping this src.
 html = HOME.read_text(encoding='utf-8')
-hero = re.search(r'<img\b[^>]*class=["\'][^"\']*hero-media[^"\']*["\'][^>]*>', html, re.I)
+hero = re.search(r'<img\b(?=[^>]*\bsrc=["\']/assets/images/hero-desktop\.jpg["\'])[^>]*>', html, re.I)
 if not hero:
-    raise SystemExit('Phase 101 homepage hero tag missing')
+    raise SystemExit('Phase 101 homepage desktop hero img tag missing')
 tag = hero.group(0)
 new_tag, w_count = re.subn(r'\bwidth=["\']\d+["\']', 'width="2000"', tag, count=1, flags=re.I)
 new_tag, h_count = re.subn(r'\bheight=["\']\d+["\']', 'height="1273"', new_tag, count=1, flags=re.I)
