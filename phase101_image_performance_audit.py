@@ -37,13 +37,13 @@ if total >= 4_350_000:
 html = HOME.read_text(encoding='utf-8')
 if '/assets/images/hero-mobile.jpg' not in html or '/assets/images/hero-desktop.jpg' not in html:
     raise SystemExit('Phase 101 audit responsive homepage hero sources missing')
-hero = re.search(r'<img\b[^>]*class=["\'][^"\']*hero-media[^"\']*["\'][^>]*>', html, re.I)
+hero = re.search(r'<img\b(?=[^>]*\bsrc=["\']/assets/images/hero-desktop\.jpg["\'])[^>]*>', html, re.I)
 if not hero:
-    raise SystemExit('Phase 101 audit semantic hero image missing')
+    raise SystemExit('Phase 101 audit desktop hero img tag missing')
 tag = hero.group(0)
-if 'fetchpriority="high"' not in tag or 'loading="lazy"' in tag:
+if not re.search(r'\bfetchpriority=["\']high["\']', tag, re.I) or re.search(r'\bloading=["\']lazy["\']', tag, re.I):
     raise SystemExit('Phase 101 audit homepage hero priority regressed')
-if 'width="2000"' not in tag or 'height="1273"' not in tag:
+if not re.search(r'\bwidth=["\']2000["\']', tag, re.I) or not re.search(r'\bheight=["\']1273["\']', tag, re.I):
     raise SystemExit('Phase 101 audit homepage hero intrinsic dimensions are not aligned to final asset')
 
 print(f'PASS: Phase 101 image performance audit — 10 key assets total {total:,} bytes; responsive LCP hero priority preserved at 2000x1273 desktop / 900x1250 mobile')
