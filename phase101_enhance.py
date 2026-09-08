@@ -45,10 +45,15 @@ for name, url in SOURCES.items():
 
 # Keep intrinsic markup truthful for the one asset whose pixel dimensions change.
 html = HOME.read_text(encoding='utf-8')
-pattern = r'(<img\b[^>]*class=["\'][^"\']*hero-media[^"\']*["\'][^>]*?)width="2200"\s+height="1400"([^>]*>)'
-html, changed = re.subn(pattern, r'\1width="2000" height="1273"\2', html, count=1, flags=re.I)
-if changed != 1:
-    raise SystemExit(f'Phase 101 expected one homepage hero dimension update, changed {changed}')
+hero = re.search(r'<img\b[^>]*class=["\'][^"\']*hero-media[^"\']*["\'][^>]*>', html, re.I)
+if not hero:
+    raise SystemExit('Phase 101 homepage hero tag missing')
+tag = hero.group(0)
+new_tag, w_count = re.subn(r'\bwidth=["\']\d+["\']', 'width="2000"', tag, count=1, flags=re.I)
+new_tag, h_count = re.subn(r'\bheight=["\']\d+["\']', 'height="1273"', new_tag, count=1, flags=re.I)
+if w_count != 1 or h_count != 1:
+    raise SystemExit(f'Phase 101 expected one hero width/height pair, found width={w_count} height={h_count}')
+html = html[:hero.start()] + new_tag + html[hero.end():]
 HOME.write_text(html, encoding='utf-8')
 
 before_total = sum(before.values())
