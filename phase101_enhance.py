@@ -1,13 +1,16 @@
 from pathlib import Path
 from urllib.request import Request, urlopen
+import re
 
 ROOT = Path('_site')
 IMG = ROOT / 'assets' / 'images'
+HOME = ROOT / 'index.html'
 
-# Phase 101 keeps the exact same editorial sources and rendered dimensions used
-# by the mature site, but requests leaner JPEG encodes after every visual/content
-# generator has finished. This improves global transfer/LCP without changing
-# layout, crop, semantics, URLs, alt text or the approved visual direction.
+# Phase 101 keeps the exact same editorial sources and visual treatment used by
+# the mature site. Nine assets keep their rendered dimensions and receive a
+# leaner JPEG encode. The desktop LCP hero keeps the exact same aspect/crop but
+# is delivered at 2000x1273 instead of 2200x1400 — still above typical desktop
+# display needs while reducing global transfer cost.
 SOURCES = {
     'hero.jpg': 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2000&q=76&fm=jpg',
     'villa.jpg': 'https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2000&q=76&fm=jpg',
@@ -17,7 +20,7 @@ SOURCES = {
     'events.jpg': 'https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=1800&q=78&fm=jpg',
     'chef.jpg': 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=76&fm=jpg',
     'aviation.jpg': 'https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=78&w=2200',
-    'hero-desktop.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=2200&h=1400&q=76&fm=jpg',
+    'hero-desktop.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=2000&h=1273&q=78&fm=jpg',
     'hero-mobile.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=900&h=1250&q=76&fm=jpg',
 }
 
@@ -33,7 +36,6 @@ for name, url in SOURCES.items():
         data = response.read()
     if len(data) < 40_000:
         raise SystemExit(f'Phase 101 optimized image unexpectedly small: {name} -> {len(data)} bytes')
-    # A performance phase must never silently increase an asset.
     if len(data) >= before[name]:
         raise SystemExit(f'Phase 101 image did not improve: {name} {before[name]} -> {len(data)} bytes')
     target.write_bytes(data)
@@ -41,8 +43,16 @@ for name, url in SOURCES.items():
     saved = before[name] - after[name]
     print(f'Phase 101 {name}: {before[name]:,} -> {after[name]:,} bytes (-{saved:,})')
 
+# Keep intrinsic markup truthful for the one asset whose pixel dimensions change.
+html = HOME.read_text(encoding='utf-8')
+pattern = r'(<img\b[^>]*class=["\'][^"\']*hero-media[^"\']*["\'][^>]*?)width="2200"\s+height="1400"([^>]*>)'
+html, changed = re.subn(pattern, r'\1width="2000" height="1273"\2', html, count=1, flags=re.I)
+if changed != 1:
+    raise SystemExit(f'Phase 101 expected one homepage hero dimension update, changed {changed}')
+HOME.write_text(html, encoding='utf-8')
+
 before_total = sum(before.values())
 after_total = sum(after.values())
 if after_total >= before_total:
     raise SystemExit('Phase 101 total image bytes did not improve')
-print(f'PASS: Phase 101 global image performance — 10 key assets reduced from {before_total:,} to {after_total:,} bytes without changing image URLs or rendered dimensions')
+print(f'PASS: Phase 101 global image performance — 10 key assets reduced from {before_total:,} to {after_total:,} bytes; desktop hero kept same crop/aspect at 2000x1273')
