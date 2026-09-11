@@ -54,6 +54,10 @@ for slug,(key,adjacent,audience) in PAGES.items():
     if 'id="main-content"' not in html or 'class="ivm-skip-link"' not in html:
         raise SystemExit(f'Phase 108 accessibility drift: {slug}')
 
-# No Phase 108 URL or synthetic inventory may appear in sitemap.
 if 'phase108' in sitemap.lower(): raise SystemExit('Phase 108 must not add sitemap inventory')
 print('PASS: Phase 108 audit — eight concierge intents are visibly and structurally disambiguated with distinct buyer audiences, adjacent pathways and no new SEO inventory')
+
+# Phase 109 strengthens only the international cornerstone concierge pages,
+# after search-intent separation has passed and before the global final audit.
+import phase109_enhance
+import phase109_audit
