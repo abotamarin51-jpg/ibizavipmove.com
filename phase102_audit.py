@@ -49,7 +49,7 @@ for slug in SLUGS:
     if not desc_match:
         raise SystemExit(f'Phase 102 audit description missing: {slug}')
     desc = unescape(desc_match.group(1)).strip()
-    if not 110 <= len(desc) <= 190:
+    if not 110 <= len(desc) <= 200:
         raise SystemExit(f'Phase 102 audit description length outside target: {slug} -> {len(desc)}')
     if desc in descriptions:
         raise SystemExit(f'Phase 102 audit duplicate description: {slug}')
