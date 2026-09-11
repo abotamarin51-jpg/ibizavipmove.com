@@ -54,6 +54,7 @@ import phase100_audit
 import phase101_enhance
 import phase101_image_performance_audit
 import phase102_enhance
+import phase102_accessibility_fix
 import phase102_audit
 
 ROOT=Path('_site')
