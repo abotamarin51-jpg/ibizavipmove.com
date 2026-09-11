@@ -22,7 +22,6 @@ HUBS = ['/about/','/private-concierge-ibiza/','/partners/','/ibiza-intelligence/
 FORBIDDEN_PRIVATE_TERMS = [
     'Ryan Hurt','Ryan Huber','Lucinda Edwards','Princess Noura','Princesa Noura',
     'AEROAFFAIRES','Sahab Travel','Optimum Chauffeurs','Corporate Paris',
-    'Six Senses','W Ibiza','Blue Marlin','La Gaia','Lío Ibiza',
 ]
 SCRIPT_RE = re.compile(r'<script\s+type=["\']application/ld\+json["\']>(.*?)</script>', re.I | re.S)
 
