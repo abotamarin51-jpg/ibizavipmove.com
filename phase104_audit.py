@@ -169,11 +169,12 @@ for path in HUBS:
         raise SystemExit(f'Phase 104 case-study link missing from hub: {path}')
 
 sitemap = (ROOT/'sitemap.xml').read_text(encoding='utf-8')
+sitemap_urls = re.findall(r'<loc>(.*?)</loc>', sitemap, re.I | re.S)
 llms = (ROOT/'llms.txt').read_text(encoding='utf-8')
 for path in NEW_PATHS:
     url = BASE + path
-    if sitemap.count(url) != 1:
-        raise SystemExit(f'Phase 104 sitemap count mismatch: {path} -> {sitemap.count(url)}')
+    if sitemap_urls.count(url) != 1:
+        raise SystemExit(f'Phase 104 sitemap exact URL count mismatch: {path} -> {sitemap_urls.count(url)}')
     if url not in llms:
         raise SystemExit(f'Phase 104 llms discovery missing: {path}')
 if llms.count('## Founder and operational evidence') != 1:
