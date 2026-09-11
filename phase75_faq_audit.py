@@ -11,8 +11,9 @@ import re
 # verified external editorial references, the AI/GEO source of truth,
 # Black Book contextual authority routing, localized home authority pathways,
 # official brand facts, service-to-concierge authority bridges, the verified
-# independent external subject relationship, final global image performance
-# and the high-intent concierge search architecture protected post-validate.
+# independent external subject relationship, final global image performance,
+# high-intent concierge search architecture and local luxury-area coverage
+# protected post-validate.
 import phase77_article_audit
 import phase78_social_audit
 import phase79_schema_audit
@@ -56,6 +57,8 @@ import phase101_image_performance_audit
 import phase102_enhance
 import phase102_accessibility_fix
 import phase102_audit
+import phase103_enhance
+import phase103_audit
 
 ROOT=Path('_site')
 
