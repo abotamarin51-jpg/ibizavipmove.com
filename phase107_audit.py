@@ -64,3 +64,8 @@ sitemap=(ROOT/'sitemap.xml').read_text(encoding='utf-8')
 if 'phase107' in sitemap.lower(): raise SystemExit('Phase 107 must not add sitemap URLs')
 
 print('PASS: Phase 107 audit — five qualified private-brief forms classify buyer role and Ibiza stay area while analytics remain PII-free, runtime is deferred, and SEO/accessibility stay unchanged')
+
+# Phase 108 separates adjacent concierge intents only after the conversion layer
+# has passed. It adds no new URLs and is protected before the global final audit.
+import phase108_enhance
+import phase108_audit
