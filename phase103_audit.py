@@ -106,3 +106,8 @@ for hub in HUBS:
         if f'/{slug}/' not in html: raise SystemExit(f'Phase 103 hub missing area link: {hub} -> {slug}')
 
 print('PASS: Phase 103 audit — four substantial local concierge pages use real Ibiza Place names, unique intent, clean canonicals, schema GEO coverage, internal links and no invented Maps data')
+
+# Phase 104 runs only after Phase 103 has passed, preserving the same protected
+# post-validation chain before the global final audit.
+import phase104_enhance
+import phase104_audit
