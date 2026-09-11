@@ -2,6 +2,10 @@ from pathlib import Path
 from urllib.parse import urljoin,urlparse
 import re
 
+# Consolidate the Phase 110 component styles into the pre-existing CSS bundles
+# before checking performance and authority-flow invariants.
+import phase110_style_fix
+
 ROOT=Path('_site'); BASE='https://ibizavipmove.com'
 SOURCE_LINKS={
 '/private-chauffeur-ibiza/':['/case-studies/principal-chauffeur-security-three-days/','/private-concierge-marina-botafoch-ibiza/','/private-concierge-cala-jondal-es-cubells-ibiza/'],
@@ -36,7 +40,8 @@ MIN_UNIQUE_INLINKS={
 '/private-concierge-santa-eulalia-roca-llisa-ibiza/':8,
 '/private-concierge-santa-gertrudis-ibiza/':6,
 }
-STYLE='<link rel="stylesheet" href="/assets/phase110.css?v=110">'
+TEMP_STYLE='/assets/phase110.css?v=110'
+BUNDLE_MARKER='/* Phase 110 contextual authority flow */'
 
 def page(path): return ROOT/'index.html' if path=='/' else ROOT/path.strip('/')/'index.html'
 
@@ -45,7 +50,16 @@ def html(path):
     if not p.exists(): raise SystemExit(f'Phase 110 page missing: {path}')
     return p.read_text(encoding='utf-8')
 
-if not (ROOT/'assets'/'phase110.css').exists(): raise SystemExit('Phase 110 stylesheet missing')
+def check_single_bundle(path,text):
+    if TEMP_STYLE in text: raise SystemExit(f'Phase 110 temporary CSS link leaked after consolidation: {path}')
+    hrefs=re.findall(r'<link\b[^>]*rel=["\']stylesheet["\'][^>]*href=["\']([^"\']+)["\'][^>]*>',text,re.I)
+    bundles=[h for h in hrefs if h.startswith('/assets/bundles/') and h.endswith('.css')]
+    if len(bundles)!=1: raise SystemExit(f'Phase 110 expected one CSS bundle after consolidation: {path} -> {bundles}')
+    bundle=ROOT/bundles[0].lstrip('/')
+    if not bundle.exists(): raise SystemExit(f'Phase 110 referenced bundle missing: {path} -> {bundles[0]}')
+    if BUNDLE_MARKER not in bundle.read_text(encoding='utf-8'): raise SystemExit(f'Phase 110 styles missing from bundle: {path} -> {bundles[0]}')
+
+if (ROOT/'assets'/'phase110.css').exists(): raise SystemExit('Phase 110 temporary CSS asset should be removed after consolidation')
 
 for path,links in SOURCE_LINKS.items():
     text=html(path)
@@ -56,7 +70,7 @@ for path,links in SOURCE_LINKS.items():
     for href in links:
         if f'href="{href}"' not in block: raise SystemExit(f'Phase 110 contextual target missing: {path} -> {href}')
     if block.count('ivm-phase110-card')!=len(links): raise SystemExit(f'Phase 110 card count mismatch: {path}')
-    if text.count(STYLE)!=1: raise SystemExit(f'Phase 110 stylesheet link mismatch: {path}')
+    check_single_bundle(path,text)
     if len(re.findall(r'<h1\b',text,re.I))!=1: raise SystemExit(f'Phase 110 H1 drift: {path}')
     if 'id="main-content"' not in text or 'class="ivm-skip-link"' not in text: raise SystemExit(f'Phase 110 accessibility drift: {path}')
 
@@ -68,11 +82,10 @@ for path,links in TARGET_BACKLINKS.items():
     block=section.group(0)
     for href in links:
         if f'href="{href}"' not in block: raise SystemExit(f'Phase 110 commercial return link missing: {path} -> {href}')
-    if text.count(STYLE)!=1: raise SystemExit(f'Phase 110 stylesheet link mismatch: {path}')
+    check_single_bundle(path,text)
     if len(re.findall(r'<h1\b',text,re.I))!=1: raise SystemExit(f'Phase 110 H1 drift: {path}')
     if 'id="main-content"' not in text or 'class="ivm-skip-link"' not in text: raise SystemExit(f'Phase 110 accessibility drift: {path}')
 
-# Build an actual unique-source internal-link graph over canonical sitemap URLs.
 sitemap=(ROOT/'sitemap.xml').read_text(encoding='utf-8')
 urls=re.findall(r'<loc>(https://ibizavipmove\.com[^<]+)</loc>',sitemap)
 urlset=set(urls)
@@ -96,4 +109,4 @@ for path,minimum in MIN_UNIQUE_INLINKS.items():
     actual=len(inbound.get(target,set()))
     if actual<minimum: raise SystemExit(f'Phase 110 authority target underlinked: {path} -> {actual} unique sources, need {minimum}')
 
-print('PASS: Phase 110 audit — contextual authority loops verified and all 5 case studies + 4 local concierge pages meet protected unique-source inlink thresholds without new sitemap inventory')
+print('PASS: Phase 110 audit — contextual authority loops verified; 5 case studies + 4 local concierge pages meet unique-source inlink thresholds and all touched pages retain one consolidated CSS bundle')
