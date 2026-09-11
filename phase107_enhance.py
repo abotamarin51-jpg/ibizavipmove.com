@@ -40,7 +40,7 @@ for lang,(path,role_label,area_label,roles,areas) in CONTACTS.items():
         area=f'<label>{escape(area_label)}<select id="fArea">{opts(areas)}</select></label>'
         html,n=re.subn(r'(<label[^>]*>.*?<input\s+id="fPhone"[^>]*>.*?</label>)',r'\1'+role+area,html,count=1,flags=re.I|re.S)
         if n!=1: raise SystemExit(f'Phase 107 could not insert qualification fields: {path}')
-    tag=f'<script src="{SCRIPT}"></script>'
+    tag=f'<script src="{SCRIPT}" defer></script>'
     if tag not in html: html=html.replace('</body>',tag+'</body>',1)
     if 'data-ivm-qualified-brief="true"' not in html:
         html,n=re.subn(
@@ -51,4 +51,4 @@ for lang,(path,role_label,area_label,roles,areas) in CONTACTS.items():
         if n!=1: raise SystemExit(f'Phase 107 could not mark qualified form: {path}')
     target.write_text(html,encoding='utf-8')
 
-print('PASS: Phase 107 qualification fields added to five Private Members Desk forms with privacy-safe routing script')
+print('PASS: Phase 107 qualification fields added to five Private Members Desk forms with privacy-safe deferred routing script')
