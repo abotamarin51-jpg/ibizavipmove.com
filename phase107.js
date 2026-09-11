@@ -1,5 +1,5 @@
 (()=>{
-  const f=document.getElementById('conciergeForm');
+  const f=document.getElementById('conciergeForm')||document.getElementById('localizedConciergeForm');
   if(!f)return;
 
   const WA='https://wa.me/34600703303';
