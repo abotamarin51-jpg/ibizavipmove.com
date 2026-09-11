@@ -65,8 +65,17 @@ for slug in SLUGS:
         raise SystemExit(f'Phase 102 audit old contact leaked into page: {slug}')
     if 'AggregateRating' in html or 'LocalBusiness' in html or 'PostalAddress' in html:
         raise SystemExit(f'Phase 102 audit must not invent ratings, storefront or address: {slug}')
-    if html.count('hreflang="en"') != 1 or html.count('hreflang="x-default"') != 1:
-        raise SystemExit(f'Phase 102 audit English hreflang mismatch: {slug}')
+
+    # The shared language switcher may use hreflang on visible <a> elements.
+    # Audit only canonical discovery <link rel="alternate"> elements in <head>.
+    alternates = re.findall(
+        r'<link\b(?=[^>]*\brel=["\']alternate["\'])(?=[^>]*\bhreflang=["\']([^"\']+)["\'])[^>]*\bhref=["\']([^"\']+)["\'][^>]*>',
+        html,
+        re.I,
+    )
+    alternate_map = {lang.lower(): href for lang, href in alternates}
+    if alternate_map != {'en': url, 'x-default': url} or len(alternates) != 2:
+        raise SystemExit(f'Phase 102 audit English hreflang mismatch: {slug} -> {alternates}')
 
     # Guard against thin doorway-style pages: require a substantial visible body
     # and four distinct visible FAQ questions.
