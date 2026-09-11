@@ -28,3 +28,8 @@ for slug,links in PAGES.items():
         if place not in html: raise SystemExit(f'Phase 109 local Ibiza place missing: {slug} -> {place}')
     if '+34 613 75 62 11' in html or '34613756211' in html: raise SystemExit(f'Phase 109 old phone leaked: {slug}')
 print('PASS: Phase 109 audit — FR/DE/AR Private Concierge cornerstone pages exceed 450 visible words, expose real Ibiza service areas and route to seven same-language conversion/service paths')
+
+# Phase 110 strengthens internal authority distribution only after the
+# multilingual cornerstone layer has passed its own quality gate.
+import phase110_enhance
+import phase110_audit
