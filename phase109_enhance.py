@@ -65,7 +65,11 @@ PAGES={
 
 
 def block(d):
-    steps=''.join(f'<article><span>{escape(n)}</span><h3>{escape(h)}</h3><p>{escape(p)}</p></article>' for n,h,p in d['steps'])
+    parts=[]
+    for label,p in d['steps']:
+        number,title=(label.split(' · ',1)+[''])[:2] if ' · ' in label else ('',label)
+        parts.append(f'<article><span>{escape(number)}</span><h3>{escape(title)}</h3><p>{escape(p)}</p></article>')
+    steps=''.join(parts)
     links=''.join(f'<a class="text-link" href="{escape(href,quote=True)}">{escape(label)} →</a>' for href,label in d['links'])
     return f'''<section class="editorial ivm-phase109-depth"><div><div class="kicker dark">{escape(d['kicker'])}</div><h2>{escape(d['h2'])}</h2></div><div><p class="large">{escape(d['intro'])}</p><h3>{escape(d['fit'])}</h3><p>{escape(d['fitp'])}</p><h3>{escape(d['areas'])}</h3><p>{escape(d['areap'])}</p></div></section><section class="process ivm-phase109-process"><div class="section-head"><div class="kicker dark">Private coordination</div><h2>{escape(d['how'])}</h2></div><div class="process-grid">{steps}</div><div class="ivm-phase109-links">{links}</div></section>'''
 
