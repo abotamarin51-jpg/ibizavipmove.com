@@ -43,7 +43,11 @@ for lang,(path,role_label,area_label,roles,areas) in CONTACTS.items():
     tag=f'<script src="{SCRIPT}"></script>'
     if tag not in html: html=html.replace('</body>',tag+'</body>',1)
     if 'data-ivm-qualified-brief="true"' not in html:
-        html,n=re.subn(r'<form\b([^>]*\bid="conciergeForm"[^>]*)>',r'<form\1 data-ivm-qualified-brief="true">',html,count=1,flags=re.I)
+        html,n=re.subn(
+            r'<form\b([^>]*\bid=["\'](?:conciergeForm|localizedConciergeForm)["\'][^>]*)>',
+            r'<form\1 data-ivm-qualified-brief="true">',
+            html,count=1,flags=re.I
+        )
         if n!=1: raise SystemExit(f'Phase 107 could not mark qualified form: {path}')
     target.write_text(html,encoding='utf-8')
 
