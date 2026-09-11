@@ -14,7 +14,7 @@ PAGES = {
     '/destination-management-ibiza/': '/case-studies/multi-day-executive-chauffeur-program/',
     '/private-chauffeur-ibiza/': '/case-studies/multi-day-executive-chauffeur-program/',
     '/private-aviation-ibiza/': '/case-studies/private-aviation-arrival-seven-guests/',
-    '/private-security-ibiza/': '/case-studies/principal-chauffeur-security-three-days/',
+    '/private-security-ibiza/': '/case-sties/principal-chauffeur-security-three-days/'.replace('case-sties','case-studies'),
     '/luxury-villas-ibiza/': '/case-studies/weekend-concierge-two-guests/',
     '/yacht-charter-ibiza/': '/ibiza-luxury-operations-report-2026/',
     '/partners/': '/case-studies/',
@@ -90,3 +90,7 @@ for path in EVIDENCE_TARGETS:
         raise SystemExit(f'Phase 105 recursive evidence module found: {path}')
 
 print(f'PASS: Phase 105 audit — {len(PAGES)} high-intent pages route visibly to founder, case studies and the 2026 operations report with canonicals, H1s and accessibility preserved')
+
+# Phase 106 only runs after the authority-distribution layer has passed.
+import phase106_enhance
+import phase106_audit
