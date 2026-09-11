@@ -42,7 +42,9 @@ for lang,(path,role_label,area_label,roles,areas) in CONTACTS.items():
         if n!=1: raise SystemExit(f'Phase 107 could not insert qualification fields: {path}')
     tag=f'<script src="{SCRIPT}"></script>'
     if tag not in html: html=html.replace('</body>',tag+'</body>',1)
-    html=html.replace('<form id="conciergeForm">','<form id="conciergeForm" data-ivm-qualified-brief="true">',1)
+    if 'data-ivm-qualified-brief="true"' not in html:
+        html,n=re.subn(r'<form\b([^>]*\bid="conciergeForm"[^>]*)>',r'<form\1 data-ivm-qualified-brief="true">',html,count=1,flags=re.I)
+        if n!=1: raise SystemExit(f'Phase 107 could not mark qualified form: {path}')
     target.write_text(html,encoding='utf-8')
 
 print('PASS: Phase 107 qualification fields added to five Private Members Desk forms with privacy-safe routing script')
