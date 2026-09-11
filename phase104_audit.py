@@ -181,3 +181,8 @@ if llms.count('## Founder and operational evidence') != 1:
     raise SystemExit('Phase 104 llms authority section mismatch')
 
 print(f'PASS: Phase 104 audit — founder ProfilePage, 5 privacy-safe real case studies, field report, {person_refs} founder entity references, authority links, sitemap and AI discovery verified')
+
+# Phase 105 only runs once Phase 104 evidence itself is valid. This keeps the
+# distribution layer downstream of the privacy and authorship gate.
+import phase105_enhance
+import phase105_audit
