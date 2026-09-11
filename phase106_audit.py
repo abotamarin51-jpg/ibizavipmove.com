@@ -105,3 +105,8 @@ if BASE + '/press-kit.txt' in sitemap:
     raise SystemExit('Phase 106 press-kit.txt should not be added to canonical HTML sitemap')
 
 print('PASS: Phase 106 audit — press kit facts, citation guidance, founder/report media routing and AI discovery verified without invented memberships, client leaks or sitemap pollution')
+
+# Phase 107 runs only after the press/citation layer is verified. It changes
+# conversion qualification and measurement, not the indexable SEO inventory.
+import phase107_enhance
+import phase107_audit
