@@ -21,16 +21,17 @@ Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherl
 - Phase 119: PR #37, merge `526650a427465785265f3b1251745a359c1a1312`, deployment `34706772578`, artifact `10300879821` — whitespace-only required name/phone values rejected; outgoing WhatsApp values trimmed.
 - Phase 120: PR #38, merge `15d9025914ae6959cc6a9b18f843b0b90911eeda`, deployment `34709598540`, artifact `10302363132` — clearly incomplete phone values rejected while international formatting remains flexible.
 - Phase 121: PR #39, merge `b774abae7df8168a555bf78d36eed552b544e8ff`, deployment `34712575664`, exact release artifact `10303518957`, digest `sha256:2f5723a9be48dbe70fdebfb2e9e362ccb2a282e29efe16ade28903bf88a26b08` — 14 routes with verified significant 12 September changes carry truthful `lastmod=2026-09-12`; sitemap inventory remains 156 URLs.
+- Phase 122: PR #40, merge `d12b14ad322d571ef4c357637025c3f83abda8bc`, deployment `34715611730`, exact release artifact `10304588267`, digest `sha256:2cf033e231479c35419bc055904e970e017b024a2379e458f2796c6a3456aa76` — five contact desks use localized private-client service wording instead of implying an unauthorized membership product. Public EN/FR/DE/AR contact retrieval on 12 September now shows the new labels.
 
 These are technical publication and regression checkpoints, not proof of Google indexation, rankings, traffic, conversions or Maps position.
 
-## Phase 122 — private-client desk clarity
+## Phase 123 — Partners proof consolidation
 
-Evidence: the exact Phase 121 release artifact still renders the visible label `Private Members Desk · Ibiza` on all five contact desks. No private membership product, member-only entitlement or paid-membership benefit has been authorized in this workstream; the intent table explicitly treats private membership as research only. The visible label therefore creates an avoidable mismatch between the actual service and the language presented to private clients and professional partners. Google’s people-first content guidance emphasizes useful, trustworthy, non-exaggerated descriptions; this change is primarily a truth/clarity correction, not an SEO keyword expansion.
+Evidence: the exact Phase 122 production artifact and the public `/partners/` page contain two adjacent authority/proof sections that communicate substantially the same proposition and link to the same three evidence resources: case studies, the 2026 operations report and the founder profile. `/destination-management-ibiza/` and `/private-client-services-ibiza/` each contain only one equivalent operational-evidence block. The duplication is therefore specific to the English Partners page and adds repetitive copy/links without giving a professional partner a distinct next step.
 
-Prepared change on branch `seo/phase122-private-client-desk-clarity`: replace only that visible eyebrow on the five existing contact pages with localized private-client service wording: `Private Client Desk · Ibiza`, `Atención a clientes privados · Ibiza`, `Service clients privés · Ibiza`, `Betreuung für Privatkunden · Ibiza`, and `خدمة العملاء الخاصين · إيبيزا`. No URL, form field, WhatsApp destination, stylesheet, schema, price, policy, tracking or service promise changes.
+Prepared change on branch `seo/phase123-partners-proof-consolidation`: remove only the older `ivm-phase104-authority` block from `/partners/`, retain the newer `ivm-phase105-proof` block and all three authority routes, and refresh only `/partners/` to truthful `lastmod=2026-09-12`. No URL, title/meta, schema, service claim, WhatsApp destination, tracking, stylesheet, price, policy or other page changes.
 
-Pre-PR validation: the enhancer and regression gate compile and pass against the exact Phase 121 production artifact. The gate requires zero `Private Members Desk` occurrences in generated HTML and preserves each contact page’s canonical, single H1, main landmark, form fields, WhatsApp identity and one CSS bundle. This improves offer accuracy and avoids implying an unauthorized membership product; commercial impact is not measured.
+Pre-PR validation against the exact Phase 122 release artifact: enhancer and read-only audit pass; `/partners/` retains 466 visible main-content words, one H1, canonical, six-entry EN/ES/FR/DE/AR/x-default hreflang set, one CSS bundle, accessibility landmarks and links to case studies/report/founder. The sitemap remains exactly 156 unique canonical URLs. Google states that internal links should be crawlable and contextually useful; Bing’s current Webmaster Guidelines likewise emphasize crawlable internal links, content clarity and accurate freshness signals for search and grounding experiences. Consolidation is a clarity change, not a ranking guarantee.
 
 ## Intent ownership — reuse existing URLs
 
@@ -51,8 +52,8 @@ Pre-PR validation: the enhancer and regression gate compile and pass against the
 
 ## Next execution priorities
 
-1. Resolve Phase 122 PR/check/deployment state first; verify the exact release artifact and the five visible contact labels before calling it published.
-2. After Phase 122, audit one unresolved conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
+1. Resolve Phase 123 PR/check/deployment state first; verify the final `/partners/` artifact contains one operational-evidence block and the 156-URL crawl-depth gate remains green before calling it published.
+2. After Phase 123, audit one unresolved conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
 3. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
 4. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
 5. Keep technical improvements separate from measured business impact.
