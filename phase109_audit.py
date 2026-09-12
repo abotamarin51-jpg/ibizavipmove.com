@@ -69,6 +69,13 @@ from phase117_audit import run as audit_ibiza_date_runtime
 enhance_ibiza_date_runtime()
 audit_ibiza_date_runtime()
 
+# Phase 118 makes the required international phone field easier to hand over
+# correctly without imposing a fragile country-specific validation pattern.
+from phase118_enhance import enhance as enhance_phone_guidance
+from phase118_audit import run as audit_phone_guidance
+enhance_phone_guidance()
+audit_phone_guidance()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
