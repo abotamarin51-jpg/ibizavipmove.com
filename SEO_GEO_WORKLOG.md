@@ -16,20 +16,21 @@ Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherl
 - Phase 114: PR #32, merge `c5268deda041b997f21c48b578caeffcb3cc01f2`, deployment `34692434048` — five contact desks share localized today-or-later and departure-after-arrival validation.
 - Phase 115: PR #33, merge `4b85e41ba396f02ee9164f71a027a53e66d5b3fa`, deployment `34695052164` — five required phone inputs use `type="tel"`, `inputmode="tel"` and `autocomplete="tel"` without a rigid country pattern.
 - Phase 116: PR #34, merge `68958d3315212ab3f321e35aea4ecf5782656447`, deployment `34697823273` — required buyer-role selects start from localized empty placeholders instead of silently defaulting to private client.
-- Phase 117: PR #35, merge `219602fd3a0a023a3173cd129b808cc80342648d`, deployment `34701142012`, exact release artifact `10299928576`, digest `sha256:6b571be21d2e4d44790e69727b5cf973e4c46daf46b80aa95160bc7918905205` — contact date eligibility uses the Ibiza calendar (`Europe/Madrid`) rather than the visitor device timezone.
-- Phase 118: PR #36, merge `1c89205f80befa91b3c07959e30b5114f063056d`, deployment `34703836099`, exact release artifact `10301017441`, digest `sha256:732032c131ffe96a5447d89066c7d1e8ce8187523a532eba60aae29bfd182f73` — five required phone fields expose localized international-country-code guidance via `aria-describedby` while retaining flexible `type=tel` semantics.
-- Phase 119: PR #37, merge `526650a427465785265f3b1251745a359c1a1312`, deployment `34706772578`, exact release artifact `10300879821`, digest `sha256:0ce589c3b7573621ab9b285c354183974b7d073cf404f486f5d58978ada49b79` — whitespace-only required name/phone values are rejected and outgoing WhatsApp brief values are trimmed.
-- Phase 120: PR #38, merge `15d9025914ae6959cc6a9b18f843b0b90911eeda`, deployment `34709598540`, exact release artifact `10302363132`, digest `sha256:5120838433ef6c84ccb6a2b73300dc14b233636024fd70d4969cf671962e64a2` — phone values with fewer than seven Unicode decimal digits are rejected while international formatting stays flexible.
+- Phase 117: PR #35, merge `219602fd3a0a023a3173cd129b808cc80342648d`, deployment `34701142012`, artifact `10299928576` — contact date eligibility uses the Ibiza calendar (`Europe/Madrid`) rather than the visitor device timezone.
+- Phase 118: PR #36, merge `1c89205f80befa91b3c07959e30b5114f063056d`, deployment `34703836099`, artifact `10301017441` — localized international-country-code guidance added without rigid country validation.
+- Phase 119: PR #37, merge `526650a427465785265f3b1251745a359c1a1312`, deployment `34706772578`, artifact `10300879821` — whitespace-only required name/phone values rejected; outgoing WhatsApp values trimmed.
+- Phase 120: PR #38, merge `15d9025914ae6959cc6a9b18f843b0b90911eeda`, deployment `34709598540`, artifact `10302363132` — clearly incomplete phone values rejected while international formatting remains flexible.
+- Phase 121: PR #39, merge `b774abae7df8168a555bf78d36eed552b544e8ff`, deployment `34712575664`, exact release artifact `10303518957`, digest `sha256:2f5723a9be48dbe70fdebfb2e9e362ccb2a282e29efe16ade28903bf88a26b08` — 14 routes with verified significant 12 September changes carry truthful `lastmod=2026-09-12`; sitemap inventory remains 156 URLs.
 
 These are technical publication and regression checkpoints, not proof of Google indexation, rankings, traffic, conversions or Maps position.
 
-## Phase 121 — verified sitemap freshness signals
+## Phase 122 — private-client desk clarity
 
-Evidence: the exact Phase 120 production artifact contains 156 sitemap URLs. Eighty-six entries expose `lastmod`, and every one of those values is still `2026-09-03`. This is demonstrably stale for several high-value routes that received significant visible content, link or form changes on 12 September, including the five contact desks and the FR/DE/AR Partner, International Client and Private Office journeys. Other newer routes have no `lastmod` at all. Google states that `lastmod` is useful only when it consistently matches reality and should be updated for significant text, structured-data or link changes; it is acceptable to omit the value when the true modification date is not known. Bing likewise recommends accurate freshness signals and warns against generation-date or otherwise inaccurate values.
+Evidence: the exact Phase 121 release artifact still renders the visible label `Private Members Desk · Ibiza` on all five contact desks. No private membership product, member-only entitlement or paid-membership benefit has been authorized in this workstream; the intent table explicitly treats private membership as research only. The visible label therefore creates an avoidable mismatch between the actual service and the language presented to private clients and professional partners. Google’s people-first content guidance emphasizes useful, trustworthy, non-exaggerated descriptions; this change is primarily a truth/clarity correction, not an SEO keyword expansion.
 
-Prepared change on branch `seo/phase121-sitemap-lastmod-integrity`: preserve the 156-URL canonical inventory and all unrelated sitemap metadata, but set `lastmod=2026-09-12` only on 14 routes whose significant changes are verified by Phases 112–120: five contact desks; FR/DE/AR Partner pages; FR/DE/AR International Client pages; FR/DE/AR Private Office pages. Do not guess freshness for other routes. Add a read-only regression gate so these verified values cannot silently regress.
+Prepared change on branch `seo/phase122-private-client-desk-clarity`: replace only that visible eyebrow on the five existing contact pages with localized private-client service wording: `Private Client Desk · Ibiza`, `Atención a clientes privados · Ibiza`, `Service clients privés · Ibiza`, `Betreuung für Privatkunden · Ibiza`, and `خدمة العملاء الخاصين · إيبيزا`. No URL, form field, WhatsApp destination, stylesheet, schema, price, policy, tracking or service promise changes.
 
-Pre-PR validation: Phase 121 enhancer/audit compile and pass on the exact Phase 120 release artifact. The 14 verified routes receive `2026-09-12`; the sitemap remains exactly 156 canonical URLs. Existing non-target `lastmod`, `changefreq` and `priority` metadata is left untouched. This is a crawl-freshness integrity improvement, not proof of recrawl, indexation or ranking uplift.
+Pre-PR validation: the enhancer and regression gate compile and pass against the exact Phase 121 production artifact. The gate requires zero `Private Members Desk` occurrences in generated HTML and preserves each contact page’s canonical, single H1, main landmark, form fields, WhatsApp identity and one CSS bundle. This improves offer accuracy and avoids implying an unauthorized membership product; commercial impact is not measured.
 
 ## Intent ownership — reuse existing URLs
 
@@ -46,12 +47,12 @@ Pre-PR validation: Phase 121 enhancer/audit compile and pass on the exact Phase 
 | Luxury DMC / destination management | `/destination-management-ibiza/` | Local execution for professional travel partners |
 | Ibiza concierge partner / local Ibiza operator | `/partners/` | Professional handover and client relationship protection |
 | One-off bespoke requests | `/bespoke-concierge-ibiza/` | Unusual individual requests |
-| Private membership | No authorized page/product | Research term only |
+| Private membership | No authorized page/product | Research term only; do not imply membership in visible service UI |
 
 ## Next execution priorities
 
-1. Resolve Phase 121 PR/check/deployment state first; verify the exact release artifact and sitemap before calling freshness signals published.
-2. After Phase 121, audit one unresolved conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
+1. Resolve Phase 122 PR/check/deployment state first; verify the exact release artifact and the five visible contact labels before calling it published.
+2. After Phase 122, audit one unresolved conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
 3. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
 4. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
 5. Keep technical improvements separate from measured business impact.
@@ -60,6 +61,7 @@ Pre-PR validation: Phase 121 enhancer/audit compile and pass on the exact Phase 
 
 - Google crawlable links: https://developers.google.com/search/docs/crawling-indexing/links-crawlable
 - Google AI features: https://developers.google.com/search/docs/appearance/ai-features
+- Google helpful, reliable, people-first content: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
 - Google recrawling/indexing: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
 - Google sitemap lastmod guidance: https://developers.google.com/search/blog/2023/06/sitemaps-lastmod-ping
 - Google local ranking: https://support.google.com/business/answer/7091
