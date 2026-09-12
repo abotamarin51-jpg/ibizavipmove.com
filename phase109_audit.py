@@ -97,6 +97,13 @@ from phase121_audit import run as audit_sitemap_lastmod
 enhance_sitemap_lastmod()
 audit_sitemap_lastmod()
 
+# Phase 122 removes membership-product wording from contact desks because no
+# private membership product or member-only benefit has been authorized.
+from phase122_enhance import enhance as enhance_private_client_desk
+from phase122_audit import run as audit_private_client_desk
+enhance_private_client_desk()
+audit_private_client_desk()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
