@@ -58,10 +58,18 @@ syntax = subprocess.run(['node', '--check', str(SOURCE)], capture_output=True, t
 if syntax.returncode:
     fail('phase107.js syntax error: ' + (syntax.stderr or syntax.stdout).strip())
 
+# Phase 117 strengthens the original Phase 114 rule: "today" is the Ibiza
+# service calendar day, not the visitor device day. Keep this older regression
+# gate aligned with that stricter invariant rather than weakening it.
 required_runtime = (
     "const validateDates=()=>",
-    "arrival.min=localToday",
-    "departure.min=a||localToday",
+    "timeZone:'Europe/Madrid'",
+    "formatToParts",
+    "const serviceToday=ibizaDateKey(new Date());",
+    "arrival.min=serviceToday",
+    "departure.min=a||serviceToday",
+    "a&&a<serviceToday",
+    "d&&d<serviceToday",
     "arrival.setCustomValidity",
     "departure.setCustomValidity",
     "el.addEventListener('input',validateDates)",
@@ -71,6 +79,8 @@ required_runtime = (
 for token in required_runtime:
     if token not in source:
         fail('date-validation runtime missing: ' + token)
+if 'getTimezoneOffset' in source:
+    fail('visitor-local timezone date calculation must not return')
 
 for lang, messages in MESSAGES.items():
     for message in messages:
@@ -85,8 +95,10 @@ for lang, route in CONTACTS.items():
     html_lang = re.search(r'<html\b[^>]*\blang="([^"]+)"', html, re.I)
     if not html_lang or html_lang.group(1).lower().split('-')[0] != lang:
         fail('language mismatch: ' + route)
+    # At this point in the build Phase 117 has not cache-busted the URL yet;
+    # Phase 117's own gate verifies the final v117 reference later in the flow.
     if html.count('/assets/phase107.js?v=107') != 1:
-        fail('phase107 runtime missing/duplicated: ' + route)
+        fail('phase107 pre-cache-bust runtime missing/duplicated: ' + route)
     for field in ('fArrival', 'fDeparture'):
         m = re.search(rf'<input\b[^>]*\bid="{field}"[^>]*>', html, re.I)
         if not m or not re.search(r'\btype="date"', m.group(0), re.I):
@@ -96,6 +108,6 @@ for lang, route in CONTACTS.items():
 
 print(
     'PASS: Phase 114 audit — EN/ES/FR/DE/AR contact desks share one syntax-checked '
-    'runtime with today-or-later arrival/departure constraints, departure-after-arrival '
-    'validation and site-language custom validity messages; no form submission required'
+    'runtime with Ibiza-calendar today-or-later arrival/departure constraints, '
+    'departure-after-arrival validation and localized validity messages'
 )

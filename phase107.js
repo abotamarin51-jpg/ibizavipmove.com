@@ -74,19 +74,26 @@
 
   const arrival=document.getElementById('fArrival');
   const departure=document.getElementById('fDeparture');
-  const now=new Date();
-  const localToday=new Date(now.getTime()-now.getTimezoneOffset()*60000).toISOString().slice(0,10);
+  const ibizaDateKey=instant=>{
+    const parts=new Intl.DateTimeFormat('en-GB',{
+      timeZone:'Europe/Madrid',year:'numeric',month:'2-digit',day:'2-digit'
+    }).formatToParts(instant);
+    const values={};
+    parts.forEach(part=>{if(part.type!=='literal')values[part.type]=part.value;});
+    return [values.year,values.month,values.day].join('-');
+  };
+  const serviceToday=ibizaDateKey(new Date());
   const validateDates=()=>{
     const a=arrival?.value||'';
     const d=departure?.value||'';
     if(arrival){
-      arrival.min=localToday;
-      arrival.setCustomValidity(a&&a<localToday?c.arrivalPast:'');
+      arrival.min=serviceToday;
+      arrival.setCustomValidity(a&&a<serviceToday?c.arrivalPast:'');
     }
     if(departure){
-      departure.min=a||localToday;
+      departure.min=a||serviceToday;
       let message='';
-      if(d&&d<localToday)message=c.departurePast;
+      if(d&&d<serviceToday)message=c.departurePast;
       else if(a&&d&&d<a)message=c.departureBeforeArrival;
       departure.setCustomValidity(message);
     }
