@@ -55,6 +55,13 @@ from phase115_enhance import enhance as enhance_phone_semantics
 enhance_phone_semantics()
 import phase115_audit
 
+# Phase 116 makes the required buyer-role field genuinely required by starting
+# from a localized empty placeholder instead of silently defaulting to private client.
+from phase116_enhance import enhance as enhance_buyer_role
+from phase116_audit import run as audit_buyer_role
+enhance_buyer_role()
+audit_buyer_role()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
