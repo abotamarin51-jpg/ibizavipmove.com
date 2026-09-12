@@ -39,6 +39,13 @@ import phase110_audit
 import phase112_enhance
 import phase112_audit
 
+# Phase 113 connects existing international audience cards to the matching
+# local-language service/partner journey and makes representative briefs clearer.
+from phase113_enhance import enhance as enhance_enquiry_journeys
+from phase113_audit import run as audit_enquiry_journeys
+enhance_enquiry_journeys()
+audit_enquiry_journeys()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
