@@ -33,3 +33,7 @@ print('PASS: Phase 109 audit — FR/DE/AR Private Concierge cornerstone pages ex
 # multilingual cornerstone layer has passed its own quality gate.
 import phase110_enhance
 import phase110_audit
+
+# Phase 111 inspects the final HTML graph without changing pages or styles.
+from phase111_audit import run as audit_cornerstone_depth
+audit_cornerstone_depth()
