@@ -18,16 +18,17 @@ Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherl
 - Phase 116: PR #34, merge `68958d3315212ab3f321e35aea4ecf5782656447`, deployment `34697823273` — required buyer-role selects start from localized empty placeholders instead of silently defaulting to private client.
 - Phase 117: PR #35, merge `219602fd3a0a023a3173cd129b808cc80342648d`, deployment `34701142012`, exact release artifact `10299928576`, digest `sha256:6b571be21d2e4d44790e69727b5cf973e4c46daf46b80aa95160bc7918905205` — contact date eligibility uses the Ibiza calendar (`Europe/Madrid`) rather than the visitor device timezone.
 - Phase 118: PR #36, merge `1c89205f80befa91b3c07959e30b5114f063056d`, deployment `34703836099`, exact release artifact `10301017441`, digest `sha256:732032c131ffe96a5447d89066c7d1e8ce8187523a532eba60aae29bfd182f73` — five required phone fields expose localized international-country-code guidance via `aria-describedby` while retaining flexible `type=tel` semantics.
+- Phase 119: PR #37, merge `526650a427465785265f3b1251745a359c1a1312`, deployment `34706772578`, exact release artifact `10300879821`, digest `sha256:0ce589c3b7573621ab9b285c354183974b7d073cf404f486f5d58978ada49b79` — whitespace-only required name/phone values are rejected and outgoing WhatsApp brief values are trimmed.
 
 These are technical publication and regression checkpoints, not proof of Google indexation, rankings, traffic, conversions or Maps position.
 
-## Phase 119 — reject whitespace-only required contact values
+## Phase 120 — permissive international phone plausibility
 
-Evidence: the exact Phase 118 production artifact was downloaded and inspected. The EN/ES/FR/DE/AR contact forms retain required name and phone fields, but native HTML `required` treats strings containing only spaces as non-empty. Chromium reproduced this on the production English form: with `fName="   "`, `fPhone="   "` and a valid buyer profile selected, `form.checkValidity()` returned true and both required controls were considered valid. This can create an empty-looking WhatsApp handover and is a lead-quality/accessibility defect, not evidence of measured lost conversions.
+Evidence: the exact Phase 119 release artifact was downloaded and tested. All five phone fields use correct `type=tel` semantics, but HTML intentionally does not impose a telephone syntax. Chromium reproduced the resulting gap on EN/ES/FR/DE/AR forms: `fPhone="abcdefg"`, together with a valid name and buyer profile, was considered valid and the whole form passed `checkValidity()`. WHATWG explicitly notes that `type=tel` does not enforce a particular syntax and allows sites to add client-side validation when their workflow needs it. This is a reproducible lead-quality defect, not evidence of measured lost conversions.
 
-Prepared change on branch `seo/phase119-reject-blank-required-text`: extend the existing shared qualified-brief runtime at build output so name and phone reject whitespace-only values with localized custom-validity messages, trim outgoing field values before the WhatsApp brief is assembled, and cache-bust the existing runtime reference from `v=117` to `v=119`. The WhatsApp destination, international phone semantics, country-code hint, Ibiza-calendar date logic, no-PII analytics payload, form inventory, URLs, CSS, schema, sitemap, tracking and Maps/GBP remain unchanged.
+Prepared change on branch `seo/phase120-phone-plausibility`: keep free international formatting and the existing country-code hint, but reject non-empty phone values containing fewer than seven Unicode decimal digits. The rule deliberately does not require one country prefix format, does not add an HTML `pattern`, and counts Arabic-Indic digits as digits. Localized EN/ES/FR/DE/AR validity messages are added to the existing shared runtime. The same WhatsApp number, Ibiza-calendar date logic, whitespace guard, no-PII analytics markers, URLs, schema, CSS and sitemap remain unchanged.
 
-Pre-PR validation: the proposed runtime passes `node --check`. In a Chromium harness, whitespace-only name/phone values become invalid, the localized English message is exposed, focus moves to the first invalid required text field, and normal values with surrounding whitespace become valid while the handover getter trims them. No form or WhatsApp message was submitted. Full repository CI remains the release gate before merge.
+Pre-PR validation: the Phase 120 enhancer and audit compile; `node --check` passes on the modified runtime. Chromium tests on the exact Phase 119 artifact show `abcdefg` becoming invalid in all five languages, `+971 50 123 4567` remaining valid in all five, and Arabic-Indic `٠٥٠١٢٣٤٥٦٧` remaining valid on the Arabic form. No form or WhatsApp message was submitted. Full repository CI remains the release gate before merge.
 
 ## Intent ownership — reuse existing URLs
 
@@ -48,8 +49,8 @@ Pre-PR validation: the proposed runtime passes `node --check`. In a Chromium har
 
 ## Next execution priorities
 
-1. Resolve Phase 119 PR/check/deployment state first; verify the exact release artifact before calling the whitespace guard published.
-2. After Phase 119, audit one unresolved conversion/accessibility or information-architecture issue only if reproducible; do not add pages or tracking by default.
+1. Resolve Phase 120 PR/check/deployment state first; verify the exact release artifact before calling the phone plausibility guard published.
+2. After Phase 120, audit one unresolved conversion/accessibility or information-architecture issue only if reproducible; do not add pages or tracking by default.
 3. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
 4. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
 5. Keep technical improvements separate from measured business impact.

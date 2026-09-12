@@ -83,6 +83,13 @@ from phase119_audit import run as audit_required_text
 enhance_required_text()
 audit_required_text()
 
+# Phase 120 rejects clearly incomplete telephone values while keeping formatting
+# flexible for international clients and preserving Unicode decimal digits.
+from phase120_enhance import enhance as enhance_phone_plausibility
+from phase120_audit import run as audit_phone_plausibility
+enhance_phone_plausibility()
+audit_phone_plausibility()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
