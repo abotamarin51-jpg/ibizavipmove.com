@@ -34,6 +34,11 @@ print('PASS: Phase 109 audit — FR/DE/AR Private Concierge cornerstone pages ex
 import phase110_enhance
 import phase110_audit
 
-# Phase 111 inspects the final HTML graph without changing pages or styles.
+# Phase 112 strengthens existing FR/DE/AR Partner pages for international
+# DMC/private-travel briefs without adding landing pages or new stylesheets.
+import phase112_enhance
+import phase112_audit
+
+# Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
