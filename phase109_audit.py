@@ -76,6 +76,13 @@ from phase118_audit import run as audit_phone_guidance
 enhance_phone_guidance()
 audit_phone_guidance()
 
+# Phase 119 rejects whitespace-only values in the two required free-text fields,
+# trims handover values and preserves the existing international phone semantics.
+from phase119_enhance import enhance as enhance_required_text
+from phase119_audit import run as audit_required_text
+enhance_required_text()
+audit_required_text()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
