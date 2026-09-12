@@ -90,6 +90,13 @@ from phase120_audit import run as audit_phone_plausibility
 enhance_phone_plausibility()
 audit_phone_plausibility()
 
+# Phase 121 keeps sitemap freshness signals truthful: only routes with verified
+# significant changes on 12 September receive that lastmod date.
+from phase121_enhance import enhance as enhance_sitemap_lastmod
+from phase121_audit import run as audit_sitemap_lastmod
+enhance_sitemap_lastmod()
+audit_sitemap_lastmod()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
