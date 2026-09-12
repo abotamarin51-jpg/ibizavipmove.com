@@ -104,6 +104,13 @@ from phase122_audit import run as audit_private_client_desk
 enhance_private_client_desk()
 audit_private_client_desk()
 
+# Phase 123 consolidates duplicate operational-evidence blocks on the English
+# Partners page while keeping the stronger proof section and authority routes.
+from phase123_enhance import enhance as enhance_partner_proof
+from phase123_audit import run as audit_partner_proof
+enhance_partner_proof()
+audit_partner_proof()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
