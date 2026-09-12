@@ -49,6 +49,12 @@ audit_enquiry_journeys()
 # Phase 114 protects date and validation continuity across all five contact desks.
 import phase114_audit
 
+# Phase 115 gives every required phone field native telephone semantics without
+# imposing a country-specific pattern on international private-client enquiries.
+from phase115_enhance import enhance as enhance_phone_semantics
+enhance_phone_semantics()
+import phase115_audit
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
