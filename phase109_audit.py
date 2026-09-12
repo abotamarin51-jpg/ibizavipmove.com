@@ -46,6 +46,9 @@ from phase113_audit import run as audit_enquiry_journeys
 enhance_enquiry_journeys()
 audit_enquiry_journeys()
 
+# Phase 114 protects date and validation continuity across all five contact desks.
+import phase114_audit
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
