@@ -17,20 +17,29 @@ Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherl
 - Phase 113 merged through PR #31 at `f866e7f99fea55ba605929045a78f2e98a923449`, deployment `34690582374`: FR/DE/AR international-client/private-office journeys gained same-language audience/contact routes and clearer representative briefs.
 - Phase 114 merged through PR #32 at `c5268deda041b997f21c48b578caeffcb3cc01f2`, deployment `34692434048`, release artifact `10297520685`: all five contact desks share today-or-later and departure-after-arrival validation with localized messages.
 - Phase 115 merged through PR #33 at `4b85e41ba396f02ee9164f71a027a53e66d5b3fa`. Deployment `34695052164` completed successfully; exact GitHub Pages artifact `10297803160` has digest `sha256:86011c6ad35835537a86203ecb43b837abf01203f859a9f41b085f92229ce20e`. EN/ES/FR/DE/AR required phone inputs use `type="tel"`, `inputmode="tel"` and `autocomplete="tel"` without a rigid country pattern.
-- Phase 116 targets one verified classification defect in that exact Phase 115 artifact: every required `fClientType` select defaults immediately to the first real option (`private_client`). A visitor can therefore continue without making an explicit profile choice, and an assistant, family office or travel advisor who overlooks the control can be misclassified as a private client. This is a form-quality and B2B lead-routing issue, not evidence of measured lost conversions.
+- Phase 116 merged through PR #34 at `68958d3315212ab3f321e35aea4ecf5782656447`. Deployment `34697823273` completed successfully; exact GitHub Pages artifact `10298674084` has digest `sha256:5a09b89514772aabf1bec174ef2f5d20f5e11466fc96673e53834af3f97cc1ef`. Five required `fClientType` selects now start from localized empty placeholders so visitors must explicitly choose their buyer profile.
+- Phase 117 addresses one verified international-date defect in that exact Phase 116 release artifact: date eligibility currently uses the visitor device timezone through `getTimezoneOffset()`. Around midnight, a visitor in North America or East Asia can therefore see a different minimum arrival date from the calendar day actually in force in Ibiza. This is a form-quality issue for international travel planning, not evidence of measured lost conversions.
 - Search Console, GA4 and country-specific ranking/impression/conversion data remain unverified in this workstream. Do not infer measured commercial impact from technical deployments.
 
 The recurring task is separate from GitHub Actions: Actions validate proposed changes; they do not independently invent or publish SEO content. Each execution must re-read current state, respect permissions and avoid starting another write while a related PR/deployment is unresolved.
 
 ## Phase 116 — 12 September 2026, Europe/Madrid
 
-Evidence: the exact Phase 115 production artifact was downloaded and inspected. On `/contact/`, `/es/contacto/`, `/fr/contact/`, `/de/kontakt/` and `/ar/contact/`, `fClientType` is marked `required` but the first option is a real `private_client` value in every language. The HTML Standard states that a required single-select of display size 1 must have a placeholder label option, and that the placeholder is the empty-value first option used by constraint validation. Source: https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element
+Evidence: the exact Phase 115 production artifact was downloaded and inspected. On `/contact/`, `/es/contacto/`, `/fr/contact/`, `/de/kontakt/` and `/ar/contact/`, `fClientType` was marked `required` but the first option was a real `private_client` value in every language. The HTML Standard states that a required single-select of display size 1 must have a placeholder label option, and that the placeholder is the empty-value first option used by constraint validation. Source: https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element
 
 Change: prepend one localized empty option to each existing buyer-role select: English `Select your profile`, Spanish `Selecciona tu perfil`, French `Sélectionnez votre profil`, German `Profil auswählen`, Arabic `اختر صفتك`. The placeholder is `value="" selected disabled`; the existing six role codes and labels remain unchanged. No URL, CSS, JS runtime, schema, sitemap, tracking, WhatsApp number, price, legal policy, Maps/GBP or other-brand data changes.
 
+Release: PR #34 passed the repository CI, merged at `68958d3315212ab3f321e35aea4ecf5782656447`, and deployed successfully in run `34697823273`. Exact production artifact `10298674084` was used as the Phase 117 baseline. This verifies publication mechanics and artifact content, not rankings or lead impact.
+
+## Phase 117 — 12 September 2026, Europe/Madrid
+
+Evidence: the exact Phase 116 production runtime calculates `localToday` from the visitor device offset (`new Date(now.getTime()-now.getTimezoneOffset()*60000)`), then uses that value for `fArrival`/`fDeparture` minimums and past-date checks. For an Ibiza-only service this can disagree with the island calendar day: for example, at `2026-09-12T22:30:00Z` Ibiza is already `2026-09-13`, while New York is still on 12 September; at `2026-09-12T21:30:00Z` Tokyo is already on 13 September while Ibiza is still on 12 September. MDN confirms `Intl.DateTimeFormat` supports an explicit IANA `timeZone` option, and Ibiza follows mainland Spain time. References: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat and https://www.timeanddate.com/time/zone/spain
+
+Change prepared on branch `seo/phase117-ibiza-date-validation`: the existing qualified-brief runtime now derives the service calendar key with `Intl.DateTimeFormat(... timeZone: 'Europe/Madrid').formatToParts(...)`, and all arrival/departure minimum and past-date checks use that Ibiza date. The same existing JS file remains in use; contact pages are cache-busted from `phase107.js?v=107` to `phase107.js?v=117`. No new URL, stylesheet, external script, tracking event, schema, sitemap entry, WhatsApp number, price, policy, Maps/GBP change or other-brand data is introduced.
+
 Affected routes: `/contact/`, `/es/contacto/`, `/fr/contact/`, `/de/kontakt/`, `/ar/contact/`.
 
-Pre-PR tests: the new read-only audit fails on the untouched Phase 115 artifact because only six real role options exist and no empty placeholder is present, then passes on the patched artifact. Offline Chromium constraint-validation checks on all five forms confirm the initial role value is empty, `validity.valueMissing=true`, and the form is invalid after the other required name/phone fields are filled; choosing `assistant` makes the role control valid and the otherwise-complete form valid. No request was submitted and no network handover was performed. Full repository CI remains the release gate.
+Pre-PR tests: a new Phase 117 read-only gate fails on the untouched Phase 116 release because the Ibiza timezone token is absent, then passes after applying the runtime patch and five cache-busted references. `node --check` passes on the modified runtime. Date fixtures verify `Europe/Madrid` resolves `2026-09-12T22:30:00Z` to `2026-09-13`, `2026-09-12T21:30:00Z` to `2026-09-12`, and `2026-12-31T23:30:00Z` to `2027-01-01`. Full repository CI is still required before merge. No form or WhatsApp request was submitted.
 
 ## Intent ownership — reuse existing URLs
 
@@ -53,8 +62,8 @@ These are intended content assignments, not proof that Google ranks a URL for a 
 
 ## Next execution priorities
 
-1. Resolve the Phase 116 PR/check/deployment state first. Confirm the exact release artifact and five contact pages before calling explicit buyer-role selection published; do not duplicate this role-field task.
-2. After Phase 116, audit error focus and form → WhatsApp handover continuity only if a concrete defect can be reproduced. Do not submit a real request and do not add tracking.
+1. Resolve the Phase 117 PR/check/deployment state first. Confirm the exact release artifact and five contact pages before calling Ibiza-time validation published; do not duplicate this date-timezone task.
+2. After Phase 117, audit form → WhatsApp handover continuity only if a concrete defect can be reproduced. Do not submit a real request and do not add tracking.
 3. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
 4. Keep all high-intent commercial pages within the Phase 111 crawl-depth thresholds. No orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
 5. Keep technical improvements separate from measured business impact; update this file and the release PR with exact evidence.
@@ -62,6 +71,7 @@ These are intended content assignments, not proof that Google ranks a URL for a 
 ## Primary-source reference principles
 
 - HTML select / required constraint validation: https://html.spec.whatwg.org/multipage/form-elements.html#the-select-element
+- MDN Intl.DateTimeFormat / explicit timeZone: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/DateTimeFormat/DateTimeFormat
 - Google crawlable links: https://developers.google.com/search/docs/crawling-indexing/links-crawlable
 - Google AI features: https://developers.google.com/search/docs/appearance/ai-features
 - Google recrawling/indexing: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
