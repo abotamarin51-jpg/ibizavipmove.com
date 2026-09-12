@@ -62,6 +62,13 @@ from phase116_audit import run as audit_buyer_role
 enhance_buyer_role()
 audit_buyer_role()
 
+# Phase 117 anchors date eligibility to Ibiza's calendar day rather than the
+# visitor's device timezone, then cache-busts the existing qualified-brief runtime.
+from phase117_enhance import enhance as enhance_ibiza_date_runtime
+from phase117_audit import run as audit_ibiza_date_runtime
+enhance_ibiza_date_runtime()
+audit_ibiza_date_runtime()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
