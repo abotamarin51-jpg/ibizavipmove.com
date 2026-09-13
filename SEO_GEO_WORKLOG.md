@@ -92,3 +92,12 @@ Validation: PR #44 CI `34729199785` passed with preview artifact `10309107085`, 
 - HTML telephone inputs: https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)
 
 Useful visible content, crawlable contextual links, accurate freshness/form semantics, matching structured data and disciplined critical-resource hints remain the basis. `llms.txt`, schema, IndexNow and more pages do not guarantee search/AI visibility, Maps rankings or leads.
+
+## 13 September addendum — Phases 126–127
+
+- Phase 126: PR #46, merge `14c23f5d6d9e1a08855ac24e91dbed864eeed2cc`, deployment `34734029644`, production artifact `10309969586`, digest `sha256:8c78e01d82433382ec2aab5f1d935ae16be99dcde8d0940359cb16434d43cdcb` — the existing `/luxury-car-rental-ibiza/` canonical now uses natural UK `hire` plus international/US `rental` terminology on the same URL, based on owner-provided Search Console evidence. No synonym page was created; exact private Search Console metrics are intentionally not committed to this public repository.
+- Phase 127: PR #47, merge `b93c9ee6442f699ffb60ea4de66d8ca04390bdc6`, CI `34736604018`, deployment `34736647446`, production artifact `10311133324`, digest `sha256:808a62fadce880234ccce851977d3e03dadc70237bf76a249c29641061b3f6b1` — owner-provided Search Console evidence identified the historical `/services/private-jets` path as still Google-known, while the Phase 126 production artifact had no file at that route. The site now serves `/services/private-jets/` as a direct `noindex,follow` client-side alias to `/private-aviation-ibiza/`, matching the site's existing static-host fallback pattern. The alias is excluded from the sitemap; the canonical aviation page remains indexable and the sitemap stays at 156 canonical URLs.
+
+Phase 127 is a technical URL-continuity fix, not proof that Google has recrawled the legacy URL, consolidated signals, changed rankings, or generated leads. Google recommends permanent server-side redirects where technically possible and permits client-side redirects as a fallback; GitHub Pages in this repository does not expose per-path HTTP redirect rules. Bing likewise recommends redirects for moved URLs and canonical-only sitemaps.
+
+Next priority: use refreshed owner Search Console evidence before making further indexation changes. Prefer another reproducible legacy-URL, crawl/indexation, conversion or mobile issue over creating additional pages; keep private Search Console metrics out of the public repository.
