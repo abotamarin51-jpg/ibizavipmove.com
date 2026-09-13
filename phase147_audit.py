@@ -3,6 +3,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 import json
 import xml.etree.ElementTree as ET
+from phase148_audit import run as run_localized_event_audit
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -103,12 +104,11 @@ def run():
         require(url in urls, f'sitemap membership {slug}')
         require(not any(t == 'meta' and a.get('name','').lower() == 'robots' and 'noindex' in a.get('content','').lower() for t,a in tags), f'indexability {slug}')
 
-    # Preserve the site's own field-report Article facts while cleaning only the
-    # exact third-party reference.
     report = (ROOT / 'ibiza-luxury-operations-report-2026' / 'index.html').read_text(encoding='utf-8')
     require('"headline":"Ibiza Luxury Operations Report 2026"' in report or '"headline": "Ibiza Luxury Operations Report 2026"' in report, 'owned report Article headline preserved')
     require('"datePublished"' in report, 'owned report publication date preserved')
 
+    run_localized_event_audit()
     print(
         f'PASS: Phase 147 audit — {external_creativeworks} verified external references use CreativeWork, '
         f'{own_orgs} Ibiza VIP Move Organization nodes carry a logo, priority canonicals/indexability and 156 URLs preserved'
