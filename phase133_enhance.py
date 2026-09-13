@@ -5,6 +5,7 @@ from phase135_enhance import enhance as enhance_localized_services_routing
 from phase136_enhance import enhance as enhance_localized_authority_footer_routing
 from phase137_enhance import enhance as enhance_localized_contact_footer_routing
 from phase138_enhance import enhance as enhance_localized_wordmark_home_routing
+from phase140_enhance import enhance as enhance_reviewed_vocabulary_roles
 
 ROOT = Path('_site')
 CONTACTS = ('contact', 'es/contacto', 'fr/contact', 'de/kontakt', 'ar/contact')
@@ -55,3 +56,4 @@ if __name__ == '__main__':
     enhance_localized_authority_footer_routing()
     enhance_localized_contact_footer_routing()
     enhance_localized_wordmark_home_routing()
+    enhance_reviewed_vocabulary_roles()
