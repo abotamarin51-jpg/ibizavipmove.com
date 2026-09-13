@@ -1,140 +1,62 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 13 September 2026. Repository: `abotamarin51-jpg/ibizavipmove.com`.
+Updated: 13 September 2026 (Europe/Madrid). Repository: `abotamarin51-jpg/ibizavipmove.com`.
 
 ## Scope and safeguards
 
-Improve the existing Ibiza website for qualified private-client and international B2B enquiries. The aspiration is international recognition for luxury concierge IN IBIZA, not a guaranteed worldwide ranking. Only this domain/repository is in scope. Do not mix Ibiza Private Drivers, its Business Profile or its Analytics property. Google Business Profile/Maps edits, DNS/MX changes, outreach, paid links, advertising, association registrations and new membership products remain outside this workstream. No invented reviews, ratings, affiliations, offices, client identities, prices or availability guarantees.
+Improve qualified private-client and international B2B enquiries for real services IN IBIZA. International recognition is an aspiration, never a guaranteed ranking. Only this domain/repository is in scope; never mix Ibiza Private Drivers, its Google Business Profile or Analytics.
 
-Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherlands, France, UAE and Saudi Arabia. Priority languages: EN, FR, DE, AR. Preserve existing Spanish without expanding Spain/Italy targeting. Search Console, GA4 and country-specific ranking/impression/conversion data remain unverified; do not infer commercial impact from technical deployment alone.
+Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherlands, France, UAE and Saudi Arabia. Languages: EN/FR/DE/AR; preserve existing Spanish without expanding Spain/Italy targeting. No fictional foreign offices, mass country/synonym pages, unauthorized membership products or word-count padding.
 
-## Latest verified checkpoints
+No GBP/Maps edits, DNS/MX changes, outreach, association registrations, paid links, ads, spending, price/commission/billing or legal-policy changes. Do not publish private client identities, identifiable itineraries, private addresses or invented reviews, awards, affiliations, operating results or availability. Do not install tracking without verified ownership/consent or send personal data to Analytics. Only link a previously verified exact Ibiza VIP Move Maps profile.
 
-- Phase 111: `16f3fcced839b31f5a2b42034d615ee83654e8d0` — 156 sitemap URLs reachable in the generated HTML graph; 13 priority commercial routes within 0–2 crawlable links of Home.
-- Phase 112: PR #30, merge `010baac97f6891c02571e2886937c79d6ebf02dd`, deployment `34689850167` — FR/DE/AR Partner pages strengthened for DMC/destination-management/private-travel intent without new URLs.
-- Phase 113: PR #31, merge `f866e7f99fea55ba605929045a78f2e98a923449`, deployment `34690582374` — FR/DE/AR international-client/private-office journeys gained same-language audience/contact routes and clearer representative briefs.
-- Phase 114: PR #32, merge `c5268deda041b997f21c48b578caeffcb3cc01f2`, deployment `34692434048` — five contact desks share localized today-or-later and departure-after-arrival validation.
-- Phase 115: PR #33, merge `4b85e41ba396f02ee9164f71a027a53e66d5b3fa`, deployment `34695052164` — five required phone inputs use `type="tel"`, `inputmode="tel"` and `autocomplete="tel"` without a rigid country pattern.
-- Phase 116: PR #34, merge `68958d3315212ab3f321e35aea4ecf5782656447`, deployment `34697823273` — required buyer-role selects start from localized empty placeholders instead of silently defaulting to private client.
-- Phase 117: PR #35, merge `219602fd3a0a023a3173cd129b808cc80342648d`, deployment `34701142012`, artifact `10299928576` — contact date eligibility uses the Ibiza calendar (`Europe/Madrid`) rather than the visitor device timezone.
-- Phase 118: PR #36, merge `1c89205f80befa91b3c07959e30b5114f063056d`, deployment `34703836099`, artifact `10301017441` — localized international-country-code guidance added without rigid country validation.
-- Phase 119: PR #37, merge `526650a427465785265f3b1251745a359c1a1312`, deployment `34706772578`, artifact `10300879821` — whitespace-only required name/phone values rejected; outgoing WhatsApp values trimmed.
-- Phase 120: PR #38, merge `15d9025914ae6959cc6a9b18f843b0b90911eeda`, deployment `34709598540`, artifact `10302363132` — clearly incomplete phone values rejected while international formatting remains flexible.
-- Phase 121: PR #39, merge `b774abae7df8168a555bf78d36eed552b544e8ff`, deployment `34712575664`, exact release artifact `10303518957`, digest `sha256:2f5723a9be48dbe70fdebfb2e9e362ccb2a282e29efe16ade28903bf88a26b08` — 14 routes with verified significant 12 September changes carry truthful `lastmod=2026-09-12`; sitemap inventory remains 156 URLs.
-- Phase 122: PR #40, merge `d12b14ad322d571ef4c357637025c3f83abda8bc`, deployment `34715611730`, exact release artifact `10304588267`, digest `sha256:2cf033e231479c35419bc055904e970e017b024a2379e458f2796c6a3456aa76` — five contact desks use localized private-client service wording instead of implying an unauthorized membership product. Public EN/FR/DE/AR contact retrieval on 12 September now shows the new labels.
-- Phase 123: PR #41, merge `2b070ef763567b4328def623e78b5abd70028ff5`, deployment `34718471697`, release artifact `10308067566`, digest `sha256:dec797e044cb3400c00114184ffee5657cae8037b4cf27147119d3c4567d0731` — deployment completed successfully on 13 September; exact release artifact contains one `ivm-phase105-proof` block and no `ivm-phase104-authority` block on `/partners/`, with the sitemap still at 156 URLs. Direct public fetch was unavailable from the verification environment, so independent post-deploy HTML retrieval remains unconfirmed.
-- Phase 124: PR #42, merge `57aa090c6053f0f2472f23d63c35933ff1b7f365`, deployment `34727014802`, release artifact `10307534868`, digest `sha256:60452d0df0778d5d617e8814fa742e4e9e67e3cecd444798569946832d87de4b` — all 30 Black Book notes now align Article/Open Graph freshness to sitemap evidence. Exact release validation confirms six English notes use verified `2026-09-03`, 24 localized notes remain intentionally undated, 156 indexable canonicals match the sitemap exactly, no internal HTML links are broken, hreflang targets resolve and `/partners/` remains consolidated.
-- Phase 125: PR #44, merge `3ca0176480fa327a24d12c2bd92d5562527f053b`, deployment `34729233445`, release artifact `10308143048`, digest `sha256:b7c50d5d67208893d8dec3f88d3842e6f3cdba753b58f8ac751486d12c6d7ce4` — 44 canonical pages with a wrong image preload now point that preload at the same existing image marked `fetchpriority="high"`. Exact release validation confirms all 68 canonical pages in the deterministic one-preload/one-priority-image cohort are aligned, `/partners/` preloads its actual `private-office.jpg` hero, the sitemap remains 156 URLs and Phase 123/124 safeguards remain intact.
+Read current main, open PRs, worklog and deployments before deciding. Use small reversible branch/PR changes, preserve existing tests, validate exact diff/head/base/checks, and verify deployment and output before calling a change published. Do not start concurrent writes or churn pages simply because another iteration runs.
 
-These are technical publication and regression checkpoints, not proof of Google indexation, rankings, traffic, conversions or Maps position.
+## History and evidence preservation
 
-## Phase 123 — Partners proof consolidation
+The complete former worklog through Phase 130 is preserved BYTE-FOR-BYTE in `SEO_GEO_WORKLOG_ARCHIVE_THROUGH_130.md`, Git blob `f4600c7c049ec2e2590789c3ed9599d5d693de9a` (22,832 bytes). It was read in bounded line ranges before this compact continuation was written. Earlier implementation, PR, commit, deployment and artifact evidence remains there; no history was discarded. Its older next-step and unverified-access statements are historical, not current instructions.
 
-Evidence: the exact Phase 122 production artifact and the previously public `/partners/` page contained two adjacent authority/proof sections that communicated substantially the same proposition and linked to the same three evidence resources: case studies, the 2026 operations report and the founder profile. `/destination-management-ibiza/` and `/private-client-services-ibiza/` each contained only one equivalent operational-evidence block. The duplication was therefore specific to the English Partners page and added repetitive copy/links without giving a professional partner a distinct next step.
+Resolved work: 111 crawl depth; 112–113 multilingual B2B/audience routing; 114–120 date/phone/profile validation; 121 sitemap dates; 122 private-client rather than unauthorized membership wording; 123 Partners proof consolidation; 124 Article freshness; 125 priority-image preload alignment; 126 UK/international car terminology; 127 historical private-jets route; 128 Services model links; 129 four topic-specific Arabic articles; 130 German event terminology. Do not recreate these tasks or add synonym URLs.
 
-Published change: remove only the older `ivm-phase104-authority` block from `/partners/`, retain the newer `ivm-phase105-proof` block and all three authority routes, and refresh only `/partners/` to truthful `lastmod=2026-09-12`. No URL, title/meta, schema, service claim, WhatsApp destination, tracking, stylesheet, price, policy or other page changes.
+## Latest publication checkpoints
 
-Validation: PR #41 CI passed; deployment `34718471697` completed successfully; exact release artifact `10308067566` contains no `ivm-phase104-authority` and exactly one `ivm-phase105-proof` block on `/partners/`; the sitemap remains exactly 156 unique canonical URLs. The public fetch tool returned a cache miss immediately after deployment, so the release artifact is the verified production-build evidence and public retrieval should be rechecked separately before claiming independent propagation.
+- Phase 130: PR #52, merge `b604f6bb8ef507866187da25e31b23c93a3f46dc`, deployment `34744047488`, artifact `10313269080`: one existing German events page aligned with verified query wording. Full details in the archive.
+- Phase 131: PR #54, merge `a70871ba741afd2e4b3c091e8b606742938458d0`: five contact forms require an explicit primary service with a localized empty placeholder plus the unchanged 12 real service choices. The current Phase 132 production artifact independently confirms this output. This entry closes the missing worklog checkpoint; it is not a new implementation.
+- Phase 132: PR #55, merge `91967c87168d7881f9d8a12845bc2f80f99149bd`, successful deployment `34750310254`, artifact `10315587780`, SHA256 `656e8ab42a481dbae3b78f0567b3a4914ba78d0ebb348c6d455729a23c3da64d`. The exact artifact was downloaded and its hash checked in this execution. Independent public retrieval on 13 September now shows the new descriptive `/services/` H1 and the six Phase 128 service-model routes. Public propagation is confirmed; Google's next recrawl and performance effect are not.
 
-## Phase 124 — Black Book freshness integrity
+## Phase 133 — single contact-form validation owner
 
-Evidence: `phase77_enhance.py` and `phase78_enhance.py` derive `Article.dateModified` and `article:modified_time` from `date.today()` at build time. In the exact Phase 123 PR artifact, all 30 Black Book planning notes therefore reported `2026-09-12` as modified even though the sitemap has verified `lastmod=2026-09-03` for the six English notes and intentionally has no `lastmod` for the 24 ES/FR/DE/AR notes. A routine deployment must not masquerade as an editorial update.
+Date: 13 September 2026, Europe/Madrid. Branch: `phase133-single-contact-form-owner`; base: the Phase 132 merge above. Initial check found no open PRs and a successful latest deployment.
 
-Published change: a final post-processing phase reads each of the 30 Black Book article URLs from the sitemap. When a verified sitemap `lastmod` exists, both Article schema and Open Graph modified-time metadata are aligned to it. When no verified `lastmod` exists, `dateModified` and `article:modified_time` are omitted instead of inventing a date. `datePublished` remains unset. No visible copy, URL, canonical, hreflang, service claim, contact route, tracking, price or legal content changed.
+Evidence: offline Chromium execution of the exact published scripts reproduced silent departure-date deletion on `/contact/`: after choosing arrival 20 December and departure 22 December, changing arrival to 24 December erased departure and left that optional field valid. The old shared-script change listener was still active beside the modern qualified-form runtime. The four localized forms also retained an obsolete inline submission script with a JavaScript syntax error; their modern runtime still worked. These are reproduced client-side defects, not an inferred conversion loss.
 
-Validation: PR #42 CI `34726887779` passed before merge. Deployment `34727014802` completed successfully. Exact release artifact `10307534868` confirms six English notes use verified `2026-09-03`, 24 localized notes remain intentionally undated, all 156 indexable canonicals match the sitemap exactly, there are no broken internal HTML links in the generated site, hreflang targets resolve within the sitemap and the Phase 123 Partners consolidation remains intact. Google Search Central defines `dateModified` as the date/time the article was most recently modified and says recommended properties should be added only when they apply; this phase therefore favors truthful omission over build-time freshness inflation.
+Change: bypass the legacy English form block only when the form has the existing `data-ivm-qualified-brief` marker. Remove only the obsolete inline form script from the four localized pages. Cache-version the existing shared-script reference on the five contact pages. Keep the modern `phase107.js` runtime, all validation messages, date rules, service/profile choices, contact destination and analytics payload code unchanged. No new JS/CSS asset, URL or tracker.
 
-## Phase 125 — priority-image preload integrity
+Affected HTML: `/contact/`, `/es/contacto/`, `/fr/contact/`, `/de/kontakt/`, `/ar/contact/`. Shared asset: `/assets/premium.js`; its sole code change is the legacy-handler guard. Non-form behavior is unchanged.
 
-Evidence: the exact Phase 124 production artifact contained 68 canonical pages with exactly one `<link rel="preload" as="image">` and exactly one `<img fetchpriority="high">`. On 44 of those pages the preload pointed at a different image from the existing priority image. `/partners/`, for example, preloaded `/assets/images/aviation.jpg` while its actual priority hero was `/assets/images/private-office.jpg`. This can pull a non-LCP image into the early network queue while the real priority hero still needs to load. Chrome's current LCP-discovery guidance says image LCP should be discoverable and prioritized, and treats preload/fetch priority as mechanisms for that same critical resource.
+Local tests: the new gate rejected the unchanged baseline, then passed after enhancement; Python compilation and shared/inline JavaScript syntax passed. The enhancer is idempotent and validates expected markers before writing. Exact output comparison changed only five contact HTML files and the shared JS; all other files, sitemap/robots, CSS/images and modern form runtime remained byte-identical. Ten offline Chromium page/viewport cases at 375/1440px passed with no horizontal overflow or script errors, departure preserved, localized date error and native focus on the invalid departure field. Required role/service, whitespace/phone and optional-date checks passed. Across those cases, 120 valid service handovers produced exactly one locally captured WhatsApp destination and one existing local event each; test values were absent from the analytics payload. The navigation assignment was replaced ONLY in the test harness by a recorder; all network requests were blocked. No enquiry or message was sent. This is not a WhatsApp delivery, live browser, screen-reader or field Core Web Vitals measurement.
 
-Published change: a final post-processing phase changes only the existing preload `href` when a canonical page has exactly one image preload and one `fetchpriority="high"` image and those URLs differ. Responsive `imagesrcset` preloads are not guessed or rewritten. No image source, visible copy, URL, schema, tracking, contact route, price, policy, sitemap date or legal content changed.
+Research: W3C WAI forms validation/notifications recommends understandable errors and focusing the invalid field. Google/Bing continue to ground search and AI visibility in ordinary crawlability, useful visible content and truthful structured data, not additional AI files or guaranteed ranking tricks.
 
-Validation: PR #44 CI `34729199785` passed with preview artifact `10309107085`, digest `sha256:8f3b68f3ba04d79634854264f2537afee3d396cd41ed4d6cd5dd3b71180b69a3`. Deployment `34729233445` completed successfully, including Pages and IndexNow. Exact release artifact `10308143048`, digest `sha256:b7c50d5d67208893d8dec3f88d3842e6f3cdba753b58f8ac751486d12c6d7ce4`, confirms 68/68 eligible canonical pages aligned and zero mismatches; `/partners/` now preloads `/assets/images/private-office.jpg`, the sitemap remains 156 URLs, the Phase 123 proof consolidation remains one block and the Phase 124 EN/localized freshness behavior remains unchanged.
+Status at this commit: locally validated implementation awaiting full PR CI and release verification. The PR conversation will record the exact commit/run/artifact and final publication state; read that evidence before treating Phase 133 as published. No existing audit was reduced. Both CI and deployment run the new transform and read-only gate before the existing final gates.
 
-## Intent ownership — reuse existing URLs
+## Measurement and next priority
 
-| Search intent | Existing preferred route | Scope |
-| --- | --- | --- |
-| Luxury concierge Ibiza | `/` | Brand and broad service overview |
-| Private concierge Ibiza | `/private-concierge-ibiza/` | Connected multi-service stay |
-| Lifestyle management | `/luxury-lifestyle-management-ibiza/` | Ongoing stay coordination |
-| Private client services | `/private-client-services-ibiza/` | Principals, PAs, EAs, family offices |
-| Personal concierge / personal assistance | `/personal-concierge-ibiza/` | Direct personal travel assistance, not recruitment |
-| Luxury travel concierge / private travel management | `/luxury-travel-concierge-ibiza/` | Pre-arrival planning and local coordination |
-| Bespoke travel / travel planning | `/luxury-travel-concierge-ibiza/` | Tailored travel brief; no synonym page |
-| VIP services / VIP hospitality / VIP access | `/vip-services-ibiza/` | Hospitality/access requests subject to confirmation |
-| Luxury DMC / destination management | `/destination-management-ibiza/` | Local execution for professional travel partners |
-| Ibiza concierge partner / local Ibiza operator | `/partners/` | Professional handover and client relationship protection |
-| One-off bespoke requests | `/bespoke-concierge-ibiza/` | Unusual individual requests |
-| Private membership | No authorized page/product | Research term only; do not imply membership in visible service UI |
+GSC Wizard currently lists the exact `https://ibizavipmove.com/` property. Prior owner exports and connected inspections are distinct evidence sources; keep private metrics outside this public repository. Do not reuse the other brand's property. This iteration does not establish fresh rankings, impressions, indexation changes, conversions or revenue, and does not claim verified GA4 attribution.
 
-## Next execution priorities
+First resolve Phase 133's PR/deployment state and validate its exact output. Afterwards prioritize settled Search Console evidence and unresolved commercial-page coverage, rather than further form microchanges or editing recently changed titles before Google recrawls. Maintain 156 sitemap canonicals and the existing 13 priority routes within 0–2 crawlable HTML links from Home. Indexable is not indexed; a successful deployment or IndexNow response is not a search/AI inclusion or leads guarantee.
 
-1. Recheck independent public retrieval of `/partners/` and a representative EN/FR/DE/AR Black Book note; search retrieval currently returns no result for the exact pages, so do not confuse release-artifact evidence with a separately observed public response.
-2. Audit one unresolved mobile/performance, conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
-3. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
-4. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
-5. Keep technical improvements separate from measured business impact.
+## Intent ownership — reuse existing pages
 
-## Primary-source reference principles
+Home owns broad luxury concierge; `/private-concierge-ibiza/` owns connected multi-service stays. Use `/luxury-lifestyle-management-ibiza/` for ongoing stay coordination, `/personal-concierge-ibiza/` for direct assistance, `/luxury-travel-concierge-ibiza/` for private travel management/bespoke travel/planning, `/vip-services-ibiza/` for conditional hospitality/access requests, `/private-client-services-ibiza/` for principals/PAs/family offices, `/destination-management-ibiza/` for local DMC execution, and `/partners/` for professional handover. `/bespoke-concierge-ibiza/` remains for unusual individual requests. No private membership is authorized. Preserve localized routes and real Ibiza service-area information without inventing locations.
 
-- Google crawlable links: https://developers.google.com/search/docs/crawling-indexing/links-crawlable
-- Google AI features: https://developers.google.com/search/docs/appearance/ai-features
-- Google helpful, reliable, people-first content: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
-- Google Article structured data: https://developers.google.com/search/docs/appearance/structured-data/article
-- Google recrawling/indexing: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
-- Google sitemap lastmod guidance: https://developers.google.com/search/blog/2023/06/sitemaps-lastmod-ping
-- Google local ranking: https://support.google.com/business/answer/7091
-- Chrome LCP request discovery: https://developer.chrome.com/docs/performance/insights/lcp-discovery
-- Bing Webmaster Guidelines: https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a
-- IndexNow: https://www.indexnow.org/
-- HTML telephone inputs: https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)
+## Primary references
 
-Useful visible content, crawlable contextual links, accurate freshness/form semantics, matching structured data and disciplined critical-resource hints remain the basis. `llms.txt`, schema, IndexNow and more pages do not guarantee search/AI visibility, Maps rankings or leads.
+- https://www.w3.org/WAI/tutorials/forms/validation/
+- https://www.w3.org/WAI/tutorials/forms/notifications/
+- https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api
+- https://developers.google.com/search/docs/appearance/ai-features
+- https://developers.google.com/search/docs/crawling-indexing/links-crawlable
+- https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a
 
-## 13 September addendum — Phases 126–127
-
-- Phase 126: PR #46, merge `14c23f5d6d9e1a08855ac24e91dbed864eeed2cc`, deployment `34734029644`, production artifact `10309969586`, digest `sha256:8c78e01d82433382ec2aab5f1d935ae16be99dcde8d0940359cb16434d43cdcb` — the existing `/luxury-car-rental-ibiza/` canonical now uses natural UK `hire` plus international/US `rental` terminology on the same URL, based on owner-provided Search Console evidence. No synonym page was created; exact private Search Console metrics are intentionally not committed to this public repository.
-- Phase 127: PR #47, merge `b93c9ee6442f699ffb60ea4de66d8ca04390bdc6`, CI `34736604018`, deployment `34736647446`, production artifact `10311133324`, digest `sha256:808a62fadce880234ccce851977d3e03dadc70237bf76a249c29641061b3f6b1` — owner-provided Search Console evidence identified the historical `/services/private-jets` path as still Google-known, while the Phase 126 production artifact had no file at that route. The site now serves `/services/private-jets/` as a direct `noindex,follow` client-side alias to `/private-aviation-ibiza/`, matching the site's existing static-host fallback pattern. The alias is excluded from the sitemap; the canonical aviation page remains indexable and the sitemap stays at 156 canonical URLs.
-
-Phase 127 is a technical URL-continuity fix, not proof that Google has recrawled the legacy URL, consolidated signals, changed rankings, or generated leads. Google recommends permanent server-side redirects where technically possible and permits client-side redirects as a fallback; GitHub Pages in this repository does not expose per-path HTTP redirect rules. Bing likewise recommends redirects for moved URLs and canonical-only sitemaps.
-
-Next priority: use refreshed owner Search Console evidence before making further indexation changes. Prefer another reproducible legacy-URL, crawl/indexation, conversion or mobile issue over creating additional pages; keep private Search Console metrics out of the public repository.
-
-## 13 September addendum — Phase 128
-
-- Phase 128: PR #49, merge `2da38b591ee1650b02c6fd1aa1a92fcbf40ce357`, CI `34739068233`, deployment `34739113574`, production artifact `10312435972`, digest `sha256:c1f72ddb633ffd18b38605e4f131d76afc9dd44704f6edc532235a9eb27f3b79` — the existing `/services/` hub now replaces the search-facing “More ways clients search for this support” bridge with user-centred service-model guidance and crawlable descriptive links to all six existing service-model routes: Personal Concierge, Luxury Travel Concierge, Lifestyle Management, VIP Services, Private Client Services, and Luxury DMC & Destination Management. No new URL was created. Exact release comparison against Phase 127 changes only `services/index.html` and `sitemap.xml`; the sitemap remains 156 canonical URLs and `/services/` carries truthful `lastmod=2026-09-13`.
-
-The GitHub Pages deployment completed successfully and the exact production artifact validates the change. An independent public reader immediately after deployment still returned its previously cached `/services/` block, so independent propagation should be rechecked separately rather than treated as proof of a live recrawl. This is an information-architecture and user-clarity improvement, not measured evidence of better rankings, traffic, conversions or leads.
-
-Next priority: recheck independent public retrieval of `/services/`; then use refreshed owner Search Console/indexation evidence before any further indexation change. Prefer reproducible conversion, mobile/performance or legacy-URL issues over creating additional pages.
-
-## 13 September addendum — Phase 129
-
-Four Arabic Black Book notes used the same three generic body sections, changing mainly the topic nouns. Their existing English counterparts already contain practical sections specific to arrival planning, August, villa handovers and private-aviation ground coordination.
-
-Phase 129 replaces only the Arabic article bodies at:
-
-- /ar/ibiza-intelligence/private-arrival/
-- /ar/ibiza-intelligence/ibiza-august-planning/
-- /ar/ibiza-intelligence/villa-arrival-planning/
-- /ar/ibiza-intelligence/private-aviation-ground-coordination/
-
-Each now follows the four topic-specific sections of its English counterpart. Canonicals, reciprocal hreflang, titles, descriptions, H1s, service and contact routes, related articles, RTL markup and assets are preserved. Only these four significant editorial changes receive lastmod/dateModified/article:modified_time of 2026-09-13. No new URL, service promise, price or availability claim is introduced.
-
-Local verification applied the transform to a copy of the published HTML. The output diff contains exactly four article HTML files plus sitemap.xml; all other downloaded files are byte-identical. Normalizing just the changed body and modification-date fields restores the original four pages exactly. A repeat run is idempotent. The existing Phase 124 freshness and Phase 71 multilingual-editorial audits pass; the sitemap remains 156 canonical URLs. Both PR validation and production deployment run Phase 129, then rerun the freshness audit before final validation.
-
-This corrects repetitive editorial copy. It does not establish why Google selected or excluded an individual URL, and publication does not guarantee indexation or rankings. Private Search Console results remain outside this public repository. PR CI and deployment results must be checked separately before treating the release as published.
-
-Release verified: PR #51; merge `fe98b4ef69cf3ff002171f2849c11482444f0928`; successful PR validation `34741926521` and production deployment `34741965198`. Production artifact `10312920747` has digest `sha256:e1615dfc56e58bbfa75a02d5745fbe8f7a690fd54d76e8869cc94ec606a3d399` (artifact metadata recorded; no claim of separately downloading that archive). Direct public retrieval after deployment returned HTTP 200 for all four articles and confirmed each new body and modification-date field. The public sitemap returned HTTP 200, still contains 156 URLs, and exposes the four matching modification dates. No post-release Google recrawl or indexation outcome is claimed.
-
-## 13 September addendum — Phase 130
-
-Verified Search Console data for the exact `https://ibizavipmove.com/` property showed the German query `event koordination ibiza` mapping specifically to the existing `/de/private-events-ibiza/` page. URL Inspection confirmed that page was submitted and indexed, mobile-crawled successfully, and allowed for indexing. Exact query metrics remain outside this public repository.
-
-Phase 130 keeps the existing canonical and aligns only that German page's title, meta description, H1, Open Graph/Twitter labels and existing WebPage/Service schema wording with the natural German `Eventkoordination` terminology. Canonical, reciprocal hreflang, FAQ, service scope and contact routes are preserved; no new URL or country page is created. The target alone receives truthful sitemap `lastmod=2026-09-13`.
-
-PR #52 validation `34744017808` completed successfully. PR #52 merged as `b604f6bb8ef507866187da25e31b23c93a3f46dc`; production deployment `34744047488` completed successfully, including Pages and IndexNow. Production artifact `10313269080`, digest `sha256:ad0d21be3fe453e505a2ae73024dcaf99a92391e8994ff3d1e4c45b46a67cae0`, confirms the new title/H1/description, self-canonical, indexability, preserved hreflang and the unchanged 156-URL sitemap inventory. Independent public retrieval immediately after deployment returned a cache miss, so no separate propagation or Google recrawl claim is made.
-
-This is a measured-demand content-alignment improvement, not evidence that rankings, CTR, enquiries or revenue improved after release. GA4 conversion attribution is unavailable through the currently connected analytics scope, so no conversion claim is made. Next priority: wait for settled Search Console data after Google's next crawl before judging this page, and use another independently verified issue rather than expanding pages by synonym.
+The archive retains the additional primary references and all historical checkpoints.
