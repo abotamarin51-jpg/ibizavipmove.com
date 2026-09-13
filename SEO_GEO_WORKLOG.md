@@ -31,13 +31,15 @@ Change: 27 FR/DE/AR authority/editorial pages now route five legacy footer links
 
 ## Phase 137 — localized contact Explore routing
 
-Date: 13 September 2026. Evidence from the exact Phase 136 production artifact: `/fr/contact/`, `/de/kontakt/` and `/ar/contact/` each retain a legacy Explore footer with three English destinations even though exact localized equivalents already exist. The affected routes are Private Office, The Ibiza Black Book and International Clients: nine hrefs total, six commercial and three editorial.
+Published 13 September 2026. Evidence from the exact Phase 136 production artifact showed `/fr/contact/`, `/de/kontakt/` and `/ar/contact/` each retaining three legacy Explore links to English destinations even though exact localized equivalents already existed. The affected routes were Private Office, The Ibiza Black Book and International Clients: nine hrefs total, six commercial and three editorial.
 
-Prepared change: replace only those nine hrefs with `/fr/...`, `/de/...` and `/ar/...` equivalents. Keep visible labels, form runtime/validation, WhatsApp destination, analytics behavior, canonical, H1, schema, sitemap, legal policy, prices and service scope unchanged. No new URL or asset.
+Change: PR #62 replaces only those nine hrefs with `/fr/...`, `/de/...` and `/ar/...` equivalents. Visible labels, form runtime/validation, WhatsApp destination, analytics behavior, canonical, H1, schema, sitemap, legal policy, prices and service scope remain unchanged. No new URL, redirect, asset, tracker or market page was created.
 
-Local validation against the exact Phase 136 artifact: Python compilation passes; the transform changes exactly three HTML files and is idempotent; the read-only gate confirms all nine localized targets exist and are present in the unchanged 156-URL sitemap, each contact page retains one self-canonical/H1 and its qualified brief form, and the official WhatsApp destination remains present.
+Validation: PR CI `34761278121` / job `103734437681` succeeded, including the new Phase 137 gate and all existing final audits. PR #62 merged as `ccaed6e26d34948a92991c08e8b65a8f94940730`. Production deployment `34761345495` / job `103734619847` succeeded, including GitHub Pages and the existing IndexNow step. Exact production artifact `10319515260` has SHA256 `3b4c33c1f5cb7a1887655838aaa51ce88992ee3da65b2ce0c40563343ffa9388`.
 
-Status at this commit: prepared for PR CI and production verification. The final PR conversation must record the exact CI run, merge commit, deployment and production artifact before Phase 137 is treated as published. Do not infer ranking, indexation, conversion or revenue impact from this technical change.
+Production artifact verification confirms all three localized contact pages now contain the intended same-language Explore destinations, retain one self-canonical/H1, their qualified brief form and the existing official WhatsApp destination, while the sitemap remains 156 unique URLs. Comparison with the Phase 136 artifact changes the three intended contact HTML outputs plus the known clean-build JPEG encoder variance on `assets/images/villa.jpg`; no image-source code changed. A public reader immediately after release still resolved cached English destinations, so a second independent propagation check remains unconfirmed and is not treated as an outage.
+
+Impact: technical navigation/localization and internal-link coherence only. No ranking, Google indexation, AI visibility, traffic, lead or revenue uplift is inferred from this release.
 
 ## Intent ownership — reuse existing pages
 
@@ -51,4 +53,4 @@ Google Search Central says crawlable `<a href>` links help Google discover inter
 - https://developers.google.com/search/docs/appearance/ai-features
 - https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a
 
-Next priority after Phase 137 release verification: audit one distinct unresolved FR/DE/AR conversion or authority-link issue, mobile/performance defect or Search Console signal. Do not revisit the Phase 134 DMC/Luxury Travel Concierge indexation decision before 16 September unless a new technical failure appears.
+Next priority: audit one distinct unresolved FR/DE/AR conversion or authority-link issue, mobile/performance defect or settled Search Console signal. Do not revisit the Phase 134 DMC/Luxury Travel Concierge indexation decision before 16 September unless a new technical failure appears.
