@@ -123,6 +123,8 @@ jobs:
           python3 phase131_audit.py
           python3 phase132_enhance.py
           python3 phase132_audit.py
+          python3 phase133_enhance.py
+          python3 phase133_audit.py
           python3 phase124_audit.py
           python3 phase71_audit.py
           python3 phase72_audit.py
