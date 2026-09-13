@@ -47,3 +47,5 @@ def enhance():
 
 if __name__ == '__main__':
     enhance()
+    from phase134_enhance import enhance as enhance_phase134
+    enhance_phase134()
