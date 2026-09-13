@@ -10,6 +10,7 @@ are untouched.
 from pathlib import Path
 import json
 import re
+from phase148_enhance import enhance as enhance_localized_event_paths
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -120,6 +121,7 @@ def enhance():
         f'{external_changed} verified external Article nodes generalized to CreativeWork and '
         f'{logos_added} Ibiza VIP Move Organization logos completed; body/sitemap unchanged'
     )
+    enhance_localized_event_paths()
 
 
 if __name__ == '__main__':
