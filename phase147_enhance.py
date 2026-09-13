@@ -2,9 +2,10 @@
 
 The verified third-party Luxury Magazine reference was encoded as Article even though the
 site only stores its title and URL. Google-style Article validators then report missing
-headline/image/date fields on commercial pages. Preserve the verified subject relationship
-as generic CreativeWork instead, and ensure Ibiza VIP Move Organization nodes carry the
-existing first-party logo. Visible copy, URLs, canonicals, hreflang and sitemap are untouched.
+headline/image/date fields on commercial and Media & Partners pages. Preserve the verified
+reference as generic CreativeWork instead, and ensure Ibiza VIP Move Organization nodes
+carry the existing first-party logo. Visible copy, URLs, canonicals, hreflang and sitemap
+are untouched.
 """
 from pathlib import Path
 import json
@@ -15,7 +16,10 @@ BASE = 'https://ibizavipmove.com'
 ORG_ID = BASE + '/#organization'
 LOGO = BASE + '/assets/brand-mark.svg'
 ARTICLE_URL = 'https://www.luxury-magazine.eu/luxury-travel-concierge-services-ibiza-dining/'
-ARTICLE_NAME = 'Top Luxury Travel Concierge Services for Ibiza Dining in 2026'
+ARTICLE_NAMES = {
+    'Top Luxury Travel Concierge Services for Ibiza Dining in 2026',
+    'Top Luxury Travel Concierge Services for Ibiza Dining',
+}
 SCRIPT_RE = re.compile(r'(<script\s+type=["\']application/ld\+json["\']>)(.*?)(</script>)', re.I | re.S)
 
 
@@ -59,12 +63,13 @@ def enhance():
                     continue
                 types = _types(node)
 
-                # Exact verified external reference from Phase 99. Do not invent article
-                # rich-result fields we do not possess; use the broader CreativeWork type.
+                # Exact verified external reference. Do not invent Article rich-result
+                # fields we do not possess; retain its existing verified title and URL
+                # under the broader CreativeWork type.
                 if (
                     'Article' in types
                     and node.get('url') == ARTICLE_URL
-                    and node.get('name') == ARTICLE_NAME
+                    and node.get('name') in ARTICLE_NAMES
                 ):
                     publisher = node.get('publisher')
                     if publisher is not None and not (
@@ -73,8 +78,9 @@ def enhance():
                         and publisher.get('name') == 'Luxury Magazine'
                     ):
                         raise SystemExit(f'Phase 147: unexpected external publisher shape in {path}')
+                    name = node['name']
                     node.clear()
-                    node.update({'@type': 'CreativeWork', 'name': ARTICLE_NAME, 'url': ARTICLE_URL})
+                    node.update({'@type': 'CreativeWork', 'name': name, 'url': ARTICLE_URL})
                     external_changed += 1
                     changed = True
 
@@ -102,9 +108,9 @@ def enhance():
     if (ROOT / 'sitemap.xml').read_bytes() != sitemap:
         raise SystemExit('Phase 147: sitemap changed unexpectedly')
 
-    # First application should affect the established Phase 99 footprint and the later
-    # authority pages; a rerun is intentionally idempotent.
-    if external_changed not in (0,) and external_changed < 60:
+    # Clean build: 67 known external references. Direct follow-up on Phase 147 production:
+    # five residual Media & Partners references. Rerun: zero. Any other count requires review.
+    if external_changed not in (0, 5, 67):
         raise SystemExit(f'Phase 147: external relationship footprint drifted ({external_changed})')
     if logos_added not in (0,) and logos_added < 10:
         raise SystemExit(f'Phase 147: own-organization logo footprint drifted ({logos_added})')

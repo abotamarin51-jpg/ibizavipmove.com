@@ -8,7 +8,10 @@ ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
 ORG_ID = BASE + '/#organization'
 ARTICLE_URL = 'https://www.luxury-magazine.eu/luxury-travel-concierge-services-ibiza-dining/'
-ARTICLE_NAME = 'Top Luxury Travel Concierge Services for Ibiza Dining in 2026'
+ARTICLE_NAMES = {
+    'Top Luxury Travel Concierge Services for Ibiza Dining in 2026',
+    'Top Luxury Travel Concierge Services for Ibiza Dining',
+}
 PRIORITY = (
     'private-events-ibiza',
     'private-chef-staffing-ibiza',
@@ -72,7 +75,8 @@ def run():
                 raise SystemExit(f'Phase 147 audit: invalid JSON-LD in {path}: {exc}')
             for node in walk(data):
                 node_types = types(node)
-                if node.get('url') == ARTICLE_URL and node.get('name') == ARTICLE_NAME:
+                if node.get('url') == ARTICLE_URL:
+                    require(node.get('name') in ARTICLE_NAMES, f'unexpected external reference title in {path}')
                     require('Article' not in node_types, f'external reference still typed Article in {path}')
                     require('CreativeWork' in node_types, f'external reference not CreativeWork in {path}')
                     require('publisher' not in node, f'external reference retains incomplete publisher entity in {path}')
@@ -85,7 +89,7 @@ def run():
                     own_orgs += 1
             pos = end + len('</script>')
 
-    require(external_creativeworks >= 60, f'expected established external CreativeWork footprint, found {external_creativeworks}')
+    require(external_creativeworks == 67, f'expected 67 verified external CreativeWork references, found {external_creativeworks}')
     require(own_orgs >= 60, f'expected established own Organization footprint, found {own_orgs}')
 
     for slug in PRIORITY:
@@ -100,13 +104,13 @@ def run():
         require(not any(t == 'meta' and a.get('name','').lower() == 'robots' and 'noindex' in a.get('content','').lower() for t,a in tags), f'indexability {slug}')
 
     # Preserve the site's own field-report Article facts while cleaning only the
-    # exact third-party subject relationship.
+    # exact third-party reference.
     report = (ROOT / 'ibiza-luxury-operations-report-2026' / 'index.html').read_text(encoding='utf-8')
     require('"headline":"Ibiza Luxury Operations Report 2026"' in report or '"headline": "Ibiza Luxury Operations Report 2026"' in report, 'owned report Article headline preserved')
     require('"datePublished"' in report, 'owned report publication date preserved')
 
     print(
-        f'PASS: Phase 147 audit — {external_creativeworks} exact external references use CreativeWork, '
+        f'PASS: Phase 147 audit — {external_creativeworks} verified external references use CreativeWork, '
         f'{own_orgs} Ibiza VIP Move Organization nodes carry a logo, priority canonicals/indexability and 156 URLs preserved'
     )
 
