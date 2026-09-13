@@ -3,6 +3,7 @@
 This is a post-build, markup-only performance change. It creates no new asset or URL.
 """
 from pathlib import Path
+from phase143_enhance import enhance as enhance_partners_hero_webp
 
 ROOT = Path('_site')
 PAGES = ('fr', 'de', 'ar', 'es')
@@ -49,6 +50,7 @@ def enhance():
         changed += 1
 
     print(f'PASS: Phase 142 — responsive mobile hero added to {changed} localized homepages')
+    enhance_partners_hero_webp()
 
 
 if __name__ == '__main__':
