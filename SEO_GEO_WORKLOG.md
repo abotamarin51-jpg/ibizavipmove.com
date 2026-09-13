@@ -22,29 +22,28 @@ Resolved work: 111 crawl depth; 112–113 multilingual B2B/audience routing; 114
 
 - Phase 130: PR #52, merge `b604f6bb8ef507866187da25e31b23c93a3f46dc`, deployment `34744047488`, artifact `10313269080`: one existing German events page aligned with verified query wording. Full details in the archive.
 - Phase 131: PR #54, merge `a70871ba741afd2e4b3c091e8b606742938458d0`: five contact forms require an explicit primary service with a localized empty placeholder plus the unchanged 12 real service choices. The current Phase 132 production artifact independently confirms this output. This entry closes the missing worklog checkpoint; it is not a new implementation.
-- Phase 132: PR #55, merge `91967c87168d7881f9d8a12845bc2f80f99149bd`, successful deployment `34750310254`, artifact `10315587780`, SHA256 `656e8ab42a481dbae3b78f0567b3a4914ba78d0ebb348c6d455729a23c3da64d`. The exact artifact was downloaded and its hash checked in this execution. Independent public retrieval on 13 September now shows the new descriptive `/services/` H1 and the six Phase 128 service-model routes. Public propagation is confirmed; Google's next recrawl and performance effect are not.
+- Phase 132: PR #55, merge `91967c87168d7881f9d8a12845bc2f80f99149bd`, successful deployment `34750310254`, artifact `10315587780`, SHA256 `656e8ab42a481dbae3b78f0567b3a4914ba78d0ebb348c6d455729a23c3da64d`. Independent public retrieval on 13 September shows the descriptive `/services/` H1 and the six Phase 128 service-model routes. Public propagation is confirmed; Google's next recrawl and performance effect are not.
+- Phase 133: PR #56, merge `a517107e247bae9557914a08fee76bf589e6306c`, successful deployment `34752466429`, exact production artifact `10315752532`, SHA256 `8a77319ce44488286e784c6d0b64fbf761c954da174fc77c18c3a5a68e368745`. Five qualified contact forms now have one modern validation/submission owner; date preservation, localized validation and existing contact routing were validated on the production artifact. The PR conversation contains final release evidence. No enquiry was sent during tests and no conversion uplift is claimed.
 
-## Phase 133 — single contact-form validation owner
+## Phase 134 — destination-management B2B differentiation
 
-Date: 13 September 2026, Europe/Madrid. Branch: `phase133-single-contact-form-owner`; base: the Phase 132 merge above. Initial check found no open PRs and a successful latest deployment.
+Date: 13 September 2026, Europe/Madrid. Base: Phase 133 main `a517107e247bae9557914a08fee76bf589e6306c`. Initial check found no open PRs and the latest production deployment successful.
 
-Evidence: offline Chromium execution of the exact published scripts reproduced silent departure-date deletion on `/contact/`: after choosing arrival 20 December and departure 22 December, changing arrival to 24 December erased departure and left that optional field valid. The old shared-script change listener was still active beside the modern qualified-form runtime. The four localized forms also retained an obsolete inline submission script with a JavaScript syntax error; their modern runtime still worked. These are reproduced client-side defects, not an inferred conversion loss.
+Evidence: fresh URL Inspection on the exact `https://ibizavipmove.com/` property reports `/destination-management-ibiza/` as `Crawled - currently not indexed`; Google last crawled it on 12 September 2026, mobile, with successful fetch and robots allowed. In the same inspection set, `/private-client-services-ibiza/`, `/vip-services-ibiza/`, `/personal-concierge-ibiza/` and `/luxury-lifestyle-management-ibiza/` are submitted and indexed. `/luxury-travel-concierge-ibiza/` is also currently crawled but not indexed. This is current indexation evidence, not a ranking or traffic claim.
 
-Change: bypass the legacy English form block only when the form has the existing `data-ivm-qualified-brief` marker. Remove only the obsolete inline form script from the four localized pages. Cache-version the existing shared-script reference on the five contact pages. Keep the modern `phase107.js` runtime, all validation messages, date rules, service/profile choices, contact destination and analytics payload code unchanged. No new JS/CSS asset, URL or tracker.
+Audit: the destination-management canonical is technically valid, substantial and already linked from eight generated HTML sources, including `/partners/`, `/services/`, `/international-clients/`, `/private-client-services-ibiza/` and operational evidence. It therefore does not justify a new URL, redirect or noindex change. The page's main visual heading was editorial (`One Ibiza operator behind the itinerary`) while the title, copy and schema describe luxury DMC / destination management. The page also shares much of the six-page service-model template, so the highest-value low-risk improvement is clearer visible intent plus genuinely useful professional-brief detail on the existing canonical.
 
-Affected HTML: `/contact/`, `/es/contacto/`, `/fr/contact/`, `/de/kontakt/`, `/ar/contact/`. Shared asset: `/assets/premium.js`; its sole code change is the legacy-handler guard. Non-form behavior is unchanged.
+Prepared change: keep the same URL/title/meta/canonical/schema/service scope and add no new page. Replace only the H1 with `Luxury destination management in Ibiza, behind the client itinerary.` Add one practical `Professional handover brief` section using the existing visual system: client relationship/approval ownership, confirmed arrival and accommodation inputs, local timing dependencies, and the partner communication/escalation route. No client names, availability promises, price/commission changes, membership claims or fictional offices are introduced. Refresh only this page's sitemap `lastmod` to `2026-09-13` because the visible commercial content changes materially.
 
-Local tests: the new gate rejected the unchanged baseline, then passed after enhancement; Python compilation and shared/inline JavaScript syntax passed. The enhancer is idempotent and validates expected markers before writing. Exact output comparison changed only five contact HTML files and the shared JS; all other files, sitemap/robots, CSS/images and modern form runtime remained byte-identical. Ten offline Chromium page/viewport cases at 375/1440px passed with no horizontal overflow or script errors, departure preserved, localized date error and native focus on the invalid departure field. Required role/service, whitespace/phone and optional-date checks passed. Across those cases, 120 valid service handovers produced exactly one locally captured WhatsApp destination and one existing local event each; test values were absent from the analytics payload. The navigation assignment was replaced ONLY in the test harness by a recorder; all network requests were blocked. No enquiry or message was sent. This is not a WhatsApp delivery, live browser, screen-reader or field Core Web Vitals measurement.
+Validation before PR: the transform and read-only gate compile, run idempotently against the exact Phase 133 production artifact, preserve self-canonical/indexability, existing B2B and operational-evidence links, parseable canonical Service/WebPage structured data, and the 156-URL unique sitemap inventory. Full repository CI, PR diff review, deployment and exact release artifact still must pass before publication is claimed.
 
-Research: W3C WAI forms validation/notifications recommends understandable errors and focusing the invalid field. Google/Bing continue to ground search and AI visibility in ordinary crawlability, useful visible content and truthful structured data, not additional AI files or guaranteed ranking tricks.
-
-Status at this commit: locally validated implementation awaiting full PR CI and release verification. The PR conversation will record the exact commit/run/artifact and final publication state; read that evidence before treating Phase 133 as published. No existing audit was reduced. Both CI and deployment run the new transform and read-only gate before the existing final gates.
+Research basis: Google Search Central continues to recommend useful people-first content, descriptive main titles and ordinary crawl/index eligibility for AI features; no AI-specific file or schema is required and indexing is not guaranteed. Keep this implementation framed as content/intent clarity, not as a promise that Google will index the page.
 
 ## Measurement and next priority
 
-GSC Wizard currently lists the exact `https://ibizavipmove.com/` property. Prior owner exports and connected inspections are distinct evidence sources; keep private metrics outside this public repository. Do not reuse the other brand's property. This iteration does not establish fresh rankings, impressions, indexation changes, conversions or revenue, and does not claim verified GA4 attribution.
+GSC Wizard currently lists and was queried against the exact `https://ibizavipmove.com/` property. Settled Search Console performance is available through 10 September 2026; keep exact private query metrics outside this public repository. Current inspections are more recent than that settled performance window and should guide indexation diagnosis. Do not reuse the other brand's property.
 
-First resolve Phase 133's PR/deployment state and validate its exact output. Afterwards prioritize settled Search Console evidence and unresolved commercial-page coverage, rather than further form microchanges or editing recently changed titles before Google recrawls. Maintain 156 sitemap canonicals and the existing 13 priority routes within 0–2 crawlable HTML links from Home. Indexable is not indexed; a successful deployment or IndexNow response is not a search/AI inclusion or leads guarantee.
+Resolve Phase 134's PR/CI/deployment state first. If published successfully, allow Google time to recrawl before judging indexation. Then recheck `/destination-management-ibiza/` and `/luxury-travel-concierge-ibiza/`; only alter the latter if a distinct reproducible content/intent issue remains. Avoid more form microchanges or rewriting newly deployed titles before recrawl. Maintain 156 sitemap canonicals and the existing 13 priority routes within 0–2 crawlable HTML links from Home. Indexable is not indexed; successful deployment or IndexNow is not a search/AI inclusion or leads guarantee.
 
 ## Intent ownership — reuse existing pages
 
@@ -52,11 +51,13 @@ Home owns broad luxury concierge; `/private-concierge-ibiza/` owns connected mul
 
 ## Primary references
 
+- https://developers.google.com/search/docs/appearance/title-link
+- https://developers.google.com/search/docs/appearance/ai-features
+- https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+- https://developers.google.com/search/docs/crawling-indexing/links-crawlable
+- https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a
 - https://www.w3.org/WAI/tutorials/forms/validation/
 - https://www.w3.org/WAI/tutorials/forms/notifications/
 - https://html.spec.whatwg.org/multipage/form-control-infrastructure.html#the-constraint-validation-api
-- https://developers.google.com/search/docs/appearance/ai-features
-- https://developers.google.com/search/docs/crawling-indexing/links-crawlable
-- https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a
 
 The archive retains the additional primary references and all historical checkpoints.
