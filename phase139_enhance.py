@@ -4,6 +4,7 @@ from io import BytesIO
 from pathlib import Path
 import re
 from PIL import Image
+from phase144_enhance import enhance as enhance_priority_villa_formats
 
 ROOT = Path('_site')
 PAGES = ('private-office', 'es/private-office', 'fr/private-office', 'de/private-office', 'ar/private-office')
@@ -63,3 +64,4 @@ def enhance():
 
 if __name__ == '__main__':
     enhance()
+    enhance_priority_villa_formats()
