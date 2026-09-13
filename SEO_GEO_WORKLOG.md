@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 12 September 2026. Repository: `abotamarin51-jpg/ibizavipmove.com`.
+Updated: 13 September 2026. Repository: `abotamarin51-jpg/ibizavipmove.com`.
 
 ## Scope and safeguards
 
@@ -22,6 +22,7 @@ Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherl
 - Phase 120: PR #38, merge `15d9025914ae6959cc6a9b18f843b0b90911eeda`, deployment `34709598540`, artifact `10302363132` — clearly incomplete phone values rejected while international formatting remains flexible.
 - Phase 121: PR #39, merge `b774abae7df8168a555bf78d36eed552b544e8ff`, deployment `34712575664`, exact release artifact `10303518957`, digest `sha256:2f5723a9be48dbe70fdebfb2e9e362ccb2a282e29efe16ade28903bf88a26b08` — 14 routes with verified significant 12 September changes carry truthful `lastmod=2026-09-12`; sitemap inventory remains 156 URLs.
 - Phase 122: PR #40, merge `d12b14ad322d571ef4c357637025c3f83abda8bc`, deployment `34715611730`, exact release artifact `10304588267`, digest `sha256:2cf033e231479c35419bc055904e970e017b024a2379e458f2796c6a3456aa76` — five contact desks use localized private-client service wording instead of implying an unauthorized membership product. Public EN/FR/DE/AR contact retrieval on 12 September now shows the new labels.
+- Phase 123: PR #41, merge `2b070ef763567b4328def623e78b5abd70028ff5`; PR CI `34718432775` passed and preview artifact `10305642174` digest `sha256:6aeafc92d8532843e92b3f9e55b870dfb7a6dfa041223012f24f45e7402f83a0` contains the consolidated `/partners/` page. Main deployment `34718471697` remains queued as of 13 September 2026, so Phase 123 is not yet claimed as publicly deployed.
 
 These are technical publication and regression checkpoints, not proof of Google indexation, rankings, traffic, conversions or Maps position.
 
@@ -29,9 +30,17 @@ These are technical publication and regression checkpoints, not proof of Google 
 
 Evidence: the exact Phase 122 production artifact and the public `/partners/` page contain two adjacent authority/proof sections that communicate substantially the same proposition and link to the same three evidence resources: case studies, the 2026 operations report and the founder profile. `/destination-management-ibiza/` and `/private-client-services-ibiza/` each contain only one equivalent operational-evidence block. The duplication is therefore specific to the English Partners page and adds repetitive copy/links without giving a professional partner a distinct next step.
 
-Prepared change on branch `seo/phase123-partners-proof-consolidation`: remove only the older `ivm-phase104-authority` block from `/partners/`, retain the newer `ivm-phase105-proof` block and all three authority routes, and refresh only `/partners/` to truthful `lastmod=2026-09-12`. No URL, title/meta, schema, service claim, WhatsApp destination, tracking, stylesheet, price, policy or other page changes.
+Merged change: remove only the older `ivm-phase104-authority` block from `/partners/`, retain the newer `ivm-phase105-proof` block and all three authority routes, and refresh only `/partners/` to truthful `lastmod=2026-09-12`. No URL, title/meta, schema, service claim, WhatsApp destination, tracking, stylesheet, price, policy or other page changes.
 
-Pre-PR validation against the exact Phase 122 release artifact: enhancer and read-only audit pass; `/partners/` retains 466 visible main-content words, one H1, canonical, six-entry EN/ES/FR/DE/AR/x-default hreflang set, one CSS bundle, accessibility landmarks and links to case studies/report/founder. The sitemap remains exactly 156 unique canonical URLs. Google states that internal links should be crawlable and contextually useful; Bing’s current Webmaster Guidelines likewise emphasize crawlable internal links, content clarity and accurate freshness signals for search and grounding experiences. Consolidation is a clarity change, not a ranking guarantee.
+Validation against PR #41 artifact: enhancer and read-only audit pass; `/partners/` retains 466 visible main-content words, one H1, canonical, six-entry EN/ES/FR/DE/AR/x-default hreflang set, one CSS bundle, accessibility landmarks and links to case studies/report/founder. The sitemap remains exactly 156 unique canonical URLs. Publication remains blocked by the queued main Pages run, not by a failing site check.
+
+## Phase 124 — Black Book freshness integrity
+
+Evidence: `phase77_enhance.py` and `phase78_enhance.py` derive `Article.dateModified` and `article:modified_time` from `date.today()` at build time. In the exact Phase 123 PR artifact, all 30 Black Book planning notes therefore report `2026-09-12` as modified even though the sitemap has verified `lastmod=2026-09-03` for the six English notes and intentionally has no `lastmod` for the 24 ES/FR/DE/AR notes. A routine deployment must not masquerade as an editorial update.
+
+Prepared on branch `seo/phase124-black-book-freshness-integrity`: a final post-processing phase reads each of the 30 Black Book article URLs from the sitemap. When a verified sitemap `lastmod` exists, both Article schema and Open Graph modified-time metadata are aligned to it. When no verified `lastmod` exists, `dateModified` and `article:modified_time` are omitted instead of inventing a date. `datePublished` remains unset. No visible copy, URL, canonical, hreflang, service claim, contact route, tracking, price or legal content is changed.
+
+Local validation against the exact Phase 123 PR artifact passes: 30/30 notes checked; six English articles align to verified `2026-09-03`; 24 localized notes remain intentionally undated; all 156 sitemap URLs remain unchanged. Google Search Central defines `dateModified` as the date/time the article was most recently modified and says recommended properties should be added only when they apply; this phase therefore favors truthful omission over build-time freshness inflation.
 
 ## Intent ownership — reuse existing URLs
 
@@ -52,17 +61,19 @@ Pre-PR validation against the exact Phase 122 release artifact: enhancer and rea
 
 ## Next execution priorities
 
-1. Resolve Phase 123 PR/check/deployment state first; verify the final `/partners/` artifact contains one operational-evidence block and the 156-URL crawl-depth gate remains green before calling it published.
-2. After Phase 123, audit one unresolved conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
-3. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
-4. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
-5. Keep technical improvements separate from measured business impact.
+1. Keep Phase 124 unmerged until PR CI validates the full generated site; do not bypass or weaken freshness/schema audits.
+2. Do not claim Phase 123 public until deployment `34718471697` completes and the public `/partners/` page reflects the single proof block.
+3. After deployment health is restored, merge/publish Phase 124 only if its diff remains limited to freshness integrity and all checks pass; verify the exact release artifact before claiming publication.
+4. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
+5. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
+6. Keep technical improvements separate from measured business impact.
 
 ## Primary-source reference principles
 
 - Google crawlable links: https://developers.google.com/search/docs/crawling-indexing/links-crawlable
 - Google AI features: https://developers.google.com/search/docs/appearance/ai-features
 - Google helpful, reliable, people-first content: https://developers.google.com/search/docs/fundamentals/creating-helpful-content
+- Google Article structured data: https://developers.google.com/search/docs/appearance/structured-data/article
 - Google recrawling/indexing: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
 - Google sitemap lastmod guidance: https://developers.google.com/search/blog/2023/06/sitemaps-lastmod-ping
 - Google local ranking: https://support.google.com/business/answer/7091
