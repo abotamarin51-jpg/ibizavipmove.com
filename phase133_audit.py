@@ -75,3 +75,5 @@ def run():
 
 if __name__ == '__main__':
     run()
+    from phase134_audit import run as audit_phase134
+    audit_phase134()
