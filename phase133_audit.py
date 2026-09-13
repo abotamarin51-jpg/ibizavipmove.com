@@ -4,6 +4,7 @@ from pathlib import Path
 import json
 import subprocess
 import xml.etree.ElementTree as ET
+from phase135_audit import run as run_localized_services_routing_audit
 
 ROOT = Path('_site')
 CONTACTS = ('contact', 'es/contacto', 'fr/contact', 'de/kontakt', 'ar/contact')
@@ -75,3 +76,4 @@ def run():
 
 if __name__ == '__main__':
     run()
+    run_localized_services_routing_audit()

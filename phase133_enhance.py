@@ -1,6 +1,7 @@
 """Give qualified contact forms one validation/submission owner, without new assets."""
 from pathlib import Path
 import re
+from phase135_enhance import enhance as enhance_localized_services_routing
 
 ROOT = Path('_site')
 CONTACTS = ('contact', 'es/contacto', 'fr/contact', 'de/kontakt', 'ar/contact')
@@ -47,3 +48,4 @@ def enhance():
 
 if __name__ == '__main__':
     enhance()
+    enhance_localized_services_routing()
