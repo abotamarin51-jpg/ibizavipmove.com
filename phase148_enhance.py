@@ -1,6 +1,6 @@
 """Phase 148: reduce crawl depth for localized Private Events pages.
 
-Adds one truthful, same-language event-service link to the existing FR/DE/AR Home
+Adds one truthful, same-language event-service pathway near the existing FR/DE/AR Home
 service summary. No URL, tracking, schema, form, price or policy changes.
 """
 from pathlib import Path
@@ -8,37 +8,30 @@ from pathlib import Path
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
 MARKER = 'data-ivm148="service"'
-STYLE = 'text-decoration:underline;text-underline-offset:.15em'
+AUTHORITY_MARKER = 'class="ivm-home-authority-pathways"'
 EVENTS = {
     'fr': {
-        'before': 'nightlife, sécurité,',
-        'label': 'événements privés',
+        'label': 'Événements privés à Ibiza →',
         'href': '/fr/evenements-prives-ibiza/',
     },
     'de': {
-        'before': 'Nightlife, Sicherheit,',
-        'label': 'Private Events',
+        'label': 'Private Events auf Ibiza →',
         'href': '/de/private-events-ibiza/',
     },
     'ar': {
-        'before': 'حياة ليلية، أمن خاص،',
-        'label': 'فعاليات خاصة',
+        'label': 'الفعاليات الخاصة في إيبيزا ←',
         'href': '/ar/private-events-ibiza/',
     },
 }
 
 
-def expected_fragment(lang: str) -> tuple[str, str]:
+def event_block(lang: str) -> str:
     item = EVENTS[lang]
-    before = item['before']
-    first, second = before.split(', ', 1) if lang != 'ar' else before.split('، ', 1)
-    sep = ', ' if lang != 'ar' else '، '
-    after = (
-        first + sep
-        + f'<a {MARKER} href="{item["href"]}" style="{STYLE}">{item["label"]}</a>'
-        + sep + second
+    return (
+        '<p class="ivm-home-event-pathway">'
+        f'<a class="text-link" {MARKER} href="{item["href"]}">{item["label"]}</a>'
+        '</p>'
     )
-    return before, after
 
 
 def enhance(root: Path = ROOT) -> None:
@@ -50,22 +43,27 @@ def enhance(root: Path = ROOT) -> None:
         html = path.read_text(encoding='utf-8')
         target = root / item['href'].strip('/') / 'index.html'
         canonical = (BASE + item['href']).encode()
+        block = event_block(lang)
 
         if not target.is_file() or canonical not in sitemap:
             raise SystemExit(f'Phase 148: missing canonical destination {item["href"]}')
 
-        before, after = expected_fragment(lang)
         if MARKER in html:
-            if html.count(MARKER) != 1 or html.count(after) != 1 or before in html:
-                raise SystemExit(f'Phase 148: malformed existing event link: {lang}')
+            if html.count(MARKER) != 1 or html.count(block) != 1:
+                raise SystemExit(f'Phase 148: malformed existing event pathway: {lang}')
             continue
 
-        if html.count(before) != 1:
-            raise SystemExit(f'Phase 148: expected one unchanged Home service fragment: {lang}')
+        if html.count(AUTHORITY_MARKER) != 1:
+            raise SystemExit(f'Phase 148: expected one Home authority-pathways paragraph: {lang}')
         if f'href="{item["href"]}"' in html or f"href='{item['href']}'" in html:
             raise SystemExit(f'Phase 148: event destination already linked from Home: {lang}')
 
-        pending[path] = html.replace(before, after, 1)
+        marker_at = html.index(AUTHORITY_MARKER)
+        close_at = html.find('</p>', marker_at)
+        if close_at < 0:
+            raise SystemExit(f'Phase 148: malformed Home authority-pathways paragraph: {lang}')
+        insert_at = close_at + len('</p>')
+        pending[path] = html[:insert_at] + block + html[insert_at:]
 
     for path, html in pending.items():
         path.write_text(html, encoding='utf-8')
