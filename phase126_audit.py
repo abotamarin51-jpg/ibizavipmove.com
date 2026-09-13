@@ -106,6 +106,14 @@ def run():
     enhance_private_jets_legacy_alias()
     audit_private_jets_legacy_alias()
 
+    # Phase 128 replaces an SEO-facing intent bridge on the existing Services
+    # hub with user-centred context and complete crawlable pathways to the six
+    # already-existing concierge service-model pages. No new landing page.
+    from phase128_enhance import enhance as enhance_services_pathways
+    from phase128_audit import run as audit_services_pathways
+    enhance_services_pathways()
+    audit_services_pathways()
+
 
 if __name__ == '__main__':
     run()
