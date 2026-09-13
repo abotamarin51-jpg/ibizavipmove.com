@@ -24,6 +24,7 @@ Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherl
 - Phase 122: PR #40, merge `d12b14ad322d571ef4c357637025c3f83abda8bc`, deployment `34715611730`, exact release artifact `10304588267`, digest `sha256:2cf033e231479c35419bc055904e970e017b024a2379e458f2796c6a3456aa76` — five contact desks use localized private-client service wording instead of implying an unauthorized membership product. Public EN/FR/DE/AR contact retrieval on 12 September now shows the new labels.
 - Phase 123: PR #41, merge `2b070ef763567b4328def623e78b5abd70028ff5`, deployment `34718471697`, release artifact `10308067566`, digest `sha256:dec797e044cb3400c00114184ffee5657cae8037b4cf27147119d3c4567d0731` — deployment completed successfully on 13 September; exact release artifact contains one `ivm-phase105-proof` block and no `ivm-phase104-authority` block on `/partners/`, with the sitemap still at 156 URLs. Direct public fetch was unavailable from the verification environment, so independent post-deploy HTML retrieval remains unconfirmed.
 - Phase 124: PR #42, merge `57aa090c6053f0f2472f23d63c35933ff1b7f365`, deployment `34727014802`, release artifact `10307534868`, digest `sha256:60452d0df0778d5d617e8814fa742e4e9e67e3cecd444798569946832d87de4b` — all 30 Black Book notes now align Article/Open Graph freshness to sitemap evidence. Exact release validation confirms six English notes use verified `2026-09-03`, 24 localized notes remain intentionally undated, 156 indexable canonicals match the sitemap exactly, no internal HTML links are broken, hreflang targets resolve and `/partners/` remains consolidated.
+- Phase 125: PR #44, merge `3ca0176480fa327a24d12c2bd92d5562527f053b`, deployment `34729233445`, release artifact `10308143048`, digest `sha256:b7c50d5d67208893d8dec3f88d3842e6f3cdba753b58f8ac751486d12c6d7ce4` — 44 canonical pages with a wrong image preload now point that preload at the same existing image marked `fetchpriority="high"`. Exact release validation confirms all 68 canonical pages in the deterministic one-preload/one-priority-image cohort are aligned, `/partners/` preloads its actual `private-office.jpg` hero, the sitemap remains 156 URLs and Phase 123/124 safeguards remain intact.
 
 These are technical publication and regression checkpoints, not proof of Google indexation, rankings, traffic, conversions or Maps position.
 
@@ -42,6 +43,14 @@ Evidence: `phase77_enhance.py` and `phase78_enhance.py` derive `Article.dateModi
 Published change: a final post-processing phase reads each of the 30 Black Book article URLs from the sitemap. When a verified sitemap `lastmod` exists, both Article schema and Open Graph modified-time metadata are aligned to it. When no verified `lastmod` exists, `dateModified` and `article:modified_time` are omitted instead of inventing a date. `datePublished` remains unset. No visible copy, URL, canonical, hreflang, service claim, contact route, tracking, price or legal content changed.
 
 Validation: PR #42 CI `34726887779` passed before merge. Deployment `34727014802` completed successfully. Exact release artifact `10307534868` confirms six English notes use verified `2026-09-03`, 24 localized notes remain intentionally undated, all 156 indexable canonicals match the sitemap exactly, there are no broken internal HTML links in the generated site, hreflang targets resolve within the sitemap and the Phase 123 Partners consolidation remains intact. Google Search Central defines `dateModified` as the date/time the article was most recently modified and says recommended properties should be added only when they apply; this phase therefore favors truthful omission over build-time freshness inflation.
+
+## Phase 125 — priority-image preload integrity
+
+Evidence: the exact Phase 124 production artifact contained 68 canonical pages with exactly one `<link rel="preload" as="image">` and exactly one `<img fetchpriority="high">`. On 44 of those pages the preload pointed at a different image from the existing priority image. `/partners/`, for example, preloaded `/assets/images/aviation.jpg` while its actual priority hero was `/assets/images/private-office.jpg`. This can pull a non-LCP image into the early network queue while the real priority hero still needs to load. Chrome's current LCP-discovery guidance says image LCP should be discoverable and prioritized, and treats preload/fetch priority as mechanisms for that same critical resource.
+
+Published change: a final post-processing phase changes only the existing preload `href` when a canonical page has exactly one image preload and one `fetchpriority="high"` image and those URLs differ. Responsive `imagesrcset` preloads are not guessed or rewritten. No image source, visible copy, URL, schema, tracking, contact route, price, policy, sitemap date or legal content changed.
+
+Validation: PR #44 CI `34729199785` passed with preview artifact `10309107085`, digest `sha256:8f3b68f3ba04d79634854264f2537afee3d396cd41ed4d6cd5dd3b71180b69a3`. Deployment `34729233445` completed successfully, including Pages and IndexNow. Exact release artifact `10308143048`, digest `sha256:b7c50d5d67208893d8dec3f88d3842e6f3cdba753b58f8ac751486d12c6d7ce4`, confirms 68/68 eligible canonical pages aligned and zero mismatches; `/partners/` now preloads `/assets/images/private-office.jpg`, the sitemap remains 156 URLs, the Phase 123 proof consolidation remains one block and the Phase 124 EN/localized freshness behavior remains unchanged.
 
 ## Intent ownership — reuse existing URLs
 
@@ -62,8 +71,8 @@ Validation: PR #42 CI `34726887779` passed before merge. Deployment `34727014802
 
 ## Next execution priorities
 
-1. Recheck independent public retrieval of `/partners/` and a representative EN/FR/DE/AR Black Book note; do not confuse a verified Pages artifact with a separately observed public response.
-2. Audit one unresolved conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
+1. Recheck independent public retrieval of `/partners/` and a representative EN/FR/DE/AR Black Book note; search retrieval currently returns no result for the exact pages, so do not confuse release-artifact evidence with a separately observed public response.
+2. Audit one unresolved mobile/performance, conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
 3. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
 4. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
 5. Keep technical improvements separate from measured business impact.
@@ -77,8 +86,9 @@ Validation: PR #42 CI `34726887779` passed before merge. Deployment `34727014802
 - Google recrawling/indexing: https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl
 - Google sitemap lastmod guidance: https://developers.google.com/search/blog/2023/06/sitemaps-lastmod-ping
 - Google local ranking: https://support.google.com/business/answer/7091
+- Chrome LCP request discovery: https://developer.chrome.com/docs/performance/insights/lcp-discovery
 - Bing Webmaster Guidelines: https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a
 - IndexNow: https://www.indexnow.org/
 - HTML telephone inputs: https://html.spec.whatwg.org/multipage/input.html#telephone-state-(type=tel)
 
-Useful visible content, crawlable contextual links, accurate freshness/form semantics and matching structured data remain the basis. `llms.txt`, schema, IndexNow and more pages do not guarantee search/AI visibility, Maps rankings or leads.
+Useful visible content, crawlable contextual links, accurate freshness/form semantics, matching structured data and disciplined critical-resource hints remain the basis. `llms.txt`, schema, IndexNow and more pages do not guarantee search/AI visibility, Maps rankings or leads.
