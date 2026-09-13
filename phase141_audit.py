@@ -2,6 +2,7 @@
 from html.parser import HTMLParser
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from phase142_audit import run as run_localized_home_mobile_hero_audit
 
 ROOT = Path('_site')
 PAGES = {
@@ -45,6 +46,7 @@ def run():
         if slug == 'ar/services':
             html_tag = next((a for t,a in tags if t=='html'), {})
             require(html_tag.get('dir')=='rtl', 'Arabic RTL preserved')
+    run_localized_home_mobile_hero_audit()
     print('PASS: Phase 141 audit — selected supplied travel-planning vocabulary visible on five existing Services hubs; canonicals/hreflang/indexability and 156-URL sitemap preserved')
 
 

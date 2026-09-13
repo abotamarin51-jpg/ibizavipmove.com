@@ -5,6 +5,7 @@ travel-planning/support language rather than the word concierge, using only a sm
 subset of B01-B24 that naturally belongs on the existing Services hubs.
 """
 from pathlib import Path
+from phase142_enhance import enhance as enhance_localized_home_mobile_hero
 
 ROOT = Path('_site')
 MARKER = 'ivm-phase141-vocabulary'
@@ -41,3 +42,4 @@ def enhance():
 
 if __name__ == '__main__':
     enhance()
+    enhance_localized_home_mobile_hero()
