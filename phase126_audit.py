@@ -99,6 +99,13 @@ def run():
 
     print('PASS: Phase 126 audit — one existing luxury-car canonical covers verified hire/rental wording, aligned metadata/schema, truthful lastmod, and the 156-URL sitemap inventory is unchanged')
 
+    # Phase 127 restores one verified legacy Search Console route as a direct
+    # noindex alias to its current canonical. It adds no new indexable URL.
+    from phase127_enhance import enhance as enhance_private_jets_legacy_alias
+    from phase127_audit import run as audit_private_jets_legacy_alias
+    enhance_private_jets_legacy_alias()
+    audit_private_jets_legacy_alias()
+
 
 if __name__ == '__main__':
     run()
