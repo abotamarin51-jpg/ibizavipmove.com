@@ -2,6 +2,7 @@
 from html.parser import HTMLParser
 from pathlib import Path
 import xml.etree.ElementTree as ET
+from phase143_audit import run as run_partners_hero_webp_audit
 
 ROOT = Path('_site')
 PAGES = ('fr', 'de', 'ar', 'es')
@@ -55,6 +56,7 @@ def run():
     ns = {'s':'http://www.sitemaps.org/schemas/sitemap/0.9'}
     urls = sitemap.findall('s:url', ns)
     require(len(urls) == 156, f'sitemap changed: {len(urls)} URLs')
+    run_partners_hero_webp_audit()
     print('PASS: Phase 142 — localized home mobile hero gate')
 
 
