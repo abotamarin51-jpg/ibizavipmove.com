@@ -109,3 +109,21 @@ Next priority: use refreshed owner Search Console evidence before making further
 The GitHub Pages deployment completed successfully and the exact production artifact validates the change. An independent public reader immediately after deployment still returned its previously cached `/services/` block, so independent propagation should be rechecked separately rather than treated as proof of a live recrawl. This is an information-architecture and user-clarity improvement, not measured evidence of better rankings, traffic, conversions or leads.
 
 Next priority: recheck independent public retrieval of `/services/`; then use refreshed owner Search Console/indexation evidence before any further indexation change. Prefer reproducible conversion, mobile/performance or legacy-URL issues over creating additional pages.
+
+## 13 September addendum — Phase 129
+
+Four Arabic Black Book notes used the same three generic body sections, changing mainly the topic nouns. Their existing English counterparts already contain practical sections specific to arrival planning, August, villa handovers and private-aviation ground coordination.
+
+Phase 129 replaces only the Arabic article bodies at:
+
+- /ar/ibiza-intelligence/private-arrival/
+- /ar/ibiza-intelligence/ibiza-august-planning/
+- /ar/ibiza-intelligence/villa-arrival-planning/
+- /ar/ibiza-intelligence/private-aviation-ground-coordination/
+
+Each now follows the four topic-specific sections of its English counterpart. Canonicals, reciprocal hreflang, titles, descriptions, H1s, service and contact routes, related articles, RTL markup and assets are preserved. Only these four significant editorial changes receive lastmod/dateModified/article:modified_time of 2026-09-13. No new URL, service promise, price or availability claim is introduced.
+
+Local verification applied the transform to a copy of the published HTML. The output diff contains exactly four article HTML files plus sitemap.xml; all other downloaded files are byte-identical. Normalizing just the changed body and modification-date fields restores the original four pages exactly. A repeat run is idempotent. The existing Phase 124 freshness and Phase 71 multilingual-editorial audits pass; the sitemap remains 156 canonical URLs. Both PR validation and production deployment run Phase 129, then rerun the freshness audit before final validation.
+
+This corrects repetitive editorial copy. It does not establish why Google selected or excluded an individual URL, and publication does not guarantee indexation or rankings. Private Search Console results remain outside this public repository. PR CI and deployment results must be checked separately before treating the release as published.
+
