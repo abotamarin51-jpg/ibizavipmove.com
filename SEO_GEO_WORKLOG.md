@@ -51,3 +51,29 @@ Next: validate the complete Phase 146 diff, clean CI and production output. Then
 - https://developers.google.com/search/docs/essentials/technical
 
 Crawlable contextual links improve discovery and navigation eligibility. Crawling can take days or weeks and repeated identical requests do not accelerate it. Technical deployment, schema, llms.txt and IndexNow do not guarantee rankings, AI inclusion, leads or revenue.
+
+## Verified continuation — 13 September 2026, 23:51 Europe/Madrid
+
+This section supersedes the older Phase 146 "not yet established" / "Next" wording above for current operations; the older text is retained as historical context.
+
+Current `main` is `ad13b6ef78f1a59322fc9970e9b869b784b98b3c`. No open PR remained at the start of this iteration. The latest deployment, run `34784857326`, completed successfully from that exact commit. Its GitHub Pages production artifact is `10326480885`, digest `sha256:e54760c9a27598c44d939f4269588777c6c61340caa5a241bcab668c512cde5f`.
+
+Phase 147 structured-data cleanup and its five-page follow-up are present before current main. Phase 148 was merged through PR #82 and reduces FR/DE/AR Private Events discovery depth without creating URLs; the production crawl graph keeps all 156 sitemap canonicals reachable. Do not repeat Phases 146-148 unless a regression is demonstrated.
+
+### Wizard indexing state
+
+Canonical tracking property: `https://ibizavipmove.com/` only. Tracker id `b45661cd-b57b-4a32-8ae5-8bab1cac107b`: 156 tracked, 97 indexed, 59 not indexed, 0 pending, 0 API errors and 0 warnings; last tracker sweep `2026-09-13T20:23:00.53Z`. Coverage breakdown from the 30-day tracker report: 97 Submitted and indexed, 17 URL is unknown to Google, 15 Discovered - currently not indexed, 27 Crawled - currently not indexed. This is the tracker result, not a claim that Google's entire index contains exactly 97 pages.
+
+The original watched URLs remain unchanged: `/destination-management-ibiza/`, `/luxury-travel-concierge-ibiza/` and `/de/private-aviation-ibiza/` are still Crawled - currently not indexed with successful mobile fetches, robots allowed and no explicit indexing prohibition. Preserve the prior 16 September reassessment date unless a new technical fault appears.
+
+Search Console currently lists the canonical sitemap plus two older duplicate submissions carrying `?utm_source=chatgpt.com`; all report zero sitemap errors/warnings. No GSC Wizard action exposed in this session can delete those Search Console sitemap submissions, so they were observed only and not changed. `indexed=0` in that sitemap API output is not treated as coverage because the tracker independently verifies indexed URLs.
+
+`emailDigestEnabled=true` remains on the tracker. Tool discovery found read/add/remove/check tracker actions but no legitimate tracker-settings or digest-toggle action, so the unwanted digest could not be disabled from this interface. No emails or additional notifications were sent or enabled.
+
+### One-page diagnostic completed this iteration
+
+`/fr/conciergerie-privee-ibiza/` remains Crawled - currently not indexed; Google last crawled it `2026-09-12T16:34:54Z`. Live audit: HTTP 200, no redirect, indexable, self-canonical, one H1, six hreflang entries, `lang=fr`, viewport present, images have alt text and structured data validates without schema errors. Its only audit issue is a low-severity 61-character title warning. Production graph analysis from the exact current Pages artifact places it at crawl depth 2. The page has abundant internal discovery, so weak crawl depth is not supported as the cause.
+
+The indexed comparator `/private-concierge-ibiza/` is also technically clean. Differences in body length, internal-link count and schema richness exist, but there is no evidence that any one of them caused the French exclusion; do not pad copy or add schema speculatively. Artifact-only contact verification found the French page points WhatsApp to `https://wa.me/34600703303`, phone to `tel:+34600703303`, and B2B email to `partnership@ibizavipmove.com`; no form or message was submitted.
+
+Decision for this iteration: **no website code/content change**. A fresh rewrite immediately after a successful crawl would be speculative and risks churn without a verified blocker. Next priority is to re-read the tracker after Google's natural recrawl window, keep the Phase 134 three-URL hold until 16 September, and then prioritize any commercial EN/FR/DE/AR URL that shows a new concrete fault (HTTP/robots/noindex/canonical/rendering) before cosmetic or image micro-optimizations.
