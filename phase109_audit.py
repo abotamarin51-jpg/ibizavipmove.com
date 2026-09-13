@@ -111,6 +111,14 @@ from phase123_audit import run as audit_partner_proof
 enhance_partner_proof()
 audit_partner_proof()
 
+# Phase 124 prevents build time from masquerading as editorial freshness. The
+# Black Book Article schema and social modified-time signal follow only verified
+# sitemap lastmod values; undated entries remain intentionally undated.
+from phase124_enhance import enhance as enhance_black_book_freshness
+from phase124_audit import run as audit_black_book_freshness
+enhance_black_book_freshness()
+audit_black_book_freshness()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
