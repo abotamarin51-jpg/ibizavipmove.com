@@ -119,6 +119,14 @@ from phase124_audit import run as audit_black_book_freshness
 enhance_black_book_freshness()
 audit_black_book_freshness()
 
+# Phase 125 keeps image preload hints pointed at the same resource already marked
+# fetchpriority=high, avoiding wrong-image critical-path contention after later
+# visual transforms change the actual page hero.
+from phase125_enhance import enhance as enhance_priority_image_preloads
+from phase125_audit import run as audit_priority_image_preloads
+enhance_priority_image_preloads()
+audit_priority_image_preloads()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
