@@ -6,6 +6,7 @@ subset of B01-B24 that naturally belongs on the existing Services hubs.
 """
 from pathlib import Path
 from phase142_enhance import enhance as enhance_localized_home_mobile_hero
+from phase146_enhance import enhance as enhance_localized_home_service_links
 
 ROOT = Path('_site')
 MARKER = 'ivm-phase141-vocabulary'
@@ -43,3 +44,4 @@ def enhance():
 if __name__ == '__main__':
     enhance()
     enhance_localized_home_mobile_hero()
+    enhance_localized_home_service_links()
