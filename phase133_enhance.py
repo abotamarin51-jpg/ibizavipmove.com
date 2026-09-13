@@ -40,6 +40,7 @@ def enhance():
         pending[path] = html
     if (ROOT / 'sitemap.xml').read_bytes() != sitemap:
         raise SystemExit('Phase 133: sitemap changed unexpectedly')
+    # Validate every expected marker before writing any output.
     for path, content in pending.items():
         path.write_text(content, encoding='utf-8')
     print(f'PASS: Phase 133 single form owner; legacy English handler gated, {removed} obsolete localized inline scripts removed; five cache-versioned references; no new asset/URL')
