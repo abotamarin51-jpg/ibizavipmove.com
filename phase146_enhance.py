@@ -5,6 +5,7 @@ Validate every source and destination before writing any generated HTML.
 """
 from pathlib import Path
 import re
+from phase147_enhance import enhance as enhance_structured_data
 
 ROOT = Path('_site')
 MARKER = 'data-ivm146="service"'
@@ -66,3 +67,4 @@ def enhance(root: Path = ROOT) -> None:
 
 if __name__ == '__main__':
     enhance()
+    enhance_structured_data()
