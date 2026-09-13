@@ -78,3 +78,19 @@ Local tests: Python compilation, idempotence and fail-before/pass-after gate; sa
 Limits: direct container DNS and live browser navigation were unavailable; browser tests use in-memory copies, not live HTTP/field performance. Full clean PR CI and exact production output still require validation. Status at this commit is PREPARED/LOCALLY VALIDATED, not published; final release evidence will be recorded in the PR conversation. No private search metrics or personal data are published. Do not infer ranking, indexation, conversion or revenue uplift.
 
 Primary references checked: https://developers.google.com/search/docs/appearance/google-images (picture with img src fallback, speed/quality), https://web.dev/articles/preload-responsive-images (avoid preloading multiple formats), and the Google/Bing SEO/AI guidance above. Next: verify release and public resource delivery, then assess mobile experience with real measurements when available; the 16 September indexation review interval remains unchanged.
+
+## Phase 140 — supplied professional-role vocabulary
+
+Published 13 September 2026. The only new vocabulary source was the user-supplied `IBIZA_VIP_MOVE_REVISAR_ANTES_DE_AGREGAR.pdf`. PR #68 integrated A1–A8 and B25–B34 as professional/client-role language on the existing Partners and Private Office pages in EN/FR/DE/AR/ES, without creating a new service or URL. PR #68 merged as `628aec9ec6e509e26ddab3fd0d1547154b91e417`; CI `34767216531` and production deployment `34767294117` succeeded. Production artifact `10320468878` has digest `sha256:90651df9065d24213e15dc316e54d1510fd212603492eb04697e12b24f4c2ed7`. Exact release comparison changed only the ten intended B2B HTML outputs; sitemap remained 156 URLs. Full term-by-term control is preserved in `PHASE140_VOCABULARY_CONTROL.md`.
+
+Impact: broader visible buyer/partner vocabulary and clearer role recognition only. No ranking, indexation, AI visibility, traffic, lead or revenue uplift is inferred.
+
+## Phase 141 — non-concierge travel-planning vocabulary bridge
+
+Prepared 13 September 2026 from the same user-supplied PDF only. Exact Phase 140 production evidence showed that the selected B01/B02/B04/B06/B07/B23/B24 expressions were absent literally from each of the five existing Services hubs, even though the underlying service architecture already existed. The selected phrases describe luxury travel planning, bespoke/custom travel, itinerary planning, destination support, on-the-ground/in-stay assistance, travel coordination and luxury travel services.
+
+Change: add one short explanatory block to `/services/`, `/fr/services/`, `/de/services/`, `/ar/services/` and `/es/servicios/` explaining that visitors do not need to know or use the word “concierge”. The block uses supplied vocabulary as alternative ways to describe a brief and explicitly says they are not separate new Ibiza VIP Move products. No new URL, service, title, H1, canonical, hreflang, schema, sitemap, form, WhatsApp destination, tracking, price or policy change.
+
+Local validation against exact Phase 140 production: pre-change gate fails as expected; enhancement changes exactly five HTML files; rerun is idempotent; post-change gate passes with one H1, self-canonical, indexability, complete EN/ES/FR/DE/AR/x-default hreflang, Arabic RTL and unchanged 156-URL sitemap. Detailed pre-change control is in `PHASE141_VOCABULARY_CONTROL.md`.
+
+Status at this worklog commit: **PREPARED / LOCALLY VALIDATED — PR CI and production deployment still required before calling it published.** Next: validate the exact PR diff and clean build, then merge/deploy only if all existing gates remain green. Keep the Phase 134 DMC/Luxury Travel Concierge indexation reassessment on or after 16 September.
