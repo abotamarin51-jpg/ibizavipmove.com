@@ -23,7 +23,7 @@ Priority markets: USA, UK, Monaco, Switzerland, Germany, Japan, Belgium, Netherl
 - Phase 121: PR #39, merge `b774abae7df8168a555bf78d36eed552b544e8ff`, deployment `34712575664`, exact release artifact `10303518957`, digest `sha256:2f5723a9be48dbe70fdebfb2e9e362ccb2a282e29efe16ade28903bf88a26b08` — 14 routes with verified significant 12 September changes carry truthful `lastmod=2026-09-12`; sitemap inventory remains 156 URLs.
 - Phase 122: PR #40, merge `d12b14ad322d571ef4c357637025c3f83abda8bc`, deployment `34715611730`, exact release artifact `10304588267`, digest `sha256:2cf033e231479c35419bc055904e970e017b024a2379e458f2796c6a3456aa76` — five contact desks use localized private-client service wording instead of implying an unauthorized membership product. Public EN/FR/DE/AR contact retrieval on 12 September now shows the new labels.
 - Phase 123: PR #41, merge `2b070ef763567b4328def623e78b5abd70028ff5`, deployment `34718471697`, release artifact `10308067566`, digest `sha256:dec797e044cb3400c00114184ffee5657cae8037b4cf27147119d3c4567d0731` — deployment completed successfully on 13 September; exact release artifact contains one `ivm-phase105-proof` block and no `ivm-phase104-authority` block on `/partners/`, with the sitemap still at 156 URLs. Direct public fetch was unavailable from the verification environment, so independent post-deploy HTML retrieval remains unconfirmed.
-- Phase 124: PR #42, head `fc569916e12ee29a71e3e2a3fad7d90267e1d549`, PR CI `34726887779` succeeded; preview artifact `10307149955`, digest `sha256:04f9935d9adefdfadc3c5c34c24b0c3133508e4ddaddd782eee8bac349b2c7bd` — all 30 Black Book notes align Article/Open Graph freshness to sitemap evidence, 156 indexable canonicals match the sitemap exactly, internal HTML links are intact and `/partners/` remains consolidated. Not yet merged or deployed at this checkpoint.
+- Phase 124: PR #42, merge `57aa090c6053f0f2472f23d63c35933ff1b7f365`, deployment `34727014802`, release artifact `10307534868`, digest `sha256:60452d0df0778d5d617e8814fa742e4e9e67e3cecd444798569946832d87de4b` — all 30 Black Book notes now align Article/Open Graph freshness to sitemap evidence. Exact release validation confirms six English notes use verified `2026-09-03`, 24 localized notes remain intentionally undated, 156 indexable canonicals match the sitemap exactly, no internal HTML links are broken, hreflang targets resolve and `/partners/` remains consolidated.
 
 These are technical publication and regression checkpoints, not proof of Google indexation, rankings, traffic, conversions or Maps position.
 
@@ -39,9 +39,9 @@ Validation: PR #41 CI passed; deployment `34718471697` completed successfully; e
 
 Evidence: `phase77_enhance.py` and `phase78_enhance.py` derive `Article.dateModified` and `article:modified_time` from `date.today()` at build time. In the exact Phase 123 PR artifact, all 30 Black Book planning notes therefore reported `2026-09-12` as modified even though the sitemap has verified `lastmod=2026-09-03` for the six English notes and intentionally has no `lastmod` for the 24 ES/FR/DE/AR notes. A routine deployment must not masquerade as an editorial update.
 
-Prepared on branch `seo/phase124-black-book-freshness-integrity`: a final post-processing phase reads each of the 30 Black Book article URLs from the sitemap. When a verified sitemap `lastmod` exists, both Article schema and Open Graph modified-time metadata are aligned to it. When no verified `lastmod` exists, `dateModified` and `article:modified_time` are omitted instead of inventing a date. `datePublished` remains unset. No visible copy, URL, canonical, hreflang, service claim, contact route, tracking, price or legal content is changed.
+Published change: a final post-processing phase reads each of the 30 Black Book article URLs from the sitemap. When a verified sitemap `lastmod` exists, both Article schema and Open Graph modified-time metadata are aligned to it. When no verified `lastmod` exists, `dateModified` and `article:modified_time` are omitted instead of inventing a date. `datePublished` remains unset. No visible copy, URL, canonical, hreflang, service claim, contact route, tracking, price or legal content changed.
 
-Validation: PR #42 CI `34726887779` passed. Exact preview artifact `10307149955` confirms six English notes use verified `2026-09-03`, 24 localized notes remain intentionally undated, all 156 indexable canonicals match the sitemap exactly, there are no broken internal HTML links in the generated site, hreflang targets resolve within the sitemap and the Phase 123 Partners consolidation remains intact. Google Search Central defines `dateModified` as the date/time the article was most recently modified and says recommended properties should be added only when they apply; this phase therefore favors truthful omission over build-time freshness inflation.
+Validation: PR #42 CI `34726887779` passed before merge. Deployment `34727014802` completed successfully. Exact release artifact `10307534868` confirms six English notes use verified `2026-09-03`, 24 localized notes remain intentionally undated, all 156 indexable canonicals match the sitemap exactly, there are no broken internal HTML links in the generated site, hreflang targets resolve within the sitemap and the Phase 123 Partners consolidation remains intact. Google Search Central defines `dateModified` as the date/time the article was most recently modified and says recommended properties should be added only when they apply; this phase therefore favors truthful omission over build-time freshness inflation.
 
 ## Intent ownership — reuse existing URLs
 
@@ -62,12 +62,11 @@ Validation: PR #42 CI `34726887779` passed. Exact preview artifact `10307149955`
 
 ## Next execution priorities
 
-1. Merge/publish Phase 124 only while PR #42 remains conflict-free, its full validation remains green and the diff stays limited to the four reviewed files; then validate the exact release artifact before claiming publication.
-2. Recheck independent public retrieval of `/partners/` after Phase 123; do not confuse a verified Pages artifact with a separately observed public response.
-3. After Phase 124, audit one unresolved conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
-4. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
-5. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
-6. Keep technical improvements separate from measured business impact.
+1. Recheck independent public retrieval of `/partners/` and a representative EN/FR/DE/AR Black Book note; do not confuse a verified Pages artifact with a separately observed public response.
+2. Audit one unresolved conversion/accessibility, content-clarity or information-architecture issue only if reproducible; do not add pages or tracking by default.
+3. Where authorized tools allow, verify the correct Ibiza VIP Move Search Console/Analytics property before claiming indexation, country demand or lead metrics. Never reuse the other brand's property or tracking ID.
+4. Keep the 13 priority commercial routes within the Phase 111 crawl-depth threshold; no orphan pages, mass country pages, synonym pages, speculative redirects/noindex changes or word-count padding.
+5. Keep technical improvements separate from measured business impact.
 
 ## Primary-source reference principles
 
