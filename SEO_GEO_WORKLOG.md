@@ -41,6 +41,16 @@ Production artifact verification confirms all three localized contact pages now 
 
 Impact: technical navigation/localization and internal-link coherence only. No ranking, Google indexation, AI visibility, traffic, lead or revenue uplift is inferred from this release.
 
+## Phase 138 — localized brand wordmark home routing
+
+Published 13 September 2026. Exact Phase 137 production evidence showed 45 FR/DE/AR pages whose clickable Ibiza VIP Move `wordmark` still linked to the English homepage `/`, even though `/fr/`, `/de/` and `/ar/` already existed. Each language had 27 wordmark-bearing pages: 15 with the legacy English-home href and 12 already localized. Explicit English language-switch links were separate and preserved.
+
+Change: PR #64 adds a final post-processing step that changes only those wordmark hrefs to the matching localized homepage, plus a read-only regression gate. No visible copy, URL, canonical, hreflang, schema, sitemap, form, WhatsApp destination, tracking, price, legal policy or service scope changed.
+
+Validation: local frozen-artifact testing changed exactly 45 generated HTML files, one href per page, and was idempotent. PR CI `34763995109` succeeded; preview artifact `10320110000` has digest `sha256:86856847ec21621c84e5f327588817e995e9a4f3cdb9e6f1a74293b410b732f2`. PR #64 merged as `983e691811fbf3a141017a2ea644a40976be7c77`. Production deployment `34764056200` succeeded, including GitHub Pages and the existing IndexNow step. Exact production artifact `10319293520` has digest `sha256:6101bd68f273dff58c92344d53c7f07245ad9bbcf26b5555dbaf3a96baa37ab0`.
+
+Production verification confirms all 81 FR/DE/AR wordmark anchors now route to the same-language homepage, explicit non-wordmark English routes remain available, and the sitemap remains 156 unique URLs. Impact is technical navigation/internal-link coherence only; no ranking, indexation, AI visibility, traffic, lead or revenue uplift is inferred.
+
 ## Intent ownership — reuse existing pages
 
 Home owns broad luxury concierge; `/private-concierge-ibiza/` connected multi-service stays; `/luxury-lifestyle-management-ibiza/` ongoing stay coordination; `/personal-concierge-ibiza/` direct assistance; `/luxury-travel-concierge-ibiza/` private travel management/bespoke planning; `/vip-services-ibiza/` conditional hospitality/access; `/private-client-services-ibiza/` principals/PAs/family offices; `/destination-management-ibiza/` local DMC execution; `/partners/` professional handover. `/bespoke-concierge-ibiza/` remains for unusual individual requests. No private membership is authorized.
@@ -53,4 +63,4 @@ Google Search Central says crawlable `<a href>` links help Google discover inter
 - https://developers.google.com/search/docs/appearance/ai-features
 - https://www.bing.com/webmasters/help/webmaster-guidelines-30fba23a
 
-Next priority: audit one distinct unresolved FR/DE/AR conversion or authority-link issue, mobile/performance defect or settled Search Console signal. Do not revisit the Phase 134 DMC/Luxury Travel Concierge indexation decision before 16 September unless a new technical failure appears.
+Next priority: audit one distinct unresolved mobile/performance, conversion/accessibility or authority-link issue; the FR/DE/AR same-language Services/footer/contact/wordmark routing layers are now covered by regression gates. Do not revisit the Phase 134 DMC/Luxury Travel Concierge indexation decision before 16 September unless a new technical failure appears.
