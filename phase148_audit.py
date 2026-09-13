@@ -5,7 +5,7 @@ from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 import xml.etree.ElementTree as ET
 
-from phase148_enhance import BASE, EVENTS, expected_fragment
+from phase148_enhance import BASE, EVENTS, event_block
 
 ROOT = Path('_site')
 LANGS = {'en', 'es', 'fr', 'de', 'ar', 'x-default'}
@@ -35,8 +35,7 @@ def run(root: Path = ROOT) -> None:
     for lang, item in EVENTS.items():
         home = root / lang / 'index.html'
         html = home.read_text(encoding='utf-8')
-        _, after = expected_fragment(lang)
-        require(html.count(after) == 1, f'exact event-linked Home fragment: {lang}')
+        require(html.count(event_block(lang)) == 1, f'exact event pathway: {lang}')
 
         tags = Tags(html).tags
         event_links = [
