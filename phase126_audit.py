@@ -39,8 +39,10 @@ def run():
         raise SystemExit('Phase 126 luxury car page missing')
     html = PAGE.read_text(encoding='utf-8')
 
-    if f'<title>{TITLE}</title>' not in html:
-        raise SystemExit('Phase 126 title mismatch')
+    title_match = re.search(r'<title>(.*?)</title>', html, re.I | re.S)
+    rendered_title = unescape(title_match.group(1)).strip() if title_match else None
+    if rendered_title != TITLE:
+        raise SystemExit(f'Phase 126 title mismatch: {rendered_title!r}')
     if meta(html, 'name', 'description') != DESCRIPTION:
         raise SystemExit('Phase 126 description mismatch')
     if meta(html, 'property', 'og:title') != TITLE or meta(html, 'property', 'og:description') != DESCRIPTION:
