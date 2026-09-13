@@ -221,6 +221,8 @@ jobs:
           python3 validate_site.py
           python3 phase75_faq_audit.py
           python3 phase129_enhance.py
+          python3 phase130_enhance.py
+          python3 phase130_audit.py
           python3 phase124_audit.py
           python3 phase71_audit.py
           python3 phase72_audit.py
