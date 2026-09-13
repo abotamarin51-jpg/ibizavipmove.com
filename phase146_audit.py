@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 import xml.etree.ElementTree as ET
 from phase146_enhance import PAGES, linked_paragraph
+from phase147_audit import run as run_structured_data_audit
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -78,6 +79,7 @@ def run(root: Path = ROOT) -> None:
                 queue.append(dest)
     require(len(depths) == 156, 'all sitemap pages remain reachable')
     require(all(depths.get(url, 999) <= 2 for url in targets), 'six services within two HTML links of English Home')
+    run_structured_data_audit()
     print('PASS: Phase 146 audit — six existing services one link from localized Home/two from English Home; 156 reachable canonicals and FR/DE/AR SEO safeguards intact')
 
 
