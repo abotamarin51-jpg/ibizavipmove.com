@@ -5,6 +5,7 @@ import re
 import xml.etree.ElementTree as ET
 from PIL import Image, ImageChops, ImageStat
 from phase144_audit import run as run_priority_villa_format_audit
+from phase145_audit import run as run_local_concierge_metadata_audit
 
 ROOT = Path('_site')
 JPEG = '/assets/images/private-office.jpg'
@@ -60,6 +61,7 @@ def run():
         require(len(css) == 1 and css[0].startswith('/assets/bundles/') and (ROOT / css[0].split('?')[0].lstrip('/')).is_file(), f'one existing first-party CSS bundle {slug}')
         require({a.get('hreflang') for t, a in tags if t == 'link' and a.get('rel') == 'alternate'} == {'en','es','fr','de','ar','x-default'}, f'language cluster {slug}')
     run_priority_villa_format_audit()
+    run_local_concierge_metadata_audit()
     print(f'PASS: Phase 139 audit — five B2B heroes, WebP/JPEG fallback, resolution, payload, pixel-difference guard ({mean:.3f}/255), SEO and CSS integrity; 156 sitemap canonicals')
 
 
