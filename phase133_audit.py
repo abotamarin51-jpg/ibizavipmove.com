@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from phase135_audit import run as run_localized_services_routing_audit
 from phase136_audit import run as run_localized_authority_footer_routing_audit
 from phase137_audit import run as run_localized_contact_footer_routing_audit
+from phase138_audit import run as run_localized_wordmark_home_routing_audit
 
 ROOT = Path('_site')
 CONTACTS = ('contact', 'es/contacto', 'fr/contact', 'de/kontakt', 'ar/contact')
@@ -81,3 +82,4 @@ if __name__ == '__main__':
     run_localized_services_routing_audit()
     run_localized_authority_footer_routing_audit()
     run_localized_contact_footer_routing_audit()
+    run_localized_wordmark_home_routing_audit()
