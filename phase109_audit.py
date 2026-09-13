@@ -127,6 +127,13 @@ from phase125_audit import run as audit_priority_image_preloads
 enhance_priority_image_preloads()
 audit_priority_image_preloads()
 
+# Phase 126 uses verified Search Console demand on the existing luxury-car URL:
+# UK "hire" and US/international "rental" wording are consolidated on one canonical.
+from phase126_enhance import enhance as enhance_gsc_luxury_car_intent
+from phase126_audit import run as audit_gsc_luxury_car_intent
+enhance_gsc_luxury_car_intent()
+audit_gsc_luxury_car_intent()
+
 # Phase 111 inspects the final HTML graph after all contextual links are present.
 from phase111_audit import run as audit_cornerstone_depth
 audit_cornerstone_depth()
