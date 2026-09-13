@@ -1,6 +1,7 @@
 """Give qualified contact forms one validation/submission owner, without new assets."""
 from pathlib import Path
 import re
+from phase135_enhance import enhance as enhance_localized_services_routing
 
 ROOT = Path('_site')
 CONTACTS = ('contact', 'es/contacto', 'fr/contact', 'de/kontakt', 'ar/contact')
@@ -39,7 +40,6 @@ def enhance():
         pending[path] = html
     if (ROOT / 'sitemap.xml').read_bytes() != sitemap:
         raise SystemExit('Phase 133: sitemap changed unexpectedly')
-    # Validate every expected marker before writing any output.
     for path, content in pending.items():
         path.write_text(content, encoding='utf-8')
     print(f'PASS: Phase 133 single form owner; legacy English handler gated, {removed} obsolete localized inline scripts removed; five cache-versioned references; no new asset/URL')
@@ -47,3 +47,4 @@ def enhance():
 
 if __name__ == '__main__':
     enhance()
+    enhance_localized_services_routing()
