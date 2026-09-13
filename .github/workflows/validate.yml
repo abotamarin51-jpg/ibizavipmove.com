@@ -129,6 +129,8 @@ jobs:
           "$RUNNER_TEMP/ivm-image-tools/bin/python" -m pip install --disable-pip-version-check --only-binary=:all: --no-deps "Pillow==12.3.0"
           "$RUNNER_TEMP/ivm-image-tools/bin/python" phase139_enhance.py
           "$RUNNER_TEMP/ivm-image-tools/bin/python" phase139_audit.py
+          python3 phase140_enhance.py
+          python3 phase140_audit.py
           python3 phase124_audit.py
           python3 phase71_audit.py
           python3 phase72_audit.py
