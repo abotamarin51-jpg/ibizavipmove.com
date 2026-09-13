@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 13 September 2026 (Europe/Madrid). Repository: `abotamarin51-jpg/ibizavipmove.com`.
+Updated: 14 September 2026 (Europe/Madrid). Repository: `abotamarin51-jpg/ibizavipmove.com`.
 
 ## Scope and safeguards
 
@@ -77,3 +77,17 @@ Search Console currently lists the canonical sitemap plus two older duplicate su
 The indexed comparator `/private-concierge-ibiza/` is also technically clean. Differences in body length, internal-link count and schema richness exist, but there is no evidence that any one of them caused the French exclusion; do not pad copy or add schema speculatively. Artifact-only contact verification found the French page points WhatsApp to `https://wa.me/34600703303`, phone to `tel:+34600703303`, and B2B email to `partnership@ibizavipmove.com`; no form or message was submitted.
 
 Decision for this iteration: **no website code/content change**. A fresh rewrite immediately after a successful crawl would be speculative and risks churn without a verified blocker. Next priority is to re-read the tracker after Google's natural recrawl window, keep the Phase 134 three-URL hold until 16 September, and then prioritize any commercial EN/FR/DE/AR URL that shows a new concrete fault (HTTP/robots/noindex/canonical/rendering) before cosmetic or image micro-optimizations.
+
+## Phase 149 — priority yacht modern-format delivery — 14 September 2026, 00:59 Europe/Madrid
+
+At the start of this iteration `main` was `4b84adaa7997361800f63e55bc37d13dfeeb832a`, with no open PR and no build/deployment in progress. The Wizard tracker had no new sweep since `2026-09-13T20:23:00.53Z`, so no immediate URL inspections were repeated. It remains 156 tracked / 97 indexed / 59 not indexed / 0 pending / 0 errors / 0 warnings. The Phase 134 three-URL hold remains in force until 16 September absent a new technical failure.
+
+A live Wizard audit of `/fr/location-yacht-ibiza/`, `/de/restaurants-nightlife-ibiza/`, `/ar/yacht-charter-ibiza/`, `/private-chef-staffing-ibiza/` and `/private-events-ibiza/` found all five HTTP 200, self-canonical, indexable and free of structured-data errors; only the English Private Events title received a low-severity length warning. This did not establish an indexation blocker, so no copy, canonical, robots, hreflang or schema rewrite was made.
+
+The exact Phase 148 production artifact instead showed a bounded performance opportunity: the shared 2000×1333 yacht hero JPEG was 439,512 bytes and used as `fetchpriority="high"` on nine existing yacht service/intelligence pages. Phase 149 preserves the JPEG fallback but adds same-resolution AVIF and WebP alternatives and uses AVIF for the five existing yacht image preloads. Validated output sizes are AVIF 176,573 bytes and WebP 217,942 bytes; mean absolute pixel difference is 2.072/2.075 on a 0–255 channel scale. No visible copy, URL, title, H1, canonical, hreflang, schema, sitemap, robots, form, WhatsApp, tracking, price or policy changed.
+
+PR #85 passed CI run `34788262571`, was merged as `3212c907b4cd0343516c3e1ee86d14178072fc11`, and deployment `34788307037` completed successfully. Production Pages artifact `10327660073` has digest `sha256:2ad9dde1822d6a63755e1a75c0c7b6d28f3316cb2176236f3f02352a85e77949`. The production artifact matches the CI preview for all nine affected HTML pages and yacht assets; each page contains exactly one Phase 149 picture marker, the 156-URL sitemap output is unchanged, and existing WhatsApp/phone/B2B email references remain present.
+
+Post-deploy live Wizard audit of EN/FR/DE/AR yacht service pages returned HTTP 200, self-canonical, indexable, one H1, six hreflang entries, valid structured data and zero audit issues. The deployment workflow's existing IndexNow step also completed successfully, but that is not evidence of Google indexing or ranking. No new tracker sweep occurred after publication, so no indexing change is attributed to Phase 149. Measured ranking, AI visibility, leads and revenue impact remain unestablished.
+
+Next: prioritize fresh Wizard evidence of an actual commercial-page fault over further image batches. Keep `/destination-management-ibiza/`, `/luxury-travel-concierge-ibiza/` and `/de/private-aviation-ibiza/` on the established 16 September reassessment hold unless a new HTTP/robots/noindex/canonical/rendering failure appears. Do not repeat Phase 149 unless a regression is demonstrated.
