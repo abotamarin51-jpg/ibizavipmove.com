@@ -94,3 +94,16 @@ Change: add one short explanatory block to `/services/`, `/fr/services/`, `/de/s
 Local validation against exact Phase 140 production: pre-change gate fails as expected; enhancement changes exactly five HTML files; rerun is idempotent; post-change gate passes with one H1, self-canonical, indexability, complete EN/ES/FR/DE/AR/x-default hreflang, Arabic RTL and unchanged 156-URL sitemap. Detailed pre-change control is in `PHASE141_VOCABULARY_CONTROL.md`.
 
 Status at this worklog commit: **PREPARED / LOCALLY VALIDATED — PR CI and production deployment still required before calling it published.** Next: validate the exact PR diff and clean build, then merge/deploy only if all existing gates remain green. Keep the Phase 134 DMC/Luxury Travel Concierge indexation reassessment on or after 16 September.
+
+## Current release state — Phases 141–144
+
+This section supersedes the older prepared-only status for Phase 141 above; that earlier statement is retained as historical context.
+
+- **Phase 141 published:** PR #70 merged as `b29f83c7dbb4f761e3a2192575a04904eded4d96`; production deployment `34767975332` succeeded; artifact `10321335103`, digest `sha256:630c21138a76d31247a5fa831b86705e4548412cd62a30bf803b3adb2e96ee75`. Five existing Services hubs gained the limited non-"concierge" vocabulary bridge, with 156 sitemap URLs preserved.
+- **Phase 142 published:** localized Home pages FR/DE/AR/ES now reuse the existing mobile hero source instead of forcing the larger desktop image on narrow screens. The release passed CI and production validation; detailed evidence is retained in `PHASE142_PERFORMANCE_CONTROL.md`.
+- **Phase 143 published:** PR #74 merged as `96dde62d71adf9d6b0eb83e41483136765351126`; deployment `34773091268` succeeded; artifact `10322447559`, digest `sha256:96ebcf35c196ffbb8e7bc430d2cf277d5d5a1eaaf97bd13983dd16f216d87e61`. Five Partners pages now prefer the validated 357.986-byte WebP instead of the 727.490-byte JPEG while retaining JPEG fallback; detailed evidence is in `PHASE143_PERFORMANCE_CONTROL.md`.
+- **Phase 144 published:** PR #76 passed CI `34776398399` and merged as `c4f243eed1ce835168e1ffd6bd1bf18818e8b53d`; deployment `34776512394` succeeded. Exact production artifact `10323841907` has digest `sha256:85ba295391be806207aefa0d34cde642b94f19fb680af52150c0eb3fb8cdf2ae`. Fourteen reviewed priority uses of `villa.jpg` now offer AVIF then WebP while retaining JPEG fallback; nine existing JPEG preloads were replaced by AVIF preloads. In production the same-build payloads are 705.022 bytes JPEG, 348.411 bytes AVIF and 501.768 bytes WebP, with unchanged 2000×1334 dimensions. The artifact retains 156 unique sitemap URLs. Full evidence is in `PHASE144_PERFORMANCE_CONTROL.md`.
+
+These releases demonstrate technical delivery/navigation/editorial improvements only. They do not establish field Core Web Vitals uplift, Google/Bing ranking changes, AI-answer inclusion, traffic, lead or revenue growth.
+
+Next priority: audit the remaining `fetchpriority=high` image inventory and choose one distinct unresolved high-payload resource without modern-format delivery, while leaving lazy-loaded card imagery alone unless evidence shows it is material. Keep the Phase 134 indexation reassessment paused until 16 September unless a new concrete defect appears.
