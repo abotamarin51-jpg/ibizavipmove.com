@@ -6,6 +6,7 @@ from urllib.parse import urljoin, urlsplit, urlunsplit
 import xml.etree.ElementTree as ET
 
 from phase148_enhance import BASE, EVENTS, event_block
+from phase150_audit import run as run_localized_dining_audit
 
 ROOT = Path('_site')
 LANGS = {'en', 'es', 'fr', 'de', 'ar', 'x-default'}
@@ -100,6 +101,7 @@ def run(root: Path = ROOT) -> None:
 
     require(len(depths) == 156, 'all sitemap pages remain reachable')
     require(all(depths.get(url, 999) <= 2 for url in targets), 'event targets remain within two HTML links of English Home')
+    run_localized_dining_audit(root)
 
     print(
         'PASS: Phase 148 audit — FR/DE/AR Private Events pages gain one localized Home path, '
