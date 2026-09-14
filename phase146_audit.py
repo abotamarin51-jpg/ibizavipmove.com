@@ -6,6 +6,7 @@ from urllib.parse import urljoin, urlsplit, urlunsplit
 import xml.etree.ElementTree as ET
 from phase146_enhance import PAGES, linked_paragraph
 from phase147_audit import run as run_structured_data_audit
+from phase150_enhance import PAGES as DINING_PAGES, linked_phrase as dining_linked_phrase
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -35,7 +36,12 @@ def run(root: Path = ROOT) -> None:
     for lang, (text, links) in PAGES.items():
         home = root / lang / 'index.html'
         html = home.read_text(encoding='utf-8')
-        require(html.count(linked_paragraph(text, links)) == 1, f'exact linked paragraph: {lang}')
+        expected = linked_paragraph(text, links)
+        if lang in DINING_PAGES:
+            label, href = DINING_PAGES[lang]
+            require(expected.count(label) == 1, f'Phase 150 phrase remains inside Phase 146 paragraph: {lang}')
+            expected = expected.replace(label, dining_linked_phrase(label, href), 1)
+        require(html.count(expected) == 1, f'exact linked paragraph: {lang}')
         tags = Tags(html).tags
         actual = [a.get('href') for t, a in tags if t == 'a' and a.get('data-ivm146') == 'service']
         require(actual == [href for _, href in links], f'exact two links: {lang}')
