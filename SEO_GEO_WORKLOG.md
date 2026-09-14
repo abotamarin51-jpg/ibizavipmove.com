@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 14 September 2026, 21:50 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
+Updated: 14 September 2026, 22:51 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
 
 ## Scope, continuity and release safeguards
 
@@ -72,3 +72,14 @@ On the canonical Wizard property `https://ibizavipmove.com/`, tracker `b45661cd-
 The two remaining Phase 134 URLs are unchanged: `/destination-management-ibiza/` and `/luxury-travel-concierge-ibiza/` both remain `Crawled - currently not indexed`, last crawled on 12 September and rechecked in this sweep. Their established reassessment date remains 16 September. No repeat inspection, indexing request, sitemap submission, IndexNow submission, email or tracker-setting change was made. The enabled email digest remains unchanged because no legitimate toggle is exposed.
 
 Decision: **documentation only; no website modification or deployment**. The confirmed indexation improvement is a Google status change, not proof of ranking, AI visibility, traffic or lead impact. Next: re-evaluate the two remaining held commercial URLs from 16 September, unless a new technical failure appears first.
+
+
+## Additional confirmed indexation changes — 14 September 2026, 22:51 Europe/Madrid
+
+Start state: main `5cbab724297ef900d16649594a47175c1a2e35aa`; no open PR or queued/in-progress workflow. The latest website deployment remains the successful Phase 155 run `34825054088`. This iteration changes only this worklog.
+
+A subsequent native tracker sweep on the canonical Wizard property `https://ibizavipmove.com/` raised the monitored total from 98 indexed / 58 not indexed to 102 indexed / 54 not indexed, with 0 pending, errors or warnings. Four URLs moved from not indexed to `Submitted and indexed`, PASS and indexing allowed: `/fr/conciergerie-privee-ibiza/`, `/ar/ibiza-intelligence/ibiza-august-planning/`, `/de/ibiza-intelligence/ibiza-august-planning/` and `/private-concierge-santa-gertrudis-ibiza/`. Google last-crawl evidence was present for each before this confirmation.
+
+The remaining held commercial queue is unchanged: `/destination-management-ibiza/` and `/luxury-travel-concierge-ibiza/` remain `Crawled - currently not indexed`, both last crawled 12 September and rechecked 14 September. Reassessment remains scheduled from 16 September. No URL inspection, indexing request, sitemap/IndexNow submission, email, digest/configuration action, website change or deployment was performed.
+
+This is confirmed indexation within the 156-URL tracker, not a complete Google index census and not evidence of rankings, AI visibility, traffic, enquiries or revenue. Next: wait for fresh evidence or the 16 September hold expiry before diagnosing the two remaining priority URLs.
