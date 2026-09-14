@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 14 September 2026, 11:55 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
+Updated: 14 September 2026, 21:50 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
 
 ## Scope, continuity and release safeguards
 
@@ -61,3 +61,14 @@ One local commercial page was reviewed: `/private-concierge-cala-jondal-es-cubel
 Exact Phase 155 production-artifact graph analysis places the target at crawl depth 2 from Home. Eight other internal pages link to it, including the main private-concierge, luxury-lifestyle-management, villas, chauffeur, private-client-services, security, dining/nightlife and yacht pages. Five-word-shingle similarity against the three other local concierge pages was 0.275–0.279 and 0.072 against the general private-concierge page; this does not demonstrate a near-duplicate blocker. Artifact-only contact verification retained five WhatsApp links, two telephone links and one Ibiza VIP Move email route; no form or message was sent.
 
 Decision: **no website code/content change**. A rewrite, invented translation or extra schema would be speculative. If an owner chooses to request indexing, the legitimate manual action is Search Console → URL Inspection → enter the exact canonical URL → Test Live URL → Request Indexing once; this was not executed by Wizard and is not guaranteed to produce indexing. Next: preserve the 16 September hold for the three Phase 134 URLs unless a new technical fault appears, and prioritize fresh tracker changes or a demonstrated conversion/indexability failure over cosmetic churn.
+
+
+## Confirmed indexation change — German private aviation — 14 September 2026, 21:50 Europe/Madrid
+
+Start state: main `b3f134712ed459a5ca8a2fc080ec4caa63801d3c`; no open PR or queued/in-progress workflow. The latest website deployment remains the successful Phase 155 run `34825054088`; this iteration makes no website code or content change.
+
+On the canonical Wizard property `https://ibizavipmove.com/`, tracker `b45661cd-b57b-4a32-8ae5-8bab1cac107b` completed a fresh sweep at `2026-09-14T19:51:07Z`. `/de/private-aviation-ibiza/` changed from `Crawled - currently not indexed` to `Submitted and indexed` (PASS, indexing allowed), checked at `2026-09-14T19:42:10Z` after Google crawled it at `2026-09-13T23:49:18Z`. Tracker totals changed from 97 indexed / 59 not indexed to 98 indexed / 58 not indexed; pending, errors and warnings remain zero. This tracker is evidence for the monitored inventory, not a complete census of Google's index.
+
+The two remaining Phase 134 URLs are unchanged: `/destination-management-ibiza/` and `/luxury-travel-concierge-ibiza/` both remain `Crawled - currently not indexed`, last crawled on 12 September and rechecked in this sweep. Their established reassessment date remains 16 September. No repeat inspection, indexing request, sitemap submission, IndexNow submission, email or tracker-setting change was made. The enabled email digest remains unchanged because no legitimate toggle is exposed.
+
+Decision: **documentation only; no website modification or deployment**. The confirmed indexation improvement is a Google status change, not proof of ranking, AI visibility, traffic or lead impact. Next: re-evaluate the two remaining held commercial URLs from 16 September, unless a new technical failure appears first.
