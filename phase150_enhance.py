@@ -4,6 +4,7 @@ Wrap only the existing restaurants/beach clubs/nightlife wording on FR/DE/AR Hom
 No visible copy, URL, schema, form, tracking, price, policy or sitemap change.
 """
 from pathlib import Path
+from phase151_enhance import enhance as enhance_partner_whatsapp_handoffs
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -45,6 +46,7 @@ def enhance(root: Path = ROOT) -> None:
     if (root / 'sitemap.xml').read_bytes() != sitemap:
         raise SystemExit('Phase 150: unexpected sitemap change')
     print(f'PASS: Phase 150 — {len(pending)} localized Home pages link existing dining/nightlife wording; no visible copy or URL change')
+    enhance_partner_whatsapp_handoffs(root)
 
 
 if __name__ == '__main__':
