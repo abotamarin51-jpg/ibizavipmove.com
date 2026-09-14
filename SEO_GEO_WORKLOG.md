@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 14 September 2026, 06:13 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
+Updated: 14 September 2026, 10:56 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
 
 ## Scope, continuity and release safeguards
 
@@ -30,7 +30,7 @@ Keep the prior reassessment hold for `/destination-management-ibiza/`, `/luxury-
 
 Private tracker metrics and per-URL inspection histories stay outside this public repository. The tracker digest setting was still enabled in this iteration; no legitimate digest-toggle action was available in the discovered interface. No emails or additional notifications were sent or enabled.
 
-## Phase 155 — German Partners mobile reflow — PREPARED, NOT YET PUBLISHED
+## Phase 155 — German Partners mobile reflow — PUBLISHED
 
 Opportunity: `/de/partners/` is an existing commercial B2B page. Current Wizard live audit returned HTTP 200, self-canonical, indexable, one H1, six hreflang entries and no schema errors. The reviewed defect is mobile usability, not an established indexing blockage.
 
@@ -40,7 +40,9 @@ Frozen-output validation: only `de/partners/index.html` changes; removing the on
 
 Offline Chromium with production CSS/fonts/resources and JavaScript: after the patch, scrollWidth equals viewport width at 320/375/390/768/980/981/1440; visible body text remains identical; no JavaScript errors in fresh page contexts. Before/after mobile screenshots were reviewed. This is artifact-based offline rendering, not a live-browser or Safari certification. External navigation is unavailable in this environment; no message/form was submitted.
 
-Next: review this PR's exact diff and full CI. Do not merge until those pass and the current main is compatible. After an authorized merge, verify deployment, exact production style/output and the live target/contact paths; record the release result in the PR and update this state. The demonstrated benefit is reflow/readability; no increase in conversions, indexing, rankings or AI visibility has been measured.
+Release: PR #95 passed CI run `34805250041` and was merged as `dad231afd53957925e1811ebc9a437d67ba358c8`. Deployment run `34825054088` completed successfully. Production artifact `10340480600` has SHA-256 `a325cda4a495b8b8b815f6ce616030bfcc007b32bcab0974addaef5ae4c0015c`, independently matched after download. The artifact contains one exact Phase 155 marker on `/de/partners/`, retains 156 sitemap canonicals and preserves the existing WhatsApp, telephone and partnership-email routes. A post-deploy Wizard live audit returned HTTP 200, no redirect, self-canonical, indexable, one H1, six hreflang entries, valid structured data and no high/medium issues. The only reported issue is the pre-existing low-severity long-title warning. No form or message was sent.
+
+The demonstrated benefit is mobile reflow/readability. Indexing, ranking, AI visibility, conversions, leads and revenue impact remain unmeasured. Next: keep the established 16 September reassessment hold for the three Phase 134 URLs unless a new technical failure appears; prioritize fresh Wizard evidence of a real commercial-page fault before another cosmetic or image change.
 
 ## Primary references checked for this correction
 
