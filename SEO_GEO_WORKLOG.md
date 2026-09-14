@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 14 September 2026, 10:56 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
+Updated: 14 September 2026, 11:55 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
 
 ## Scope, continuity and release safeguards
 
@@ -50,3 +50,14 @@ The demonstrated benefit is mobile reflow/readability. Indexing, ranking, AI vis
 - https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow-wrap
 
 Do not equate a targeted reflow fix with full WCAG conformance or a Google ranking improvement.
+
+
+## Indexation diagnostic — Cala Jondal & Es Cubells — 14 September 2026, 11:55 Europe/Madrid
+
+Start state: main `d396c1a6a94f16b10ae5ea83102ae47ae14ff3e8`; no open PR or queued/in-progress workflow. The latest website deployment remained the successful Phase 155 run `34825054088`. Canonical Wizard property remained `https://ibizavipmove.com/`; the tracker had no new sweep or count change, so no URL inspection was repeated and no sitemap was resubmitted. The enabled tracker email digest remains unchanged because the available interface still exposes no legitimate digest toggle.
+
+One local commercial page was reviewed: `/private-concierge-cala-jondal-es-cubells-ibiza/`. Private Search Console inspection details are not duplicated in this public record. Live Wizard audit returned HTTP 200, no redirect, indexable self-canonical, one H1, two intentional hreflang entries (English and x-default; no untranslated alternate is invented), 667 words, valid structured data, complete image alt coverage and zero audit issues. The indexed `/private-concierge-ibiza/` comparator was also technically clean.
+
+Exact Phase 155 production-artifact graph analysis places the target at crawl depth 2 from Home. Eight other internal pages link to it, including the main private-concierge, luxury-lifestyle-management, villas, chauffeur, private-client-services, security, dining/nightlife and yacht pages. Five-word-shingle similarity against the three other local concierge pages was 0.275–0.279 and 0.072 against the general private-concierge page; this does not demonstrate a near-duplicate blocker. Artifact-only contact verification retained five WhatsApp links, two telephone links and one Ibiza VIP Move email route; no form or message was sent.
+
+Decision: **no website code/content change**. A rewrite, invented translation or extra schema would be speculative. If an owner chooses to request indexing, the legitimate manual action is Search Console → URL Inspection → enter the exact canonical URL → Test Live URL → Request Indexing once; this was not executed by Wizard and is not guaranteed to produce indexing. Next: preserve the 16 September hold for the three Phase 134 URLs unless a new technical fault appears, and prioritize fresh tracker changes or a demonstrated conversion/indexability failure over cosmetic churn.
