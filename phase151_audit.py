@@ -3,6 +3,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 import xml.etree.ElementTree as ET
 from phase151_enhance import GENERIC_HREF, PAGES, href
+from phase152_audit import run as run_media_partner_hero_audit
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -43,6 +44,7 @@ def run(root: Path = ROOT) -> None:
         require(html_tag.get('lang') == lang, f'language: {slug}')
         if lang == 'ar':
             require(html_tag.get('dir') == 'rtl', 'Arabic RTL preserved')
+    run_media_partner_hero_audit(root)
     print('PASS: Phase 151 audit — FR/DE/AR Partners residual WhatsApp handoffs are localized B2B; canonicals/hreflang/indexability and 156-URL sitemap preserved')
 
 
