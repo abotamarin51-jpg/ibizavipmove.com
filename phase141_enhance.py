@@ -8,6 +8,7 @@ from pathlib import Path
 from phase142_enhance import enhance as enhance_localized_home_mobile_hero
 from phase146_enhance import enhance as enhance_localized_home_service_links
 from phase147_enhance import enhance as enhance_structured_data
+from phase153_enhance import enhance as enhance_french_bespoke_path
 
 ROOT = Path('_site')
 MARKER = 'ivm-phase141-vocabulary'
@@ -47,3 +48,4 @@ if __name__ == '__main__':
     enhance_localized_home_mobile_hero()
     enhance_localized_home_service_links()
     enhance_structured_data()
+    enhance_french_bespoke_path()
