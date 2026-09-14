@@ -4,6 +4,7 @@ from pathlib import Path
 import xml.etree.ElementTree as ET
 from phase151_enhance import GENERIC_HREF, PAGES, href
 from phase152_audit import run as run_media_partner_hero_audit
+from phase155_mobile_reflow import audit as run_german_partner_reflow_audit
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -45,6 +46,7 @@ def run(root: Path = ROOT) -> None:
         if lang == 'ar':
             require(html_tag.get('dir') == 'rtl', 'Arabic RTL preserved')
     run_media_partner_hero_audit(root)
+    run_german_partner_reflow_audit(root)
     print('PASS: Phase 151 audit — FR/DE/AR Partners residual WhatsApp handoffs are localized B2B; canonicals/hreflang/indexability and 156-URL sitemap preserved')
 
 

@@ -8,6 +8,7 @@ price, policy, sitemap or navigation change.
 from pathlib import Path
 from urllib.parse import quote
 from phase152_enhance import enhance as enhance_media_partner_hero
+from phase155_mobile_reflow import enhance as enhance_german_partner_reflow
 
 ROOT = Path('_site')
 PHONE = '34600703303'
@@ -49,6 +50,7 @@ def enhance(root: Path = ROOT) -> None:
         raise SystemExit('Phase 151: sitemap changed unexpectedly')
     print(f'PASS: Phase 151 — localized {len(pending) * 2} residual Partners WhatsApp handoffs; visible copy and contact number unchanged')
     enhance_media_partner_hero(root)
+    enhance_german_partner_reflow(root)
 
 
 if __name__ == '__main__':
