@@ -5,6 +5,7 @@ import xml.etree.ElementTree as ET
 from phase142_audit import run as run_localized_home_mobile_hero_audit
 from phase146_audit import run as run_localized_home_service_links_audit
 from phase153_audit import run as run_french_bespoke_path_audit
+from phase154_audit import run as run_localized_yacht_path_audit
 
 ROOT = Path('_site')
 PAGES = {
@@ -51,6 +52,7 @@ def run():
     run_localized_home_mobile_hero_audit()
     run_localized_home_service_links_audit()
     run_french_bespoke_path_audit()
+    run_localized_yacht_path_audit()
     print('PASS: Phase 141 audit — selected supplied travel-planning vocabulary visible on five existing Services hubs; canonicals/hreflang/indexability and 156-URL sitemap preserved')
 
 

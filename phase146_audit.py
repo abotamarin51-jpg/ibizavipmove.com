@@ -8,6 +8,7 @@ from phase146_enhance import PAGES, linked_paragraph
 from phase147_audit import run as run_structured_data_audit
 from phase150_enhance import PAGES as DINING_PAGES, linked_phrase as dining_linked_phrase
 from phase153_enhance import DEST as FR_BESPOKE_DEST, LABEL as FR_BESPOKE_LABEL, MARKER as FR_BESPOKE_MARKER, STYLE as FR_BESPOKE_STYLE
+from phase154_enhance import PAGES as YACHT_PAGES, linked_phrase as yacht_linked_phrase
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -49,6 +50,10 @@ def run(root: Path = ROOT) -> None:
                 f'style="{FR_BESPOKE_STYLE}">{FR_BESPOKE_LABEL}</a>'
             )
             expected = expected.replace(FR_BESPOKE_LABEL, bespoke_link, 1)
+        if lang in YACHT_PAGES:
+            label, href = YACHT_PAGES[lang]
+            require(expected.count(label) == 1, f'Phase 154 yacht phrase remains inside Phase 146 paragraph: {lang}')
+            expected = expected.replace(label, yacht_linked_phrase(label, href), 1)
         require(html.count(expected) == 1, f'exact linked paragraph: {lang}')
         tags = Tags(html).tags
         actual = [a.get('href') for t, a in tags if t == 'a' and a.get('data-ivm146') == 'service']
