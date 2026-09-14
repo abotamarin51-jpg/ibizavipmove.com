@@ -7,6 +7,7 @@ import xml.etree.ElementTree as ET
 from phase146_enhance import PAGES, linked_paragraph
 from phase147_audit import run as run_structured_data_audit
 from phase150_enhance import PAGES as DINING_PAGES, linked_phrase as dining_linked_phrase
+from phase153_enhance import DEST as FR_BESPOKE_DEST, LABEL as FR_BESPOKE_LABEL, MARKER as FR_BESPOKE_MARKER, STYLE as FR_BESPOKE_STYLE
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -41,6 +42,13 @@ def run(root: Path = ROOT) -> None:
             label, href = DINING_PAGES[lang]
             require(expected.count(label) == 1, f'Phase 150 phrase remains inside Phase 146 paragraph: {lang}')
             expected = expected.replace(label, dining_linked_phrase(label, href), 1)
+        if lang == 'fr':
+            require(expected.count(FR_BESPOKE_LABEL) == 1, 'Phase 153 phrase remains inside Phase 146 French paragraph')
+            bespoke_link = (
+                f'<a {FR_BESPOKE_MARKER} href="{FR_BESPOKE_DEST}" '
+                f'style="{FR_BESPOKE_STYLE}">{FR_BESPOKE_LABEL}</a>'
+            )
+            expected = expected.replace(FR_BESPOKE_LABEL, bespoke_link, 1)
         require(html.count(expected) == 1, f'exact linked paragraph: {lang}')
         tags = Tags(html).tags
         actual = [a.get('href') for t, a in tags if t == 'a' and a.get('data-ivm146') == 'service']
