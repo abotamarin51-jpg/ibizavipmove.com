@@ -5,6 +5,7 @@ from pathlib import Path
 from urllib.parse import urljoin, urlsplit, urlunsplit
 import xml.etree.ElementTree as ET
 from phase150_enhance import BASE, PAGES, linked_phrase
+from phase151_audit import run as run_partner_whatsapp_audit
 
 ROOT = Path('_site')
 LANGS = {'en', 'es', 'fr', 'de', 'ar', 'x-default'}
@@ -76,6 +77,7 @@ def run(root: Path = ROOT) -> None:
     for lang, (_, href) in PAGES.items():
         require(BASE + href in graph[BASE + '/' + lang + '/'], f'direct localized Home edge: {lang}')
 
+    run_partner_whatsapp_audit(root)
     print('PASS: Phase 150 audit — FR/DE/AR dining/nightlife pages are one contextual link from localized Home, <=2 from English Home, and 156 canonicals remain reachable')
 
 
