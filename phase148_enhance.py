@@ -4,6 +4,7 @@ Adds one truthful, same-language event-service pathway near the existing FR/DE/A
 service summary. No URL, tracking, schema, form, price or policy changes.
 """
 from pathlib import Path
+from phase150_enhance import enhance as enhance_localized_dining_paths
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
@@ -75,6 +76,7 @@ def enhance(root: Path = ROOT) -> None:
         f'PASS: Phase 148 — {len(pending)} localized Home pages gain one same-language '
         'Private Events pathway; no URL, schema, form or sitemap change'
     )
+    enhance_localized_dining_paths(root)
 
 
 if __name__ == '__main__':
