@@ -2,6 +2,11 @@ from pathlib import Path
 import json
 import re
 
+# Apply the consent-gated GA4 layer to the generated site before validating it.
+# validate_site.py runs both during the base build and again near the end of CI,
+# so this also reasserts the integration after later HTML enhancement phases.
+import analytics_consent  # noqa: F401
+
 ROOT = Path('_site')
 OLD_PHONE = '+34 613 75 62 11'
 OLD_WA = '34613756211'
@@ -72,6 +77,8 @@ for canonical, files in canonicals.items():
 combined = '\n'.join(p.read_text(encoding='utf-8') for p in pages)
 if NEW_PHONE not in combined or NEW_WA not in combined:
     errors.append('new phone/WhatsApp details are not present in generated pages')
+if '/assets/analytics-consent.js?v=1' not in combined:
+    errors.append('GA4 consent layer is not present in generated pages')
 
 sitemap = ROOT / 'sitemap.xml'
 robots = ROOT / 'robots.txt'
@@ -84,4 +91,4 @@ if errors:
     print('\n'.join('FAIL: ' + e for e in errors))
     raise SystemExit(f'{len(errors)} validation issue(s) found')
 
-print(f'PASS: validated {len(pages)} indexable pages, unique titles/canonicals, H1s, JSON-LD, contact details, sitemap and robots')
+print(f'PASS: validated {len(pages)} indexable pages, unique titles/canonicals, H1s, JSON-LD, contact details, sitemap, robots and GA4 consent layer')
