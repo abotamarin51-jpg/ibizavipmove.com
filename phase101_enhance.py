@@ -21,7 +21,9 @@ SOURCES = {
     'chef.jpg': 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=76&fm=jpg',
     'aviation.jpg': 'https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=78&w=2200',
     'hero-desktop.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=2000&h=1273&q=78&fm=jpg',
-    'hero-mobile.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=900&h=1250&q=76&fm=jpg',
+    # Keep extra headroom under the existing 190 KB audit ceiling because this
+    # live Unsplash transform is re-encoded upstream and its bytes can vary.
+    'hero-mobile.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=900&h=1250&q=72&fm=jpg',
 }
 
 before = {}
