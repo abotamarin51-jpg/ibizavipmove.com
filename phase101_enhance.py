@@ -8,9 +8,10 @@ IMG = ROOT / 'assets' / 'images'
 HOME = ROOT / 'index.html'
 
 # Phase 101 keeps the exact same editorial sources and visual treatment used by
-# the mature site. Phase 157 supplies villa.jpg from the checksum-verified,
-# production-approved repository asset before this optimizer runs. The remaining
-# nine assets keep their rendered dimensions and receive a leaner JPEG encode.
+# the mature site. Phase 157 supplies villa.jpg and Phase 160 supplies
+# chauffeur.jpg from checksum-verified, production-approved repository assets
+# before this optimizer runs. The remaining eight assets keep their rendered
+# dimensions and receive a leaner JPEG encode.
 # The desktop LCP hero keeps the exact same aspect/crop but is delivered at
 # 2000x1273 instead of 2200x1400 — still above typical desktop display needs
 # while reducing global transfer cost.
