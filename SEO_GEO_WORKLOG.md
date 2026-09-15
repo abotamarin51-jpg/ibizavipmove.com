@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 15 September 2026, 14:40 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; website: `https://ibizavipmove.com/`.
+Updated: 15 September 2026, 17:03 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; website: `https://ibizavipmove.com/`.
 
 ## Scope and safeguards
 
@@ -47,3 +47,16 @@ The tracker still exposes an enabled email digest; no legitimate digest-setting 
 Decision: documentation-only closure and audit baseline; no website code, content, asset, contact, tracking, sitemap or configuration change. Next: read the next native tracker update and reassess the two held commercial URLs from 16 September. If a new real fault appears earlier, prioritize it. SEO/GEO monitoring is not a guaranteed finish date, number-one ranking or continuous background work.
 
 Primary references checked in this iteration: https://developers.google.com/search/docs/crawling-indexing/links-crawlable ; https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl .
+
+
+## Phase 157–159 release stability closure — 15 September, 17:03
+
+PR #103 merged as `415b2b10e5b22aea23581075f9ce148263a29b8d`: the approved villa source is pinned and verified at build time. Its validation run `34979187777` passed. The first Pages run `34979426423` built and uploaded successfully but failed three deployment attempts: the initial Pages/OIDC timeout was followed by duplicate `github-pages` artifacts created when the single combined job was retried.
+
+PR #104 merged as `c0a39d79164ee85f17f2e12861a8467af6c610a4` after validation `34984809003`. It follows GitHub Pages' documented build/deploy separation with `needs: build`, so retrying a failed deploy no longer re-uploads the artifact. Run `34984970083` then published Pages successfully, but the post-deploy IndexNow script failed before any submission because the separate job lacked `_site/sitemap.xml`.
+
+PR #105 merged as `e33735d63c4adf73cead25c2b917e588ffecbbfe` after validation `34985316844`. It downloads and extracts the already-validated Pages artifact before the existing notification. Deployment `34985470178` completed successfully: build, artifact upload, Pages deployment, artifact restore and one IndexNow notification all passed. This does not prove delivery, crawling or indexing by any search engine.
+
+Independent artifact checks: exactly one `github-pages` artifact; 156 sitemap URLs; contact HTML retains WhatsApp `34600703303`, phone `+34 600 703 303` and `partnership@ibizavipmove.com`. Villa hashes match the approved baseline: JPEG `920a2d479f869c385e47bbaf7cec73235da990c450283a75c0fb8d687de945dd`, AVIF `d396e7451eba1ebe43426b46621538c5d7c1567d4f144d2d576dbfcb32df624b`, WebP `985572087589410aa08ec4c332b171e58974cd2d566bcc55cc4b210a57e3cc82`. Production contact and villa pages returned HTTP content after release. No form or message was submitted.
+
+Wizard remains on canonical property `https://ibizavipmove.com/`: 156 tracked, 102 indexed, 54 not indexed, 0 pending, 0 errors and 0 warnings; no new indexing change is attributed to this release. Breakdown remains 35 crawled-not-indexed, 9 discovered-not-indexed and 10 unknown. Next: from 16 September, reassess `/destination-management-ibiza/` and `/luxury-travel-concierge-ibiza/` with new Google evidence. Other externally downloaded editorial assets remain a reproducibility risk, but should not displace a demonstrated commercial blocker.
