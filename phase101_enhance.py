@@ -1,5 +1,6 @@
 from pathlib import Path
 from urllib.request import Request, urlopen
+import hashlib
 import re
 
 ROOT = Path('_site')
@@ -27,8 +28,30 @@ SOURCES = {
     'hero-mobile.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=900&h=1250&q=72&fm=jpg',
 }
 
+FROZEN_VILLA = Path('editorial-assets/villa.jpg')
+FROZEN_VILLA_SHA256 = '920a2d479f869c385e47bbaf7cec73235da990c450283a75c0fb8d687de945dd'
+
 before = {}
 after = {}
+
+# Phase 13 predates the final performance pass and still replaces villa.jpg
+# from a mutable transform. Restore the reviewed production bytes here so the
+# final artifact is deterministic while preserving the established phase order.
+villa_target = IMG / 'villa.jpg'
+if not villa_target.exists() or not FROZEN_VILLA.exists():
+    raise SystemExit('Phase 101 expected villa source and target')
+villa_data = FROZEN_VILLA.read_bytes()
+villa_digest = hashlib.sha256(villa_data).hexdigest()
+if villa_digest != FROZEN_VILLA_SHA256:
+    raise SystemExit(f'Phase 101 frozen villa checksum mismatch: {villa_digest}')
+before['villa.jpg'] = villa_target.stat().st_size
+villa_target.write_bytes(villa_data)
+after['villa.jpg'] = len(villa_data)
+print(
+    f'Phase 101 villa.jpg: {before["villa.jpg"]:,} -> {after["villa.jpg"]:,} bytes '
+    f'(pinned {villa_digest[:12]})'
+)
+
 for name, url in SOURCES.items():
     target = IMG / name
     if not target.exists():
@@ -64,4 +87,4 @@ before_total = sum(before.values())
 after_total = sum(after.values())
 if after_total >= before_total:
     raise SystemExit('Phase 101 total image bytes did not improve')
-print(f'PASS: Phase 101 global image performance — 9 key assets reduced from {before_total:,} to {after_total:,} bytes; desktop hero kept same crop/aspect at 2000x1273')
+print(f'PASS: Phase 101 global image performance — 10 key assets reduced from {before_total:,} to {after_total:,} bytes; desktop hero kept same crop/aspect at 2000x1273')
