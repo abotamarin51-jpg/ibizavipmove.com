@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 14 September 2026, 22:51 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
+Updated: 15 September 2026, 04:47 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; exclusive website: `https://ibizavipmove.com/`.
 
 ## Scope, continuity and release safeguards
 
@@ -83,3 +83,20 @@ A subsequent native tracker sweep on the canonical Wizard property `https://ibiz
 The remaining held commercial queue is unchanged: `/destination-management-ibiza/` and `/luxury-travel-concierge-ibiza/` remain `Crawled - currently not indexed`, both last crawled 12 September and rechecked 14 September. Reassessment remains scheduled from 16 September. No URL inspection, indexing request, sitemap/IndexNow submission, email, digest/configuration action, website change or deployment was performed.
 
 This is confirmed indexation within the 156-URL tracker, not a complete Google index census and not evidence of rankings, AI visibility, traffic, enquiries or revenue. Next: wait for fresh evidence or the 16 September hold expiry before diagnosing the two remaining priority URLs.
+
+
+## Phase 156 — French Partners mobile reflow — 15 September 2026, 04:47 Europe/Madrid — PREPARED
+
+Verified base main `bbbe09d586f0f3eb42bbb4770a70ce99d954726e`; no open PR, queued/in-progress workflow or same-phase branch was found before this branch was created. The last production build is still Phase 155 run `34825054088`. Its artifact `10340480600` was downloaded and independently matched to SHA-256 `a325cda4a495b8b8b815f6ce616030bfcc007b32bcab0974addaef5ae4c0015c`.
+
+One commercial usability opportunity: `/fr/partners/` has horizontal overflow in the current artifact at 320px (scrollWidth 346) and 601px (620). Long words determine the intrinsic minimum width of the overview grid; the footer keeps three columns immediately above 600px. The candidate injects one page-local style: allow overview children to shrink/wrap up to 600px, and retain the existing stacked-footer pattern through 767px. No clipping, overflow hiding, font-size reduction, shared stylesheet or other page is changed.
+
+Frozen-output tests confirm only `fr/partners/index.html` changes; removing the style restores the original byte-for-byte. All text, links, contact numbers/messages, forms, schema, metadata, hreflang and sitemap remain unchanged. The guard rejects an unpatched page, malformed canonical and wrong language without writing; enhancement is idempotent. No existing repository test is removed or weakened.
+
+Completed offline Chromium matrix: 15 widths (320/360/375/390/414/600/601/640/767/768/900/980/981/1024/1440), before and after, 30 cases total. The candidate has scrollWidth equal to viewport in all cases; text and contact hrefs match; geometry is identical from 768px upward. Visible contact anchors accepted programmatic focus. Reviewed narrow/mobile-footer screenshots. Two initial runs hit execution timeouts; the completed persisted matrix supersedes those incomplete runs. Production CSS, images and JavaScript were loaded offline; external fonts were unavailable, so this used system font fallbacks. It is not live-browser/Safari certification, a Core Web Vitals measurement or full WCAG conformance. No contact was activated and no message/form was submitted.
+
+Current live Wizard audits of the French Partners page and sampled commercial pages show HTTP 200, self-canonicals, indexable pages and no schema errors. The latest native tracker results were read without repeating inspections; status totals have not changed since the last recorded update. The two remaining Phase 134 pages retain the 16 September reassessment hold. The enabled digest still has no legitimate exposed toggle; no email or configuration change was made. Fresh private per-URL crawl details and performance metrics are not added to this public record.
+
+Release gate: not published at this source commit. Review the complete PR diff, unchanged main and passing full CI before merge, then verify the exact deployment artifact and live page. A similar footer issue at 601px was reported previously on other language pages; those are intentionally outside this one-page change and require separate evidence. Next: finish this release gate before another improvement. This is a demonstrated local reflow fix, not measured conversion, ranking or AI visibility improvement.
+
+Primary references checked: https://www.w3.org/WAI/WCAG22/Understanding/reflow.html ; https://developer.mozilla.org/en-US/docs/Web/CSS/Reference/Properties/overflow-wrap ; https://developers.google.com/search/docs/crawling-indexing/ask-google-to-recrawl .
