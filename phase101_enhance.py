@@ -8,16 +8,16 @@ IMG = ROOT / 'assets' / 'images'
 HOME = ROOT / 'index.html'
 
 # Phase 101 keeps the exact same editorial sources and visual treatment used by
-# the mature site. Phase 157 supplies villa.jpg from the checksum-verified,
-# production-approved repository asset before this optimizer runs. The remaining
-# nine assets keep their rendered dimensions and receive a leaner JPEG encode.
+# the mature site. Phase 157 supplies villa.jpg and Phase 160 supplies
+# chauffeur.jpg from checksum-verified, production-approved repository assets
+# before this optimizer runs. The remaining eight assets keep their rendered
+# dimensions and receive a leaner JPEG encode.
 # The desktop LCP hero keeps the exact same aspect/crop but is delivered at
 # 2000x1273 instead of 2200x1400 — still above typical desktop display needs
 # while reducing global transfer cost.
 SOURCES = {
     'hero.jpg': 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2000&q=76&fm=jpg',
     'yacht.jpg': 'https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2000&q=78&fm=jpg',
-    'chauffeur.jpg': 'https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2000&q=78&fm=jpg',
     'nightlife.jpg': 'https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=1800&q=76&fm=jpg',
     'events.jpg': 'https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=1800&q=78&fm=jpg',
     'chef.jpg': 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=76&fm=jpg',
@@ -30,6 +30,8 @@ SOURCES = {
 
 FROZEN_VILLA = Path('editorial-assets/villa.jpg')
 FROZEN_VILLA_SHA256 = '920a2d479f869c385e47bbaf7cec73235da990c450283a75c0fb8d687de945dd'
+FROZEN_CHAUFFEUR = Path('editorial-assets/chauffeur.jpg')
+FROZEN_CHAUFFEUR_SHA256 = '4e286f6c4a91148c0beb248ca354beba7a3f281c95d3b746b17ef102d9649484'
 
 before = {}
 after = {}
@@ -50,6 +52,24 @@ after['villa.jpg'] = len(villa_data)
 print(
     f'Phase 101 villa.jpg: {before["villa.jpg"]:,} -> {after["villa.jpg"]:,} bytes '
     f'(pinned {villa_digest[:12]})'
+)
+
+# Restore the last reviewed production chauffeur bytes. The mutable upstream
+# transform changed pixels during an unrelated release, so this asset must not
+# drift silently in future builds.
+chauffeur_target = IMG / 'chauffeur.jpg'
+if not chauffeur_target.exists() or not FROZEN_CHAUFFEUR.exists():
+    raise SystemExit('Phase 101 expected chauffeur source and target')
+chauffeur_data = FROZEN_CHAUFFEUR.read_bytes()
+chauffeur_digest = hashlib.sha256(chauffeur_data).hexdigest()
+if chauffeur_digest != FROZEN_CHAUFFEUR_SHA256:
+    raise SystemExit(f'Phase 101 frozen chauffeur checksum mismatch: {chauffeur_digest}')
+before['chauffeur.jpg'] = chauffeur_target.stat().st_size
+chauffeur_target.write_bytes(chauffeur_data)
+after['chauffeur.jpg'] = len(chauffeur_data)
+print(
+    f'Phase 101 chauffeur.jpg: {before["chauffeur.jpg"]:,} -> {after["chauffeur.jpg"]:,} bytes '
+    f'(pinned {chauffeur_digest[:12]})'
 )
 
 for name, url in SOURCES.items():
