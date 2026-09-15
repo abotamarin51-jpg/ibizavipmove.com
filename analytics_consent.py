@@ -4,7 +4,7 @@ import shutil
 ROOT = Path('_site')
 SOURCE_ASSET = Path('analytics-consent.js')
 TARGET_ASSET = ROOT / 'assets' / 'analytics-consent.js'
-SCRIPT_TAG = '<script src="/assets/analytics-consent.js?v=1"></script>'
+SCRIPT_TAG = '<script defer src="/assets/analytics-consent.js?v=1"></script>'
 UPDATED = '15 September 2026'
 
 if not ROOT.exists():
@@ -85,9 +85,7 @@ if cookies_path.is_file() and privacy_path.is_file():
     # third-party section if the original prose was no longer an exact match.
     if 'Google Analytics 4 (GA4)' not in cookies:
         marker = 'Third-party services</h2>'
-        disclosure = (
-            '<h2>Analytics cookies</h2><p>' + new_current + '</p>'
-        )
+        disclosure = '<h2>Analytics cookies</h2><p>' + new_current + '</p>'
         idx = cookies.find(marker)
         if idx == -1:
             raise SystemExit('Could not locate the cookie policy disclosure area')
