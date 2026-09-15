@@ -125,6 +125,7 @@ on:
       - "brand-logo.svg"
       - "brand-mark.svg"
       - "favicon.svg"
+      - "editorial-assets/**"
       - ".github/workflows/deploy.yml"
   workflow_dispatch:
 
