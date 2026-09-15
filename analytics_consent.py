@@ -1,12 +1,20 @@
 from pathlib import Path
 import re
+import shutil
 
 ROOT = Path('_site')
+SOURCE_ASSET = Path('analytics-consent.js')
+TARGET_ASSET = ROOT / 'assets' / 'analytics-consent.js'
 SCRIPT_TAG = '<script src="/assets/analytics-consent.js?v=1"></script>'
 UPDATED = '15 September 2026'
 
 if not ROOT.exists():
     raise SystemExit('_site does not exist; build the site first')
+if not SOURCE_ASSET.is_file():
+    raise SystemExit('analytics-consent.js is missing from the repository')
+
+TARGET_ASSET.parent.mkdir(parents=True, exist_ok=True)
+shutil.copyfile(SOURCE_ASSET, TARGET_ASSET)
 
 html_files = list(ROOT.rglob('*.html'))
 if not html_files:
@@ -80,6 +88,10 @@ for path in html_files:
     if SCRIPT_TAG not in text:
         raise SystemExit(f'Analytics consent script missing from {path}')
 
+if not TARGET_ASSET.is_file() or TARGET_ASSET.stat().st_size == 0:
+    raise SystemExit('Analytics consent JavaScript asset was not copied')
+if 'G-C21ZKM1V3K' not in TARGET_ASSET.read_text(encoding='utf-8'):
+    raise SystemExit('Analytics consent asset is missing the expected GA4 measurement ID')
 if 'Google Analytics 4 (GA4)' not in cookies_path.read_text(encoding='utf-8'):
     raise SystemExit('Cookie policy does not describe GA4')
 if '<h2>Website analytics</h2>' not in privacy_path.read_text(encoding='utf-8'):
