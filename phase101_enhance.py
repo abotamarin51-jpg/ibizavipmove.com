@@ -7,13 +7,14 @@ IMG = ROOT / 'assets' / 'images'
 HOME = ROOT / 'index.html'
 
 # Phase 101 keeps the exact same editorial sources and visual treatment used by
-# the mature site. Nine assets keep their rendered dimensions and receive a
-# leaner JPEG encode. The desktop LCP hero keeps the exact same aspect/crop but
-# is delivered at 2000x1273 instead of 2200x1400 — still above typical desktop
-# display needs while reducing global transfer cost.
+# the mature site. Phase 157 supplies villa.jpg from the checksum-verified,
+# production-approved repository asset before this optimizer runs. The remaining
+# nine assets keep their rendered dimensions and receive a leaner JPEG encode.
+# The desktop LCP hero keeps the exact same aspect/crop but is delivered at
+# 2000x1273 instead of 2200x1400 — still above typical desktop display needs
+# while reducing global transfer cost.
 SOURCES = {
     'hero.jpg': 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2000&q=76&fm=jpg',
-    'villa.jpg': 'https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2000&q=76&fm=jpg',
     'yacht.jpg': 'https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2000&q=78&fm=jpg',
     'chauffeur.jpg': 'https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2000&q=78&fm=jpg',
     'nightlife.jpg': 'https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=1800&q=76&fm=jpg',
@@ -63,4 +64,4 @@ before_total = sum(before.values())
 after_total = sum(after.values())
 if after_total >= before_total:
     raise SystemExit('Phase 101 total image bytes did not improve')
-print(f'PASS: Phase 101 global image performance — 10 key assets reduced from {before_total:,} to {after_total:,} bytes; desktop hero kept same crop/aspect at 2000x1273')
+print(f'PASS: Phase 101 global image performance — 9 key assets reduced from {before_total:,} to {after_total:,} bytes; desktop hero kept same crop/aspect at 2000x1273')

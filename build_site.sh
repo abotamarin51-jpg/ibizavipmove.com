@@ -12,8 +12,10 @@ cp brand-logo.jpg _site/assets/brand-logo.jpg
 cp brand-logo.svg _site/assets/brand-logo.svg
 cp brand-mark.svg _site/assets/brand-mark.svg
 
-# Curated, high-resolution editorial imagery. The source set is fetched on
-# every build so an older live asset cannot silently override a new release.
+# Curated editorial imagery. Phase 157 pins the production-approved villa JPEG
+# inside the repository so villa builds no longer depend on a mutable upstream
+# transform. The remaining legacy assets are still fetched and will be frozen
+# progressively behind the same checksum gate.
 fetch_image() {
   name="$1"
   source="$2"
@@ -23,7 +25,9 @@ fetch_image() {
 }
 
 fetch_image hero 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2400&q=90&fm=jpg'
-fetch_image villa 'https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2400&q=90&fm=jpg'
+VILLA_SHA256='920a2d479f869c385e47bbaf7cec73235da990c450283a75c0fb8d687de945dd'
+printf '%s  %s\n' "$VILLA_SHA256" editorial-assets/villa.jpg | sha256sum -c -
+cp editorial-assets/villa.jpg _site/assets/images/villa.jpg
 fetch_image yacht 'https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2400&q=90&fm=jpg'
 fetch_image aviation 'https://images.unsplash.com/photo-1773554644657-2c9a9ecc95f9?auto=format&fit=crop&w=2400&q=90&fm=jpg'
 fetch_image chauffeur 'https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2400&q=90&fm=jpg'
