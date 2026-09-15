@@ -264,6 +264,18 @@ jobs:
       - name: Checkout for IndexNow notification
         uses: actions/checkout@v4
 
+      - name: Download deployed website artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ${{ runner.temp }}/github-pages
+
+      - name: Restore sitemap for IndexNow notification
+        run: |
+          mkdir -p _site
+          tar -xf "$RUNNER_TEMP/github-pages/artifact.tar" -C _site
+          test -s _site/sitemap.xml
+
       - name: Notify IndexNow
         if: success()
         run: python3 submit_indexnow.py
