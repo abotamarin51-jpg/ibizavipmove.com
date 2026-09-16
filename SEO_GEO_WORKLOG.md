@@ -149,3 +149,14 @@ The existing Phase 164 live audit remains the relevant technical evidence: HTTP 
 Wizard totals remain 108 indexed of 156 (69.23%) and 48 not indexed: 32 crawled-not-indexed, 4 discovered-not-indexed and 12 unknown. Health is 82, with 0 pending inspections, 0 errors, 0 warnings and no recorded losses. The canonical sitemap remains accepted with 156 submitted URLs and no errors or warnings; its `indexed=0` API field is not treated as coverage. The exact GA4 property `Ibiza VIP Move - Web` remains visible but unlinked to this Wizard site, so Analytics reports still return `no_property`; no other-brand property was touched.
 
 Decision: investigated and validated with no website change. Hold this URL until the next native tracker change or at least 18 September, allowing processing time after the 15 September crawl. Reopen content work only if Google records a new crawl/status change or a specific technical/content cause appears; do not rewrite hourly to chase the exclusion label.
+
+
+## Phase 168 Arabic private-chef discovery transition — 16 September, 02:51 CEST
+
+The canonical Wizard tracker completed a new native cycle at 00:51 UTC. Totals remain 108 indexed of 156 (69.23%) and 48 not indexed, with 0 pending inspections, 0 errors, 0 warnings and health 82. The non-indexed distribution changed from 32 crawled / 4 discovered / 12 unknown to 32 crawled / 5 discovered / 11 unknown. The row now carrying the new discovery state is `/ar/private-chef-staffing-ibiza/`, checked at 00:44 UTC: `Discovered - currently not indexed`, no crawl timestamp, neutral verdict. This is evidence that Google recognises the URL, not evidence of crawling or index inclusion; no manual inspection or indexing request was sent.
+
+A single live on-page audit of that Arabic commercial page returned HTTP 200, indexable, self-canonical, one H1, 395 words, six hreflang annotations, 28 internal links, complete alt text, valid structured data and no reported issues. WhatsApp, telephone and email routes were not exercised and no form or message was submitted. The audit found no robots, noindex, canonical, redirect, HTTP, schema or rendering blocker that would justify a website change.
+
+GitHub remained clear before writing: main `3aa101c4e60cb9eaff528e539a1d206c4137c205`, no open PR, no queued or in-progress workflow, and the last web deployment `35027172004` remains successful. The exact GA4 property `Ibiza VIP Move - Web` is still visible but unlinked to the canonical Wizard site; Analytics overview remains empty and no other-brand property was touched.
+
+Decision: indexing progression recorded with no website change. Leave the page for Google's next crawl and retain the priority gate on `/destination-management-ibiza/` and `/luxury-travel-concierge-ibiza/`; do not repeat inspections or rewrite content solely because discovery has not yet become indexing.
