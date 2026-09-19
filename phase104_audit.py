@@ -147,6 +147,8 @@ for phrase in (
 report_articles = [n for n in schemas(report_html) if n.get('@type') == 'Article']
 if len(report_articles) != 1 or (report_articles[0].get('author') or {}).get('@id') != FOUNDER:
     raise SystemExit('Phase 104 report Article author mismatch')
+if report_articles[0].get('image') != BASE + '/assets/images/villa.jpg':
+    raise SystemExit('Phase 104 report Article image mismatch')
 
 # Existing canonical Person entities must resolve to the dedicated founder profile.
 person_refs = 0
