@@ -160,3 +160,12 @@ A single live on-page audit of that Arabic commercial page returned HTTP 200, in
 GitHub remained clear before writing: main `3aa101c4e60cb9eaff528e539a1d206c4137c205`, no open PR, no queued or in-progress workflow, and the last web deployment `35027172004` remains successful. The exact GA4 property `Ibiza VIP Move - Web` is still visible but unlinked to the canonical Wizard site; Analytics overview remains empty and no other-brand property was touched.
 
 Decision: indexing progression recorded with no website change. Leave the page for Google's next crawl and retain the priority gate on `/destination-management-ibiza/` and `/luxury-travel-concierge-ibiza/`; do not repeat inspections or rewrite content solely because discovery has not yet become indexing.
+
+
+## Phase 169 operations-report Article image — 19 September, 23:54 CEST
+
+The canonical GSC Wizard property `https://ibizavipmove.com/` completed a native tracker cycle at 23:50 CEST with 114 of 156 URLs indexed (73.08%), up from 113. The newly indexed URL is `/fr/conciergerie-sur-mesure-ibiza/`; 42 URLs remain not indexed: 28 crawled-not-indexed, 4 discovered-not-indexed and 10 unknown. There are 0 pending inspections, 0 tracker errors, 0 warnings and no recorded indexation losses. No repeat inspection or indexing request was sent.
+
+The same saved cycle moved `/ibiza-luxury-operations-report-2026/` from unknown to `Discovered - currently not indexed`. A live on-page audit returned HTTP 200, self-canonical, indexable, one H1, 734 words, 37 internal links and one medium structured-data issue: the existing `Article` node omitted `image`. The page already uses `/assets/images/villa.jpg` as its visible hero and Open Graph/Twitter image. Its methodology visibly limits the report to operational observations rather than market-wide statistics, and Search Console has no impressions or clicks for the page through the settled 16 September data. Discovery is not crawling or indexation, and no commercial impact is claimed.
+
+PR #118 prepares a minimal correction from current main `e221e33506983e257903de13c3e4229783fa7a7a`: reuse the existing hero URL as `Article.image` and add an exact regression assertion in `phase104_audit.py`. No visible copy, URL, canonical, hreflang, sitemap submission, contact route, tracking, service claim, price or policy is changed. The PR must remain unmerged until the full build/validation checks pass and the final generated artifact is reviewed. Production is unchanged at this checkpoint.
