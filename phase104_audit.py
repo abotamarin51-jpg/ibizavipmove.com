@@ -133,6 +133,9 @@ for path in CASE_PATHS:
         raise SystemExit(f'Phase 104 Article author/publisher mismatch: {path}')
     if article.get('datePublished') != '2026-09-11T07:30:00+02:00':
         raise SystemExit(f'Phase 104 Article publication date mismatch: {path}')
+    og_images = re.findall(r'<meta property=["\']og:image["\'] content=["\']([^"\']+)["\']>', html, re.I)
+    if len(og_images) != 1 or article.get('image') != og_images[0]:
+        raise SystemExit(f'Phase 104 Article image must match the unique Open Graph image: {path}')
 
 # Report must be explicit about methodology and avoid pretending to be market-wide research.
 report_html = page('/ibiza-luxury-operations-report-2026/').read_text(encoding='utf-8')

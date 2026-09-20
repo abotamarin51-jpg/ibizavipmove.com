@@ -189,6 +189,7 @@ def article_schema(data):
             {
                 '@type': 'Article', '@id': url + '#article', 'headline': re.sub('<.*?>','',data['h1']).replace('<br>',' '),
                 'description': data['description'], 'url': url, 'datePublished': PUBLISHED, 'dateModified': PUBLISHED,
+                'image': BASE + '/assets/images/' + data['hero'],
                 'author': {'@id': FOUNDER}, 'publisher': {'@id': ORG},
                 'mainEntityOfPage': {'@id': url + '#webpage'},
                 'about': [{'@type':'Thing','name':'Luxury private-client operations in Ibiza'}],
