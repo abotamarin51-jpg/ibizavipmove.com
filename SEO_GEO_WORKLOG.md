@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 15 September 2026, 17:03 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; website: `https://ibizavipmove.com/`.
+Updated: 22 September 2026, 12:50 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; website: `https://ibizavipmove.com/`.
 
 ## Scope and safeguards
 
@@ -178,3 +178,14 @@ The canonical Wizard tracker on `https://ibizavipmove.com/` reported 116 of 156 
 Phase 170 adds each case study's already visible and Open Graph hero URL to its Article `image` property. The audit now requires every case-study Article image to equal the page's unique Open Graph image. No page copy, claims, URL, title, canonical, hreflang, sitemap, contact route, tracking or service configuration changes. This is a structured-data consistency correction; it does not guarantee indexing, rankings, AI citations or leads.
 
 At the write gate, main was `c5446345a35ed1ec420e06969bfaf4a2512dce69`, with no open pull request or in-progress workflow. Next: run the repository validation and deployment gates, verify the affected pages in production, then allow Google's normal processing time without repeated inspection or sitemap resubmission.
+
+## Phase 171 production reconciliation and monitoring baseline — 22 September, 12:50 CEST
+
+Phase 170 is now closed operationally. PR #119 merged as `8c653f59876987ddbdd6ddea6c179a0b700cae87`; deployment run `35487736063` completed successfully on 20 September at 05:54 CEST. A production audit of all five affected case-study articles returned HTTP 200, indexable pages, self-canonicals, valid Article structured data with no schema issues, complete image alt coverage and no critical, high or medium audit findings. The nine remaining findings are low-severity title/meta-length notices only. This verifies the published technical correction; it does not prove rankings, AI citations, traffic or leads.
+
+The canonical GSC Wizard tracker `b45661cd-b57b-4a32-8ae5-8bab1cac107b` on `https://ibizavipmove.com/` now records 118 of 156 tracked URLs as submitted and indexed, 24 crawled-not-indexed, 5 discovered-not-indexed and 9 unknown, with 0 pending inspections, errors or warnings. The latest native check at 11:48 CEST moved `/founder/` from discovered to unknown; it has never been recorded as indexed. Its live audit returned HTTP 200, indexable, self-canonical, 415 words, 36 internal links, valid ProfilePage/Person structured data and one low-severity 172-character meta-description notice. No rewrite, sitemap resubmission or manual indexing request was made because no technical blocker was found.
+
+GA4 remains linked only to `Ibiza VIP Move - Web` (`properties/554509312`). Settled data through 19 September contains 2 `whatsapp_click` events from 1 user, while the key-event list still contains only `purchase`; a click is not evidence of a message, booking or client. The tracker still reports `emailDigestEnabled=true`; no legitimate control to change only that setting is exposed by the available Wizard actions, so it remains unchanged and no notification was sent.
+
+Decision: documentation-only reconciliation from current main. No website files, visible content, URLs, navigation, contact routes, tracking, sitemap, service claims, prices or policies change. Next: merge only after the repository check passes; then continue native tracker monitoring without repeated inspections or speculative rewrites, and verify whether `whatsapp_click` becomes a key event.
+
