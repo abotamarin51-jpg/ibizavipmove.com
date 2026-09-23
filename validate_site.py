@@ -80,6 +80,23 @@ if NEW_PHONE not in combined or NEW_WA not in combined:
 if '/assets/analytics-consent.js?v=2' not in combined:
     errors.append('GA4 consent layer is not present in generated pages')
 
+analytics_asset = ROOT / 'assets' / 'analytics-consent.js'
+premium_asset = ROOT / 'assets' / 'premium.js'
+if not analytics_asset.is_file():
+    errors.append('GA4 analytics consent asset is missing')
+else:
+    analytics_js = analytics_asset.read_text(encoding='utf-8')
+    if "window.gtag('event', eventName, params);" not in analytics_js:
+        errors.append('GA4 custom event forwarding call is missing')
+    if "\\n    params.transport_type" in analytics_js:
+        errors.append('GA4 custom event forwarding contains an escaped-newline regression')
+if not premium_asset.is_file():
+    errors.append('premium.js is missing')
+else:
+    premium_js = premium_asset.read_text(encoding='utf-8')
+    if "a[href^=\"tel:\"]" not in premium_js or "ivmTrack('phone_click',common)" not in premium_js:
+        errors.append('phone_click tracking hooks are missing')
+
 sitemap = ROOT / 'sitemap.xml'
 robots = ROOT / 'robots.txt'
 if not sitemap.is_file() or 'https://ibizavipmove.com/' not in sitemap.read_text(encoding='utf-8'):
