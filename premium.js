@@ -124,7 +124,7 @@ function ivmTrackPhone(a){
   // iOS may emit pointerdown + click for a tel: link. Count the interaction once.
   if(now-ivmLastPhoneTrack<1200)return;
   ivmLastPhoneTrack=now;
-  const common={link_text:(a.textContent||'').replace(/\\s+/g,' ').trim().slice(0,80),cta_placement:ivmPlacement(a)};
+  const common={link_text:(a.textContent||'').replace(/\s+/g,' ').trim().slice(0,80),cta_placement:ivmPlacement(a)};
   ivmTrack('phone_click',common);
 }
 
