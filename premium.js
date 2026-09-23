@@ -118,6 +118,23 @@ document.querySelectorAll('a[href^="https://wa.me/34600703303"]').forEach(a=>{
   }catch(_){}
 });
 
+let ivmLastPhoneTrack=0;
+function ivmTrackPhone(a){
+  const now=Date.now();
+  // iOS may emit pointerdown + click for a tel: link. Count the interaction once.
+  if(now-ivmLastPhoneTrack<1200)return;
+  ivmLastPhoneTrack=now;
+  const common={link_text:(a.textContent||'').replace(/\\s+/g,' ').trim().slice(0,80),cta_placement:ivmPlacement(a)};
+  ivmTrack('phone_click',common);
+}
+
+// Track tel: interactions before Safari opens the native call sheet. This avoids
+// losing the analytics event during the immediate handoff away from the page.
+document.addEventListener('pointerdown',e=>{
+  const a=e.target.closest('a[href^="tel:"]');
+  if(a)ivmTrackPhone(a);
+},{capture:true,passive:true});
+
 document.addEventListener('click',e=>{
   const a=e.target.closest('a');
   if(!a)return;
@@ -126,7 +143,7 @@ document.addEventListener('click',e=>{
   if(href.startsWith('https://wa.me/')){
     ivmTrack('whatsapp_click',{...common,service_context:ivmContextLabel()});
   }else if(href.startsWith('tel:')){
-    ivmTrack('phone_click',common);
+    ivmTrackPhone(a);
   }else if(href.startsWith('mailto:')){
     ivmTrack('email_click',common);
   }else if(href==='/contact/'||href==='https://ibizavipmove.com/contact/'){
