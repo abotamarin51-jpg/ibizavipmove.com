@@ -4,7 +4,7 @@ import shutil
 ROOT = Path('_site')
 SOURCE_ASSET = Path('analytics-consent.js')
 TARGET_ASSET = ROOT / 'assets' / 'analytics-consent.js'
-SCRIPT_TAG = '<script defer src="/assets/analytics-consent.js?v=1"></script>'
+SCRIPT_TAG = '<script defer src="/assets/analytics-consent.js?v=2"></script>'
 UPDATED = '15 September 2026'
 
 if not ROOT.exists():
