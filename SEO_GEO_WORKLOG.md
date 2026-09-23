@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 23 September 2026, 11:57 Europe/Madrid.
+Updated: 23 September 2026, 12:05 Europe/Madrid.
 
 ## Scope and safeguards
 
@@ -191,7 +191,7 @@ Decision: documentation-only reconciliation from current main. No website files,
 
 
 
-## Phase 172 German event-intent alignment — 23 September 2026, 11:57 CEST — PREPARED
+## Phase 172 German event-intent alignment — 23 September 2026, 12:05 CEST — PUBLISHED
 
 At the write gate, main was `b7c096d8df97e9c672dbc9a50cf5b99ab7da5e5b`, with no open pull request and no queued or in-progress workflow after deployment run `35845374505` completed successfully. Work remains exclusive to Ibiza VIP Move.
 
@@ -203,4 +203,4 @@ The prepared Phase 172 change shortens the title to `Eventkoordination Ibiza | P
 
 The enhancer and audit were run against the exact production Pages artifact from deployment `35845374505` / artifact `10742863703`. The candidate preserved canonical, indexability, six head hreflang alternates, WhatsApp, telephone and partnership email, retained all 156 sitemap URLs, changed only `de/private-events-ibiza/index.html` plus its sitemap lastmod, and was idempotent on a second run. No message, form, indexing request, sitemap resubmission, Analytics setting, price, policy or other-language page was changed.
 
-State: PREPARED for CI/PR review. Do not call it published until CI passes, the final diff is reviewed against current main, deployment succeeds, and production is re-audited. Commercial impact remains unmeasured.
+Release: PR #123 passed validation run `35846143683` against the then-current main `7779311fd65a92520757bc6057351b0595633396`, was merged as `9507cd747faf0911762e1872b1af40262cfbb8a7`, and deployment run `35846449411` completed successfully. Its single Pages artifact is `10744070771` with SHA-256 digest `19f06157de0be4d6c1c83f39e4af8dad56b0e3562953c658c2e2639e20321a01`, independently matched after download. The artifact contains the 57-character title, 152-character description, one H1, visible `Veranstaltungskoordination` and `Firmenevents`, the single `/de/partners/` audience pathway, six hreflang links, all 156 sitemap URLs, the 2026-09-23 target lastmod and the approved WhatsApp, telephone and partnership-email routes.\n\nPost-deploy Wizard audit returned HTTP 200, no redirect, self-canonical, indexable, one H1, six hreflang annotations, 427 words, 29 internal links, complete image alt coverage, structured data without schema issues and zero audit findings. No message, form or manual indexing request was sent. This verifies the publication and technical state only; ranking, AI visibility, clicks, contacts, bookings and revenue impact remain unmeasured. Next: allow settled Search Console data before judging the German change, and prioritize another existing German page only when query/page evidence shows a distinct opportunity.
