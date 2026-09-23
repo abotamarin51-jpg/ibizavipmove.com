@@ -1,6 +1,6 @@
 # Ibiza VIP Move — SEO / GEO worklog
 
-Updated: 22 September 2026, 12:50 Europe/Madrid. Exclusive repository: `abotamarin51-jpg/ibizavipmove.com`; website: `https://ibizavipmove.com/`.
+Updated: 23 September 2026, 11:57 Europe/Madrid.
 
 ## Scope and safeguards
 
@@ -189,3 +189,18 @@ GA4 remains linked only to `Ibiza VIP Move - Web` (`properties/554509312`). Sett
 
 Decision: documentation-only reconciliation from current main. No website files, visible content, URLs, navigation, contact routes, tracking, sitemap, service claims, prices or policies change. Next: merge only after the repository check passes; then continue native tracker monitoring without repeated inspections or speculative rewrites, and verify whether `whatsapp_click` becomes a key event.
 
+
+
+## Phase 172 German event-intent alignment — 23 September 2026, 11:57 CEST — PREPARED
+
+At the write gate, main was `b7c096d8df97e9c672dbc9a50cf5b99ab7da5e5b`, with no open pull request and no queued or in-progress workflow after deployment run `35845374505` completed successfully. Work remains exclusive to Ibiza VIP Move.
+
+Fresh Search Console evidence through the settled 20 September window shows Germany with 155 impressions and 1 click. The existing German commercial URL `/de/private-events-ibiza/` carries 124 impressions and 0 clicks. Page-filtered queries include `event koordination ibiza` (16 impressions, average position 24.38), `eventagentur ibiza` (22, 41.05), `veranstaltungs koordination ibiza` (6, 17.0) and `firmenevent ibiza` (12, 67.58). These are observations, not guarantees of ranking lift.
+
+A live Wizard audit returned HTTP 200, self-canonical, indexable, one H1, 407 words, 28 internal links, six hreflang annotations, complete image alt coverage and valid structured data. The only issue was a low-severity 61-character title notice. The opportunity is therefore search-intent clarity on an existing page, not a technical indexation repair and not a new URL.
+
+The prepared Phase 172 change shortens the title to `Eventkoordination Ibiza | Private Events | Ibiza VIP Move`, keeps the description under 160 characters, adds natural visible `Veranstaltungskoordination` and `Firmenevents` wording, and adds one German Partners pathway for Eventagenturen/Travel Advisors/PAs. `Eventagenturen` is explicitly an audience term; Ibiza VIP Move is not presented as an event agency. WebPage/Service/Breadcrumb structured data is kept consistent and only this URL receives truthful sitemap `lastmod=2026-09-23`.
+
+The enhancer and audit were run against the exact production Pages artifact from deployment `35845374505` / artifact `10742863703`. The candidate preserved canonical, indexability, six head hreflang alternates, WhatsApp, telephone and partnership email, retained all 156 sitemap URLs, changed only `de/private-events-ibiza/index.html` plus its sitemap lastmod, and was idempotent on a second run. No message, form, indexing request, sitemap resubmission, Analytics setting, price, policy or other-language page was changed.
+
+State: PREPARED for CI/PR review. Do not call it published until CI passes, the final diff is reviewed against current main, deployment succeeds, and production is re-audited. Commercial impact remains unmeasured.
