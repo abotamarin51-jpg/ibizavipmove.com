@@ -98,7 +98,9 @@
     const params = { ...detail };
     delete params.event;
     delete params.conversion_type;
-    // Use Beacon for conversion events so phone/app handoffs do not cancel the hit.\n    params.transport_type = params.transport_type || 'beacon';\n    window.gtag('event', eventName, params);
+    // Use Beacon for conversion events so phone/app handoffs do not cancel the hit.
+    params.transport_type = params.transport_type || 'beacon';
+    window.gtag('event', eventName, params);
   }
 
   window.addEventListener('ivm:conversion', (event) => sendConversion(event.detail));
