@@ -12,7 +12,7 @@ OLD_WA = 'https://wa.me/34613756211'
 NEW_PHONE_DISPLAY = '+34 600 703 303'
 NEW_PHONE_TEL = '+34600703303'
 NEW_WA = 'https://wa.me/34600703303'
-ASSET_VERSION = '8'
+ASSET_VERSION = '9'
 BASE = 'https://ibizavipmove.com'
 
 base_tags = '''<link rel="icon" href="/assets/brand-mark.svg" type="image/svg+xml"><link rel="apple-touch-icon" href="/assets/brand-mark.svg"><meta name="theme-color" content="#090e13"><meta property="og:site_name" content="Ibiza VIP Move"><meta property="og:locale" content="en_GB">'''

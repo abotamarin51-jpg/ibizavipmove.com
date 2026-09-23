@@ -77,7 +77,7 @@ for canonical, files in canonicals.items():
 combined = '\n'.join(p.read_text(encoding='utf-8') for p in pages)
 if NEW_PHONE not in combined or NEW_WA not in combined:
     errors.append('new phone/WhatsApp details are not present in generated pages')
-if '/assets/analytics-consent.js?v=1' not in combined:
+if '/assets/analytics-consent.js?v=2' not in combined:
     errors.append('GA4 consent layer is not present in generated pages')
 
 sitemap = ROOT / 'sitemap.xml'
