@@ -27,6 +27,7 @@ on:
       - "premium.css"
       - "luxury-overrides.css"
       - "premium.js"
+      - "tests/phone-activation.cjs"
       - "brand-logo.jpg"
       - "brand-logo.svg"
       - "brand-mark.svg"
@@ -44,6 +45,10 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+      - name: Test source contact activation without network calls
+        run: |
+          node --check premium.js
+          node tests/phone-activation.cjs premium.js
       - name: Build and validate website without deploying
         run: |
           bash build_site.sh
@@ -140,6 +145,10 @@ jobs:
           python3 phase71_audit.py
           python3 phase72_audit.py
           python3 phase67_final_audit.py
+      - name: Test generated contact activation without network calls
+        run: |
+          node --check _site/assets/premium.js
+          node tests/phone-activation.cjs _site/assets/premium.js
       - name: Upload validated preview artifact
         uses: actions/upload-artifact@v4
         with:
