@@ -112,4 +112,32 @@ if n != 1:
     raise SystemExit(f'Phase 172 sitemap target replacement count: {n}')
 SITEMAP.write_text(sitemap, encoding='utf-8')
 
+# Final cache-key handoff. Several late multilingual/contact enhancement phases
+# intentionally regenerate HTML after postprocess_site.py and can restore older
+# premium.js query versions. The JavaScript file is one shared asset, so use the
+# canonical ASSET_VERSION for every final HTML reference before release.
+config = Path('postprocess_site.py').read_text(encoding='utf-8')
+version_match = re.search(r"^ASSET_VERSION\\s*=\\s*['\\\"]([0-9]+)['\\\"]\\s*$", config, re.M)
+if not version_match:
+    raise SystemExit('Phase 172 could not read ASSET_VERSION from postprocess_site.py')
+asset_version = version_match.group(1)
+premium_ref = re.compile(r'(/assets/premium\\.js\\?v=)\\d+')
+ref_count = 0
+changed_count = 0
+for html_path in ROOT.rglob('*.html'):
+    html = html_path.read_text(encoding='utf-8')
+    updated, count = premium_ref.subn(rf'\\g<1>{asset_version}', html)
+    ref_count += count
+    if updated != html:
+        html_path.write_text(updated, encoding='utf-8')
+        changed_count += 1
+if ref_count == 0:
+    raise SystemExit('Phase 172 found no versioned premium.js references to verify')
+for html_path in ROOT.rglob('*.html'):
+    html = html_path.read_text(encoding='utf-8')
+    bad = [v for v in re.findall(r'/assets/premium\\.js\\?v=([0-9]+)', html) if v != asset_version]
+    if bad:
+        raise SystemExit(f'Phase 172 premium.js cache-version mismatch: {html_path}')
+
+print(f'PASS: final premium.js cache key v={asset_version} verified on {ref_count} references; {changed_count} HTML files updated')
 print('PASS: Phase 172 German private-events intent aligned to verified Eventkoordination/Veranstaltungskoordination demand')
