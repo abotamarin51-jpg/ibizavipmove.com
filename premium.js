@@ -117,6 +117,53 @@ document.querySelectorAll('a[href^="https://wa.me/34600703303"]').forEach(a=>{
     if(!u.searchParams.get('text'))a.href=WHATSAPP+'?text='+encodeURIComponent(ivmWhatsAppMessage());
   }catch(_){}
 });
+ 
+// Phase 174 — one recognizable WhatsApp access pattern across desktop and mobile.
+// Reuse the already-approved on-page destination and contextual message; no widget
+// provider, popup, new tracking destination or external dependency is introduced.
+const IVM_WHATSAPP_ICON='<svg class="ivm-whatsapp-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M21 11.5a8.5 8.5 0 0 1-12.5 7.5L3 20.5l1.5-5.3A8.5 8.5 0 1 1 21 11.5Z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/><path d="M8 7.5c.4-.4.8-.3 1 .1l1.1 2.1c.2.4.1.7-.2 1l-.8.8c.9 1.8 2.4 3.3 4.2 4.2l.8-.8c.3-.3.6-.4 1-.2l2.1 1.1c.4.2.5.6.1 1-.7.7-1.7 1-2.6.8-4.5-.8-8-4.3-8.8-8.8-.2-.9.1-1.9.8-2.6Z" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+function ivmEnsureWhatsAppAccess(){
+  const mobileBar=document.querySelector('.mobile-bar');
+  const mobileWhatsApp=mobileBar?.querySelector('a[href^="https://wa.me/34600703303"]');
+  if(!mobileWhatsApp)return;
+
+  if(!mobileWhatsApp.querySelector('.ivm-whatsapp-icon')){
+    mobileWhatsApp.insertAdjacentHTML('afterbegin',IVM_WHATSAPP_ICON);
+  }
+
+  if(!document.querySelector('.ivm-whatsapp-float')){
+    const float=document.createElement('a');
+    float.className='ivm-whatsapp-float';
+    float.href=mobileWhatsApp.href;
+    float.setAttribute('aria-label','WhatsApp Concierge');
+    float.innerHTML=IVM_WHATSAPP_ICON+'<span>WhatsApp Concierge</span>';
+    document.body.appendChild(float);
+  }
+}
+
+function ivmSyncContactAccess(){
+  const consentOpen=Boolean(document.querySelector('.ivm-consent:not([hidden])'));
+  const active=document.activeElement;
+  const editing=Boolean(active?.matches?.('input,textarea,select,[contenteditable="true"]'));
+  const menuOpen=document.body.classList.contains('menu-open');
+  document.body.classList.toggle('ivm-contact-access-hidden',consentOpen||editing||menuOpen);
+}
+
+ivmEnsureWhatsAppAccess();
+ivmSyncContactAccess();
+document.addEventListener('focusin',ivmSyncContactAccess);
+document.addEventListener('focusout',()=>requestAnimationFrame(ivmSyncContactAccess));
+
+if('MutationObserver' in window){
+  const ivmContactObserver=new MutationObserver(ivmSyncContactAccess);
+  ivmContactObserver.observe(document.body,{
+    subtree:true,
+    childList:true,
+    attributes:true,
+    attributeFilter:['hidden','class']
+  });
+}
 
 let ivmLastPhoneTrack=0;
 function ivmTrackPhone(a){

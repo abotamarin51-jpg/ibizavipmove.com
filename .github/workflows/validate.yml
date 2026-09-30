@@ -28,6 +28,7 @@ on:
       - "luxury-overrides.css"
       - "premium.js"
       - "tests/phone-activation.cjs"
+      - "tests/phase174_browser_check.py"
       - "brand-logo.jpg"
       - "brand-logo.svg"
       - "brand-mark.svg"
@@ -145,10 +146,12 @@ jobs:
           python3 phase71_audit.py
           python3 phase72_audit.py
           python3 phase67_final_audit.py
+          python3 phase174_whatsapp_access.py
       - name: Test generated contact activation without network calls
         run: |
           node --check _site/assets/premium.js
           node tests/phone-activation.cjs _site/assets/premium.js
+          python3 tests/phase174_browser_check.py
       - name: Upload validated preview artifact
         uses: actions/upload-artifact@v4
         with:
