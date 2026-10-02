@@ -25,7 +25,7 @@ def enhance(root: Path = ROOT) -> None:
     if '<meta name="robots" content="index,follow,max-image-preview:large">' not in text:
         raise SystemExit('Phase 175 indexability guard failed')
 
-    if EVENT_PATH not in text:
+    if LINK not in text:
         marker = re.compile(
             r'(<p class="ivm-concierge-continuity">Mehrere Services als einen Aufenthalt koordinieren\?'
             r'.*?<a class="text-link" href="/de/privater-concierge-ibiza/">Privaten Concierge Ibiza ansehen →</a></p>)',
