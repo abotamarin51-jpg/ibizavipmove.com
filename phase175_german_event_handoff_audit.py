@@ -4,6 +4,12 @@ import re
 ROOT = Path('_site')
 CANONICAL = 'https://ibizavipmove.com/de/privatkoch-villa-staff-ibiza/'
 EVENT_CANONICAL = 'https://ibizavipmove.com/de/private-events-ibiza/'
+HANDOFF = (
+    '<p class="ivm-concierge-continuity">'
+    'Eigenständige private Veranstaltungen oder Firmenevents koordinieren? '
+    '<a class="text-link" href="/de/private-events-ibiza/">Eventkoordination Ibiza ansehen →</a>'
+    '</p>'
+)
 
 def run(root: Path = ROOT) -> None:
     target = (root / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html').read_text(encoding='utf-8')
@@ -15,7 +21,7 @@ def run(root: Path = ROOT) -> None:
         'staff page self canonical': f'<link rel="canonical" href="{CANONICAL}">' in target,
         'staff page indexable': '<meta name="robots" content="index,follow,max-image-preview:large">' in target,
         'staff page one H1': target.count('<h1>') == 1,
-        'event handoff exactly once': target.count('href="/de/private-events-ibiza/"') == 1,
+        'event handoff exactly once': target.count(HANDOFF) == 1,
         'event handoff clearly scoped': 'Eigenständige private Veranstaltungen oder Firmenevents koordinieren?' in target,
         'event handoff anchor descriptive': 'Eventkoordination Ibiza ansehen →' in target,
         'event target exists and canonical': f'<link rel="canonical" href="{EVENT_CANONICAL}">' in event,
