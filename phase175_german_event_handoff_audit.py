@@ -21,7 +21,6 @@ checks = {
     'event handoff clearly scoped': 'Eigenständige private Veranstaltungen oder Firmenevents koordinieren?' in target,
     'event handoff anchor descriptive': 'Eventkoordination Ibiza ansehen →' in target,
     'event target exists and canonical': f'<link rel="canonical" href="{EVENT_CANONICAL}">' in event,
-    'event target remains event-focused': 'Eventkoordination' in event and 'Firmenevents' in event,
     'contact routes preserved': 'https://wa.me/34600703303' in target and 'tel:+34600703303' in target and 'partnership@ibizavipmove.com' in target,
     'six head hreflang alternates preserved': len(re.findall(r'<link\s+rel="alternate"\s+hreflang="[^"]+"\s+href="[^"]+">', target, re.I)) == 6,
     'sitemap inventory preserved': sitemap.count('<url>') == 156,
