@@ -38,7 +38,7 @@ def enhance(root: Path = ROOT) -> None:
 
     sitemap = sitemap_path.read_text(encoding='utf-8')
     pattern = rf'(<url><loc>{re.escape(CANONICAL)}</loc><lastmod>)[^<]+(</lastmod>)'
-    sitemap, count = re.subn(pattern, r'\g<1>2026-10-02\g<2>', sitemap, count=1)
+    sitemap, count = re.subn(pattern, r'\g<1>2026-10-03\g<2>', sitemap, count=1)
     if count != 1:
         raise SystemExit(f'Phase 175 sitemap target replacement count: {count}')
     sitemap_path.write_text(sitemap, encoding='utf-8')
