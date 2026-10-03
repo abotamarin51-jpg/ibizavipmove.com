@@ -28,7 +28,7 @@ def run(root: Path = ROOT) -> None:
         'contact routes preserved': 'https://wa.me/34600703303' in target and 'tel:+34600703303' in target and 'partnership@ibizavipmove.com' in target,
         'six head hreflang alternates preserved': len(re.findall(r'<link\s+rel="alternate"\s+hreflang="[^"]+"\s+href="[^"]+">', target, re.I)) == 6,
         'sitemap inventory preserved': sitemap.count('<url>') == 156,
-        'truthful staff lastmod': f'<loc>{CANONICAL}</loc><lastmod>2026-10-02</lastmod>' in sitemap,
+        'truthful staff lastmod': f'<loc>{CANONICAL}</loc><lastmod>2026-10-03</lastmod>' in sitemap,
     }
 
     failed = [name for name, ok in checks.items() if not ok]
