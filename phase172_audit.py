@@ -42,3 +42,29 @@ for name, ok in checks.items():
 if failed:
     raise SystemExit('Phase 172 audit failed: ' + ', '.join(failed))
 print('PASS: Phase 172 audit — one existing German event page aligned to verified German event-coordination demand; no new URL or service claim')
+
+
+# Phase 175 integrated audit
+# Phase 175 integrated audit
+P175_TARGET = ROOT / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html'
+P175_CANONICAL = 'https://ibizavipmove.com/de/privatkoch-villa-staff-ibiza/'
+P175_EVENT_URL = '/de/private-events-ibiza/'
+P175_HANDOFF = '<p class="ivm-concierge-continuity">Wenn Villa-Staff mit einem privaten Event oder Firmenevent verbunden ist: <a class="text-link" href="/de/private-events-ibiza/">Eventkoordination Ibiza ansehen →</a></p>'
+
+p175_text = P175_TARGET.read_text(encoding='utf-8')
+p175_checks = {
+    'Phase 175 German target language': '<html lang="de"' in p175_text,
+    'Phase 175 self canonical': f'<link rel="canonical" href="{P175_CANONICAL}">' in p175_text,
+    'Phase 175 indexable robots': '<meta name="robots" content="index,follow,max-image-preview:large">' in p175_text,
+    'Phase 175 single event handoff': p175_text.count(P175_HANDOFF) == 1 and p175_text.count(P175_EVENT_URL) == 1,
+    'Phase 175 concierge handoff preserved': '/de/privater-concierge-ibiza/">Privaten Concierge Ibiza ansehen' in p175_text,
+    'Phase 175 six head hreflang alternates': len(re.findall(r'<link\s+rel="alternate"\s+hreflang="[^"]+"\s+href="[^"]+">', p175_text, re.I)) == 6,
+    'Phase 175 sitemap inventory preserved': sitemap.count('<url>') == 156,
+    'Phase 175 truthful target lastmod': f'<loc>{P175_CANONICAL}</loc><lastmod>2026-10-04</lastmod>' in sitemap,
+}
+p175_failed = [name for name, ok in p175_checks.items() if not ok]
+for name, ok in p175_checks.items():
+    print(('PASS' if ok else 'FAIL') + ': ' + name)
+if p175_failed:
+    raise SystemExit('Phase 175 audit failed: ' + ', '.join(p175_failed))
+print('PASS: Phase 175 audit')
