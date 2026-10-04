@@ -138,3 +138,37 @@ for html_path in ROOT.rglob('*.html'):
 
 print(f'PASS: final premium.js cache key v={asset_version} verified on {ref_count} references; {changed_count} HTML files updated')
 print('PASS: Phase 172 German private-events intent aligned to verified Eventkoordination/Veranstaltungskoordination demand')
+
+
+# Phase 175 integrated handoff: keep Villa Staff intent distinct while handing event-related visits
+# to the existing German Eventkoordination page.
+# Phase 175 integrated handoff
+P175_TARGET = ROOT / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html'
+P175_CANONICAL = 'https://ibizavipmove.com/de/privatkoch-villa-staff-ibiza/'
+P175_EVENT_URL = '/de/private-events-ibiza/'
+P175_LASTMOD = '2026-10-04'
+P175_MARKER = '<p class="ivm-concierge-continuity">Mehrere Services als einen Aufenthalt koordinieren? <a class="text-link" href="/de/privater-concierge-ibiza/">Privaten Concierge Ibiza ansehen →</a></p>'
+P175_HANDOFF = '<p class="ivm-concierge-continuity">Wenn Villa-Staff mit einem privaten Event oder Firmenevent verbunden ist: <a class="text-link" href="/de/private-events-ibiza/">Eventkoordination Ibiza ansehen →</a></p>'
+
+if not P175_TARGET.is_file():
+    raise SystemExit('Phase 175 target missing')
+p175_text = P175_TARGET.read_text(encoding='utf-8')
+if f'<link rel="canonical" href="{P175_CANONICAL}">' not in p175_text or '<html lang="de"' not in p175_text:
+    raise SystemExit('Phase 175 canonical/language guard failed')
+if p175_text.count(P175_EVENT_URL) > 1:
+    raise SystemExit('Phase 175 refusing unexpected duplicate event links')
+if P175_HANDOFF not in p175_text:
+    if P175_MARKER not in p175_text:
+        raise SystemExit('Phase 175 closing marker missing')
+    p175_text = p175_text.replace(P175_MARKER, P175_MARKER + P175_HANDOFF, 1)
+if p175_text.count(P175_HANDOFF) != 1 or p175_text.count(P175_EVENT_URL) != 1:
+    raise SystemExit('Phase 175 event handoff cardinality failed')
+P175_TARGET.write_text(p175_text, encoding='utf-8')
+
+sitemap = SITEMAP.read_text(encoding='utf-8')
+p175_pat = rf'(<url><loc>{re.escape(P175_CANONICAL)}</loc><lastmod>)[^<]+(</lastmod>)'
+sitemap, p175_n = re.subn(p175_pat, rf'\g<1>{P175_LASTMOD}\g<2>', sitemap, count=1)
+if p175_n != 1:
+    raise SystemExit(f'Phase 175 sitemap target replacement count: {p175_n}')
+SITEMAP.write_text(sitemap, encoding='utf-8')
+print('PASS: Phase 175 contextual German Villa Staff → Eventkoordination handoff integrated')
