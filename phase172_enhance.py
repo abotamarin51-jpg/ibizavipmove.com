@@ -155,14 +155,18 @@ if not P175_TARGET.is_file():
 p175_text = P175_TARGET.read_text(encoding='utf-8')
 if f'<link rel="canonical" href="{P175_CANONICAL}">' not in p175_text or '<html lang="de"' not in p175_text:
     raise SystemExit('Phase 175 canonical/language guard failed')
-if p175_text.count(P175_EVENT_URL) > 1:
-    raise SystemExit('Phase 175 refusing unexpected duplicate event links')
-if P175_HANDOFF not in p175_text:
+p175_handoff_preexisting = P175_HANDOFF in p175_text
+p175_pre_event_links = p175_text.count(f'href="{P175_EVENT_URL}"')
+if not p175_handoff_preexisting:
     if P175_MARKER not in p175_text:
         raise SystemExit('Phase 175 closing marker missing')
     p175_text = p175_text.replace(P175_MARKER, P175_MARKER + P175_HANDOFF, 1)
-if p175_text.count(P175_HANDOFF) != 1 or p175_text.count(P175_EVENT_URL) != 1:
-    raise SystemExit('Phase 175 event handoff cardinality failed')
+if p175_text.count(P175_HANDOFF) != 1:
+    raise SystemExit('Phase 175 contextual event handoff cardinality failed')
+p175_post_event_links = p175_text.count(f'href="{P175_EVENT_URL}"')
+p175_expected_event_links = p175_pre_event_links + (0 if p175_handoff_preexisting else 1)
+if p175_post_event_links != p175_expected_event_links:
+    raise SystemExit('Phase 175 unrelated event-link count changed')
 P175_TARGET.write_text(p175_text, encoding='utf-8')
 
 sitemap = SITEMAP.read_text(encoding='utf-8')

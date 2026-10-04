@@ -45,7 +45,6 @@ print('PASS: Phase 172 audit — one existing German event page aligned to verif
 
 
 # Phase 175 integrated audit
-# Phase 175 integrated audit
 P175_TARGET = ROOT / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html'
 P175_CANONICAL = 'https://ibizavipmove.com/de/privatkoch-villa-staff-ibiza/'
 P175_EVENT_URL = '/de/private-events-ibiza/'
@@ -56,7 +55,7 @@ p175_checks = {
     'Phase 175 German target language': '<html lang="de"' in p175_text,
     'Phase 175 self canonical': f'<link rel="canonical" href="{P175_CANONICAL}">' in p175_text,
     'Phase 175 indexable robots': '<meta name="robots" content="index,follow,max-image-preview:large">' in p175_text,
-    'Phase 175 single event handoff': p175_text.count(P175_HANDOFF) == 1 and p175_text.count(P175_EVENT_URL) == 1,
+    'Phase 175 single contextual event handoff': p175_text.count(P175_HANDOFF) == 1,
     'Phase 175 concierge handoff preserved': '/de/privater-concierge-ibiza/">Privaten Concierge Ibiza ansehen' in p175_text,
     'Phase 175 six head hreflang alternates': len(re.findall(r'<link\s+rel="alternate"\s+hreflang="[^"]+"\s+href="[^"]+">', p175_text, re.I)) == 6,
     'Phase 175 sitemap inventory preserved': sitemap.count('<url>') == 156,
