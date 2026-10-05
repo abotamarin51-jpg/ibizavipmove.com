@@ -187,11 +187,94 @@ try:
                 print('Phase 174 browser diagnostics:', unescape(diagnostic_value)[:8000])
             raise SystemExit(f'Phase 174 browser gate failed for {mode}')
         print(f'Phase 174 browser PASS: {mode} {size}')
+
+# Phase 175 — verify the German event handoff visually as well as in the DOM.
+P175_SOURCE = ROOT / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html'
+P175_PROBE = P175_SOURCE.with_name('__phase175_visual_probe.html')
+assert P175_SOURCE.is_file(), 'Phase 175 German source missing'
+assert (ROOT / 'de' / 'private-events-ibiza' / 'index.html').is_file(), 'Phase 175 German event target missing'
+p175_script = r"""
+<script>
+window.addEventListener('load', async () => {
+  const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+  try {
+    if (window.IVMCookieConsent) window.IVMCookieConsent.reject();
+    await wait(240);
+    const cards = document.querySelectorAll('a[href="/de/private-events-ibiza/"]');
+    if (cards.length !== 1) throw Error('Expected exactly one event card');
+    const card = cards[0];
+    if (card.querySelector('strong')?.textContent !== 'Eventkoordination & private Events') throw Error('Wrong event-card label');
+    card.scrollIntoView({behavior:'instant', block:'center'});
+    card.focus({preventScroll:true});
+    await wait(120);
+    const r = card.getBoundingClientRect(), s = getComputedStyle(card);
+    if (document.activeElement !== card || s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0) throw Error('Event card is not visible/focusable');
+    if (r.width <= 0 || r.height <= 0 || r.left < -1 || r.top < -1 || r.right > innerWidth + 1 || r.bottom > innerHeight + 1) throw Error('Event card is outside viewport');
+    if (document.documentElement.scrollWidth > innerWidth + 1 || card.scrollWidth > card.clientWidth + 1) throw Error('Horizontal overflow or clipped card');
+    const wa = [...document.querySelectorAll('a[href^="https://wa.me/"]')];
+    const tel = [...document.querySelectorAll('a[href^="tel:"]')];
+    if (!wa.length || !tel.length || wa.some(a => new URL(a.href).pathname !== '/34600703303') || tel.some(a => a.getAttribute('href') !== 'tel:+34600703303')) throw Error('Approved contact target changed');
+    document.documentElement.setAttribute('data-phase175-visual', 'pass');
+  } catch (err) {
+    document.documentElement.setAttribute('data-phase175-visual', 'fail');
+    document.body.setAttribute('data-phase175-visual-error', String(err.message || err));
+  }
+}, {once:true});
+</script>
+"""
+p175_html = P175_SOURCE.read_text(encoding='utf-8')
+assert p175_html.count('</body>') == 1, 'Phase 175 German body close mismatch'
+P175_PROBE.write_text(p175_html.replace('</body>', p175_script + '</body>'), encoding='utf-8')
+shots = Path(os.environ.get('RUNNER_TEMP', '/tmp')) / 'ivm-browser-review'
+shots.mkdir(parents=True, exist_ok=True)
+image_python = Path(os.environ.get('RUNNER_TEMP', '/tmp')) / 'ivm-image-tools' / 'bin' / 'python'
+assert image_python.is_file(), 'Pillow validation environment missing'
+
+for mode, size in (('desktop', '1366,768'), ('mobile', '390,844')):
+    url = f'http://127.0.0.1:{port}/de/privatkoch-villa-staff-ibiza/__phase175_visual_probe.html'
+    base_cmd = [
+        chrome,
+        '--headless=new',
+        '--disable-gpu',
+        '--no-sandbox',
+        '--disable-dev-shm-usage',
+        '--hide-scrollbars',
+        '--run-all-compositor-stages-before-draw',
+        '--host-resolver-rules=MAP * 0.0.0.0, EXCLUDE localhost, EXCLUDE 127.0.0.1',
+        f'--window-size={size}',
+        '--virtual-time-budget=2600',
+    ]
+    dom_result = subprocess.run(base_cmd + ['--dump-dom', url], text=True, capture_output=True, timeout=45)
+    if dom_result.returncode != 0 or 'data-phase175-visual="pass"' not in dom_result.stdout:
+        print(dom_result.stderr[-2000:])
+        raise SystemExit(f'Phase 175 German DOM visual gate failed for {mode}')
+    shot = shots / f'validated-german-event-card-{mode}.png'
+    shot_result = subprocess.run(base_cmd + [f'--screenshot={shot}', url], text=True, capture_output=True, timeout=45)
+    if shot_result.returncode != 0:
+        print(shot_result.stderr[-2000:])
+        raise SystemExit(f'Phase 175 German screenshot command failed for {mode}')
+    expected = tuple(map(int, size.split(',')))
+    image_check = subprocess.run([
+        str(image_python), '-c',
+        "from PIL import Image,ImageStat; import sys; "
+        "im=Image.open(sys.argv[1]).convert('RGB'); exp=tuple(map(int,sys.argv[2].split(','))); "
+        "var=sum(ImageStat.Stat(im).var); colors=len(set(im.resize((64,64)).getdata())); "
+        "print(f'image={im.size} variance={var:.3f} sampled_colors={colors}'); "
+        "raise SystemExit(0 if im.size==exp and var>10 and colors>=8 else 2)",
+        str(shot), size,
+    ], text=True, capture_output=True, timeout=30)
+    print(image_check.stdout.strip())
+    if image_check.returncode != 0:
+        print(image_check.stderr[-2000:])
+        raise SystemExit(f'Phase 175 German screenshot is blank or invalid for {mode}')
+    print(f'Phase 175 visual PASS: {mode} {size}')
+
 finally:
     server.shutdown()
     server.server_close()
     os.chdir(old_cwd)
-    try:
-        PROBE.unlink()
-    except FileNotFoundError:
-        pass
+    for probe in (PROBE, P175_PROBE):
+        try:
+            probe.unlink()
+        except FileNotFoundError:
+            pass
