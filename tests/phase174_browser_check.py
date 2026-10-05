@@ -1,4 +1,5 @@
 from pathlib import Path
+from html import unescape
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
 import os
@@ -95,6 +96,37 @@ probe_script = r"""
   }catch(err){
     document.documentElement.setAttribute('data-phase174',mode+'-fail');
     document.body.setAttribute('data-phase174-error',String(err&&err.message||err));
+    // Failure-only snapshot; no text, form values, contact activation or network.
+    try{
+      const snapshot=(selector)=>{
+        const el=document.querySelector(selector);
+        if(!el)return {present:false};
+        const s=getComputedStyle(el),r=el.getBoundingClientRect();
+        return {
+          present:true,visible:visible(el),inside:inside(el),hidden:el.hidden,
+          rect:{left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height},
+          style:{display:s.display,visibility:s.visibility,opacity:s.opacity,position:s.position,
+            top:s.top,right:s.right,bottom:s.bottom,left:s.left,transform:s.transform,
+            overflow:s.overflow,contentVisibility:s.contentVisibility}
+        };
+      };
+      document.body.setAttribute('data-phase174-diagnostics',JSON.stringify({
+        viewport:{innerWidth,innerHeight,outerWidth,outerHeight,devicePixelRatio,scrollX,scrollY,
+          visualWidth:window.visualViewport?.width,visualHeight:window.visualViewport?.height},
+        readyState:document.readyState,
+        state:{
+          contactAccessHidden:document.body.classList.contains('ivm-contact-access-hidden'),
+          menuOpen:document.body.classList.contains('menu-open'),
+          consentOpen:Boolean(document.querySelector('.ivm-consent:not([hidden])')),
+          consentApi:Boolean(window.IVMCookieConsent),
+          editing:Boolean(document.activeElement?.matches?.('input,textarea,select,[contenteditable="true"]'))
+        },
+        desktop:snapshot('.ivm-whatsapp-float'),mobile:snapshot('.mobile-bar'),
+        body:snapshot('body'),root:snapshot('html')
+      }));
+    }catch(_){
+      document.body.setAttribute('data-phase174-diagnostics','Diagnostic collection failed');
+    }
   }
 })();
 </script>
@@ -146,6 +178,13 @@ try:
             else:
                 tail = result.stdout[-4000:]
                 print(tail)
+            diagnostic_attr = 'data-phase174-diagnostics="'
+            diagnostic_start = result.stdout.find(diagnostic_attr)
+            if diagnostic_start != -1:
+                diagnostic_start += len(diagnostic_attr)
+                diagnostic_end = result.stdout.find('"', diagnostic_start)
+                diagnostic_value = result.stdout[diagnostic_start:diagnostic_end if diagnostic_end != -1 else None]
+                print('Phase 174 browser diagnostics:', unescape(diagnostic_value)[:8000])
             raise SystemExit(f'Phase 174 browser gate failed for {mode}')
         print(f'Phase 174 browser PASS: {mode} {size}')
 finally:
