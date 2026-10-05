@@ -152,6 +152,85 @@ jobs:
           node --check _site/assets/premium.js
           node tests/phone-activation.cjs _site/assets/premium.js
           python3 tests/phase174_browser_check.py
+      - name: Review German event card on desktop and mobile without external requests
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+          from functools import partial
+          from threading import Thread
+          from html import unescape
+          import os, shutil, subprocess
+
+          root = Path('_site').resolve()
+          source = root / 'de/privatkoch-villa-staff-ibiza/index.html'
+          probe = source.with_name('__phase175_review.html')
+          shots = Path(os.environ['RUNNER_TEMP']) / 'ivm-browser-review'
+          shots.mkdir(parents=True, exist_ok=True)
+          assert not shots.resolve().is_relative_to(root), 'Review evidence must stay outside the website'
+          chrome = next((shutil.which(n) for n in ('google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser') if shutil.which(n)), None)
+          assert chrome, 'Chrome is required; do not skip review'
+          script = r'''<script>
+          window.addEventListener('load', async () => {
+            const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+            try {
+              if (window.IVMCookieConsent) window.IVMCookieConsent.reject();
+              await wait(240);
+              const cards = document.querySelectorAll('a[href="/de/private-events-ibiza/"]');
+              if (cards.length !== 1) throw Error('Expected exactly one event card');
+              const card = cards[0];
+              if (card.querySelector('strong')?.textContent !== 'Eventkoordination & private Events') throw Error('Wrong event-card label');
+              card.scrollIntoView({behavior:'instant', block:'center'});
+              card.focus({preventScroll:true});
+              await wait(120);
+              const r = card.getBoundingClientRect(), s = getComputedStyle(card);
+              if (document.activeElement !== card || s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0) throw Error('Event card is not visible/focusable');
+              if (r.width <= 0 || r.height <= 0 || r.left < -1 || r.top < -1 || r.right > innerWidth + 1 || r.bottom > innerHeight + 1) throw Error('Event card is outside viewport');
+              if (document.documentElement.scrollWidth > innerWidth + 1 || card.scrollWidth > card.clientWidth + 1) throw Error('Horizontal overflow or clipped card');
+              const wa = [...document.querySelectorAll('a[href^="https://wa.me/"]')];
+              const tel = [...document.querySelectorAll('a[href^="tel:"]')];
+              if (!wa.length || !tel.length || wa.some(a => new URL(a.href).pathname !== '/34600703303') || tel.some(a => a.getAttribute('href') !== 'tel:+34600703303')) throw Error('Approved contact target changed');
+              document.documentElement.setAttribute('data-phase175-review', 'pass');
+            } catch (err) {
+              document.documentElement.setAttribute('data-phase175-review', 'fail');
+              document.body.setAttribute('data-phase175-review-error', String(err.message || err));
+            }
+          }, {once:true});
+          </script>'''
+          html = source.read_text(encoding='utf-8')
+          assert html.count('</body>') == 1
+          assert (root / 'de/private-events-ibiza/index.html').is_file()
+          probe.write_text(html.replace('</body>', script + '</body>'), encoding='utf-8')
+          class Quiet(SimpleHTTPRequestHandler):
+              def log_message(self, *args): pass
+          server = ThreadingHTTPServer(('127.0.0.1', 0), partial(Quiet, directory=str(root)))
+          Thread(target=server.serve_forever, daemon=True).start()
+          try:
+              for mode, size in (('desktop', '1366,768'), ('mobile', '390,844')):
+                  shot = shots / f'german-event-card-{mode}.png'
+                  url = f'http://127.0.0.1:{server.server_port}/de/privatkoch-villa-staff-ibiza/__phase175_review.html'
+                  command = [chrome, '--headless=new', '--disable-gpu', '--no-sandbox', '--disable-dev-shm-usage', '--hide-scrollbars', '--host-resolver-rules=MAP * 0.0.0.0, EXCLUDE localhost, EXCLUDE 127.0.0.1', f'--window-size={size}', '--virtual-time-budget=2600', f'--screenshot={shot}', '--dump-dom', url]
+                  result = subprocess.run(command, text=True, capture_output=True, timeout=45)
+                  if result.returncode != 0 or 'data-phase175-review="pass"' not in result.stdout:
+                      import re
+                      error = re.search(r'data-phase175-review-error="([^"]*)"', result.stdout)
+                      print(unescape(error.group(1)) if error else result.stderr[-2000:])
+                      raise SystemExit(f'German event-card browser review failed: {mode}')
+                  assert shot.is_file() and shot.stat().st_size > 0, 'Review screenshot missing'
+                  print(f'PASS: German event card visible, focusable and unclipped at {size}; approved contacts unchanged; screenshot saved')
+          finally:
+              server.shutdown()
+              server.server_close()
+              probe.unlink(missing_ok=True)
+          PY
+      - name: Upload German browser review screenshots separately from website
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ibiza-vip-move-browser-review
+          path: ${{ runner.temp }}/ivm-browser-review
+          if-no-files-found: warn
+          retention-days: 3
       - name: Upload validated preview artifact
         uses: actions/upload-artifact@v4
         with:
