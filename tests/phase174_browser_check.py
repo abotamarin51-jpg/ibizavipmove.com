@@ -137,8 +137,15 @@ try:
             raise SystemExit(f'Chrome failed for {mode}: {result.returncode}')
         marker = f'data-phase174="{mode}-pass"'
         if marker not in result.stdout:
-            tail = result.stdout[-4000:]
-            print(tail)
+            error_attr = 'data-phase174-error="'
+            start = result.stdout.find(error_attr)
+            if start != -1:
+                start += len(error_attr)
+                end = result.stdout.find('"', start)
+                print('Phase 174 browser error:', result.stdout[start:end if end != -1 else None])
+            else:
+                tail = result.stdout[-4000:]
+                print(tail)
             raise SystemExit(f'Phase 174 browser gate failed for {mode}')
         print(f'Phase 174 browser PASS: {mode} {size}')
 finally:
