@@ -145,8 +145,8 @@ P175_TARGET = ROOT / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html'
 P175_CANONICAL = 'https://ibizavipmove.com/de/privatkoch-villa-staff-ibiza/'
 P175_EVENT_URL = '/de/private-events-ibiza/'
 P175_LASTMOD = '2026-10-05'
-P175_OLD_CARD = '<a class="ivm-related-card" href="/de/private-events-ibiza/"><small>Occasions</small><div><strong>Private Events & Feiern</strong><p>Gästelogistik und private Anlässe.</p></div><b>Service entdecken →</b></a>'
-P175_NEW_CARD = '<a class="ivm-related-card" href="/de/private-events-ibiza/"><small>Occasions</small><div><strong>Eventkoordination & private Events</strong><p>Gästelogistik und private Anlässe.</p></div><b>Service entdecken →</b></a>'
+P175_OLD_CARD = '<a class="ivm-related-card" href="/de/private-events-ibiza/"><small>Occasions</small><div><strong>Private Events &amp; Feiern</strong><p>Gästelogistik und private Anlässe.</p></div><b>Service entdecken →</b></a>'
+P175_NEW_CARD = '<a class="ivm-related-card" href="/de/private-events-ibiza/"><small>Occasions</small><div><strong>Eventkoordination &amp; private Events</strong><p>Gästelogistik und private Anlässe.</p></div><b>Service entdecken →</b></a>'
 
 if not P175_TARGET.is_file():
     raise SystemExit('Phase 175 target missing')
