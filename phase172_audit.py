@@ -48,18 +48,21 @@ print('PASS: Phase 172 audit — one existing German event page aligned to verif
 P175_TARGET = ROOT / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html'
 P175_CANONICAL = 'https://ibizavipmove.com/de/privatkoch-villa-staff-ibiza/'
 P175_EVENT_URL = '/de/private-events-ibiza/'
-P175_HANDOFF = '<p class="ivm-concierge-continuity">Wenn Villa-Staff mit einem privaten Event oder Firmenevent verbunden ist: <a class="text-link" href="/de/private-events-ibiza/">Eventkoordination Ibiza ansehen →</a></p>'
+P175_OLD_CARD = '<a class="ivm-related-card" href="/de/private-events-ibiza/"><small>Occasions</small><div><strong>Private Events & Feiern</strong><p>Gästelogistik und private Anlässe.</p></div><b>Service entdecken →</b></a>'
+P175_NEW_CARD = '<a class="ivm-related-card" href="/de/private-events-ibiza/"><small>Occasions</small><div><strong>Eventkoordination & private Events</strong><p>Gästelogistik und private Anlässe.</p></div><b>Service entdecken →</b></a>'
 
 p175_text = P175_TARGET.read_text(encoding='utf-8')
 p175_checks = {
     'Phase 175 German target language': '<html lang="de"' in p175_text,
     'Phase 175 self canonical': f'<link rel="canonical" href="{P175_CANONICAL}">' in p175_text,
     'Phase 175 indexable robots': '<meta name="robots" content="index,follow,max-image-preview:large">' in p175_text,
-    'Phase 175 single contextual event handoff': p175_text.count(P175_HANDOFF) == 1,
+    'Phase 175 single existing related event card': p175_text.count(P175_NEW_CARD) == 1 and p175_text.count(f'href="{P175_EVENT_URL}"') == 1,
+    'Phase 175 old related title removed': P175_OLD_CARD not in p175_text,
+    'Phase 175 no duplicate contextual handoff': 'Eventkoordination Ibiza ansehen →' not in p175_text,
     'Phase 175 concierge handoff preserved': '/de/privater-concierge-ibiza/">Privaten Concierge Ibiza ansehen' in p175_text,
     'Phase 175 six head hreflang alternates': len(re.findall(r'<link\s+rel="alternate"\s+hreflang="[^"]+"\s+href="[^"]+">', p175_text, re.I)) == 6,
     'Phase 175 sitemap inventory preserved': sitemap.count('<url>') == 156,
-    'Phase 175 truthful target lastmod': f'<loc>{P175_CANONICAL}</loc><lastmod>2026-10-04</lastmod>' in sitemap,
+    'Phase 175 truthful target lastmod': f'<loc>{P175_CANONICAL}</loc><lastmod>2026-10-05</lastmod>' in sitemap,
 }
 p175_failed = [name for name, ok in p175_checks.items() if not ok]
 for name, ok in p175_checks.items():

@@ -140,33 +140,27 @@ print(f'PASS: final premium.js cache key v={asset_version} verified on {ref_coun
 print('PASS: Phase 172 German private-events intent aligned to verified Eventkoordination/Veranstaltungskoordination demand')
 
 
-# Phase 175 integrated handoff: keep Villa Staff intent distinct while handing event-related visits
-# to the existing German Eventkoordination page.
-# Phase 175 integrated handoff
+# Phase 175 integrated handoff: reuse the existing related-service card instead of adding a duplicate link.
 P175_TARGET = ROOT / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html'
 P175_CANONICAL = 'https://ibizavipmove.com/de/privatkoch-villa-staff-ibiza/'
 P175_EVENT_URL = '/de/private-events-ibiza/'
-P175_LASTMOD = '2026-10-04'
-P175_MARKER = '<p class="ivm-concierge-continuity">Mehrere Services als einen Aufenthalt koordinieren? <a class="text-link" href="/de/privater-concierge-ibiza/">Privaten Concierge Ibiza ansehen →</a></p>'
-P175_HANDOFF = '<p class="ivm-concierge-continuity">Wenn Villa-Staff mit einem privaten Event oder Firmenevent verbunden ist: <a class="text-link" href="/de/private-events-ibiza/">Eventkoordination Ibiza ansehen →</a></p>'
+P175_LASTMOD = '2026-10-05'
+P175_OLD_CARD = '<a class="ivm-related-card" href="/de/private-events-ibiza/"><small>Occasions</small><div><strong>Private Events & Feiern</strong><p>Gästelogistik und private Anlässe.</p></div><b>Service entdecken →</b></a>'
+P175_NEW_CARD = '<a class="ivm-related-card" href="/de/private-events-ibiza/"><small>Occasions</small><div><strong>Eventkoordination & private Events</strong><p>Gästelogistik und private Anlässe.</p></div><b>Service entdecken →</b></a>'
 
 if not P175_TARGET.is_file():
     raise SystemExit('Phase 175 target missing')
 p175_text = P175_TARGET.read_text(encoding='utf-8')
 if f'<link rel="canonical" href="{P175_CANONICAL}">' not in p175_text or '<html lang="de"' not in p175_text:
     raise SystemExit('Phase 175 canonical/language guard failed')
-p175_handoff_preexisting = P175_HANDOFF in p175_text
-p175_pre_event_links = p175_text.count(f'href="{P175_EVENT_URL}"')
-if not p175_handoff_preexisting:
-    if P175_MARKER not in p175_text:
-        raise SystemExit('Phase 175 closing marker missing')
-    p175_text = p175_text.replace(P175_MARKER, P175_MARKER + P175_HANDOFF, 1)
-if p175_text.count(P175_HANDOFF) != 1:
-    raise SystemExit('Phase 175 contextual event handoff cardinality failed')
-p175_post_event_links = p175_text.count(f'href="{P175_EVENT_URL}"')
-p175_expected_event_links = p175_pre_event_links + (0 if p175_handoff_preexisting else 1)
-if p175_post_event_links != p175_expected_event_links:
-    raise SystemExit('Phase 175 unrelated event-link count changed')
+if P175_OLD_CARD in p175_text:
+    p175_text = p175_text.replace(P175_OLD_CARD, P175_NEW_CARD, 1)
+elif P175_NEW_CARD not in p175_text:
+    raise SystemExit('Phase 175 expected related event card missing')
+if p175_text.count(P175_NEW_CARD) != 1 or p175_text.count(f'href="{P175_EVENT_URL}"') != 1:
+    raise SystemExit('Phase 175 related event card cardinality failed')
+if 'Eventkoordination Ibiza ansehen →' in p175_text:
+    raise SystemExit('Phase 175 duplicate contextual event handoff still present')
 P175_TARGET.write_text(p175_text, encoding='utf-8')
 
 sitemap = SITEMAP.read_text(encoding='utf-8')
@@ -175,4 +169,4 @@ sitemap, p175_n = re.subn(p175_pat, rf'\g<1>{P175_LASTMOD}\g<2>', sitemap, count
 if p175_n != 1:
     raise SystemExit(f'Phase 175 sitemap target replacement count: {p175_n}')
 SITEMAP.write_text(sitemap, encoding='utf-8')
-print('PASS: Phase 175 contextual German Villa Staff → Eventkoordination handoff integrated')
+print('PASS: Phase 175 existing German Villa Staff related card relabelled for Eventkoordination without a duplicate link')
