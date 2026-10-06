@@ -121,6 +121,7 @@ on:
       - "premium.css"
       - "luxury-overrides.css"
       - "premium.js"
+      - "tests/phase174_browser_check.py"
       - "brand-logo.jpg"
       - "brand-logo.svg"
       - "brand-mark.svg"

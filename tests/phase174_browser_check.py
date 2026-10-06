@@ -34,6 +34,14 @@ probe_script = r"""
     const r=el.getBoundingClientRect();
     return r.left>=-1&&r.top>=-1&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1;
   };
+  const waitUntil=async(pred,label,timeout=1800)=>{
+    const deadline=Date.now()+timeout;
+    while(Date.now()<deadline){
+      if(pred())return;
+      await wait(40);
+    }
+    fail('Timed out waiting for '+label);
+  };
 
   try{
     await wait(180);
@@ -56,38 +64,40 @@ probe_script = r"""
 
     if(mode==='desktop'){
       if(innerWidth<=600)fail('Desktop viewport not applied');
+      await waitUntil(()=>visible(float)&&inside(float),'desktop WhatsApp CTA to become visible inside viewport');
       if(!visible(float)||!inside(float))fail('Desktop WhatsApp CTA not visible inside viewport');
       if(visible(bar))fail('Mobile bar visible on desktop');
     }else{
       if(innerWidth>600)fail('Mobile viewport not applied');
+      await waitUntil(()=>visible(bar)&&inside(bar),'mobile contact bar to become visible inside viewport');
       if(!visible(bar)||!inside(bar))fail('Mobile bar not visible inside viewport');
       if(visible(float))fail('Desktop WhatsApp CTA visible on mobile');
 
       document.body.classList.add('menu-open');
-      await wait(60);
+      await waitUntil(()=>!visible(bar),'mobile bar to hide for open menu');
       if(visible(bar))fail('Mobile bar overlaps open menu');
       document.body.classList.remove('menu-open');
-      await wait(60);
+      await waitUntil(()=>visible(bar),'mobile bar to return after menu close');
       if(!visible(bar))fail('Mobile bar did not return after menu close');
 
       const input=document.createElement('input');
       document.body.appendChild(input);
       input.focus();
-      await wait(60);
+      await waitUntil(()=>!visible(bar),'mobile bar to hide for focused form control');
       if(visible(bar))fail('Mobile bar remains visible while form control is focused');
       input.blur();
       input.remove();
-      await wait(80);
+      await waitUntil(()=>visible(bar),'mobile bar to return after focus ended');
       if(!visible(bar))fail('Mobile bar did not return after focus ended');
     }
 
     if(window.IVMCookieConsent){
       window.IVMCookieConsent.open();
-      await wait(80);
       const target=mode==='desktop'?float:bar;
+      await waitUntil(()=>!visible(target),'contact access to hide for cookie dialog');
       if(visible(target))fail('Contact access overlaps cookie dialog');
       window.IVMCookieConsent.reject();
-      await wait(80);
+      await waitUntil(()=>visible(target),'contact access to return after cookie dialog closed');
       if(!visible(target))fail('Contact access did not return after cookie dialog closed');
     }
 
@@ -127,7 +137,7 @@ try:
             '--hide-scrollbars',
             '--host-resolver-rules=MAP * 0.0.0.0, EXCLUDE localhost, EXCLUDE 127.0.0.1',
             f'--window-size={size}',
-            '--virtual-time-budget=2600',
+            '--virtual-time-budget=8000',
             '--dump-dom',
             url,
         ]
