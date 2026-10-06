@@ -83,7 +83,9 @@ def main():
                         page.wait_for_function('Boolean(window.IVMCookieConsent)', timeout=5000)
                         page.evaluate('window.IVMCookieConsent.reject()')
                         button = page.locator('#conciergeForm button[type="submit"]')
-                        assert button.count() == 1 and button.inner_text() == LABEL
+                        assert button.count() == 1, 'Expected exactly one form submit button'
+                        assert (button.text_content() or '').strip() == LABEL, 'Button source label changed'
+                        assert button.inner_text().strip().casefold() == LABEL.casefold(), 'Visible button label changed'
                         assert page.get_by_text(HELPER, exact=False).count() == 1
                         button.scroll_into_view_if_needed()
                         button.focus()
