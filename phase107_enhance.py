@@ -49,6 +49,19 @@ for lang,(path,role_label,area_label,roles,areas) in CONTACTS.items():
             html,count=1,flags=re.I
         )
         if n!=1: raise SystemExit(f'Phase 107 could not mark qualified form: {path}')
+    # Opening WhatsApp prepares a message; it does not send the enquiry.
+    # Keep the existing confirmation terms, fields and routing unchanged.
+    if lang == 'en':
+        handoff_copy = (
+            ('>Send Private Brief</button>', '>Continue to WhatsApp</button>'),
+            ('Submitting opens a private WhatsApp conversation with the details above.',
+             'Opens WhatsApp with your details. Review the message and press Send there.'),
+        )
+        for old_copy, new_copy in handoff_copy:
+            if html.count(old_copy) == 1:
+                html = html.replace(old_copy, new_copy, 1)
+            elif html.count(new_copy) != 1:
+                raise SystemExit('Contact WhatsApp handoff copy marker missing or duplicated')
     target.write_text(html,encoding='utf-8')
 
 print('PASS: Phase 107 qualification fields added to five Private Members Desk forms with privacy-safe deferred routing script')
