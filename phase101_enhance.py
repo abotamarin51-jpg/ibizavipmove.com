@@ -10,7 +10,9 @@ HOME = ROOT / 'index.html'
 # Phase 101 keeps the exact same editorial sources and visual treatment used by
 # the mature site. Phase 157 supplies villa.jpg and Phase 160 supplies
 # chauffeur.jpg from checksum-verified, production-approved repository assets
-# before this optimizer runs. The remaining eight assets keep their rendered
+# before this optimizer runs. hero.jpg remains fetched from the established
+# transform but is checksum-gated so an upstream re-encode cannot drift into an
+# unrelated release. The remaining seven remote assets keep their rendered
 # dimensions and receive a leaner JPEG encode.
 # The desktop LCP hero keeps the exact same aspect/crop but is delivered at
 # 2000x1273 instead of 2200x1400 — still above typical desktop display needs
@@ -32,6 +34,8 @@ FROZEN_VILLA = Path('editorial-assets/villa.jpg')
 FROZEN_VILLA_SHA256 = '920a2d479f869c385e47bbaf7cec73235da990c450283a75c0fb8d687de945dd'
 FROZEN_CHAUFFEUR = Path('editorial-assets/chauffeur.jpg')
 FROZEN_CHAUFFEUR_SHA256 = '4e286f6c4a91148c0beb248ca354beba7a3f281c95d3b746b17ef102d9649484'
+APPROVED_HERO_SHA256 = '10c61dbded805b7d23359f79ed59957988d55d2159a5cd8954adf55dab4b047f'
+APPROVED_HERO_BYTES = 667_271
 
 before = {}
 after = {}
@@ -80,6 +84,13 @@ for name, url in SOURCES.items():
     req = Request(url, headers={'User-Agent': 'Mozilla/5.0 IbizaVIPMoveBuild/1.0'})
     with urlopen(req, timeout=30) as response:
         data = response.read()
+    if name == 'hero.jpg':
+        hero_digest = hashlib.sha256(data).hexdigest()
+        if len(data) != APPROVED_HERO_BYTES or hero_digest != APPROVED_HERO_SHA256:
+            raise SystemExit(
+                'Phase 101 hero.jpg upstream drift detected: '
+                f'{len(data)} bytes / {hero_digest}'
+            )
     if len(data) < 40_000:
         raise SystemExit(f'Phase 101 optimized image unexpectedly small: {name} -> {len(data)} bytes')
     if len(data) >= before[name]:
