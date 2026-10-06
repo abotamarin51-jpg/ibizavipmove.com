@@ -137,7 +137,7 @@ try:
             '--hide-scrollbars',
             '--host-resolver-rules=MAP * 0.0.0.0, EXCLUDE localhost, EXCLUDE 127.0.0.1',
             f'--window-size={size}',
-            '--virtual-time-budget=2600',
+            '--virtual-time-budget=8000',
             '--dump-dom',
             url,
         ]
