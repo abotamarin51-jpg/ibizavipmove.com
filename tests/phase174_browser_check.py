@@ -11,6 +11,7 @@ import time
 ROOT = Path('_site').resolve()
 INDEX = ROOT / 'index.html'
 PROBE = ROOT / '__phase174_probe.html'
+P175_PROBE = None
 assert INDEX.is_file(), 'Built homepage missing'
 
 chrome = next((shutil.which(name) for name in (
@@ -39,7 +40,9 @@ probe_script = r"""
   try{
     await wait(180);
     if(window.IVMCookieConsent)window.IVMCookieConsent.reject();
-    await wait(100);
+    // The floating CTA has a 180ms opacity transition after the consent layer closes.
+    // Wait past the real production transition instead of asserting mid-animation.
+    await wait(260);
 
     const bar=document.querySelector('.mobile-bar');
     const float=document.querySelector('.ivm-whatsapp-float');
@@ -88,7 +91,8 @@ probe_script = r"""
       const target=mode==='desktop'?float:bar;
       if(visible(target))fail('Contact access overlaps cookie dialog');
       window.IVMCookieConsent.reject();
-      await wait(80);
+      // Match the production CTA transition duration before testing restored visibility.
+      await wait(260);
       if(!visible(target))fail('Contact access did not return after cookie dialog closed');
     }
 
@@ -299,6 +303,8 @@ finally:
     server.server_close()
     os.chdir(old_cwd)
     for probe in (PROBE, P175_PROBE):
+        if probe is None:
+            continue
         try:
             probe.unlink()
         except FileNotFoundError:
