@@ -55,6 +55,13 @@ for slug in SLUGS:
         raise SystemExit(f'Phase 102 audit duplicate description: {slug}')
     descriptions.add(desc)
 
+    if slug == 'destination-management-ibiza':
+        expected = "Luxury destination management in Ibiza for travel advisors, family offices and concierge firms coordinating transport, villas, yachts and guest logistics."
+        if desc != expected:
+            raise SystemExit(f'Phase 102 audit destination description drift: {desc}')
+        if len(desc) > 160:
+            raise SystemExit(f'Phase 102 audit destination description too long: {len(desc)}')
+
     if len(re.findall(r'<h1\b', html, re.I)) != 1:
         raise SystemExit(f'Phase 102 audit expected one H1: {slug}')
     if 'Ibiza · Balearic Islands · Spain' not in html:
