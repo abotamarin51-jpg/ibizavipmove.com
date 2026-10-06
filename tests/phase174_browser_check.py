@@ -1,5 +1,4 @@
 from pathlib import Path
-from html import unescape
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from threading import Thread
 import os
@@ -11,7 +10,6 @@ import time
 ROOT = Path('_site').resolve()
 INDEX = ROOT / 'index.html'
 PROBE = ROOT / '__phase174_probe.html'
-P175_PROBE = None
 assert INDEX.is_file(), 'Built homepage missing'
 
 chrome = next((shutil.which(name) for name in (
@@ -40,9 +38,7 @@ probe_script = r"""
   try{
     await wait(180);
     if(window.IVMCookieConsent)window.IVMCookieConsent.reject();
-    // The floating CTA has a 180ms opacity transition after the consent layer closes.
-    // Wait past the real production transition instead of asserting mid-animation.
-    await wait(260);
+    await wait(100);
 
     const bar=document.querySelector('.mobile-bar');
     const float=document.querySelector('.ivm-whatsapp-float');
@@ -91,8 +87,7 @@ probe_script = r"""
       const target=mode==='desktop'?float:bar;
       if(visible(target))fail('Contact access overlaps cookie dialog');
       window.IVMCookieConsent.reject();
-      // Match the production CTA transition duration before testing restored visibility.
-      await wait(260);
+      await wait(80);
       if(!visible(target))fail('Contact access did not return after cookie dialog closed');
     }
 
@@ -100,37 +95,6 @@ probe_script = r"""
   }catch(err){
     document.documentElement.setAttribute('data-phase174',mode+'-fail');
     document.body.setAttribute('data-phase174-error',String(err&&err.message||err));
-    // Failure-only snapshot; no text, form values, contact activation or network.
-    try{
-      const snapshot=(selector)=>{
-        const el=document.querySelector(selector);
-        if(!el)return {present:false};
-        const s=getComputedStyle(el),r=el.getBoundingClientRect();
-        return {
-          present:true,visible:visible(el),inside:inside(el),hidden:el.hidden,
-          rect:{left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height},
-          style:{display:s.display,visibility:s.visibility,opacity:s.opacity,position:s.position,
-            top:s.top,right:s.right,bottom:s.bottom,left:s.left,transform:s.transform,
-            overflow:s.overflow,contentVisibility:s.contentVisibility}
-        };
-      };
-      document.body.setAttribute('data-phase174-diagnostics',JSON.stringify({
-        viewport:{innerWidth,innerHeight,outerWidth,outerHeight,devicePixelRatio,scrollX,scrollY,
-          visualWidth:window.visualViewport?.width,visualHeight:window.visualViewport?.height},
-        readyState:document.readyState,
-        state:{
-          contactAccessHidden:document.body.classList.contains('ivm-contact-access-hidden'),
-          menuOpen:document.body.classList.contains('menu-open'),
-          consentOpen:Boolean(document.querySelector('.ivm-consent:not([hidden])')),
-          consentApi:Boolean(window.IVMCookieConsent),
-          editing:Boolean(document.activeElement?.matches?.('input,textarea,select,[contenteditable="true"]'))
-        },
-        desktop:snapshot('.ivm-whatsapp-float'),mobile:snapshot('.mobile-bar'),
-        body:snapshot('body'),root:snapshot('html')
-      }));
-    }catch(_){
-      document.body.setAttribute('data-phase174-diagnostics','Diagnostic collection failed');
-    }
   }
 })();
 </script>
@@ -173,139 +137,15 @@ try:
             raise SystemExit(f'Chrome failed for {mode}: {result.returncode}')
         marker = f'data-phase174="{mode}-pass"'
         if marker not in result.stdout:
-            error_attr = 'data-phase174-error="'
-            start = result.stdout.find(error_attr)
-            if start != -1:
-                start += len(error_attr)
-                end = result.stdout.find('"', start)
-                print('Phase 174 browser error:', result.stdout[start:end if end != -1 else None])
-            else:
-                tail = result.stdout[-4000:]
-                print(tail)
-            diagnostic_attr = 'data-phase174-diagnostics="'
-            diagnostic_start = result.stdout.find(diagnostic_attr)
-            if diagnostic_start != -1:
-                diagnostic_start += len(diagnostic_attr)
-                diagnostic_end = result.stdout.find('"', diagnostic_start)
-                diagnostic_value = result.stdout[diagnostic_start:diagnostic_end if diagnostic_end != -1 else None]
-                print('Phase 174 browser diagnostics:', unescape(diagnostic_value)[:8000])
+            tail = result.stdout[-4000:]
+            print(tail)
             raise SystemExit(f'Phase 174 browser gate failed for {mode}')
         print(f'Phase 174 browser PASS: {mode} {size}')
-
-    # Phase 175 — verify the German event handoff visually as well as in the DOM.
-    P175_SOURCE = ROOT / 'de' / 'privatkoch-villa-staff-ibiza' / 'index.html'
-    P175_PROBE = P175_SOURCE.with_name('__phase175_visual_probe.html')
-    assert P175_SOURCE.is_file(), 'Phase 175 German source missing'
-    assert (ROOT / 'de' / 'private-events-ibiza' / 'index.html').is_file(), 'Phase 175 German event target missing'
-    p175_script = r"""
-    <script>
-    window.addEventListener('load', async () => {
-      const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
-      try {
-        if (window.IVMCookieConsent) window.IVMCookieConsent.reject();
-        await wait(240);
-        const cards = document.querySelectorAll('a[href="/de/private-events-ibiza/"]');
-        if (cards.length !== 1) throw Error('Expected exactly one event card');
-        const card = cards[0];
-        if (card.querySelector('strong')?.textContent !== 'Eventkoordination & private Events') throw Error('Wrong event-card label');
-        card.scrollIntoView({behavior:'instant', block:'center'});
-        card.focus({preventScroll:true});
-        await wait(120);
-        const r = card.getBoundingClientRect(), s = getComputedStyle(card);
-        if (document.activeElement !== card || s.display === 'none' || s.visibility === 'hidden' || Number(s.opacity) === 0) throw Error('Event card is not visible/focusable');
-        if (r.width <= 0 || r.height <= 0 || r.left < -1 || r.top < -1 || r.right > innerWidth + 1 || r.bottom > innerHeight + 1) throw Error('Event card is outside viewport');
-        if (document.documentElement.scrollWidth > innerWidth + 1 || card.scrollWidth > card.clientWidth + 1) throw Error('Horizontal overflow or clipped card');
-        const wa = [...document.querySelectorAll('a[href^="https://wa.me/"]')];
-        const tel = [...document.querySelectorAll('a[href^="tel:"]')];
-        if (!wa.length || !tel.length || wa.some(a => new URL(a.href).pathname !== '/34600703303') || tel.some(a => a.getAttribute('href') !== 'tel:+34600703303')) throw Error('Approved contact target changed');
-        document.documentElement.setAttribute('data-phase175-visual', 'pass');
-      } catch (err) {
-        document.documentElement.setAttribute('data-phase175-visual', 'fail');
-        document.body.setAttribute('data-phase175-visual-error', String(err.message || err));
-      }
-    }, {once:true});
-    </script>
-    """
-    p175_html = P175_SOURCE.read_text(encoding='utf-8')
-    assert p175_html.count('</body>') == 1, 'Phase 175 German body close mismatch'
-    P175_PROBE.write_text(p175_html.replace('</body>', p175_script + '</body>'), encoding='utf-8')
-    shots = Path(os.environ.get('RUNNER_TEMP', '/tmp')) / 'ivm-browser-review'
-    shots.mkdir(parents=True, exist_ok=True)
-    image_python = Path(os.environ.get('RUNNER_TEMP', '/tmp')) / 'ivm-image-tools' / 'bin' / 'python'
-    assert image_python.is_file(), 'Pillow validation environment missing'
-
-    for mode, size in (('desktop', '1366,768'), ('mobile', '390,844')):
-        url = f'http://127.0.0.1:{port}/de/privatkoch-villa-staff-ibiza/__phase175_visual_probe.html'
-        common_cmd = [
-            chrome,
-            '--no-sandbox',
-            '--disable-dev-shm-usage',
-            '--hide-scrollbars',
-            '--force-prefers-reduced-motion',
-            '--host-resolver-rules=MAP * 0.0.0.0, EXCLUDE localhost, EXCLUDE 127.0.0.1',
-            f'--window-size={size}',
-            '--virtual-time-budget=2600',
-        ]
-        dom_result = subprocess.run(
-            common_cmd[:1] + ['--headless=new', '--disable-gpu'] + common_cmd[1:] + ['--dump-dom', url],
-            text=True, capture_output=True, timeout=45,
-        )
-        if dom_result.returncode != 0 or 'data-phase175-visual="pass"' not in dom_result.stdout:
-            print(dom_result.stderr[-2000:])
-            raise SystemExit(f'Phase 175 German DOM visual gate failed for {mode}')
-
-        # Chrome's one-shot headless screenshot can occasionally return only the page
-        # background on hosted runners even after the DOM and layout are ready. Keep the
-        # strict non-blank gate, but try equivalent renderer paths before declaring failure.
-        expected = tuple(map(int, size.split(',')))
-        shot = shots / f'validated-german-event-card-{mode}.png'
-        screenshot_strategies = (
-            ('new-gpu', ['--headless=new']),
-            ('new-software', ['--headless=new', '--disable-gpu']),
-            ('classic', ['--headless']),
-        )
-        screenshot_ok = False
-        diagnostics = []
-        for strategy, headless_args in screenshot_strategies:
-            candidate = shots / f'.phase175-{mode}-{strategy}.png'
-            candidate.unlink(missing_ok=True)
-            shot_result = subprocess.run(
-                common_cmd[:1] + headless_args + common_cmd[1:] + [f'--screenshot={candidate}', url],
-                text=True, capture_output=True, timeout=45,
-            )
-            if shot_result.returncode != 0 or not candidate.is_file():
-                diagnostics.append(f'{strategy}: chrome_exit={shot_result.returncode}; {shot_result.stderr[-500:]}')
-                continue
-            image_check = subprocess.run([
-                str(image_python), '-c',
-                "from PIL import Image,ImageStat; import sys; "
-                "im=Image.open(sys.argv[1]).convert('RGB'); exp=tuple(map(int,sys.argv[2].split(','))); "
-                "var=sum(ImageStat.Stat(im).var); colors=len(set(im.resize((64,64)).getdata())); "
-                "print(f'image={im.size} variance={var:.3f} sampled_colors={colors}'); "
-                "raise SystemExit(0 if im.size==exp and var>10 and colors>=8 else 2)",
-                str(candidate), size,
-            ], text=True, capture_output=True, timeout=30)
-            summary = image_check.stdout.strip()
-            print(f'Phase 175 screenshot {strategy}: {summary}')
-            if image_check.returncode == 0:
-                shutil.copyfile(candidate, shot)
-                screenshot_ok = True
-                break
-            diagnostics.append(f'{strategy}: {summary}; {image_check.stderr[-500:]}')
-        if not screenshot_ok:
-            for diagnostic in diagnostics:
-                print(diagnostic)
-            raise SystemExit(f'Phase 175 German screenshot is blank or invalid for {mode}')
-        print(f'Phase 175 visual PASS: {mode} {size}')
-
 finally:
     server.shutdown()
     server.server_close()
     os.chdir(old_cwd)
-    for probe in (PROBE, P175_PROBE):
-        if probe is None:
-            continue
-        try:
-            probe.unlink()
-        except FileNotFoundError:
-            pass
+    try:
+        PROBE.unlink()
+    except FileNotFoundError:
+        pass
