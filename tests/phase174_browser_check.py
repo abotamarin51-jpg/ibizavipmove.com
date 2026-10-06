@@ -41,7 +41,7 @@ def wait_state(page, selector, should_be_visible, label):
                 Number(s.opacity) !== 0 && r.width > 0 && r.height > 0;
             return visible === expected;
         }""",
-        [selector, should_be_visible],
+        arg=[selector, should_be_visible],
         timeout=5000,
     )
     state = page.locator(selector).evaluate(VISIBLE_JS)
