@@ -240,6 +240,7 @@ try:
             '--disable-dev-shm-usage',
             '--hide-scrollbars',
             '--run-all-compositor-stages-before-draw',
+            '--force-prefers-reduced-motion',
             '--host-resolver-rules=MAP * 0.0.0.0, EXCLUDE localhost, EXCLUDE 127.0.0.1',
             f'--window-size={size}',
             '--virtual-time-budget=2600',
