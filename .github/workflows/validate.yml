@@ -30,6 +30,7 @@ on:
       - "tests/phone-activation.cjs"
       - "tests/phase174_browser_check.py"
       - "tests/contact_handoff_visual.py"
+      - "tests/destination_snippet_visual.py"
       - "brand-logo.jpg"
       - "brand-logo.svg"
       - "brand-mark.svg"
@@ -163,6 +164,17 @@ jobs:
         with:
           name: ibiza-vip-move-contact-review
           path: ${{ runner.temp }}/ivm-contact-review
+          if-no-files-found: warn
+          retention-days: 3
+      - name: Review Destination Management snippet in desktop and mobile browsers
+        run: |
+          "$RUNNER_TEMP/ivm-image-tools/bin/python" tests/destination_snippet_visual.py
+      - name: Upload Destination review evidence separately from website
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ibiza-vip-move-destination-review
+          path: ${{ runner.temp }}/ivm-destination-review
           if-no-files-found: warn
           retention-days: 3
       - name: Upload validated preview artifact
