@@ -232,41 +232,65 @@ try:
 
     for mode, size in (('desktop', '1366,768'), ('mobile', '390,844')):
         url = f'http://127.0.0.1:{port}/de/privatkoch-villa-staff-ibiza/__phase175_visual_probe.html'
-        base_cmd = [
+        common_cmd = [
             chrome,
-            '--headless=new',
-            '--disable-gpu',
             '--no-sandbox',
             '--disable-dev-shm-usage',
             '--hide-scrollbars',
-            '--run-all-compositor-stages-before-draw',
             '--force-prefers-reduced-motion',
             '--host-resolver-rules=MAP * 0.0.0.0, EXCLUDE localhost, EXCLUDE 127.0.0.1',
             f'--window-size={size}',
             '--virtual-time-budget=2600',
         ]
-        dom_result = subprocess.run(base_cmd + ['--dump-dom', url], text=True, capture_output=True, timeout=45)
+        dom_result = subprocess.run(
+            common_cmd[:1] + ['--headless=new', '--disable-gpu'] + common_cmd[1:] + ['--dump-dom', url],
+            text=True, capture_output=True, timeout=45,
+        )
         if dom_result.returncode != 0 or 'data-phase175-visual="pass"' not in dom_result.stdout:
             print(dom_result.stderr[-2000:])
             raise SystemExit(f'Phase 175 German DOM visual gate failed for {mode}')
-        shot = shots / f'validated-german-event-card-{mode}.png'
-        shot_result = subprocess.run(base_cmd + [f'--screenshot={shot}', url], text=True, capture_output=True, timeout=45)
-        if shot_result.returncode != 0:
-            print(shot_result.stderr[-2000:])
-            raise SystemExit(f'Phase 175 German screenshot command failed for {mode}')
+
+        # Chrome's one-shot headless screenshot can occasionally return only the page
+        # background on hosted runners even after the DOM and layout are ready. Keep the
+        # strict non-blank gate, but try equivalent renderer paths before declaring failure.
         expected = tuple(map(int, size.split(',')))
-        image_check = subprocess.run([
-            str(image_python), '-c',
-            "from PIL import Image,ImageStat; import sys; "
-            "im=Image.open(sys.argv[1]).convert('RGB'); exp=tuple(map(int,sys.argv[2].split(','))); "
-            "var=sum(ImageStat.Stat(im).var); colors=len(set(im.resize((64,64)).getdata())); "
-            "print(f'image={im.size} variance={var:.3f} sampled_colors={colors}'); "
-            "raise SystemExit(0 if im.size==exp and var>10 and colors>=8 else 2)",
-            str(shot), size,
-        ], text=True, capture_output=True, timeout=30)
-        print(image_check.stdout.strip())
-        if image_check.returncode != 0:
-            print(image_check.stderr[-2000:])
+        shot = shots / f'validated-german-event-card-{mode}.png'
+        screenshot_strategies = (
+            ('new-gpu', ['--headless=new']),
+            ('new-software', ['--headless=new', '--disable-gpu']),
+            ('classic', ['--headless']),
+        )
+        screenshot_ok = False
+        diagnostics = []
+        for strategy, headless_args in screenshot_strategies:
+            candidate = shots / f'.phase175-{mode}-{strategy}.png'
+            candidate.unlink(missing_ok=True)
+            shot_result = subprocess.run(
+                common_cmd[:1] + headless_args + common_cmd[1:] + [f'--screenshot={candidate}', url],
+                text=True, capture_output=True, timeout=45,
+            )
+            if shot_result.returncode != 0 or not candidate.is_file():
+                diagnostics.append(f'{strategy}: chrome_exit={shot_result.returncode}; {shot_result.stderr[-500:]}')
+                continue
+            image_check = subprocess.run([
+                str(image_python), '-c',
+                "from PIL import Image,ImageStat; import sys; "
+                "im=Image.open(sys.argv[1]).convert('RGB'); exp=tuple(map(int,sys.argv[2].split(','))); "
+                "var=sum(ImageStat.Stat(im).var); colors=len(set(im.resize((64,64)).getdata())); "
+                "print(f'image={im.size} variance={var:.3f} sampled_colors={colors}'); "
+                "raise SystemExit(0 if im.size==exp and var>10 and colors>=8 else 2)",
+                str(candidate), size,
+            ], text=True, capture_output=True, timeout=30)
+            summary = image_check.stdout.strip()
+            print(f'Phase 175 screenshot {strategy}: {summary}')
+            if image_check.returncode == 0:
+                shutil.copyfile(candidate, shot)
+                screenshot_ok = True
+                break
+            diagnostics.append(f'{strategy}: {summary}; {image_check.stderr[-500:]}')
+        if not screenshot_ok:
+            for diagnostic in diagnostics:
+                print(diagnostic)
             raise SystemExit(f'Phase 175 German screenshot is blank or invalid for {mode}')
         print(f'Phase 175 visual PASS: {mode} {size}')
 
