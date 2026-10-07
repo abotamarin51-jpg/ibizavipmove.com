@@ -45,6 +45,8 @@ def run():
         require(url in urls,f'canonical remains in sitemap {slug}')
         require(not any(t=='meta' and a.get('name','').lower()=='robots' and 'noindex' in a.get('content','').lower() for t,a in tags),f'indexability {slug}')
         require({a.get('hreflang') for t,a in tags if t=='link' and a.get('rel')=='alternate'}=={'en','es','fr','de','ar','x-default'},f'language cluster {slug}')
+        if slug == 'private-office':
+            require(html.count('href="/private-client-services-ibiza/"') == 1, 'one contextual Private Client Services pathway from English Private Office')
     print('PASS: Phase 140 audit — 90 supplied professional-role equivalences integrated across 10 existing B2B pages; 156 sitemap canonicals preserved')
 
 if __name__ == '__main__':
