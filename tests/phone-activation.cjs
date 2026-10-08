@@ -41,6 +41,24 @@ const cases=[
  ['non-link creates no event',h=>{h.emit('click',{closest:()=>null});assert.equal(h.events.length,0);}],
  ['secondary click is not a phone activation',h=>{h.emit('click',h.anchor(),{button:2});assert.equal(h.phones(),0);}]
 ];
+const ivmContactPaths=['/contact/','/fr/contact/','/de/kontakt/','/ar/contact/','/es/contacto/'];
+for(const path of ivmContactPaths){
+  for(const href of [path,'https://ibizavipmove.com'+path]){
+    cases.push(['localised contact route '+href,h=>{
+      h.emit('click',h.anchor(href));
+      assert.equal(h.events.length,1);
+      assert.equal(h.events[0].type,'request_concierge_click');
+    }]);
+  }
+}
+cases.push(['unrelated external contact host is not tracked',h=>{
+  h.emit('click',h.anchor('https://ibizavipmove.com.evil.test/contact/'));
+  assert.equal(h.events.length,0);
+}]);
+cases.push(['unrelated internal route is not a concierge request',h=>{
+  h.emit('click',h.anchor('/fr/services/'));
+  assert.equal(h.events.length,0);
+}]);
 let failed=0;
 for(const [name,test] of cases){try{test(harness());console.log('PASS '+name);}catch(e){failed++;console.log('FAIL '+name+': '+e.message);}}
 console.log(JSON.stringify({cases:cases.length,passed:cases.length-failed,failed}));
