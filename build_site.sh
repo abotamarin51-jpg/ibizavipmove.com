@@ -67,6 +67,8 @@ python3 postprocess_site.py
 python3 legal_pages.py
 python3 authority_enhance.py
 python3 image_markup_enhance.py
+python3 phase175_enhance.py
+python3 phase175_audit.py
 python3 validate_site.py
 
 test -f _site/index.html
