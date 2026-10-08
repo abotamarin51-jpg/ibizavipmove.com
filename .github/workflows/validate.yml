@@ -146,6 +146,8 @@ jobs:
           python3 phase175_audit.py
           python3 phase176_enhance.py
           python3 phase176_audit.py
+          python3 phase177_enhance.py
+          python3 phase177_audit.py
           python3 phase172_enhance.py
           python3 phase172_audit.py
           python3 phase124_audit.py
