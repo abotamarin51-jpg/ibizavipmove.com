@@ -166,6 +166,7 @@ if('MutationObserver' in window){
 }
 
 let ivmLastPhoneTrack=0;
+const ivmContactRoutes=new Set(['/contact/','/fr/contact/','/de/kontakt/','/ar/contact/','/es/contacto/']);
 function ivmTrackPhone(a){
   const now=Date.now();
   // Capture and delegated click handlers see the same activation. Count it once.
@@ -194,7 +195,7 @@ document.addEventListener('click',e=>{
     if(e.button===0)ivmTrackPhone(a);
   }else if(href.startsWith('mailto:')){
     ivmTrack('email_click',common);
-  }else if(href==='/contact/'||href==='https://ibizavipmove.com/contact/'){
+  }else if(ivmContactRoutes.has(href.startsWith('https://ibizavipmove.com/') ? href.slice('https://ibizavipmove.com'.length) : href)){
     ivmTrack('request_concierge_click',common);
   }else if(href==='/partners/'||href==='https://ibizavipmove.com/partners/'){
     ivmTrack('partner_interest_click',common);
