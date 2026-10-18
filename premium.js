@@ -195,7 +195,7 @@ document.addEventListener('click',e=>{
     if(e.button===0)ivmTrackPhone(a);
   }else if(href.startsWith('mailto:')){
     ivmTrack('email_click',common);
-  }else if(ivmContactRoutes.has(href.startsWith('https://ibizavipmove.com/') ? href.slice('https://ibizavipmove.com'.length) : href)){
+  }else if(ivmContactRoutes.has((href.startsWith('https://ibizavipmove.com/') ? href.slice('https://ibizavipmove.com'.length) : href).split(/[?#]/,1)[0])){
     ivmTrack('request_concierge_click',common);
   }else if(href==='/partners/'||href==='https://ibizavipmove.com/partners/'){
     ivmTrack('partner_interest_click',common);

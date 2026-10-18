@@ -117,7 +117,9 @@ config = Path('postprocess_site.py').read_text(encoding='utf-8')
 version_match = re.search(r"^ASSET_VERSION\s*=\s*['\"]([0-9]+)['\"]\s*$", config, re.M)
 if not version_match:
     raise SystemExit('Phase 172 could not read ASSET_VERSION from postprocess_site.py')
-asset_version = version_match.group(1)
+# Contact-query runtime requires v12; do not invalidate unchanged logos/CSS.
+# Future higher configured versions still take precedence.
+asset_version = str(max(12, int(version_match.group(1))))
 premium_ref = re.compile(r'(/assets/premium\.js\?v=)([0-9]+)')
 ref_count = 0
 changed_count = 0
