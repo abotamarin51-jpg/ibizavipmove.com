@@ -117,7 +117,8 @@ if len(clusters)!=11:fail(f'expected 11 service clusters, found {len(clusters)}'
 for key,members in clusters.items():
     if len(members)!=5:fail(f'cluster does not have five reciprocal pages: {sorted(members)}')
 
-# 4) Five Private Members Desks: explicit placeholder + exact 12-option service catalog + conversion routing.
+# 4) Five contact desks: explicit placeholder + reviewed service inventory + conversion routing.
+from phase131_enhance import EN_SERVICES
 contacts=['/contact/','/es/contacto/','/fr/contact/','/de/kontakt/','/ar/contact/']
 for path in contacts:
     p=page(path)
@@ -129,16 +130,19 @@ for path in contacts:
     else:
         opening,body=fm.groups()
         options=re.findall(r'<option\b([^>]*)\bvalue="([^"]*)"([^>]*)>',body,re.I)
+        count=13 if path=='/contact/' else 12
         if not re.search(r'\brequired\b',opening,re.I):fail(f'contact service selector not required: {path}')
-        if len(options)!=13:fail(f'contact service options != placeholder + 12: {path}')
+        if len(options)!=count+1:fail(f'contact service options != placeholder + {count}: {path}')
         else:
             before,value,after=options[0]
             attrs=(before+' '+after).lower()
             if value!='' or 'selected' not in attrs or 'disabled' not in attrs:
                 fail(f'contact service placeholder invalid: {path}')
             real=[value for _before,value,_after in options[1:]]
-            if len(real)!=12 or any(not value for value in real) or len(set(real))!=12:
-                fail(f'contact real service catalog != 12 distinct values: {path}')
+            if len(real)!=count or any(not value for value in real) or len(set(real))!=count:
+                fail(f'contact real service catalog != {count} distinct values: {path}')
+            if path=='/contact/' and [unescape(value) for value in real]!=EN_SERVICES:
+                fail('English contact must preserve the original 12 services plus exactly Destination Management')
     if text.count('/assets/phase63.js?v=63')!=1:fail(f'contact Phase63 routing missing/duplicated: {path}')
     for field in ('fName','fPhone','fArrival','fDeparture','fService','fGuests','fBrief'):
         if f'id="{field}"' not in text:fail(f'contact field missing {field}: {path}')
