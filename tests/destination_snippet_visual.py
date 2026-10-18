@@ -152,3 +152,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+    # Add a distinct form-context regression check; keep every existing snippet assertion.
+    from runpy import run_path
+    run_path('phase107_dmc_contact_review.py', run_name='__main__')
+    shutil.copytree(Path(os.environ['RUNNER_TEMP']) / 'ivm-dmc-context-review',
+                    Path(os.environ['RUNNER_TEMP']) / 'ivm-destination-review' / 'dmc-context',
+                    dirs_exist_ok=True)

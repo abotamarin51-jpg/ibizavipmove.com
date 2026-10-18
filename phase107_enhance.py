@@ -65,3 +65,55 @@ for lang,(path,role_label,area_label,roles,areas) in CONTACTS.items():
     target.write_text(html,encoding='utf-8')
 
 print('PASS: Phase 107 qualification fields added to five Private Members Desk forms with privacy-safe deferred routing script')
+
+# Preserve the existing English DMC request context without adding a form,
+# tracking event, client-profile assumption or language. Run after Phase 102.
+def preserve_dmc_form_context(root):
+    contact_path = root / 'contact' / 'index.html'
+    dmc_path = root / 'destination-management-ibiza' / 'index.html'
+    contact = contact_path.read_text(encoding='utf-8')
+    dmc = dmc_path.read_text(encoding='utf-8')
+    option = '<option value="Destination Management">Destination Management</option>'
+    anchor = '<option value="Full Concierge">Full Concierge</option>'
+    if option not in contact:
+        assert contact.count(anchor) == 1, 'English Full Concierge option missing or duplicated'
+        contact = contact.replace(anchor, anchor + option, 1)
+    assert contact.count(option) == 1, 'Duplicate DMC option'
+
+    # Only an explicit allowlisted service is preselected. Do not replace a
+    # visitor/browser-restored selection, infer their role, or dispatch events.
+    script = '''<script id="ivm-dmc-form-context">(()=>{
+  const apply=()=>{
+    if(document.documentElement.lang!=='en'||window.location.pathname!=='/contact/')return;
+    const params=new URLSearchParams(window.location.search);
+    if(params.getAll('service').length!==1||params.get('service')!=='dmc')return;
+    const select=document.getElementById('fService');
+    if(select&&!select.value&&[...select.options].some(o=>o.value==='Destination Management')){
+      select.value='Destination Management';
+    }
+  };
+  if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',apply,{once:true});
+  else apply();
+})();</script>'''
+    if 'id="ivm-dmc-form-context"' not in contact:
+        assert contact.count('</body>') == 1, 'English Contact body missing or duplicated'
+        contact = contact.replace('</body>', script + '</body>', 1)
+    assert contact.count(script) == 1, 'DMC context script drift or duplication'
+
+    for old in (
+        '<a class="text-link" href="/contact/">Request private support →</a>',
+        '<a class="btn dark" href="/contact/">Start your brief</a>',
+    ):
+        new = old.replace('href="/contact/"', 'href="/contact/?service=dmc"')
+        if old in dmc:
+            assert dmc.count(old) == 1, 'Ambiguous DMC contextual contact link'
+            dmc = dmc.replace(old, new, 1)
+        assert dmc.count(new) == 1, 'Expected DMC contextual contact link missing'
+    assert '<link rel="canonical" href="https://ibizavipmove.com/contact/"' in contact
+    assert '<link rel="canonical" href="https://ibizavipmove.com/destination-management-ibiza/"' in dmc
+    contact_path.write_text(contact, encoding='utf-8')
+    dmc_path.write_text(dmc, encoding='utf-8')
+
+
+preserve_dmc_form_context(ROOT)
+print('PASS: English DMC context retained through the two existing Contact links; profile remains visitor-selected')
