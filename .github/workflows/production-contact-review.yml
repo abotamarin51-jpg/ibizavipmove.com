@@ -8,6 +8,10 @@ on:
       - "tests/production_whatsapp_review.py"
       - ".github/workflows/production-contact-review.yml"
   workflow_dispatch:
+  workflow_run:
+    workflows: ["Deploy Ibiza VIP Move"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
@@ -18,7 +22,7 @@ concurrency:
 
 jobs:
   browser-review:
-    if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == github.repository) || (github.event_name == 'workflow_run' && github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -27,6 +31,7 @@ jobs:
         with:
           persist-credentials: false
           fetch-depth: 2
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
       - name: Install the browser library version already used by this repository
         run: |
           python3 -m venv "$RUNNER_TEMP/ivm-production-review-tools"
@@ -42,7 +47,7 @@ jobs:
           git show "$BASE_SHA:phase32.css" > "$RUNNER_TEMP/phase32-baseline.css"
           "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --candidate-css phase32.css --baseline-css "$RUNNER_TEMP/phase32-baseline.css" --inline-crops --output "$RUNNER_TEMP/ivm-production-contact-review"
       - name: Verify unmodified production after deployment
-        if: github.event_name == 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run'
         run: |
           "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --inline-crops --output "$RUNNER_TEMP/ivm-production-contact-review"
       - name: Retain screenshots and diagnostics outside website output
