@@ -32,6 +32,9 @@ jobs:
       - name: Verify request allowlist without network
         run: |
           "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --self-test
+      - name: Capture the demonstrated Contact menu obstruction and already-requested resources
+        run: |
+          "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/capture_contact_baseline.py
       - name: Inspect Home to Private Office to Contact without sending messages or Analytics
         run: |
           "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --inline-crops --output "$RUNNER_TEMP/ivm-production-contact-review"
