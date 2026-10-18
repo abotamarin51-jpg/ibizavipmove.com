@@ -1,0 +1,42 @@
+name: Review published DMC contact context
+
+on:
+  workflow_run:
+    workflows: ["Deploy Ibiza VIP Move"]
+    types: [completed]
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ivm-dmc-context-review
+  cancel-in-progress: false
+
+jobs:
+  read-only-production-review:
+    if: github.event_name == 'workflow_dispatch' || (github.event.workflow_run.conclusion == 'success' && github.event.workflow_run.head_branch == 'main' && github.event.workflow_run.head_repository.full_name == github.repository)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Check out verified source without storing credentials
+        uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.workflow_run.head_sha || github.sha }}
+      - name: Install the browser tools already pinned by this repository
+        run: |
+          python3 -m venv "$RUNNER_TEMP/ivm-dmc-tools"
+          "$RUNNER_TEMP/ivm-dmc-tools/bin/python" -m pip install --disable-pip-version-check --only-binary=:all: "playwright==1.57.0" "Pillow==12.3.0"
+      - name: Verify published DMC and Contact without messages or Analytics
+        run: |
+          "$RUNNER_TEMP/ivm-dmc-tools/bin/python" phase107_dmc_contact_review.py --production
+      - name: Retain evidence outside website output
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: ibiza-vip-move-dmc-context-review
+          path: ${{ runner.temp }}/ivm-dmc-context-review
+          if-no-files-found: warn
+          retention-days: 3

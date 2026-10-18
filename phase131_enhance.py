@@ -2,11 +2,11 @@
 
 The existing forms silently default to the first service option ("Full Concierge"
 or its localized equivalent) when a visitor submits without interacting with the
-service selector. That can misclassify qualified briefs. This phase keeps the
-existing service inventory and adds a localized empty placeholder plus native
+service selector. That can misclassify qualified briefs. This phase preserves the
+reviewed service inventory and adds a localized empty placeholder plus native
 HTML required validation.
 """
-from html import escape
+from html import escape, unescape
 from pathlib import Path
 import re
 
@@ -18,6 +18,11 @@ CONTACTS = {
     'de/kontakt/index.html': 'Hauptservice auswählen',
     'ar/contact/index.html': 'اختر الخدمة الرئيسية',
 }
+EN_SERVICES = ['Full Concierge', 'Destination Management', 'Private Chauffeur & Transportation',
+    'Luxury Villas & Private Stays', 'Yachts & Charters', 'Private Aviation',
+    'Restaurants, Beach Clubs & Nightlife', 'Security & Close Protection',
+    'Private Chefs & Villa Staffing', 'Luxury & Supercar Rental', 'Wellness & Beauty',
+    'Private Events & Celebrations', 'Lifestyle & Bespoke Requests']
 SELECT_RE = re.compile(r'(<select\b[^>]*\bid="fService"[^>]*>)(.*?)(</select>)', re.I | re.S)
 OPTION_RE = re.compile(r'<option\b([^>]*)\bvalue=["\']([^"\']*)["\']([^>]*)>(.*?)</option>', re.I | re.S)
 
@@ -41,12 +46,16 @@ def enhance():
         m = matches[0]
         opening, options, closing = m.groups()
         parsed = OPTION_RE.findall(options)
+        count = 13 if rel == 'contact/index.html' else 12
+        real = parsed[1:] if parsed and parsed[0][1] == '' else parsed
+        if rel == 'contact/index.html' and [unescape(value) for _a, value, _b, _text in real] != EN_SERVICES:
+            raise SystemExit('Phase 131 English inventory must preserve the original 12 services plus exactly Destination Management')
 
         # Allow an exact already-enhanced state so local validation can be
         # repeated without stacking placeholders.
         if parsed and parsed[0][1] == '':
-            if len(parsed) != 13:
-                raise SystemExit(f'Phase 131 expected placeholder + 12 services: {rel} -> {len(parsed)}')
+            if len(parsed) != count + 1:
+                raise SystemExit(f'Phase 131 expected placeholder + {count} services: {rel} -> {len(parsed)}')
             first = parsed[0]
             attrs = (first[0] + ' ' + first[2]).lower()
             text = re.sub(r'<[^>]+>', '', first[3]).strip()
@@ -60,10 +69,10 @@ def enhance():
                 raise SystemExit(f'Phase 131 unexpected enhanced service state: {rel}')
             continue
 
-        if len(parsed) != 12:
-            raise SystemExit(f'Phase 131 expected 12 existing service options: {rel} -> {len(parsed)}')
+        if len(parsed) != count:
+            raise SystemExit(f'Phase 131 expected {count} existing service options: {rel} -> {len(parsed)}')
         values = [value for _a, value, _b, _text in parsed]
-        if any(not value for value in values) or len(set(values)) != 12:
+        if any(not value for value in values) or len(set(values)) != count:
             raise SystemExit(f'Phase 131 service inventory drift: {rel}')
 
         # Preserve every existing real service option and make the first state
@@ -76,7 +85,7 @@ def enhance():
 
     for path, html in pending.items():
         path.write_text(html, encoding='utf-8')
-    print('PASS: Phase 131 — five contact forms require an explicit localized primary-service choice without changing the service inventory')
+    print('PASS: Phase 131 — five forms require an explicit service choice; English adds only DMC, four other languages preserve 12 services')
 
 
 if __name__ == '__main__':
