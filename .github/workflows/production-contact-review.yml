@@ -1,9 +1,10 @@
-name: Review production WhatsApp without deploying
+name: Review WhatsApp contact journey
 
 on:
   pull_request:
     branches: [main]
     paths:
+      - "phase32.css"
       - "tests/production_whatsapp_review.py"
       - ".github/workflows/production-contact-review.yml"
   workflow_dispatch:
@@ -16,7 +17,7 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  read-only-browser-review:
+  browser-review:
     if: github.event_name == 'workflow_dispatch' || github.event.pull_request.head.repo.full_name == github.repository
     runs-on: ubuntu-latest
     timeout-minutes: 5
@@ -25,6 +26,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           persist-credentials: false
+          fetch-depth: 2
       - name: Install the browser library version already used by this repository
         run: |
           python3 -m venv "$RUNNER_TEMP/ivm-production-review-tools"
@@ -32,10 +34,15 @@ jobs:
       - name: Verify request allowlist without network
         run: |
           "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --self-test
-      - name: Capture the demonstrated Contact menu obstruction and already-requested resources
+      - name: Test the exact candidate CSS before publication
+        if: github.event_name == 'pull_request'
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/capture_contact_baseline.py
-      - name: Inspect Home to Private Office to Contact without sending messages or Analytics
+          git show "$BASE_SHA:phase32.css" > "$RUNNER_TEMP/phase32-baseline.css"
+          "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --candidate-css phase32.css --baseline-css "$RUNNER_TEMP/phase32-baseline.css" --inline-crops --output "$RUNNER_TEMP/ivm-production-contact-review"
+      - name: Verify unmodified production after deployment
+        if: github.event_name == 'workflow_dispatch'
         run: |
           "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --inline-crops --output "$RUNNER_TEMP/ivm-production-contact-review"
       - name: Retain screenshots and diagnostics outside website output

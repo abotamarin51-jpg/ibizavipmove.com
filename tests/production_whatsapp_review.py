@@ -115,13 +115,23 @@ def navigation_link(page, target: str):
     return sorted(candidates, key=lambda item: item[0], reverse=True)[0][1]
 
 
-def run_review(output: Path, inline_crops: bool) -> dict:
+def run_review(output: Path, inline_crops: bool, candidate_css: Path | None = None, baseline_css: Path | None = None) -> dict:
     from playwright.sync_api import sync_playwright
+    replacement = None
+    if candidate_css is not None or baseline_css is not None:
+        assert candidate_css is not None and baseline_css is not None
+        old = baseline_css.read_bytes()
+        new = candidate_css.read_bytes()
+        delta = b'\n/* Keep the Contact close control above its existing mobile-menu overlay. */\n@media(max-width:900px){body.ivm-private-desk.menu-open .site-header{position:fixed;z-index:100}}\n'
+        assert hashlib.sha1(b'blob '+str(len(old)).encode()+b'\0'+old).hexdigest() == '1ea3da7ba7fcac84e7a97dd37a6c52600061a432', 'Unreviewed baseline CSS'
+        assert new == old + delta, 'Candidate CSS change is outside the reviewed minimal fix'
+        replacement = (old, new)
     output.mkdir(parents=True, exist_ok=True)
     chrome = next((shutil.which(x) for x in ('google-chrome', 'google-chrome-stable', 'chromium', 'chromium-browser') if shutil.which(x)), None)
     assert chrome, 'No installed Chrome/Chromium executable'
     report = {'testedAt': datetime.now(ZoneInfo('Europe/Madrid')).isoformat(),
               'origin': ORIGIN, 'sourceCommit': os.environ.get('GITHUB_SHA'),
+              'reviewMode': 'candidate_css_response_override' if replacement else 'production_unmodified',
               'scope': list(PAGES), 'modes': [], 'status': 'NOT_RUN',
               'limitations': ['Chromium viewport emulation, not a physical iPhone/Safari test.',
                               'Contact actions use trial clicks; no form is submitted or message sent.',
@@ -133,7 +143,7 @@ def run_review(output: Path, inline_crops: bool) -> dict:
             try:
                 for mode, width, height in [('desktop',1366,768), ('mobile',390,844)]:
                     result = {'mode':mode, 'viewport':[width,height], 'pages':[], 'denied':[],
-                              'httpErrors':[], 'networkErrors':[], 'javascriptErrors':[], 'assets':{}, 'inlineStyles':{}}
+                              'httpErrors':[], 'networkErrors':[], 'javascriptErrors':[], 'assets':{}, 'inlineStyles':{}, 'candidateOverrides':[]}
                     report['modes'].append(result)
                     context = browser.new_context(viewport={'width':width,'height':height},
                         is_mobile=(mode=='mobile'),has_touch=(mode=='mobile'),
@@ -142,7 +152,18 @@ def run_review(output: Path, inline_crops: bool) -> dict:
                     def route_read_only(route):
                         req = route.request
                         if allowed_request(req.url,req.method,req.resource_type):
-                            route.continue_()
+                            if replacement and urlsplit(req.url).hostname == 'ibizavipmove.com' and req.resource_type == 'stylesheet':
+                                response = route.fetch(max_redirects=0, timeout=15000)
+                                assert response.status == 200, 'Candidate stylesheet source did not return 200'
+                                body = response.body()
+                                old, new = replacement
+                                if old in body:
+                                    assert body.count(old) == 1, 'Ambiguous baseline stylesheet content'
+                                    body = body.replace(old, new, 1)
+                                    result['candidateOverrides'].append({'url':req.url,'sourceSha256':hashlib.sha256(old).hexdigest(),'candidateSha256':hashlib.sha256(new).hexdigest()})
+                                route.fulfill(response=response, body=body)
+                            else:
+                                route.continue_()
                         else:
                             u=urlsplit(req.url)
                             result['denied'].append({'host':u.hostname,'path':u.path,'type':req.resource_type,'method':req.method})
@@ -252,6 +273,8 @@ def run_review(output: Path, inline_crops: bool) -> dict:
                                      if path.endswith('.css') and asset['status']==200
                                      and asset['iconMarkerPresent'] and asset['floatingMarkerPresent']]
                         assert contact_css or result['inlineStyles'], 'No served or inline stylesheet containing both contact markers'
+                        if replacement:
+                            assert result['candidateOverrides'], 'Candidate fix was never exercised'
                         result['status']='PASS'
                     except Exception as error:
                         result['status']='FAIL'; result['error']=str(error)
@@ -276,8 +299,10 @@ if __name__=='__main__':
     parser=argparse.ArgumentParser(description=__doc__)
     parser.add_argument('--self-test',action='store_true')
     parser.add_argument('--inline-crops',action='store_true')
+    parser.add_argument('--candidate-css',type=Path)
+    parser.add_argument('--baseline-css',type=Path)
     parser.add_argument('--output',type=Path,default=Path('production-contact-review'))
     args=parser.parse_args()
     policy_self_test()
     if not args.self_test:
-        run_review(args.output,args.inline_crops)
+        run_review(args.output,args.inline_crops,args.candidate_css,args.baseline_css)
