@@ -4,7 +4,7 @@ import re
 ROOT = Path('_site')
 APPROVED_WA = 'https://wa.me/34600703303'
 APPROVED_TEL = 'tel:+34600703303'
-ASSET_VERSION = '11'
+ASSET_VERSION = '12'
 
 js_path = ROOT / 'assets' / 'premium.js'
 css_path = ROOT / 'assets' / 'premium.css'

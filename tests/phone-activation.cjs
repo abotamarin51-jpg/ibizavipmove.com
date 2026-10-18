@@ -59,6 +59,49 @@ cases.push(['unrelated internal route is not a concierge request',h=>{
   h.emit('click',h.anchor('/fr/services/'));
   assert.equal(h.events.length,0);
 }]);
+
+// Contact query/hash are form context, not part of the allowlisted page path.
+for(const path of ivmContactPaths){
+  for(const prefix of ['', 'https://ibizavipmove.com']){
+    for(const suffix of ['?service=dmc', '?service=chauffeur', '#private-brief', '?service=dmc#private-brief']){
+      const href=prefix+path+suffix;
+      cases.push(['contact context '+href,h=>{
+        const a=h.anchor(href);
+        h.emit('click',a);
+        assert.equal(h.events.length,1);
+        assert.equal(h.events[0].type,'request_concierge_click');
+        assert.equal(a.getAttribute('href'),href,'Destination must remain unchanged');
+        assert.deepEqual(Object.keys(h.events[0].detail).sort(),['cta_placement','link_text']);
+      }]);
+    }
+  }
+}
+for(const href of [
+  'https://ibizavipmove.com.evil.test/contact/?service=dmc',
+  'https://example.invalid/contact/?service=dmc',
+  'https://example.invalid/?next=https://ibizavipmove.com/contact/',
+  'https://ibizavipmove.com@evil.test/contact/?service=dmc',
+  '/services/?next=/contact/', '/contact-not/?service=dmc',
+  '/contact/%3Fservice=dmc', '/fr/services/#/contact/',
+  '?next=/contact/', '#/contact/'
+]){
+  cases.push(['exclude non-contact context '+href,h=>{
+    h.emit('click',h.anchor(href));
+    assert.equal(h.events.length,0);
+  }]);
+}
+cases.push(['DMC keyboard activation counts once',h=>{
+  h.emit('click',h.anchor('/contact/?service=dmc'),{detail:0});
+  assert.equal(h.events.length,1);
+  assert.equal(h.events[0].type,'request_concierge_click');
+}]);
+cases.push(['DMC query values are not event details',h=>{
+  h.emit('click',h.anchor('/contact/?service=dmc&private_marker=DO_NOT_COLLECT'));
+  assert.equal(h.events.length,1);
+  assert.equal(h.events[0].type,'request_concierge_click');
+  assert.ok(!JSON.stringify(h.events).includes('DO_NOT_COLLECT'));
+}]);
+
 let failed=0;
 for(const [name,test] of cases){try{test(harness());console.log('PASS '+name);}catch(e){failed++;console.log('FAIL '+name+': '+e.message);}}
 console.log(JSON.stringify({cases:cases.length,passed:cases.length-failed,failed}));
