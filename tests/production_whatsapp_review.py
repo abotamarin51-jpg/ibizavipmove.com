@@ -133,7 +133,7 @@ def run_review(output: Path, inline_crops: bool) -> dict:
             try:
                 for mode, width, height in [('desktop',1366,768), ('mobile',390,844)]:
                     result = {'mode':mode, 'viewport':[width,height], 'pages':[], 'denied':[],
-                              'httpErrors':[], 'networkErrors':[], 'javascriptErrors':[], 'assets':{}}
+                              'httpErrors':[], 'networkErrors':[], 'javascriptErrors':[], 'assets':{}, 'inlineStyles':{}}
                     report['modes'].append(result)
                     context = browser.new_context(viewport={'width':width,'height':height},
                         is_mobile=(mode=='mobile'),has_touch=(mode=='mobile'),
@@ -161,7 +161,8 @@ def run_review(output: Path, inline_crops: bool) -> dict:
                         if allowed_request(req.url,req.method,req.resource_type):
                             if response.status >= 400:
                                 result['httpErrors'].append({'url':response.url,'status':response.status})
-                            if urlsplit(response.url).path in {'/assets/premium.js','/assets/premium.css'}:
+                            if (urlsplit(response.url).path == '/assets/premium.js' or
+                                (urlsplit(response.url).hostname == 'ibizavipmove.com' and req.resource_type == 'stylesheet')):
                                 body=response.body()
                                 result['assets'][urlsplit(response.url).path] = {
                                   'url':response.url,'status':response.status,'bytes':len(body),
@@ -185,6 +186,12 @@ def run_review(output: Path, inline_crops: bool) -> dict:
                             assert page.evaluate("document.fonts.check('16px Manrope')"), 'Manrope not loaded'
                             assert page.locator('link[rel="canonical"]').get_attribute('href')==ORIGIN+path
                             assert page.locator('h1').count()==1
+                            # Production may bundle CSS or inline it; inspect what the document actually uses.
+                            for style in page.locator('style').all():
+                                text=style.text_content() or ''
+                                if 'ivm-whatsapp-icon' in text and 'ivm-whatsapp-float' in text:
+                                    digest=hashlib.sha256(text.encode('utf-8')).hexdigest()
+                                    result['inlineStyles'][digest]={'document':path,'bytes':len(text.encode('utf-8'))}
                             bar=page.locator('.mobile-bar'); floating=page.locator('.ivm-whatsapp-float')
                             assert bar.count()==1 and floating.count()==1, 'Duplicate or missing contact controls'
                             assert bar.locator('a').count()==2
@@ -239,9 +246,12 @@ def run_review(output: Path, inline_crops: bool) -> dict:
                             result['pages'].append(data)
                             print('PRODUCTION_PAGE_REVIEW '+json.dumps({'mode':mode,**data}),flush=True)
                         assert not result['httpErrors'] and not result['networkErrors'] and not result['javascriptErrors'], 'See resource/JavaScript errors in report'
-                        assert len(result['assets'])==2, 'Both premium assets must be observed'
-                        for asset in result['assets'].values():
-                            assert asset['status']==200 and asset['iconMarkerPresent'] and asset['floatingMarkerPresent'], asset
+                        script=result['assets'].get('/assets/premium.js')
+                        assert script and script['status']==200 and script['iconMarkerPresent'] and script['floatingMarkerPresent'], 'Production premium.js markers missing'
+                        contact_css=[asset for path,asset in result['assets'].items()
+                                     if path.endswith('.css') and asset['status']==200
+                                     and asset['iconMarkerPresent'] and asset['floatingMarkerPresent']]
+                        assert contact_css or result['inlineStyles'], 'No served or inline stylesheet containing both contact markers'
                         result['status']='PASS'
                     except Exception as error:
                         result['status']='FAIL'; result['error']=str(error)
