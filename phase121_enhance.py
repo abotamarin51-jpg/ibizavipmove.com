@@ -1,16 +1,18 @@
-"""Refresh sitemap lastmod only for pages with verified significant changes on 2026-09-12."""
+"""Refresh sitemap lastmod only for pages with verified significant changes."""
 from pathlib import Path
 import xml.etree.ElementTree as ET
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
 NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
-LASTMOD = '2026-09-12'
 VERIFIED = {
-    '/contact/', '/es/contacto/', '/fr/contact/', '/de/kontakt/', '/ar/contact/',
-    '/fr/partners/', '/de/partners/', '/ar/partners/',
-    '/fr/clients-internationaux/', '/de/internationale-kunden/', '/ar/international-clients/',
-    '/fr/private-office/', '/de/private-office/', '/ar/private-office/',
+    '/contact/': '2026-09-12', '/es/contacto/': '2026-09-12', '/fr/contact/': '2026-09-12',
+    '/de/kontakt/': '2026-09-12', '/ar/contact/': '2026-09-12',
+    '/fr/partners/': '2026-09-12', '/de/partners/': '2026-09-12', '/ar/partners/': '2026-09-12',
+    '/fr/clients-internationaux/': '2026-09-12', '/de/internationale-kunden/': '2026-09-12',
+    '/ar/international-clients/': '2026-09-12',
+    '/fr/private-office/': '2026-09-12', '/de/private-office/': '2026-09-12', '/ar/private-office/': '2026-09-12',
+    '/destination-management-ibiza/': '2026-10-18',
 }
 ET.register_namespace('', NS)
 
@@ -29,21 +31,22 @@ def enhance():
             continue
         canonical = loc.text.rstrip('/') + '/'
         path = canonical[len(BASE):] if canonical.startswith(BASE) else None
-        if path not in VERIFIED:
+        target_lastmod = VERIFIED.get(path)
+        if target_lastmod is None:
             continue
         seen.add(path)
         lastmod = url.find(f'{{{NS}}}lastmod')
         if lastmod is None:
             lastmod = ET.Element(f'{{{NS}}}lastmod')
             url.insert(1, lastmod)
-        if lastmod.text != LASTMOD:
-            lastmod.text = LASTMOD
+        if lastmod.text != target_lastmod:
+            lastmod.text = target_lastmod
             changed += 1
     missing = VERIFIED - seen
     if missing:
         raise SystemExit(f'Phase 121 verified sitemap targets missing: {sorted(missing)}')
     tree.write(sitemap, encoding='utf-8', xml_declaration=True)
-    print(f'PASS: Phase 121 sitemap freshness — {len(VERIFIED)} verified significantly changed URLs carry accurate lastmod={LASTMOD}; {changed} metadata value(s) refreshed')
+    print(f'PASS: Phase 121 sitemap freshness — {len(VERIFIED)} verified significantly changed URLs carry accurate lastmod values; {changed} metadata value(s) refreshed')
 
 
 if __name__ == '__main__':
