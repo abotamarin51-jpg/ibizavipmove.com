@@ -42,7 +42,7 @@ def enhance():
         if lastmod.text != target_lastmod:
             lastmod.text = target_lastmod
             changed += 1
-    missing = VERIFIED - seen
+    missing = set(VERIFIED) - seen
     if missing:
         raise SystemExit(f'Phase 121 verified sitemap targets missing: {sorted(missing)}')
     tree.write(sitemap, encoding='utf-8', xml_declaration=True)
