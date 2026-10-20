@@ -39,6 +39,10 @@ jobs:
           "$RUNNER_TEMP/ivm-dmc-tools/bin/python" phase107_dmc_contact_review.py --production
       - name: Verify the served sitemap with one read-only request
         run: python3 tests/published_sitemap_check.py
+      - name: Verify published German event WhatsApp drafts without sending
+        # Candidate checks run in validate.yml; only deployed output is tested here.
+        if: github.event_name != 'pull_request'
+        run: '"$RUNNER_TEMP/ivm-dmc-tools/bin/python" tests/de_event_whatsapp_check.py --production'
       - name: Retain evidence outside website output
         if: always()
         uses: actions/upload-artifact@v4
