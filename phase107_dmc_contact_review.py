@@ -17,16 +17,21 @@ ORIGIN = 'https://ibizavipmove.com'
 DMC = '/destination-management-ibiza/'
 PRIVATE = '/private-client-services-ibiza/'
 TRAVEL = '/luxury-travel-concierge-ibiza/'
+LIFESTYLE = '/luxury-lifestyle-management-ibiza/'
 CONTACT = '/contact/?service=dmc'
 PRIVATE_CONTACT = '/contact/?service=private-client'
 TRAVEL_CONTACT = '/contact/?service=travel-concierge'
+LIFESTYLE_CONTACT = '/contact/?service=lifestyle-management'
 SERVICE = 'Destination Management'
 PRIVATE_SERVICE = 'Private Client Services'
 TRAVEL_SERVICE = 'Luxury Travel Concierge'
+LIFESTYLE_SERVICE = 'Luxury Lifestyle Management'
 QUERIES = {'', 'service=dmc', 'service=chauffeur', 'service=invalid', 'service=dmc&service=chauffeur',
            'service=private-client', 'service=private-client&service=dmc',
            'service=private-client&service=private-client', 'service=travel-concierge',
-           'service=travel-concierge&service=dmc', 'service=travel-concierge&service=travel-concierge'}
+           'service=travel-concierge&service=dmc', 'service=travel-concierge&service=travel-concierge',
+           'service=lifestyle-management', 'service=lifestyle-management&service=dmc',
+           'service=lifestyle-management&service=lifestyle-management'}
 STATIC_TYPES = {'script', 'stylesheet', 'font', 'image'}
 SUFFIXES = {'.js', '.css', '.woff', '.woff2', '.ttf', '.svg', '.jpg', '.jpeg', '.png', '.webp', '.avif', '.ico'}
 GEOMETRY = """el => {
@@ -43,7 +48,7 @@ def allowed(url, method, kind, origin):
         return False
     if (u.scheme, u.netloc) == (base.scheme, base.netloc):
         if kind == 'document':
-            return (u.path in {DMC, PRIVATE, TRAVEL} and not u.query) or (u.path == '/contact/' and u.query in QUERIES)
+            return (u.path in {DMC, PRIVATE, TRAVEL, LIFESTYLE} and not u.query) or (u.path == '/contact/' and u.query in QUERIES)
         return kind in STATIC_TYPES and Path(u.path).suffix.lower() in SUFFIXES
     return (u.scheme == 'https' and u.port in (None, 443)
             and u.hostname in {'fonts.googleapis.com', 'fonts.gstatic.com'}
@@ -54,6 +59,7 @@ def self_test():
     cases = [(ORIGIN+DMC,'GET','document',True), (ORIGIN+CONTACT,'GET','document',True),
              (ORIGIN+PRIVATE,'GET','document',True), (ORIGIN+PRIVATE_CONTACT,'GET','document',True),
              (ORIGIN+TRAVEL,'GET','document',True), (ORIGIN+TRAVEL_CONTACT,'GET','document',True),
+             (ORIGIN+LIFESTYLE,'GET','document',True), (ORIGIN+LIFESTYLE_CONTACT,'GET','document',True),
              (ORIGIN+'/assets/premium.js?v=11','GET','script',True),
              (ORIGIN+'/contact/?name=test','GET','document',False),
              (ORIGIN+'/contact/','POST','document',False),
@@ -94,7 +100,7 @@ def review(production=False):
         origin = f'http://127.0.0.1:{server.server_port}'
     report = {'testedAt':datetime.now(ZoneInfo('Europe/Madrid')).isoformat(),
               'commit':os.environ.get('GITHUB_SHA'), 'mode':'production_unmodified' if production else 'built_artifact',
-              'pages':[DMC,CONTACT,PRIVATE,PRIVATE_CONTACT,TRAVEL,TRAVEL_CONTACT], 'results':[], 'status':'NOT_RUN',
+              'pages':[DMC,CONTACT,PRIVATE,PRIVATE_CONTACT,TRAVEL,TRAVEL_CONTACT,LIFESTYLE,LIFESTYLE_CONTACT], 'results':[], 'status':'NOT_RUN',
               'limitations':['Chromium viewport emulation, not physical iPhone/Safari.',
                              'No form submission, outbound contact or Analytics request; no commercial outcome measured.']}
     chrome = next((shutil.which(x) for x in ('google-chrome','google-chrome-stable','chromium','chromium-browser') if shutil.which(x)), None)
@@ -235,6 +241,41 @@ def review(production=False):
                             assert select.input_value()=='Full Concierge'
                             result['journeys'].append({'link':label,'selectedService':TRAVEL_SERVICE,
                                 'editable':True,'profileInitiallyEmpty':True,'geometry':geometry,'formSubmitted':False})
+
+                        # Three existing Lifestyle CTAs retain the selected full-stay service.
+                        for index in range(3):
+                            res=page.goto(origin+LIFESTYLE,wait_until='load',timeout=30000)
+                            assert res and res.status==200
+                            ready(page)
+                            assert page.locator('link[rel="canonical"]').get_attribute('href')==ORIGIN+LIFESTYLE
+                            links=page.locator('main a[href="'+LIFESTYLE_CONTACT+'"]')
+                            assert links.count()==3, 'Lifestyle page must have exactly three contextual form links'
+                            label=links.nth(index).inner_text()
+                            with page.expect_navigation(wait_until='load',timeout=30000) as navigation:
+                                links.nth(index).click()
+                            assert navigation.value and navigation.value.status==200
+                            assert page.url==origin+LIFESTYLE_CONTACT
+                            ready(page)
+                            select=page.locator('#fService')
+                            assert select.input_value()==LIFESTYLE_SERVICE, 'Lifestyle context not preselected'
+                            assert select.locator('option[value="'+LIFESTYLE_SERVICE+'"]').count()==1
+                            assert page.locator('#fClientType').input_value()=='', 'Never infer visitor role'
+                            assert page.locator('#fName').input_value()==page.locator('#fPhone').input_value()==''
+                            assert page.locator('link[rel="canonical"]').get_attribute('href')==ORIGIN+'/contact/'
+                            assert page.locator('h1').count()==1 and select.get_attribute('required') is not None
+                            select.focus()
+                            select.click(trial=True,timeout=7000)
+                            geometry=select.evaluate(GEOMETRY)
+                            assert geometry['inside'] and geometry['unobstructed'] and not geometry['overflow'],geometry
+                            assert geometry['height']>=24 and geometry['width']>=24
+                            screenshot=output/f'{mode}-lifestyle-{index}.png'
+                            page.screenshot(path=str(screenshot))
+                            with Image.open(screenshot) as im:
+                                assert im.size==(width,height) and max(ImageStat.Stat(im.convert('RGB')).var)>1
+                            select.select_option(label='Full Concierge')
+                            assert select.input_value()=='Full Concierge'
+                            result['journeys'].append({'link':label,'selectedService':LIFESTYLE_SERVICE,
+                                'editable':True,'profileInitiallyEmpty':True,'geometry':geometry,'formSubmitted':False})
                         for query,expected in [('', ''),('service=invalid',''),('service=dmc&service=chauffeur',''),
                                                ('service=chauffeur','Private Chauffeur & Transportation'),
                                                ('service=private-client',PRIVATE_SERVICE),
@@ -242,7 +283,10 @@ def review(production=False):
                                                ('service=private-client&service=private-client',''),
                                                ('service=travel-concierge',TRAVEL_SERVICE),
                                                ('service=travel-concierge&service=dmc',''),
-                                               ('service=travel-concierge&service=travel-concierge','')]:
+                                               ('service=travel-concierge&service=travel-concierge',''),
+                                               ('service=lifestyle-management',LIFESTYLE_SERVICE),
+                                               ('service=lifestyle-management&service=dmc',''),
+                                               ('service=lifestyle-management&service=lifestyle-management','')]:
                             page.goto(origin+'/contact/'+('?' + query if query else ''),wait_until='load',timeout=30000)
                             ready(page)
                             assert page.locator('#fService').input_value()==expected, ('Unexpected preselection',query)
