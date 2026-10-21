@@ -67,6 +67,13 @@ def run() -> None:
     require('<meta name="robots" content="index,follow,max-image-preview:large">' in html, 'robots mismatch')
     require(html.lower().count('<h1') == 1, 'expected exactly one H1')
     require('<h1>VIP tables and club access in Ibiza, arranged privately.</h1>' in html, 'H1 mismatch')
+    # Keep public venue geography and US travel guidance factually accurate.
+    require('<td>O Beach Ibiza</td><td>Sant Antoni de Portmany</td><td>Day club</td>' in html, 'O Beach public location/branding drift')
+    require('Ocean Beach Ibiza</td>' not in html, 'superseded O Beach name returned')
+    require('These venues are examples for planning, not confirmed booking relationships.' in html, 'venue availability clarification missing')
+    require('the gap can briefly be five hours' in html, 'US daylight-saving caveat missing')
+    require('WhatsApp requires the app and an internet connection.' in html, 'WhatsApp prerequisites omitted')
+    require('WhatsApp works from the US with no extra setup' not in html, 'unsupported WhatsApp setup claim')
     require('id="main-content"' in html and 'class="ivm-skip-link"' in html, 'accessibility landmarks missing')
 
     # Same final template chrome, styles and runtimes; only the page-specific language choices differ.

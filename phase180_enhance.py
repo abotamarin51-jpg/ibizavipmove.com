@@ -303,7 +303,7 @@ def main_html() -> str:
             ('Amnesia', 'San Rafael', 'Club'),
             ('DC10', 'Near Ibiza Airport', 'Club'),
             ('Lío Ibiza', 'Ibiza Town port', 'Dinner and cabaret show'),
-            ('Ocean Beach Ibiza', "Playa d'en Bossa", 'Beach club'),
+            ('O Beach Ibiza', 'Sant Antoni de Portmany', 'Day club'),
         ],
         'Ibiza venues clients ask about',
     )
@@ -337,7 +337,7 @@ def main_html() -> str:
 </section>
 <section class="editorial">
   <div><div class="kicker dark">Ibiza venues</div><h2>Venues our clients ask about</h2></div>
-  <div><p class="large">We can request tables at many of Ibiza's leading venues. Availability is confirmed for each request.</p>{venues}<p data-ivm180-placeholder="venues"><strong>{escape(VENUE_MARKER)}</strong></p><p>Programs, policies and availability change by season and by night. Venue names are trademarks of their respective owners and are used for reference only. Ibiza VIP Move is an independent concierge and is not affiliated with or endorsed by these venues.</p></div>
+  <div><p class="large">These venues are examples for planning, not confirmed booking relationships. Share your preferred venue and date so we can check whether a request is possible.</p>{venues}<p data-ivm180-placeholder="venues"><strong>{escape(VENUE_MARKER)}</strong></p><p>Programs, policies and availability change by season and by night. Venue names are trademarks of their respective owners and are used for reference only. Ibiza VIP Move is an independent concierge and is not affiliated with or endorsed by these venues.</p></div>
 </section>
 <section class="process">
   <div class="section-head"><div class="kicker dark">Booking process</div><h2>How booking a VIP table works</h2></div>
@@ -355,7 +355,7 @@ def main_html() -> str:
 </section>
 <section class="dark-panel">
   <div class="kicker light">From the United States</div><h2>Planning tips for US travelers</h2>
-  <div class="trust-grid"><div><b>Book early for July and August.</b><p>Peak demand is concentrated in these months, and earlier requests leave more options.</p></div><div><b>Expect late nights.</b><p>Clubs in Ibiza are typically busiest late in the evening and after midnight, so plan dinner and transport around that.</p></div><div><b>Mind the time difference.</b><p>Spain is typically six hours ahead of US Eastern time. WhatsApp works from the US with no extra setup.</p></div><div><b>Bring valid photo ID.</b><p>Venues set their own age, ID and entry policies.</p></div><div><b>Plan the way home.</b><p>A pre-booked chauffeur avoids the late-night taxi queue.</p></div></div>
+  <div class="trust-grid"><div><b>Book early for July and August.</b><p>Peak demand is concentrated in these months, and earlier requests leave more options.</p></div><div><b>Expect late nights.</b><p>Clubs in Ibiza are typically busiest late in the evening and after midnight, so plan dinner and transport around that.</p></div><div><b>Mind the time difference.</b><p>Ibiza is usually six hours ahead of US Eastern time, but the gap can briefly be five hours when daylight-saving dates differ. Check the time for your dates; WhatsApp requires the app and an internet connection.</p></div><div><b>Bring valid photo ID.</b><p>Venues set their own age, ID and entry policies.</p></div><div><b>Plan the way home.</b><p>A pre-booked chauffeur avoids the late-night taxi queue.</p></div></div>
 </section>
 <section class="editorial">
   <div><div class="kicker dark">Private and professional briefs</div><h2>Who we arrange this for</h2></div>
