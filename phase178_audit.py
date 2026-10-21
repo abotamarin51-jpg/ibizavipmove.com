@@ -6,6 +6,7 @@ from phase180_audit import run as audit_vip_tables_page
 from phase181_accessibility_audit import run as audit_vip_tables_language_target
 from phase182_private_client_context import audit as audit_private_client_context
 from phase183_travel_concierge_context import audit as audit_travel_concierge_context
+from phase184_lifestyle_context import audit as audit_lifestyle_context
 from phase178_enhance import (
     HOME, HOME_SITEMAP, HOME_NEW_LEAD, HOME_NEW_SERVICE, HOME_OLD_LEAD,
     HOME_OLD_SERVICE, HOME_NEW_LASTMOD, HOME_OLD_LASTMOD,
@@ -102,3 +103,4 @@ if __name__ == '__main__':
     audit_home_clarity()
     audit_private_client_context()
     audit_travel_concierge_context()
+    audit_lifestyle_context()
