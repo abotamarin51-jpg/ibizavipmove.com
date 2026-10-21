@@ -9,7 +9,7 @@ from phase179_enhance import BRIEF, CANONICAL, CONTACT, MESSAGE, WA_HREF
 ROOT = Path('_site')
 PAGE = ROOT / 'private-office' / 'index.html'
 NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
-EXPECTED_TITLE = 'Ibiza Concierge for Family Offices &amp; Personal Assistants | Ibiza VIP Move'
+EXPECTED_TITLE = 'Ibiza Concierge for Family Offices & Personal Assistants | Ibiza VIP Move'
 EXPECTED_H1 = 'Ibiza concierge support for family offices and personal assistants.'
 
 
