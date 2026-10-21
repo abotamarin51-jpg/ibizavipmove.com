@@ -3,6 +3,7 @@ from html.parser import HTMLParser
 from pathlib import Path
 from phase179_audit import run as audit_private_office_handoff
 from phase180_audit import run as audit_vip_tables_page
+from phase181_accessibility_audit import run as audit_vip_tables_language_target
 
 SERVICES = Path('_site/fr/services/index.html')
 CONCIERGE = Path('_site/fr/conciergerie-privee-ibiza/index.html')
@@ -69,3 +70,4 @@ if __name__ == '__main__':
     run()
     audit_private_office_handoff()
     audit_vip_tables_page()
+    audit_vip_tables_language_target()
