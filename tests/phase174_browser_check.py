@@ -153,6 +153,23 @@ def main():
                         page.evaluate('window.IVMCookieConsent.reject()')
                         wait_state(page, target, True, 'contact access after cookie dialog close')
 
+                        # Additive Home copy readability gate at both existing viewports.
+                        lead = page.locator('p.ivm-seo-lead')
+                        assert lead.count() == 1, 'Exactly one Home concierge introduction required'
+                        assert lead.inner_text().strip() == (
+                            'Our Ibiza concierge service helps private clients, personal assistants, '
+                            'family offices and luxury travel advisors plan their stay through one discreet local contact.'
+                        )
+                        assert (
+                            'We coordinate chauffeur transport, villas, yachts, aviation, '
+                            'VIP hospitality requests and security around each stay.'
+                        ) in page.locator('main').inner_text()
+                        lead.scroll_into_view_if_needed()
+                        assert lead.evaluate(INSIDE_JS), 'Home paragraph does not fit the viewport'
+                        assert not page.evaluate(
+                            'document.documentElement.scrollWidth > innerWidth + 1'
+                        ), 'Home horizontal overflow after copy edit'
+
                         assert not errors and not missing, {
                             'javascriptErrors': errors,
                             'missingLocalResources': missing,
