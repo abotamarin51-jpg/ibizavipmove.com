@@ -162,7 +162,7 @@ def review(root: Path, output: Path, production: bool = False) -> dict:
                         assert form.count() == 1 and form.get_attribute('href') == CONTACT
                         links = page.locator('main a[data-ivm179="office"]')
                         assert links.count() == 2
-                        assert sorted(links.all_inner_texts()) == ['Start a private brief', 'WhatsApp 24/7']
+                        assert links.evaluate_all('els=>els.map(a=>(a.textContent||"").trim())') == ['Start a private brief', 'WhatsApp 24/7']
                         assert links.evaluate_all('els=>els.map(a=>a.getAttribute("href"))') == [WA_HREF, WA_HREF]
                         assert all(urlsplit(href).path == '/34600703303' for href in
                                    page.locator('a[href^="https://wa.me/"]').evaluate_all('els=>els.map(a=>a.href)'))
@@ -173,7 +173,7 @@ def review(root: Path, output: Path, production: bool = False) -> dict:
                             geometry = locator.evaluate(GEOMETRY)
                             assert geometry['inside'] and geometry['unobstructed'] and not geometry['overflow'], geometry
                             assert geometry['focused'] and geometry['width'] >= 24 and geometry['height'] >= 24, geometry
-                            result['actions'].append({'label': locator.inner_text().strip(), 'geometry': geometry})
+                            result['actions'].append({'label': (locator.text_content() or '').strip(), 'geometry': geometry})
                         if not production:
                             for locator in (links.nth(0), links.nth(1)):
                                 locator.click()
