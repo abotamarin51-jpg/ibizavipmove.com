@@ -4,6 +4,7 @@ from phase179_enhance import enhance as enhance_private_office_handoff
 from phase180_enhance import enhance as enhance_vip_tables_page
 from phase181_accessibility_fix import enhance as enhance_vip_tables_language_target
 from phase182_private_client_context import enhance as enhance_private_client_context
+from phase183_travel_concierge_context import enhance as enhance_travel_concierge_context
 
 
 # One Home-only editorial refinement. Preserve SEO metadata, headings, layout and contact routes.
@@ -78,3 +79,4 @@ if __name__ == '__main__':
     enhance_vip_tables_language_target()
     enhance_home_readability()
     enhance_private_client_context()
+    enhance_travel_concierge_context()
