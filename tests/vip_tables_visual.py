@@ -17,12 +17,14 @@ CANONICAL = 'https://ibizavipmove.com/vip-tables-club-access-ibiza/'
 PATH = '/vip-tables-club-access-ibiza/'
 WA_PATH = '/34600703303'
 PLACEHOLDERS = (
-    '[URL DE UNA IMAGEN PROPIA, 1200x630]',
+    '[URL DE UNA IMAGEN PROPIA',
     '[MISMA IMAGEN]',
     '[FECHA]',
     '[YYYY-MM-DD]',
-    '[CONFIRMAR: deja solo los venues donde realmente puedes solicitar mesas]',
-    '[OPCIONAL: añade aquí rangos reales y actuales solo si puedes respaldarlos.',
+    '[CONFIRMAR:',
+    '[OPCIONAL:',
+    '[PENDIENTE:',
+    'data-ivm180-placeholder',
 )
 GEOMETRY = """el=>{const r=el.getBoundingClientRect();const top=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
 return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,width:r.width,height:r.height,
@@ -141,7 +143,13 @@ def review(root: Path, output: Path) -> dict:
                         assert page.locator('nav.ivm-language-links a').get_attribute('aria-current') == 'page'
                         source = page.content()
                         for marker in PLACEHOLDERS:
-                            assert marker in source, f'Missing unresolved marker: {marker}'
+                            assert marker not in source, f'Owner-only placeholder leaked to customers: {marker}'
+                        expected_social = 'https://ibizavipmove.com/assets/images/vip-tables-social.jpg'
+                        assert page.locator('meta[property="og:image"]').get_attribute('content') == expected_social
+                        assert page.locator('meta[name="twitter:image"]').get_attribute('content') == expected_social
+                        asset_path = root / 'assets/images/vip-tables-social.jpg'
+                        with Image.open(asset_path) as editorial_image:
+                            assert editorial_image.size == (1200, 630), 'Social image dimensions changed'
 
                         main_wa = page.locator('main a[href^="https://wa.me/"]')
                         assert main_wa.count() == 3

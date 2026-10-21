@@ -7,11 +7,11 @@ import json
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
+from PIL import Image
 
 from phase180_enhance import (
-    BASE, CANONICAL, DESCRIPTION, FAQS, GENERATED_SCHEMA, LASTMOD, OG_IMAGE_MARKER,
-    PENDING_SCHEMA_MARKER, PRICE_MARKER, SCHEMA_DATE_MARKER, TARGET, TITLE,
-    TWITTER_IMAGE_MARKER, VENUE_MARKER, VISIBLE_DATE_MARKER,
+    BASE, CANONICAL, DESCRIPTION, FAQS, LASTMOD, SOCIAL_IMAGE,
+    SOCIAL_TARGET, SOCIAL_PUBLIC, TARGET, TITLE, VISIBLE_DATE,
 )
 
 ROOT = Path('_site')
@@ -94,11 +94,18 @@ def run() -> None:
                  if t == 'link' and a.get('rel') == 'alternate' and a.get('hreflang')]
     require(head_alts == [('en', CANONICAL), ('x-default', CANONICAL)], 'head hreflang mismatch')
 
-    require(f'content="{OG_IMAGE_MARKER}"' in html, 'OG image marker missing')
-    require(f'content="{TWITTER_IMAGE_MARKER}"' in html, 'Twitter image marker missing')
-    require(VISIBLE_DATE_MARKER in html, 'visible date marker missing')
-    require(VENUE_MARKER in html, 'venue confirmation marker missing')
-    require(escape(PRICE_MARKER) in html, 'price marker missing')
+    require(f'<meta property="og:image" content="{SOCIAL_IMAGE}">' in html, 'licensed social image missing from Open Graph')
+    require(f'<meta name="twitter:image" content="{SOCIAL_IMAGE}">' in html, 'licensed social image missing from Twitter')
+    require(f'--hero:url(\'{SOCIAL_PUBLIC}\')' in html, 'reviewed editorial image not used as new hero')
+    require(f'Last updated: {VISIBLE_DATE}' in html, 'visible actual update date missing')
+    require(SOCIAL_TARGET.is_file() and SOCIAL_TARGET.stat().st_size > 20_000, 'generated social JPEG is absent or too small')
+    with Image.open(SOCIAL_TARGET) as social:
+        require(social.size == (1200, 630) and social.format == 'JPEG', 'social image must be a valid 1200x630 JPEG')
+    forbidden_markers = (
+        '[URL DE UNA IMAGEN PROPIA', '[MISMA IMAGEN]', '[FECHA]', '[YYYY-MM-DD]',
+        '[CONFIRMAR:', '[OPCIONAL:', '[PENDIENTE:', 'data-ivm180-placeholder',
+    )
+    require(all(marker not in html for marker in forbidden_markers), 'unresolved owner placeholder exposed')
 
     data = schemas(html)
     orgs = [node for node in data if node_type(node, 'Organization') and node.get('@id') == BASE + '/#organization']
@@ -111,7 +118,7 @@ def run() -> None:
     require(len(websites) == 1, 'WebSite node missing or duplicated')
     require(len(webpages) == len(services) == len(breadcrumbs) == len(faqs) == 1, 'page schema node count mismatch')
     require(webpages[0].get('name') == TITLE and webpages[0].get('description') == DESCRIPTION, 'WebPage metadata mismatch')
-    require(webpages[0].get('dateModified') == SCHEMA_DATE_MARKER, 'schema date marker changed')
+    require(webpages[0].get('dateModified') == LASTMOD, 'schema dateModified must match actual source change')
     require(services[0].get('provider') == {'@id': BASE + '/#organization'}, 'Service provider mismatch')
     require(len(breadcrumbs[0].get('itemListElement', [])) == 3, 'breadcrumb count mismatch')
     faq_schema = faqs[0].get('mainEntity', [])
@@ -120,11 +127,6 @@ def run() -> None:
         require(item.get('name') == expected[0], 'FAQ question mismatch')
         require(item.get('acceptedAnswer', {}).get('text') == expected[1], 'FAQ answer mismatch')
         require(f'<summary>{escape(expected[0])}</summary><p>{escape(expected[1])}</p>' in html, 'visible FAQ differs from schema')
-
-    if GENERATED_SCHEMA.is_file():
-        require(PENDING_SCHEMA_MARKER not in html, 'pending schema marker remained after source file appeared')
-    else:
-        require(PENDING_SCHEMA_MARKER in html, 'missing generated-schema.json is not disclosed in output')
 
     for slug in ('restaurants-nightlife-ibiza', 'private-concierge-ibiza', 'vip-services-ibiza', 'private-chauffeur-ibiza'):
         source = (ROOT / slug / 'index.html').read_text(encoding='utf-8')
@@ -140,7 +142,7 @@ def run() -> None:
     require([child.tag.split('}', 1)[-1] for child in children] == ['loc', 'lastmod'], 'new sitemap entry has forbidden fields')
     require(matches[0].findtext(f'{{{NS}}}lastmod') == LASTMOD, 'sitemap lastmod mismatch')
 
-    print('PASS: Phase 180 audit — template chrome, new content/schema, four inlinks, placeholders and 157-URL sitemap verified')
+    print('PASS: Phase 180 audit — existing canonical Organization, real dates, licensed social image, four inlinks, no placeholders and 157-URL sitemap verified')
 
 
 if __name__ == '__main__':

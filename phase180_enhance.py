@@ -1,10 +1,10 @@
 """Create the English VIP Tables & Club Access page from the final Private Concierge template.
 
-The source of truth for copy is vip-tables-club-access-ibiza-page.md supplied by the owner.
-This phase intentionally preserves unresolved bracketed markers and never fabricates venue,
-price, image or date details. If generated-schema.json is later supplied, its Organization
-node is deep-merged into the template Organization node; otherwise the current template
-Organization is retained once, with an explicit pending marker in the generated head.
+The source of truth for copy is the approved English VIP tables brief, with specific
+factual corrections. The canonical Organization and WebSite nodes come from the site's
+generated Private Concierge and Home pages, avoiding invented identity fields.
+A separately approved generated-schema.json may optionally add verified properties.
+No unconfirmed prices, guaranteed venue access or owner-only placeholders are published.
 """
 from __future__ import annotations
 
@@ -14,6 +14,7 @@ import json
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
+from PIL import Image, ImageOps
 
 ROOT = Path('_site')
 TEMPLATE = ROOT / 'private-concierge-ibiza' / 'index.html'
@@ -33,17 +34,11 @@ WA = (
     'https://wa.me/34600703303?text=Hello%20Ibiza%20VIP%20Move%2C%20I%27d%20like%20to%20request%20a%20VIP%20table%20in%20Ibiza.'
     '%20Could%20you%20please%20help%20me%20with%20availability%20and%20the%20next%20steps%3F%20Thank%20you.'
 )
-PENDING_SCHEMA_MARKER = '[PENDIENTE: falta generated-schema.json para fusionar sus campos en Organization]'
-OG_IMAGE_MARKER = '[URL DE UNA IMAGEN PROPIA, 1200x630]'
-TWITTER_IMAGE_MARKER = '[MISMA IMAGEN]'
-VISIBLE_DATE_MARKER = '[FECHA]'
-SCHEMA_DATE_MARKER = '[YYYY-MM-DD]'
-VENUE_MARKER = '[CONFIRMAR: deja solo los venues donde realmente puedes solicitar mesas]'
-PRICE_MARKER = (
-    '[OPCIONAL: añade aquí rangos reales y actuales solo si puedes respaldarlos. '
-    'Ejemplo de formato: "Typical minimum spend for a table of 6 guests in July: €X to €Y, '
-    'confirmed per request. Updated [fecha]."]'
-)
+VISIBLE_DATE = '21 October 2026'
+SOCIAL_SOURCE = ROOT / 'assets/images/private-office.jpg'
+SOCIAL_TARGET = ROOT / 'assets/images/vip-tables-social.jpg'
+SOCIAL_PUBLIC = '/assets/images/vip-tables-social.jpg'
+SOCIAL_IMAGE = BASE + SOCIAL_PUBLIC
 SCRIPT_RE = re.compile(
     r'<script\s+type=["\']application/ld\+json["\']>(.*?)</script>',
     re.I | re.S,
@@ -99,6 +94,17 @@ FAQS = [
 def require(condition: bool, message: str) -> None:
     if not condition:
         raise ValueError(message)
+
+
+def build_social_image() -> None:
+    """Create a 1200x630 social preview from the site's existing Pexels-licensed editorial asset."""
+    require(SOCIAL_SOURCE.is_file(), 'reviewed Pexels editorial source asset missing')
+    with Image.open(SOCIAL_SOURCE) as source:
+        require(source.width >= 1200 and source.height >= 630, 'source image too small for social preview')
+        result = ImageOps.fit(source.convert('RGB'), (1200, 630), method=Image.Resampling.LANCZOS)
+        result.save(SOCIAL_TARGET, format='JPEG', quality=85, optimize=True)
+    with Image.open(SOCIAL_TARGET) as output:
+        require(output.size == (1200, 630), 'social image dimensions incorrect')
 
 
 def json_nodes(text: str) -> list[dict]:
@@ -206,7 +212,7 @@ def page_schema() -> tuple[dict, dict, dict, dict]:
         'isPartOf': {'@id': BASE + '/#website'},
         'about': {'@id': CANONICAL + '#service'},
         'publisher': {'@id': BASE + '/#organization'},
-        'dateModified': SCHEMA_DATE_MARKER,
+        'dateModified': LASTMOD,
     }
     service = {
         '@context': 'https://schema.org',
@@ -313,14 +319,14 @@ def main_html() -> str:
         for question, answer in FAQS
     )
     return f'''<main id="main-content">
-<section class="page-hero" style="--hero:url('/assets/images/nightlife.jpg')">
-  <div class="page-hero-media"><img src="/assets/images/nightlife.jpg" alt="VIP tables and club access in Ibiza" width="2200" height="1467" fetchpriority="high" decoding="async"></div>
+<section class="page-hero" style="--hero:url('{SOCIAL_PUBLIC}')">
+  <div class="page-hero-media"><img src="{SOCIAL_PUBLIC}" alt="Illustrative editorial photograph for private concierge planning" width="1200" height="630" fetchpriority="high" decoding="async"></div>
   <div>
     <div class="kicker light">VIP Tables · Club Access · Ibiza</div>
     <h1>VIP tables and club access in Ibiza, arranged privately.</h1>
     <p>One concierge to request tables, bottle service and club entry, and to coordinate the transport and security around the night.</p>
     <a class="btn gold" href="{WA}">Request a table</a>
-    <p data-ivm180-placeholder="date">Last updated: {VISIBLE_DATE_MARKER}</p>
+    <p>Last updated: {VISIBLE_DATE}</p>
     <div class="ivm-inner-rail">
       <article><span>Table requests</span><strong>Terms before confirmation</strong><small>Minimum spend, deposit, arrival time and entry conditions clarified in writing.</small></article>
       <article><span>Club access</span><strong>Venue-controlled availability</strong><small>Requests are checked for the chosen date and night; third-party access is never guaranteed.</small></article>
@@ -338,7 +344,7 @@ def main_html() -> str:
 </section>
 <section class="editorial">
   <div><div class="kicker dark">Ibiza venues</div><h2>Venues our clients ask about</h2></div>
-  <div><p class="large">These venues are examples for planning, not confirmed booking relationships. Share your preferred venue and date so we can check whether a request is possible.</p>{venues}<p data-ivm180-placeholder="venues"><strong>{escape(VENUE_MARKER)}</strong></p><p>Programs, policies and availability change by season and by night. Venue names are trademarks of their respective owners and are used for reference only. Ibiza VIP Move is an independent concierge and is not affiliated with or endorsed by these venues.</p></div>
+  <div><p class="large">These venues are examples for planning, not confirmed booking relationships. Share your preferred venue and date so we can check whether a request is possible.</p>{venues}<p>Programs, policies and availability change by season and by night. Venue names are trademarks of their respective owners and are used for reference only. Ibiza VIP Move is an independent concierge and is not affiliated with or endorsed by these venues.</p></div>
 </section>
 <section class="process">
   <div class="section-head"><div class="kicker dark">Booking process</div><h2>How booking a VIP table works</h2></div>
@@ -352,7 +358,7 @@ def main_html() -> str:
 </section>
 <section class="editorial">
   <div><div class="kicker dark">Pricing factors</div><h2>What affects the price of a VIP table in Ibiza</h2></div>
-  <div><p class="large">Prices are set by each venue and vary by request. The main factors are:</p><ul class="premium-list"><li><strong>The date and season.</strong> Peak summer nights are in highest demand.</li><li><strong>The night's program.</strong> Headline events typically cost more than quieter nights.</li><li><strong>Table position.</strong> Locations closer to the stage or dance floor are usually more sought after.</li><li><strong>Group size.</strong> Larger groups need larger tables and higher minimum spends.</li><li><strong>Format.</strong> Many tables are sold against a minimum spend rather than a flat fee, and a deposit is usually required.</li></ul><p>We confirm the exact figures in writing for each request. We do not quote a price before checking the venue and date.</p><p data-ivm180-placeholder="price"><strong>{escape(PRICE_MARKER)}</strong></p></div>
+  <div><p class="large">Prices are set by each venue and vary by request. The main factors are:</p><ul class="premium-list"><li><strong>The date and season.</strong> Peak summer nights are in highest demand.</li><li><strong>The night's program.</strong> Headline events typically cost more than quieter nights.</li><li><strong>Table position.</strong> Locations closer to the stage or dance floor are usually more sought after.</li><li><strong>Group size.</strong> Larger groups need larger tables and higher minimum spends.</li><li><strong>Format.</strong> Many tables are sold against a minimum spend rather than a flat fee, and a deposit is usually required.</li></ul><p>We confirm the exact figures in writing for each request. We do not quote a price before checking the venue and date.</p></div>
 </section>
 <section class="dark-panel">
   <div class="kicker light">From the United States</div><h2>Planning tips for US travelers</h2>
@@ -385,12 +391,12 @@ def update_head(template: str, home: str) -> str:
     html = set_meta(html, 'property', 'og:title', TITLE)
     html = set_meta(html, 'property', 'og:description', DESCRIPTION)
     html = set_meta(html, 'property', 'og:url', CANONICAL)
-    html = set_meta(html, 'property', 'og:image', OG_IMAGE_MARKER)
-    html = set_meta(html, 'property', 'og:image:alt', 'VIP table at an Ibiza club arranged by Ibiza VIP Move')
+    html = set_meta(html, 'property', 'og:image', SOCIAL_IMAGE)
+    html = set_meta(html, 'property', 'og:image:alt', 'Illustrative editorial photograph for private concierge planning')
     html = set_meta(html, 'name', 'twitter:card', 'summary_large_image')
     html = set_meta(html, 'name', 'twitter:title', TITLE)
     html = set_meta(html, 'name', 'twitter:description', DESCRIPTION)
-    html = set_meta(html, 'name', 'twitter:image', TWITTER_IMAGE_MARKER)
+    html = set_meta(html, 'name', 'twitter:image', SOCIAL_IMAGE)
     html = set_canonical(html)
 
     # Only English exists for this canonical today. Keep the visible language-bar component,
@@ -412,7 +418,6 @@ def update_head(template: str, home: str) -> str:
     require(organization is not None, 'template Organization schema missing')
     require(website is not None, 'homepage WebSite schema missing')
     external_org, external_website = load_external_schema()
-    missing_external = external_org is None
     if external_org is not None:
         organization = deep_merge(organization, external_org)
     if external_website is not None:
@@ -424,8 +429,7 @@ def update_head(template: str, home: str) -> str:
     scripts = ''.join(schema_script(node) for node in (
         organization, website, webpage, service, breadcrumb, faq
     ))
-    pending = f'<!-- {PENDING_SCHEMA_MARKER} -->' if missing_external else ''
-    html = html.replace('</head>', pending + scripts + '</head>', 1)
+    html = html.replace('</head>', scripts + '</head>', 1)
     return html
 
 
@@ -517,6 +521,7 @@ def enhance() -> None:
     require(HOME.is_file(), 'final homepage missing')
     template = TEMPLATE.read_text(encoding='utf-8')
     home = HOME.read_text(encoding='utf-8')
+    build_social_image()
     html = update_head(template, home)
     html = replace_main(html)
     html = update_language_bar(html)
@@ -524,8 +529,8 @@ def enhance() -> None:
     TARGET.write_text(html, encoding='utf-8')
     update_links()
     update_sitemap()
-    source = 'generated-schema.json' if GENERATED_SCHEMA.is_file() else 'template Organization fallback; generated-schema.json missing'
-    print('PASS: Phase 180 — VIP Tables page, four internal links and 157th sitemap canonical created; schema source: ' + source)
+    source = 'optional approved schema extension' if GENERATED_SCHEMA.is_file() else 'existing site Organization and WebSite'
+    print('PASS: Phase 180 — VIP Tables page, social preview, four internal links and 157th sitemap canonical created; schema source: ' + source)
 
 
 if __name__ == '__main__':
