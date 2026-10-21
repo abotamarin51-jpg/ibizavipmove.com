@@ -24,7 +24,7 @@ checks = {
     'partner audience path': text.count('/de/partners/">Partner-Koordination ansehen') == 1 and 'Für Eventagenturen, Travel Advisors und PAs' in text,
     'contact routes preserved': 'https://wa.me/34600703303' in text and 'tel:+34600703303' in text and 'partnership@ibizavipmove.com' in text,
     'six head hreflang alternates': len(re.findall(r'<link\s+rel="alternate"\s+hreflang="[^"]+"\s+href="[^"]+">', text, re.I)) == 6,
-    'sitemap inventory preserved': sitemap.count('<url>') == 156,
+    'sitemap inventory preserved': sitemap.count('<url>') == 157,
     'truthful target lastmod': f'<loc>{CANONICAL}</loc><lastmod>2026-09-23</lastmod>' in sitemap,
 }
 
