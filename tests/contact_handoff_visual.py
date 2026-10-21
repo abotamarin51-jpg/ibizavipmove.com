@@ -10,6 +10,8 @@ import shutil
 
 from PIL import Image, ImageStat
 from playwright.sync_api import sync_playwright
+from private_office_handoff_check import review as review_private_office
+from private_office_handoff_check import self_test as self_test_private_office
 
 LABEL = 'Continue to WhatsApp'
 HELPER = 'Opens WhatsApp with your details. Review the message and press Send there.'
@@ -145,3 +147,8 @@ def main():
 
 if __name__ == '__main__':
     main()
+    self_test_private_office()
+    review_private_office(
+        Path('_site'),
+        Path(os.environ['RUNNER_TEMP']) / 'ivm-contact-review' / 'private-office',
+    )
