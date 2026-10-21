@@ -9,7 +9,7 @@ from phase179_enhance import BRIEF, CANONICAL, CONTACT, MESSAGE, WA_HREF
 ROOT = Path('_site')
 PAGE = ROOT / 'private-office' / 'index.html'
 NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
-EXPECTED_TITLE = 'Ibiza Concierge for Family Offices & Personal Assistants | Ibiza VIP Move'
+EXPECTED_TITLE = 'Ibiza Concierge for Family Offices &amp; Personal Assistants | Ibiza VIP Move'
 EXPECTED_H1 = 'Ibiza concierge support for family offices and personal assistants.'
 
 
@@ -73,6 +73,7 @@ def run() -> None:
         if t == 'a' and a.get('data-ivm179') == 'contact'
     ]
     require(len(contact_links) == 1 and contact_links[0].get('href') == CONTACT, 'Contact route changed')
+    require(contact_links[0].get('style') == 'min-height:24px;display:inline-flex;align-items:center', 'Contact target size safeguard changed')
     contact = ROOT / CONTACT.strip('/') / 'index.html'
     require(contact.is_file(), 'Contact target missing')
     contact_html = contact.read_text(encoding='utf-8')
