@@ -119,6 +119,7 @@ for key,members in clusters.items():
 
 # 4) Five contact desks: explicit placeholder + reviewed service inventory + conversion routing.
 from phase131_enhance import EN_SERVICES
+from phase182_private_client_context import SERVICE as PRIVATE_CLIENT_SERVICE
 contacts=['/contact/','/es/contacto/','/fr/contact/','/de/kontakt/','/ar/contact/']
 for path in contacts:
     p=page(path)
@@ -130,7 +131,7 @@ for path in contacts:
     else:
         opening,body=fm.groups()
         options=re.findall(r'<option\b([^>]*)\bvalue="([^"]*)"([^>]*)>',body,re.I)
-        count=13 if path=='/contact/' else 12
+        count=14 if path=='/contact/' else 12
         if not re.search(r'\brequired\b',opening,re.I):fail(f'contact service selector not required: {path}')
         if len(options)!=count+1:fail(f'contact service options != placeholder + {count}: {path}')
         else:
@@ -141,8 +142,10 @@ for path in contacts:
             real=[value for _before,value,_after in options[1:]]
             if len(real)!=count or any(not value for value in real) or len(set(real))!=count:
                 fail(f'contact real service catalog != {count} distinct values: {path}')
-            if path=='/contact/' and [unescape(value) for value in real]!=EN_SERVICES:
-                fail('English contact must preserve the original 12 services plus exactly Destination Management')
+            if path=='/contact/':
+                expected_en=EN_SERVICES[:1]+[PRIVATE_CLIENT_SERVICE]+EN_SERVICES[1:]
+                if [unescape(value) for value in real]!=expected_en:
+                    fail('English contact must preserve all 13 previous services plus exactly Private Client Services in the reviewed position')
     if text.count('/assets/phase63.js?v=63')!=1:fail(f'contact Phase63 routing missing/duplicated: {path}')
     for field in ('fName','fPhone','fArrival','fDeparture','fService','fGuests','fBrief'):
         if f'id="{field}"' not in text:fail(f'contact field missing {field}: {path}')
