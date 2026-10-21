@@ -2,6 +2,7 @@
 from pathlib import Path
 from phase179_enhance import enhance as enhance_private_office_handoff
 from phase180_enhance import enhance as enhance_vip_tables_page
+from phase181_accessibility_fix import enhance as enhance_vip_tables_language_target
 
 PATH = Path('_site/fr/services/index.html')
 OLD = 'Passez par le concierge plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'
@@ -27,3 +28,4 @@ if __name__ == '__main__':
     enhance()
     enhance_private_office_handoff()
     enhance_vip_tables_page()
+    enhance_vip_tables_language_target()
