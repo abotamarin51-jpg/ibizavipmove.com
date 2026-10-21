@@ -9,6 +9,7 @@ on:
       - "phase179_audit.py"
       - "tests/private_office_handoff_check.py"
       - "tests/published_sitemap_check.py"
+      - "tests/vip_tables_published_check.py"
   workflow_run:
     workflows: ["Deploy Ibiza VIP Move"]
     types: [completed]
@@ -45,6 +46,10 @@ jobs:
           "$RUNNER_TEMP/ivm-dmc-tools/bin/python" phase107_dmc_contact_review.py --production
       - name: Verify the served sitemap with one read-only request
         run: python3 tests/published_sitemap_check.py
+      - name: Confirm VIP Tables page, image, assets and links on live domain without interaction
+        run: |
+          "$RUNNER_TEMP/ivm-dmc-tools/bin/python" tests/vip_tables_published_check.py --self-test
+          "$RUNNER_TEMP/ivm-dmc-tools/bin/python" tests/vip_tables_published_check.py --production
       - name: Verify published English Private Office handoff without sending
         if: github.event_name != 'pull_request'
         run: |
