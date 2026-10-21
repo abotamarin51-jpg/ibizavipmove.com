@@ -22,7 +22,8 @@ BRIEF = (
     'Identity documents or bank details are not needed in the first message.'
 )
 FORM_LINK = (
-    '<p><a class="text-link" data-ivm179="contact" href="/contact/">'
+    '<p><a class="text-link" data-ivm179="contact" href="/contact/" '
+    'style="min-height:24px;display:inline-flex;align-items:center">'
     'Prepare the request with the private form</a></p>'
 )
 
