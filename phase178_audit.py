@@ -4,6 +4,10 @@ from pathlib import Path
 from phase179_audit import run as audit_private_office_handoff
 from phase180_audit import run as audit_vip_tables_page
 from phase181_accessibility_audit import run as audit_vip_tables_language_target
+from phase178_enhance import (
+    HOME, HOME_SITEMAP, HOME_NEW_LEAD, HOME_NEW_SERVICE, HOME_OLD_LEAD,
+    HOME_OLD_SERVICE, HOME_NEW_LASTMOD, HOME_OLD_LASTMOD,
+)
 
 SERVICES = Path('_site/fr/services/index.html')
 CONCIERGE = Path('_site/fr/conciergerie-privee-ibiza/index.html')
@@ -66,8 +70,31 @@ def run():
     print('PASS: Phase 178 audit — French contextual Concierge pathway; canonicals/indexability unchanged')
 
 
+
+def audit_home_clarity():
+    html = HOME.read_text(encoding='utf-8')
+    sitemap = HOME_SITEMAP.read_text(encoding='utf-8')
+    if (html.count(HOME_NEW_LEAD) != 1 or html.count(HOME_NEW_SERVICE) != 1
+            or HOME_OLD_LEAD in html or HOME_OLD_SERVICE in html):
+        raise SystemExit('Home clarity audit: expected only the reviewed new paragraphs')
+    if (html.count('<title>Luxury Concierge Ibiza | Ibiza VIP Move</title>') != 1
+            or html.count('<h1>Luxury concierge in Ibiza,<br>handled privately.</h1>') != 1
+            or not canonical_is(html, 'https://ibizavipmove.com/')
+            or is_noindex(html)):
+        raise SystemExit('Home clarity audit: Home SEO identity or indexability changed')
+    if ('https://wa.me/34600703303' not in html
+            or 'tel:+34600703303' not in html
+            or 'partnership@ibizavipmove.com' not in html):
+        raise SystemExit('Home clarity audit: existing approved contact route missing')
+    if (sitemap.count(HOME_NEW_LASTMOD) != 1 or HOME_OLD_LASTMOD in sitemap
+            or sitemap.count('<url>') != 157):
+        raise SystemExit('Home clarity audit: unexpected sitemap inventory or Home lastmod')
+    print('PASS: Home clarity audit — revised paragraphs, Home SEO and contacts, 157-URL sitemap')
+
+
 if __name__ == '__main__':
     run()
     audit_private_office_handoff()
     audit_vip_tables_page()
     audit_vip_tables_language_target()
+    audit_home_clarity()
