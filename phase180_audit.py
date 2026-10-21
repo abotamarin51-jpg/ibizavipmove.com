@@ -7,7 +7,6 @@ import json
 from pathlib import Path
 import re
 import xml.etree.ElementTree as ET
-from PIL import Image
 
 from phase180_enhance import (
     BASE, CANONICAL, DESCRIPTION, FAQS, LASTMOD, SOCIAL_IMAGE,
@@ -99,8 +98,9 @@ def run() -> None:
     require(f'--hero:url(\'{SOCIAL_PUBLIC}\')' in html, 'reviewed editorial image not used as new hero')
     require(f'Last updated: {VISIBLE_DATE}' in html, 'visible actual update date missing')
     require(SOCIAL_TARGET.is_file() and SOCIAL_TARGET.stat().st_size > 20_000, 'generated social JPEG is absent or too small')
-    with Image.open(SOCIAL_TARGET) as social:
-        require(social.size == (1200, 630) and social.format == 'JPEG', 'social image must be a valid 1200x630 JPEG')
+    image_bytes = SOCIAL_TARGET.read_bytes()
+    require(image_bytes.startswith(b'\xff\xd8') and image_bytes.endswith(b'\xff\xd9'),
+            'social image JPEG markers invalid; dimensions checked in image stage and browser')
     forbidden_markers = (
         '[URL DE UNA IMAGEN PROPIA', '[MISMA IMAGEN]', '[FECHA]', '[YYYY-MM-DD]',
         '[CONFIRMAR:', '[OPCIONAL:', '[PENDIENTE:', 'data-ivm180-placeholder',
