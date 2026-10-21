@@ -1,6 +1,7 @@
-"""Regression checks for the French Services -> Private Concierge pathway."""
+"""Regression checks for the French Services pathway and English Private Office handoff."""
 from html.parser import HTMLParser
 from pathlib import Path
+from phase179_audit import run as audit_private_office_handoff
 
 SERVICES = Path('_site/fr/services/index.html')
 CONCIERGE = Path('_site/fr/conciergerie-privee-ibiza/index.html')
@@ -65,3 +66,4 @@ def run():
 
 if __name__ == '__main__':
     run()
+    audit_private_office_handoff()

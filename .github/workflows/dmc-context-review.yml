@@ -5,6 +5,9 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/dmc-context-review.yml"
+      - "phase179_enhance.py"
+      - "phase179_audit.py"
+      - "tests/private_office_handoff_check.py"
       - "tests/published_sitemap_check.py"
   workflow_run:
     workflows: ["Deploy Ibiza VIP Move"]
@@ -34,11 +37,18 @@ jobs:
         run: |
           python3 -m venv "$RUNNER_TEMP/ivm-dmc-tools"
           "$RUNNER_TEMP/ivm-dmc-tools/bin/python" -m pip install --disable-pip-version-check --only-binary=:all: "playwright==1.57.0" "Pillow==12.3.0"
+      - name: Verify Private Office review policy without network
+        run: |
+          "$RUNNER_TEMP/ivm-dmc-tools/bin/python" tests/private_office_handoff_check.py --self-test
       - name: Verify published DMC and Contact without messages or Analytics
         run: |
           "$RUNNER_TEMP/ivm-dmc-tools/bin/python" phase107_dmc_contact_review.py --production
       - name: Verify the served sitemap with one read-only request
         run: python3 tests/published_sitemap_check.py
+      - name: Verify published English Private Office handoff without sending
+        if: github.event_name != 'pull_request'
+        run: |
+          "$RUNNER_TEMP/ivm-dmc-tools/bin/python" tests/private_office_handoff_check.py --production --output "$RUNNER_TEMP/ivm-dmc-context-review/private-office"
       - name: Retain evidence outside website output
         if: always()
         uses: actions/upload-artifact@v4
