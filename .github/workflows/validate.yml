@@ -164,6 +164,7 @@ jobs:
           node tests/phone-activation.cjs _site/assets/premium.js
           "$RUNNER_TEMP/ivm-image-tools/bin/python" -m pip install --disable-pip-version-check --only-binary=:all: "playwright==1.57.0"
           "$RUNNER_TEMP/ivm-image-tools/bin/python" tests/phase174_browser_check.py
+          "$RUNNER_TEMP/ivm-image-tools/bin/python" phase107_dmc_contact_review.py
       - name: Review Contact handoff in desktop and mobile browsers
         run: |
           "$RUNNER_TEMP/ivm-image-tools/bin/python" tests/contact_handoff_visual.py
