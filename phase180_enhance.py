@@ -301,6 +301,7 @@ def main_html() -> str:
             ("Ushuaïa Ibiza", "Playa d'en Bossa", 'Open-air day and night venue'),
             ('Hï Ibiza', "Playa d'en Bossa", 'Club'),
             ('Amnesia', 'San Rafael', 'Club'),
+            ('[UNVRS]', 'San Rafael (Sant Rafel)', 'Nightclub'),
             ('DC10', 'Near Ibiza Airport', 'Club'),
             ('Lío Ibiza', 'Ibiza Town port', 'Dinner and cabaret show'),
             ('O Beach Ibiza', 'Sant Antoni de Portmany', 'Day club'),

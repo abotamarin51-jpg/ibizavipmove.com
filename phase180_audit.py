@@ -69,6 +69,7 @@ def run() -> None:
     require('<h1>VIP tables and club access in Ibiza, arranged privately.</h1>' in html, 'H1 mismatch')
     # Keep public venue geography and US travel guidance factually accurate.
     require('<td>O Beach Ibiza</td><td>Sant Antoni de Portmany</td><td>Day club</td>' in html, 'O Beach public location/branding drift')
+    require('<td>[UNVRS]</td><td>San Rafael (Sant Rafel)</td><td>Nightclub</td>' in html, 'UNVRS venue name/location missing')
     require('Ocean Beach Ibiza</td>' not in html, 'superseded O Beach name returned')
     require('These venues are examples for planning, not confirmed booking relationships.' in html, 'venue availability clarification missing')
     require('the gap can briefly be five hours' in html, 'US daylight-saving caveat missing')
