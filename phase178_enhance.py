@@ -1,9 +1,6 @@
-"""Add one contextual French Services -> Private Concierge pathway.
-
-Phase 178 changes no URL, title, meta description, schema, sitemap, tracking,
-contact route, price, availability statement or booking term.
-"""
+"""Preserve the French Services pathway, then apply the English Private Office handoff."""
 from pathlib import Path
+from phase179_enhance import enhance as enhance_private_office_handoff
 
 PATH = Path('_site/fr/services/index.html')
 OLD = 'Passez par le concierge plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'
@@ -27,3 +24,4 @@ def enhance():
 
 if __name__ == '__main__':
     enhance()
+    enhance_private_office_handoff()
