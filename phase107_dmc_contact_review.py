@@ -15,9 +15,14 @@ from zoneinfo import ZoneInfo
 
 ORIGIN = 'https://ibizavipmove.com'
 DMC = '/destination-management-ibiza/'
+PRIVATE = '/private-client-services-ibiza/'
 CONTACT = '/contact/?service=dmc'
+PRIVATE_CONTACT = '/contact/?service=private-client'
 SERVICE = 'Destination Management'
-QUERIES = {'', 'service=dmc', 'service=chauffeur', 'service=invalid', 'service=dmc&service=chauffeur'}
+PRIVATE_SERVICE = 'Private Client Services'
+QUERIES = {'', 'service=dmc', 'service=chauffeur', 'service=invalid', 'service=dmc&service=chauffeur',
+           'service=private-client', 'service=private-client&service=dmc',
+           'service=private-client&service=private-client'}
 STATIC_TYPES = {'script', 'stylesheet', 'font', 'image'}
 SUFFIXES = {'.js', '.css', '.woff', '.woff2', '.ttf', '.svg', '.jpg', '.jpeg', '.png', '.webp', '.avif', '.ico'}
 GEOMETRY = """el => {
@@ -34,7 +39,7 @@ def allowed(url, method, kind, origin):
         return False
     if (u.scheme, u.netloc) == (base.scheme, base.netloc):
         if kind == 'document':
-            return (u.path == DMC and not u.query) or (u.path == '/contact/' and u.query in QUERIES)
+            return (u.path in {DMC, PRIVATE} and not u.query) or (u.path == '/contact/' and u.query in QUERIES)
         return kind in STATIC_TYPES and Path(u.path).suffix.lower() in SUFFIXES
     return (u.scheme == 'https' and u.port in (None, 443)
             and u.hostname in {'fonts.googleapis.com', 'fonts.gstatic.com'}
@@ -43,6 +48,7 @@ def allowed(url, method, kind, origin):
 
 def self_test():
     cases = [(ORIGIN+DMC,'GET','document',True), (ORIGIN+CONTACT,'GET','document',True),
+             (ORIGIN+PRIVATE,'GET','document',True), (ORIGIN+PRIVATE_CONTACT,'GET','document',True),
              (ORIGIN+'/assets/premium.js?v=11','GET','script',True),
              (ORIGIN+'/contact/?name=test','GET','document',False),
              (ORIGIN+'/contact/','POST','document',False),
@@ -83,7 +89,7 @@ def review(production=False):
         origin = f'http://127.0.0.1:{server.server_port}'
     report = {'testedAt':datetime.now(ZoneInfo('Europe/Madrid')).isoformat(),
               'commit':os.environ.get('GITHUB_SHA'), 'mode':'production_unmodified' if production else 'built_artifact',
-              'pages':[DMC,CONTACT], 'results':[], 'status':'NOT_RUN',
+              'pages':[DMC,CONTACT,PRIVATE,PRIVATE_CONTACT], 'results':[], 'status':'NOT_RUN',
               'limitations':['Chromium viewport emulation, not physical iPhone/Safari.',
                              'No form submission, outbound contact or Analytics request; no commercial outcome measured.']}
     chrome = next((shutil.which(x) for x in ('google-chrome','google-chrome-stable','chromium','chromium-browser') if shutil.which(x)), None)
@@ -157,8 +163,44 @@ def review(production=False):
                             assert page.url==origin+CONTACT
                             result['journeys'].append({'link':label,'selectedService':SERVICE,'editable':True,
                                 'profileInitiallyEmpty':True,'geometry':geometry,'formSubmitted':False})
+                        # Verify three Private Client pathways retain the selected service without inferring identity.
+                        for index in range(3):
+                            res=page.goto(origin+PRIVATE,wait_until='load',timeout=30000)
+                            assert res and res.status==200
+                            ready(page)
+                            assert page.locator('link[rel="canonical"]').get_attribute('href')==ORIGIN+PRIVATE
+                            links=page.locator('main a[href="'+PRIVATE_CONTACT+'"]')
+                            assert links.count()==3, 'Three existing Private Client form links must keep context'
+                            label=links.nth(index).inner_text()
+                            with page.expect_navigation(wait_until='load',timeout=30000) as navigation:
+                                links.nth(index).click()
+                            assert navigation.value and navigation.value.status==200
+                            assert page.url==origin+PRIVATE_CONTACT
+                            ready(page)
+                            select=page.locator('#fService')
+                            assert select.input_value()==PRIVATE_SERVICE, 'Private Client service context lost'
+                            assert select.locator('option[value="'+PRIVATE_SERVICE+'"]').count()==1
+                            assert page.locator('#fClientType').input_value()=='', 'Do not infer a client role'
+                            assert page.locator('#fName').input_value()==page.locator('#fPhone').input_value()==''
+                            assert page.locator('link[rel="canonical"]').get_attribute('href')==ORIGIN+'/contact/'
+                            select.focus()
+                            select.click(trial=True,timeout=7000)
+                            geometry=select.evaluate(GEOMETRY)
+                            assert geometry['inside'] and geometry['unobstructed'] and not geometry['overflow'],geometry
+                            assert geometry['height']>=24 and geometry['width']>=24
+                            screenshot=output/f'{mode}-private-client-{index}.png'
+                            page.screenshot(path=str(screenshot))
+                            with Image.open(screenshot) as im:
+                                assert im.size==(width,height) and max(ImageStat.Stat(im.convert('RGB')).var)>1
+                            select.select_option(label='Full Concierge')
+                            assert select.input_value()=='Full Concierge'
+                            result['journeys'].append({'link':label,'selectedService':PRIVATE_SERVICE,
+                                'editable':True,'profileInitiallyEmpty':True,'geometry':geometry,'formSubmitted':False})
                         for query,expected in [('', ''),('service=invalid',''),('service=dmc&service=chauffeur',''),
-                                               ('service=chauffeur','Private Chauffeur & Transportation')]:
+                                               ('service=chauffeur','Private Chauffeur & Transportation'),
+                                               ('service=private-client',PRIVATE_SERVICE),
+                                               ('service=private-client&service=dmc',''),
+                                               ('service=private-client&service=private-client','')]:
                             page.goto(origin+'/contact/'+('?' + query if query else ''),wait_until='load',timeout=30000)
                             ready(page)
                             assert page.locator('#fService').input_value()==expected, ('Unexpected preselection',query)
