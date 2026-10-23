@@ -117,7 +117,7 @@ for path in PATHS:
 # The bespoke landing also contains an earlier general FAQ. Keep those visible
 # questions distinct from its service-specific FAQs and clarify the service choice.
 bespoke_html = (ROOT/'bespoke-concierge-ibiza'/'index.html').read_text(encoding='utf-8')
-bespoke_questions = [clean(q) for q in re.findall(r'<summary\\b[^>]*>(.*?)</summary>', bespoke_html, re.I|re.S)]
+bespoke_questions = [clean(q) for q in re.findall(r'<summary\b[^>]*>(.*?)</summary>', bespoke_html, re.I|re.S)]
 if len(bespoke_questions) != len(set(bespoke_questions)):
     raise SystemExit('Phase 75 duplicate visible Bespoke FAQ question')
 if bespoke_questions.count('What is a bespoke concierge request?') != 1:
