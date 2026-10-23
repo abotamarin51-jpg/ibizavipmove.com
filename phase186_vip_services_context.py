@@ -75,7 +75,7 @@ def enhance():
     if installed:
         audit()
         return
-    require(all(vip.count(old)==1 and new not in vip for old,new in zip(OLD_LINKS)),
+    require(all(vip.count(old)==1 and new not in vip for old,new in zip(OLD_LINKS,NEW_LINKS)),
             'existing VIP CTA drift or ambiguity')
     require(contact.count(EXISTING_OPTION)==1 and OPTION not in contact,
             'unexpected English Contact option inventory')
