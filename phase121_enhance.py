@@ -13,7 +13,7 @@ VERIFIED = {
     '/ar/international-clients/': '2026-09-12',
     '/private-office/': '2026-10-21',
     '/fr/private-office/': '2026-09-12', '/de/private-office/': '2026-09-12', '/ar/private-office/': '2026-09-12',
-    '/destination-management-ibiza/': '2026-10-18',
+    '/destination-management-ibiza/': '2026-10-23',
 }
 ET.register_namespace('', NS)
 
