@@ -56,7 +56,7 @@ for slug in SLUGS:
     descriptions.add(desc)
 
     if slug == 'destination-management-ibiza':
-        expected = "Luxury destination management in Ibiza for travel advisors, family offices and concierge firms coordinating transport, villas, yachts and guest logistics."
+        expected = "Destination management company in Ibiza for luxury travel advisors and concierge firms. We coordinate transport, villas, yachts and guest logistics."
         if desc != expected:
             raise SystemExit(f'Phase 102 audit destination description drift: {desc}')
         if len(desc) > 160:
