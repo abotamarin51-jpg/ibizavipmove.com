@@ -19,16 +19,19 @@ PRIVATE = '/private-client-services-ibiza/'
 TRAVEL = '/luxury-travel-concierge-ibiza/'
 LIFESTYLE = '/luxury-lifestyle-management-ibiza/'
 PERSONAL = '/personal-concierge-ibiza/'
+VIP = '/vip-services-ibiza/'
 CONTACT = '/contact/?service=dmc'
 PRIVATE_CONTACT = '/contact/?service=private-client'
 TRAVEL_CONTACT = '/contact/?service=travel-concierge'
 LIFESTYLE_CONTACT = '/contact/?service=lifestyle-management'
 PERSONAL_CONTACT = '/contact/?service=personal-concierge'
+VIP_CONTACT = '/contact/?service=vip-services'
 SERVICE = 'Destination Management'
 PRIVATE_SERVICE = 'Private Client Services'
 TRAVEL_SERVICE = 'Luxury Travel Concierge'
 LIFESTYLE_SERVICE = 'Luxury Lifestyle Management'
 PERSONAL_SERVICE = 'Personal Concierge'
+VIP_SERVICE = 'VIP Services'
 QUERIES = {'', 'service=dmc', 'service=chauffeur', 'service=invalid', 'service=dmc&service=chauffeur',
            'service=private-client', 'service=private-client&service=dmc',
            'service=private-client&service=private-client', 'service=travel-concierge',
@@ -36,7 +39,9 @@ QUERIES = {'', 'service=dmc', 'service=chauffeur', 'service=invalid', 'service=d
            'service=lifestyle-management', 'service=lifestyle-management&service=dmc',
            'service=lifestyle-management&service=lifestyle-management',
            'service=personal-concierge', 'service=personal-concierge&service=dmc',
-           'service=personal-concierge&service=personal-concierge'}
+           'service=personal-concierge&service=personal-concierge',
+           'service=vip-services', 'service=vip-services&service=dmc',
+           'service=vip-services&service=vip-services'}
 STATIC_TYPES = {'script', 'stylesheet', 'font', 'image'}
 SUFFIXES = {'.js', '.css', '.woff', '.woff2', '.ttf', '.svg', '.jpg', '.jpeg', '.png', '.webp', '.avif', '.ico'}
 GEOMETRY = """el => {
@@ -53,7 +58,7 @@ def allowed(url, method, kind, origin):
         return False
     if (u.scheme, u.netloc) == (base.scheme, base.netloc):
         if kind == 'document':
-            return (u.path in {DMC, PRIVATE, TRAVEL, LIFESTYLE, PERSONAL} and not u.query) or (u.path == '/contact/' and u.query in QUERIES)
+            return (u.path in {DMC, PRIVATE, TRAVEL, LIFESTYLE, PERSONAL, VIP} and not u.query) or (u.path == '/contact/' and u.query in QUERIES)
         return kind in STATIC_TYPES and Path(u.path).suffix.lower() in SUFFIXES
     return (u.scheme == 'https' and u.port in (None, 443)
             and u.hostname in {'fonts.googleapis.com', 'fonts.gstatic.com'}
@@ -66,6 +71,7 @@ def self_test():
              (ORIGIN+TRAVEL,'GET','document',True), (ORIGIN+TRAVEL_CONTACT,'GET','document',True),
              (ORIGIN+LIFESTYLE,'GET','document',True), (ORIGIN+LIFESTYLE_CONTACT,'GET','document',True),
              (ORIGIN+PERSONAL,'GET','document',True), (ORIGIN+PERSONAL_CONTACT,'GET','document',True),
+             (ORIGIN+VIP,'GET','document',True), (ORIGIN+VIP_CONTACT,'GET','document',True),
              (ORIGIN+'/assets/premium.js?v=11','GET','script',True),
              (ORIGIN+'/contact/?name=test','GET','document',False),
              (ORIGIN+'/contact/','POST','document',False),
@@ -106,7 +112,7 @@ def review(production=False):
         origin = f'http://127.0.0.1:{server.server_port}'
     report = {'testedAt':datetime.now(ZoneInfo('Europe/Madrid')).isoformat(),
               'commit':os.environ.get('GITHUB_SHA'), 'mode':'production_unmodified' if production else 'built_artifact',
-              'pages':[DMC,CONTACT,PRIVATE,PRIVATE_CONTACT,TRAVEL,TRAVEL_CONTACT,LIFESTYLE,LIFESTYLE_CONTACT,PERSONAL,PERSONAL_CONTACT], 'results':[], 'status':'NOT_RUN',
+              'pages':[DMC,CONTACT,PRIVATE,PRIVATE_CONTACT,TRAVEL,TRAVEL_CONTACT,LIFESTYLE,LIFESTYLE_CONTACT,PERSONAL,PERSONAL_CONTACT,VIP,VIP_CONTACT], 'results':[], 'status':'NOT_RUN',
               'limitations':['Chromium viewport emulation, not physical iPhone/Safari.',
                              'No form submission, outbound contact or Analytics request; no commercial outcome measured.']}
     chrome = next((shutil.which(x) for x in ('google-chrome','google-chrome-stable','chromium','chromium-browser') if shutil.which(x)), None)
@@ -316,6 +322,41 @@ def review(production=False):
                             assert select.input_value()=='Full Concierge'
                             result['journeys'].append({'link':label,'selectedService':PERSONAL_SERVICE,
                                 'editable':True,'profileInitiallyEmpty':True,'geometry':geometry,'formSubmitted':False})
+                        # Review both existing VIP Services form paths without outgoing contact or analytics.
+                        for index in range(2):
+                            res=page.goto(origin+VIP,wait_until='load',timeout=30000)
+                            assert res and res.status==200
+                            ready(page)
+                            assert page.locator('link[rel="canonical"]').get_attribute('href')==ORIGIN+VIP
+                            links=page.locator('main a[href="'+VIP_CONTACT+'"]')
+                            assert links.count()==2, 'VIP Services must retain exactly two contextual form CTAs'
+                            label=links.nth(index).inner_text()
+                            with page.expect_navigation(wait_until='load',timeout=30000) as navigation:
+                                links.nth(index).click()
+                            assert navigation.value and navigation.value.status==200
+                            assert page.url==origin+VIP_CONTACT
+                            ready(page)
+                            select=page.locator('#fService')
+                            assert select.input_value()==VIP_SERVICE, 'VIP Services intent not preselected'
+                            assert select.locator('option[value="'+VIP_SERVICE+'"]').count()==1
+                            assert page.locator('#fClientType').input_value()=='', 'Do not infer a visitor role'
+                            assert page.locator('#fName').input_value()==page.locator('#fPhone').input_value()==''
+                            assert page.locator('link[rel="canonical"]').get_attribute('href')==ORIGIN+'/contact/'
+                            assert page.locator('h1').count()==1 and select.get_attribute('required') is not None
+                            select.focus()
+                            select.click(trial=True,timeout=7000)
+                            geometry=select.evaluate(GEOMETRY)
+                            assert geometry['inside'] and geometry['unobstructed'] and not geometry['overflow'],geometry
+                            assert geometry['height']>=24 and geometry['width']>=24
+                            screenshot=output/f'{mode}-vip-services-{index}.png'
+                            page.screenshot(path=str(screenshot))
+                            with Image.open(screenshot) as im:
+                                assert im.size==(width,height) and max(ImageStat.Stat(im.convert('RGB')).var)>1
+                            select.select_option(label='Full Concierge')
+                            assert select.input_value()=='Full Concierge'
+                            result['journeys'].append({'link':label,'selectedService':VIP_SERVICE,
+                                'editable':True,'profileInitiallyEmpty':True,'geometry':geometry,'formSubmitted':False})
+
                         for query,expected in [('', ''),('service=invalid',''),('service=dmc&service=chauffeur',''),
                                                ('service=chauffeur','Private Chauffeur & Transportation'),
                                                ('service=private-client',PRIVATE_SERVICE),
@@ -329,7 +370,10 @@ def review(production=False):
                                                ('service=lifestyle-management&service=lifestyle-management',''),
                                                ('service=personal-concierge',PERSONAL_SERVICE),
                                                ('service=personal-concierge&service=dmc',''),
-                                               ('service=personal-concierge&service=personal-concierge','')]:
+                                               ('service=personal-concierge&service=personal-concierge',''),
+                                               ('service=vip-services',VIP_SERVICE),
+                                               ('service=vip-services&service=dmc',''),
+                                               ('service=vip-services&service=vip-services','')]:
                             page.goto(origin+'/contact/'+('?' + query if query else ''),wait_until='load',timeout=30000)
                             ready(page)
                             assert page.locator('#fService').input_value()==expected, ('Unexpected preselection',query)
