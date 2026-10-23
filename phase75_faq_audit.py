@@ -114,4 +114,15 @@ for path in PATHS:
     if visible != structured:
         raise SystemExit(f'Phase 75 visible FAQ/schema mismatch: {path}')
 
+# The bespoke landing also contains an earlier general FAQ. Keep those visible
+# questions distinct from its service-specific FAQs and clarify the service choice.
+bespoke_html = (ROOT/'bespoke-concierge-ibiza'/'index.html').read_text(encoding='utf-8')
+bespoke_questions = [clean(q) for q in re.findall(r'<summary\b[^>]*>(.*?)</summary>', bespoke_html, re.I|re.S)]
+if len(bespoke_questions) != len(set(bespoke_questions)):
+    raise SystemExit('Phase 75 duplicate visible Bespoke FAQ question')
+if bespoke_questions.count('What is a bespoke concierge request?') != 1:
+    raise SystemExit('Phase 75 expected one general Bespoke definition')
+if bespoke_questions.count('When is Private Concierge a better fit?') != 1:
+    raise SystemExit('Phase 75 missing Bespoke-to-Private service choice')
+
 print('PASS: Phase 75 FAQ integrity audit — 55 service landings, 220 visible Q&As matched exactly to 55 four-item FAQPage schemas')
