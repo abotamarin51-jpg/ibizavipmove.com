@@ -289,7 +289,7 @@ def review(production=False):
                             ready(page)
                             assert page.locator('link[rel="canonical"]').get_attribute('href')==ORIGIN+PERSONAL
                             links=page.locator('main a[href="'+PERSONAL_CONTACT+'"]')
-                            assert links.count()==3, 'Personal Concierge page must have exactly two contextual form links'
+                            assert links.count()==2, 'Personal Concierge page must have exactly two contextual form links'
                             label=links.nth(index).inner_text()
                             with page.expect_navigation(wait_until='load',timeout=30000) as navigation:
                                 links.nth(index).click()
