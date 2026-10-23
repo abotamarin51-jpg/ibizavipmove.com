@@ -123,6 +123,7 @@ from phase182_private_client_context import SERVICE as PRIVATE_CLIENT_SERVICE
 from phase183_travel_concierge_context import SERVICE as TRAVEL_CONCIERGE_SERVICE
 from phase184_lifestyle_context import SERVICE as LIFESTYLE_SERVICE
 from phase185_personal_concierge_context import SERVICE as PERSONAL_CONCIERGE_SERVICE
+from phase186_vip_services_context import SERVICE as VIP_SERVICES_SERVICE
 contacts=['/contact/','/es/contacto/','/fr/contact/','/de/kontakt/','/ar/contact/']
 for path in contacts:
     p=page(path)
@@ -134,7 +135,7 @@ for path in contacts:
     else:
         opening,body=fm.groups()
         options=re.findall(r'<option\b([^>]*)\bvalue="([^"]*)"([^>]*)>',body,re.I)
-        count=17 if path=='/contact/' else 12
+        count=18 if path=='/contact/' else 12
         if not re.search(r'\brequired\b',opening,re.I):fail(f'contact service selector not required: {path}')
         if len(options)!=count+1:fail(f'contact service options != placeholder + {count}: {path}')
         else:
@@ -146,9 +147,9 @@ for path in contacts:
             if len(real)!=count or any(not value for value in real) or len(set(real))!=count:
                 fail(f'contact real service catalog != {count} distinct values: {path}')
             if path=='/contact/':
-                expected_en=EN_SERVICES[:1]+[PRIVATE_CLIENT_SERVICE,TRAVEL_CONCIERGE_SERVICE,LIFESTYLE_SERVICE,PERSONAL_CONCIERGE_SERVICE]+EN_SERVICES[1:]
+                expected_en=EN_SERVICES[:1]+[PRIVATE_CLIENT_SERVICE,TRAVEL_CONCIERGE_SERVICE,LIFESTYLE_SERVICE,PERSONAL_CONCIERGE_SERVICE,VIP_SERVICES_SERVICE]+EN_SERVICES[1:]
                 if [unescape(value) for value in real]!=expected_en:
-                    fail('English contact must preserve 13 original services and four named private-service choices in reviewed order')
+                    fail('English contact must preserve 13 original services plus five named private-service choices in exact order')
     if text.count('/assets/phase63.js?v=63')!=1:fail(f'contact Phase63 routing missing/duplicated: {path}')
     for field in ('fName','fPhone','fArrival','fDeparture','fService','fGuests','fBrief'):
         if f'id="{field}"' not in text:fail(f'contact field missing {field}: {path}')

@@ -7,6 +7,7 @@ from phase182_private_client_context import enhance as enhance_private_client_co
 from phase183_travel_concierge_context import enhance as enhance_travel_concierge_context
 from phase184_lifestyle_context import enhance as enhance_lifestyle_context
 from phase185_personal_concierge_context import enhance as enhance_personal_concierge_context
+from phase186_vip_services_context import enhance as enhance_vip_services_context
 
 
 # One Home-only editorial refinement. Preserve SEO metadata, headings, layout and contact routes.
@@ -84,3 +85,4 @@ if __name__ == '__main__':
     enhance_travel_concierge_context()
     enhance_lifestyle_context()
     enhance_personal_concierge_context()
+    enhance_vip_services_context()
