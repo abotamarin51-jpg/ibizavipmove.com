@@ -21,11 +21,12 @@ checks = {
     'one H1 with Eventkoordination': text.count('<h1>') == 1 and '<h1>Private Events &amp; Eventkoordination auf Ibiza.</h1>' in text,
     'visible Veranstaltungskoordination': 'Veranstaltungskoordination' in text,
     'visible Firmenevents': 'Firmenevents' in text,
+    'distinct local coordination and process H2s': (text.count('<h2>Lokale Eventkoordination für Feiern und Firmenevents.</h2>') == 1 and text.count('<h2>Vom Briefing zum abgestimmten Eventablauf.</h2>') == 1),
     'partner audience path': text.count('/de/partners/">Partner-Koordination ansehen') == 1 and 'Für Eventagenturen, Travel Advisors und PAs' in text,
     'contact routes preserved': 'https://wa.me/34600703303' in text and 'tel:+34600703303' in text and 'partnership@ibizavipmove.com' in text,
     'six head hreflang alternates': len(re.findall(r'<link\s+rel="alternate"\s+hreflang="[^"]+"\s+href="[^"]+">', text, re.I)) == 6,
     'sitemap inventory preserved': sitemap.count('<url>') == 157,
-    'truthful target lastmod': f'<loc>{CANONICAL}</loc><lastmod>2026-09-23</lastmod>' in sitemap,
+    'truthful target lastmod': f'<loc>{CANONICAL}</loc><lastmod>2026-10-24</lastmod>' in sitemap,
 }
 
 schemas = []

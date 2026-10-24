@@ -12,6 +12,7 @@ DESC = 'Private Event- und Veranstaltungskoordination auf Ibiza für Feiern und 
 H1 = 'Private Events & Eventkoordination auf Ibiza.'
 LEAD = 'Private Feiern und ausgewählte Firmenevents brauchen klare Veranstaltungskoordination: Gäste, Location, Transport, Anbieter und Timing in einem operativen Briefing.'
 H2 = 'Lokale Eventkoordination für Feiern und Firmenevents.'
+PROCESS_H2 = 'Vom Briefing zum abgestimmten Eventablauf.'
 LARGE = 'Wir koordinieren private Veranstaltungen und Firmenevents auf Ibiza rund um den bestätigten Umfang. Gäste, Location, Anbieter, Transport, Security und Timing werden dabei in einem gemeinsamen operativen Ablauf verbunden.'
 PARTNER = '<p class="ivm-concierge-continuity">Für Eventagenturen, Travel Advisors und PAs mit bestätigten Ibiza-Abläufen: <a class="text-link" href="/de/partners/">Partner-Koordination ansehen →</a></p>'
 
@@ -66,7 +67,7 @@ if n != 1:
     raise SystemExit('Phase 172 editorial copy replacement failed')
 text, n = re.subn(
     r'(<section class="process">.*?<div class="kicker dark">Private coordination</div>)<h2>.*?</h2>',
-    lambda m: m.group(1) + f'<h2>{htmllib.escape(H2)}</h2>',
+    lambda m: m.group(1) + f'<h2>{htmllib.escape(PROCESS_H2)}</h2>',
     text,
     count=1,
     flags=re.I | re.S,
@@ -107,7 +108,7 @@ TARGET.write_text(text, encoding='utf-8')
 
 sitemap = SITEMAP.read_text(encoding='utf-8')
 pat = rf'(<url><loc>{re.escape(CANONICAL)}</loc><lastmod>)[^<]+(</lastmod>)'
-sitemap, n = re.subn(pat, rf'\g<1>2026-09-23\g<2>', sitemap, count=1)
+sitemap, n = re.subn(pat, rf'\g<1>2026-10-24\g<2>', sitemap, count=1)
 if n != 1:
     raise SystemExit(f'Phase 172 sitemap target replacement count: {n}')
 SITEMAP.write_text(sitemap, encoding='utf-8')
