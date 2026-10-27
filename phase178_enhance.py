@@ -111,6 +111,67 @@ def enhance_villa_staffing_brief():
     print('PASS: Villa staffing brief — practical scope guidance and existing staffing route')
 
 
+def enhance_assistant_villa_checklist():
+    """Add an assistant's practical brief to the existing English villa note."""
+    from phase124_enhance import MOD_META_RE, rewrite_article_schema
+
+    article_path = Path('_site/ibiza-intelligence/villa-arrival-planning/index.html')
+    office_path = Path('_site/private-office/index.html')
+    sitemap_path = Path('_site/sitemap.xml')
+    article_url = 'https://ibizavipmove.com/ibiza-intelligence/villa-arrival-planning/'
+    office_url = 'https://ibizavipmove.com/private-office/'
+    checklist = '''<section id="assistant-villa-checklist">
+<h2>An executive assistant's checklist for an Ibiza villa stay.</h2>
+<p>When arranging a villa stay for a principal or family, keep the property, arrivals and first reservations in one current brief. Start with these details so the local team can check the dependencies before services are confirmed.</p>
+<ul class="premium-list">
+<li><strong>Stay dates and guest requirements.</strong> Confirm the local check-in and check-out dates, overnight guest count and any separate arrivals. Flag practical requirements such as child seats or step-free access where relevant to the requested service.</li>
+<li><strong>Property access and handover.</strong> Confirm the agreed access time, the person meeting the guests and the contact who can resolve a delayed arrival. If the villa is already booked, share the confirmed location privately with the team coordinating the arrival. Keep the written property terms with the booking record.</li>
+<li><strong>Flight times, luggage and vehicles.</strong> Share flight details, passenger count, luggage volume and the onward destination when requesting <a href="/private-chauffeur-ibiza/">chauffeur coordination</a>. For travel from the United States, use the Ibiza arrival date and local time shown on the itinerary; an overnight flight may arrive on a different calendar date from departure.</li>
+<li><strong>Villa readiness and staffing.</strong> List the first meal, provisioning and any <a href="/private-chef-staffing-ibiza/">private chef or villa-staffing requirements</a>. Check guest numbers, service hours, duties, shopping and additional charges in the written scope. Treat requested extras separately from services already included in the property booking.</li>
+<li><strong>The first confirmed plans.</strong> Put dining, yacht departures and the next transport movement beside the villa handover time. Keep the first day realistic and identify which reservations can move if the arrival changes. Availability and applicable supplier terms still need confirmation for each request.</li>
+<li><strong>Approval and communication.</strong> Name the person who may approve requests or extra costs, the preferred channel and the reply time zone. Agree whether communication stays through the assistant or includes the principal. Share only the details each supplier needs for the agreed service.</li>
+<li><strong>Changes and the final handover.</strong> Keep one latest itinerary with requests marked as pending or confirmed. If flight timing, guest numbers or access changes, review the affected vehicles, property handover, staffing and reservations together. Agree who receives the updated version.</li>
+</ul>
+<p><strong>A useful first message:</strong> stay dates; accommodation area; guests and separate arrivals; confirmed flight times; required services; first priorities; reply time zone; and the person approving requests. Identity documents and bank details are not needed in that initial enquiry.</p>
+<p>Use the checklist to prepare the brief, then explore <a href="/luxury-villas-ibiza/">private villa coordination</a> or <a href="/private-client-services-ibiza/">support for principals and their representatives</a> for the relevant service.</p>
+</section>'''
+    office_link = '<p id="assistant-villa-guide">Planning a villa stay? Use the <a class="text-link" href="/ibiza-intelligence/villa-arrival-planning/#assistant-villa-checklist">executive assistant\'s villa checklist</a> to prepare access, arrivals, staffing and approvals before sending the brief.</p>'
+    office_anchor = '<p data-ivm179="brief">For the first message, share the dates, guest count, required services and your role. Include your time zone, who may approve requests and whether communication should stay through you. Identity documents or bank details are not needed in the first message.</p>'
+    article = article_path.read_text(encoding='utf-8')
+    office = office_path.read_text(encoding='utf-8')
+    sitemap = sitemap_path.read_text(encoding='utf-8')
+    for html, canonical in ((article, article_url), (office, office_url)):
+        if html.count(f'<link rel="canonical" href="{canonical}">') != 1:
+            raise SystemExit('Assistant villa guide: unexpected canonical')
+    if article.count('<aside class="article-cta">') != 1 or office.count(office_anchor) != 1:
+        raise SystemExit('Assistant villa guide: expected insertion point missing')
+    if article.count('id="assistant-villa-checklist"') > 1 or office.count('id="assistant-villa-guide"') > 1:
+        raise SystemExit('Assistant villa guide: duplicate guide content')
+    if 'id="assistant-villa-checklist"' in article and checklist not in article:
+        raise SystemExit('Assistant villa guide: existing checklist differs from source')
+    if 'id="assistant-villa-guide"' in office and office_link not in office:
+        raise SystemExit('Assistant villa guide: existing office link differs from source')
+    updated_article = article if checklist in article else article.replace('<aside class="article-cta">', checklist + '<aside class="article-cta">', 1)
+    updated_office = office if office_link in office else office.replace(office_anchor, office_anchor + office_link, 1)
+    for route in ('private-chauffeur-ibiza', 'private-chef-staffing-ibiza', 'luxury-villas-ibiza', 'private-client-services-ibiza'):
+        target = Path('_site') / route / 'index.html'
+        if not target.is_file() or f'href="https://ibizavipmove.com/{route}/"' not in target.read_text(encoding='utf-8'):
+            raise SystemExit(f'Assistant villa guide: missing canonical destination {route}')
+    updated_article = rewrite_article_schema(updated_article, article_url, '2026-10-27')
+    updated_article = MOD_META_RE.sub('', updated_article).replace('</head>', '<meta property="article:modified_time" content="2026-10-27"></head>', 1)
+    if updated_office.split('</head>', 1)[0] != office.split('</head>', 1)[0]:
+        raise SystemExit('Assistant villa guide: unexpected Private Office head change')
+    for url in (article_url, office_url):
+        pattern = rf'(<url><loc>{re.escape(url)}</loc><lastmod>)[^<]+(</lastmod>)'
+        sitemap, count = re.subn(pattern, r'\g<1>2026-10-27\g<2>', sitemap)
+        if count != 1:
+            raise SystemExit('Assistant villa guide: expected existing sitemap entry')
+    article_path.write_text(updated_article, encoding='utf-8')
+    office_path.write_text(updated_office, encoding='utf-8')
+    sitemap_path.write_text(sitemap, encoding='utf-8')
+    print('PASS: Assistant villa checklist — existing English article, Private Office pathway and verified freshness')
+
+
 if __name__ == '__main__':
     enhance()
     enhance_private_office_handoff()
@@ -123,3 +184,4 @@ if __name__ == '__main__':
     enhance_personal_concierge_context()
     enhance_vip_services_context()
     enhance_villa_staffing_brief()
+    enhance_assistant_villa_checklist()
