@@ -14,6 +14,9 @@ VERIFIED = {
     '/private-office/': '2026-10-21',
     '/fr/private-office/': '2026-09-12', '/de/private-office/': '2026-09-12', '/ar/private-office/': '2026-09-12',
     '/destination-management-ibiza/': '2026-10-23',
+    '/luxury-lifestyle-management-ibiza/': '2026-10-27',
+    '/personal-concierge-ibiza/': '2026-10-27',
+    '/luxury-travel-concierge-ibiza/': '2026-10-27',
 }
 ET.register_namespace('', NS)
 
