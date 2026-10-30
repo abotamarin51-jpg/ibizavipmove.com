@@ -1,11 +1,12 @@
 from pathlib import Path
-from datetime import date
 import re
 
 ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
 ORG = BASE + '/#organization'
-TODAY = date.today().isoformat()
+# Preserve the last reviewed published summary date until its content changes.
+# Rebuilding an unrelated Home link must not manufacture summary freshness.
+TODAY = '2026-10-27'
 
 SERVICES = [
     ('Private Chauffeur Ibiza', '/private-chauffeur-ibiza/'),
