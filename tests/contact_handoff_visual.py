@@ -92,6 +92,49 @@ def review_home_vip_link(page, origin, mode, width, height, output):
         'targetScreenshot': target_image.name}
 
 
+def review_localized_contact_copy(page, origin, mode, width, height, output):
+    """Verify localized WhatsApp draft handoff, without submitting anything."""
+    cases = (
+        ('fr', '/fr/contact/', 'Continuer sur WhatsApp',
+         'WhatsApp s’ouvre avec vos informations. Vérifiez le message, puis appuyez sur Envoyer dans WhatsApp.'),
+        ('de', '/de/kontakt/', 'Weiter zu WhatsApp',
+         'WhatsApp öffnet sich mit Ihren Angaben. Prüfen Sie die Nachricht und senden Sie sie dort ab.'),
+        ('ar', '/ar/contact/', 'المتابعة عبر واتساب',
+         'سيُفتح واتساب مع معلوماتك. راجع الرسالة ثم اضغط على إرسال داخل واتساب.'),
+    )
+    results = []
+    for lang, path, label, help_text in cases:
+        response = page.goto(origin + path, wait_until='load', timeout=15000)
+        assert response and response.status == 200, (lang, 'HTTP')
+        assert page.locator('html').get_attribute('lang') == lang
+        if lang == 'ar':
+            assert page.locator('html').get_attribute('dir') == 'rtl'
+        button = page.locator('#localizedConciergeForm button[type="submit"]')
+        assert button.count() == 1, (lang, 'button count')
+        assert (button.text_content() or '').strip() == label, (lang, 'button label')
+        assert page.get_by_text(help_text, exact=False).count() == 1, (lang, 'help text')
+        assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com' + path
+        button.evaluate('e => e.scrollIntoView({block:"center", behavior:"instant"})')
+        button.focus()
+        geometry = button.evaluate('''e => {
+            const r = e.getBoundingClientRect();
+            const hit = document.elementFromPoint(r.left+r.width/2, r.top+r.height/2);
+            return {left:r.left, top:r.top, right:r.right, bottom:r.bottom,
+                width:r.width, height:r.height, focused:document.activeElement===e,
+                unobstructed:hit===e || e.contains(hit),
+                overflow:document.documentElement.scrollWidth > innerWidth+1};
+        }''')
+        assert (geometry['left'] >= 0 and geometry['top'] >= 0 and
+                geometry['right'] <= width+1 and geometry['bottom'] <= height+1 and
+                geometry['width'] >= 24 and geometry['height'] >= 24 and
+                geometry['focused'] and geometry['unobstructed'] and not geometry['overflow']), (lang, mode, geometry)
+        shot = output / f'contact-whatsapp-{lang}-{mode}.png'
+        page.screenshot(path=str(shot))
+        verify_image(shot, (width, height))
+        results.append({'language': lang, 'mode': mode, 'label': label,
+                        'geometry': geometry, 'screenshot': shot.name})
+    return results
+
 def main():
     root = Path('_site').resolve()
     output = (Path(os.environ['RUNNER_TEMP']) / 'ivm-contact-review').resolve()
@@ -202,6 +245,11 @@ def main():
                         )
                         assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         print(f'PASS: Home VIP link, keyboard navigation and nonblank screenshots: {mode}')
+                        report.setdefault('localizedContact', []).extend(
+                            review_localized_contact_copy(page, origin, mode, width, height, output)
+                        )
+                        assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
+                        print(f'PASS: Localized WhatsApp labels and help, mobile/desktop: {mode}')
                     finally:
                         context.close()
             finally:
