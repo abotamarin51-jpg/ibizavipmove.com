@@ -24,7 +24,9 @@ for path in ROOT.rglob('*.html'):
         )
 
     text = CARD_PATTERN.sub(convert, text)
-    if replacements and ASSET not in text:
+    # Preserve the published 404 cascade even when filesystem traversal visits
+    # it before the first converted card; keep its deliberate noindex intact.
+    if (replacements or path == ROOT / '404.html') and ASSET not in text:
         text = text.replace('</head>', f'<link rel="stylesheet" href="{ASSET}"></head>')
     path.write_text(text, encoding='utf-8')
 
@@ -36,3 +38,7 @@ css = '''
 (ROOT / 'assets' / 'performance.css').write_text(css, encoding='utf-8')
 
 print(f'Lazy-card optimization converted {replacements} service-card images')
+
+not_found = ROOT / '404.html'
+if not_found.exists():
+    assert ASSET in not_found.read_text(encoding='utf-8'), 'Published 404 performance stylesheet missing'

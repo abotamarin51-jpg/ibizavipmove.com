@@ -7,24 +7,19 @@ ROOT = Path('_site')
 IMG = ROOT / 'assets' / 'images'
 HOME = ROOT / 'index.html'
 
-# Phase 101 keeps the exact same editorial sources and visual treatment used by
-# the mature site. Phase 157 supplies villa.jpg and Phase 160 supplies
-# chauffeur.jpg from checksum-verified, production-approved repository assets
-# before this optimizer runs. hero.jpg and hero-mobile.jpg are copied from the
-# currently published Ibiza VIP Move site and checksum-gated so an upstream
-# re-encode cannot drift into an unrelated release. The remaining six remote
-# assets keep their rendered dimensions and receive a leaner JPEG encode.
-# The desktop LCP hero keeps the exact same aspect/crop but is delivered at
-# 2000x1273 instead of 2200x1400 — still above typical desktop display needs
-# while reducing global transfer cost.
+# Preserve the reviewed, currently published image bytes during unrelated releases.
+# Villa and chauffeur already use checksum-verified repository assets. Extend the
+# existing same-origin hero checksum gate to the six remaining optimized images;
+# a changed or unavailable source fails the build instead of changing the design.
+# Dimensions, crop, image URLs and the original performance assertions stay intact.
 SOURCES = {
     'hero.jpg': 'https://ibizavipmove.com/assets/images/hero.jpg',
-    'yacht.jpg': 'https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2000&q=78&fm=jpg',
-    'nightlife.jpg': 'https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=1800&q=76&fm=jpg',
-    'events.jpg': 'https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=1800&q=78&fm=jpg',
-    'chef.jpg': 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=76&fm=jpg',
-    'aviation.jpg': 'https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=78&w=2200',
-    'hero-desktop.jpg': 'https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=2000&h=1273&q=78&fm=jpg',
+    'yacht.jpg': 'https://ibizavipmove.com/assets/images/yacht.jpg',
+    'nightlife.jpg': 'https://ibizavipmove.com/assets/images/nightlife.jpg',
+    'events.jpg': 'https://ibizavipmove.com/assets/images/events.jpg',
+    'chef.jpg': 'https://ibizavipmove.com/assets/images/chef.jpg',
+    'aviation.jpg': 'https://ibizavipmove.com/assets/images/aviation.jpg',
+    'hero-desktop.jpg': 'https://ibizavipmove.com/assets/images/hero-desktop.jpg',
     'hero-mobile.jpg': 'https://ibizavipmove.com/assets/images/hero-mobile.jpg',
 }
 
@@ -32,10 +27,23 @@ FROZEN_VILLA = Path('editorial-assets/villa.jpg')
 FROZEN_VILLA_SHA256 = '920a2d479f869c385e47bbaf7cec73235da990c450283a75c0fb8d687de945dd'
 FROZEN_CHAUFFEUR = Path('editorial-assets/chauffeur.jpg')
 FROZEN_CHAUFFEUR_SHA256 = '4e286f6c4a91148c0beb248ca354beba7a3f281c95d3b746b17ef102d9649484'
+
 APPROVED_HERO_SHA256 = '10c61dbded805b7d23359f79ed59957988d55d2159a5cd8954adf55dab4b047f'
 APPROVED_HERO_BYTES = 667_271
 APPROVED_HERO_MOBILE_SHA256 = '93e8146cff4a8cfe66ecb412be2fca12d07a2d4e37aab081bca44703265eba78'
 APPROVED_HERO_MOBILE_BYTES = 187_724
+
+# Verified against the pre-release public site; no re-encoding or fallback.
+APPROVED_REMOTE = {
+    'hero.jpg': (APPROVED_HERO_BYTES, APPROVED_HERO_SHA256),
+    'yacht.jpg': (439253, '3afc331cc9af5ec06dc51a51da8961ad37bdb1e96b879bdbc5c4c367e9754580'),
+    'nightlife.jpg': (496646, '5f177be5068e0f9f15a407fdd622ea215dd289ec5a9ba120825f311bf6588233'),
+    'events.jpg': (324693, '7436ca1bc46c164faea9e3d940de745a809a3654e3f81da7ea4599d99680b85f'),
+    'chef.jpg': (261773, 'c799052b8f835cba2b09a22ad660e9428c33b7338f756a7cb0cce160b244eb4b'),
+    'aviation.jpg': (452600, '1deee3ae10859b3b17fa930216b78cb3a5d71b12b3c00993d79b225765863d98'),
+    'hero-desktop.jpg': (402346, '9c8452a6a47c701b3f71b7d8c9eb02c96c8874a578d90bd0b618e0945c37d225'),
+    'hero-mobile.jpg': (APPROVED_HERO_MOBILE_BYTES, APPROVED_HERO_MOBILE_SHA256),
+}
 
 before = {}
 after = {}
@@ -84,17 +92,13 @@ for name, url in SOURCES.items():
     req = Request(url, headers={'User-Agent': 'Mozilla/5.0 IbizaVIPMoveBuild/1.0'})
     with urlopen(req, timeout=30) as response:
         data = response.read()
-    if name in {'hero.jpg', 'hero-mobile.jpg'}:
-        expected = {
-            'hero.jpg': (APPROVED_HERO_BYTES, APPROVED_HERO_SHA256),
-            'hero-mobile.jpg': (APPROVED_HERO_MOBILE_BYTES, APPROVED_HERO_MOBILE_SHA256),
-        }[name]
-        digest = hashlib.sha256(data).hexdigest()
-        if len(data) != expected[0] or digest != expected[1]:
-            raise SystemExit(
-                f'Phase 101 {name} production-baseline mismatch: '
-                f'{len(data)} bytes / {digest}'
-            )
+    expected = APPROVED_REMOTE[name]
+    digest = hashlib.sha256(data).hexdigest()
+    if len(data) != expected[0] or digest != expected[1]:
+        raise SystemExit(
+            f'Phase 101 {name} production-baseline mismatch: '
+            f'{len(data)} bytes / {digest}'
+        )
     if len(data) < 40_000:
         raise SystemExit(f'Phase 101 optimized image unexpectedly small: {name} -> {len(data)} bytes')
     if len(data) >= before[name]:
