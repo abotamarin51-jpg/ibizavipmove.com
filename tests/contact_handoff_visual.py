@@ -28,6 +28,68 @@ def verify_image(path, size=None):
         return variance
 
 
+def review_home_vip_link(page, origin, mode, width, height, output):
+    """Check the internal Home link; never activate a contact destination."""
+    response = page.goto(origin + '/', wait_until='load', timeout=15000)
+    assert response and response.status == 200
+    page.evaluate('document.fonts.ready')
+    assert page.evaluate("document.fonts.check('16px Manrope')"), 'Home font did not load'
+    link = page.locator('a[href="/vip-services-ibiza/"]').filter(has_text='VIP hospitality requests')
+    assert link.count() == 1, 'Expected exactly one Home VIP hospitality link'
+    assert link.inner_text() == 'VIP hospitality requests'
+    assert link.locator('..').inner_text() == 'We coordinate chauffeur transport, villas, yachts, aviation, VIP hospitality requests and security around each stay.'
+    assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com/'
+    link.evaluate('e => e.scrollIntoView({block: "center"})')
+    page.wait_for_function('''() => {
+        let e = document.querySelector('a[href="/vip-services-ibiza/"]');
+        for (; e; e = e.parentElement) {
+            const s = getComputedStyle(e);
+            if (s.display === 'none' || s.visibility !== 'visible' || Number(s.opacity) < .99) return false;
+        }
+        return true;
+    }''', timeout=5000)
+    link.focus()
+    page.keyboard.press('Tab')
+    page.keyboard.press('Shift+Tab')
+    link.evaluate('e => e.scrollIntoView({block: "center"})')
+    state = link.evaluate('''e => {
+        const s = getComputedStyle(e);
+        const rects = [...e.getClientRects()].filter(r => r.width && r.height);
+        return {focused: document.activeElement === e,
+            focusVisible: e.matches(':focus-visible'), outline: s.outlineStyle, outlineWidth: s.outlineWidth,
+            underline: s.textDecorationLine.includes('underline'), color: s.color,
+            inheritedColor: s.color === getComputedStyle(e.parentElement).color,
+            overflow: document.documentElement.scrollWidth > innerWidth + 1,
+            visibleRects: rects.length,
+            bounded: rects.every(r => r.left >= 0 && r.top >= 0 && r.right <= innerWidth && r.bottom <= innerHeight),
+            unobstructed: rects.every(r => { const t = document.elementFromPoint(r.x+r.width/2, r.y+r.height/2); return t === e || e.contains(t); })};
+    }''')
+    assert state['focused'] and state['focusVisible'] and state['outline'] != 'none' and state['outlineWidth'] != '0px', state
+    assert state['underline'] and state['inheritedColor'], state
+    assert state['visibleRects'] and state['bounded'] and state['unobstructed'] and not state['overflow'], state
+    screenshot = output / f'home-vip-link-{mode}.png'
+    page.screenshot(path=str(screenshot))
+    verify_image(screenshot, (width, height))
+    with page.expect_navigation(wait_until='load', timeout=15000) as navigation:
+        page.keyboard.press('Enter')
+    assert navigation.value and navigation.value.status == 200
+    assert page.url == origin + '/vip-services-ibiza/'
+    assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com/vip-services-ibiza/'
+    assert page.locator('h1').count() == 1
+    assert page.locator('a[href^="https://wa.me/34600703303"]').count() > 0
+    assert page.locator('a[href="tel:+34600703303"]').count() > 0
+    assert page.locator('a[href="mailto:partnership@ibizavipmove.com"]').count() > 0
+    assert page.locator('a[href="/contact/?service=vip-services"]').count() == 2
+    page.evaluate('document.fonts.ready')
+    target_image = output / f'home-vip-target-{mode}.png'
+    page.screenshot(path=str(target_image))
+    verify_image(target_image, (width, height))
+    return {'mode': mode, 'viewport': [width, height], 'linkState': state,
+        'keyboardNavigation': 'passed', 'destinationHttp': navigation.value.status,
+        'contactTargets': 'preserved; not activated', 'homeScreenshot': screenshot.name,
+        'targetScreenshot': target_image.name}
+
+
 def main():
     root = Path('_site').resolve()
     output = (Path(os.environ['RUNNER_TEMP']) / 'ivm-contact-review').resolve()
@@ -133,6 +195,11 @@ def main():
                             'javascriptErrors': errors, 'missingLocalResources': missing,
                             'label': LABEL, 'helper': HELPER, 'contactTargets': targets})
                         print(f'PASS: Contact handoff, focus, bounds and nonblank screenshots: {mode}')
+                        report.setdefault('homeVipLink', []).append(
+                            review_home_vip_link(page, origin, mode, width, height, output)
+                        )
+                        assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
+                        print(f'PASS: Home VIP link, keyboard navigation and nonblank screenshots: {mode}')
                     finally:
                         context.close()
             finally:
