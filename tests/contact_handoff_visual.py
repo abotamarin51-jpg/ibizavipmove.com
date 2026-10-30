@@ -39,7 +39,8 @@ def review_home_vip_link(page, origin, mode, width, height, output):
     assert link.inner_text() == 'VIP hospitality requests'
     assert link.locator('..').inner_text() == 'We coordinate chauffeur transport, villas, yachts, aviation, VIP hospitality requests and security around each stay.'
     assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com/'
-    link.evaluate('e => e.scrollIntoView({block: "center"})')
+    # Avoid sampling geometry midway through the site's normal smooth scrolling.
+    link.evaluate('e => e.scrollIntoView({block: "center", behavior: "instant"})')
     page.wait_for_function('''() => {
         let e = document.querySelector('a[href="/vip-services-ibiza/"]');
         for (; e; e = e.parentElement) {
@@ -51,7 +52,7 @@ def review_home_vip_link(page, origin, mode, width, height, output):
     link.focus()
     page.keyboard.press('Tab')
     page.keyboard.press('Shift+Tab')
-    link.evaluate('e => e.scrollIntoView({block: "center"})')
+    link.evaluate('e => e.scrollIntoView({block: "center", behavior: "instant"})')
     state = link.evaluate('''e => {
         const s = getComputedStyle(e);
         const rects = [...e.getClientRects()].filter(r => r.width && r.height);
@@ -61,15 +62,16 @@ def review_home_vip_link(page, origin, mode, width, height, output):
             inheritedColor: s.color === getComputedStyle(e.parentElement).color,
             overflow: document.documentElement.scrollWidth > innerWidth + 1,
             visibleRects: rects.length,
+            rects: rects.map(r => ({left:r.left, top:r.top, right:r.right, bottom:r.bottom})),
             bounded: rects.every(r => r.left >= 0 && r.top >= 0 && r.right <= innerWidth && r.bottom <= innerHeight),
             unobstructed: rects.every(r => { const t = document.elementFromPoint(r.x+r.width/2, r.y+r.height/2); return t === e || e.contains(t); })};
     }''')
-    assert state['focused'] and state['focusVisible'] and state['outline'] != 'none' and state['outlineWidth'] != '0px', state
-    assert state['underline'] and state['inheritedColor'], state
-    assert state['visibleRects'] and state['bounded'] and state['unobstructed'] and not state['overflow'], state
     screenshot = output / f'home-vip-link-{mode}.png'
     page.screenshot(path=str(screenshot))
     verify_image(screenshot, (width, height))
+    assert state['focused'] and state['focusVisible'] and state['outline'] != 'none' and state['outlineWidth'] != '0px', state
+    assert state['underline'] and state['inheritedColor'], state
+    assert state['visibleRects'] and state['bounded'] and state['unobstructed'] and not state['overflow'], state
     with page.expect_navigation(wait_until='load', timeout=15000) as navigation:
         page.keyboard.press('Enter')
     assert navigation.value and navigation.value.status == 200
