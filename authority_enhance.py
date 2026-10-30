@@ -92,6 +92,13 @@ for path in ROOT.rglob('*.html'):
     is_home = canonical.rstrip('/') == BASE
 
     if is_home:
+        # Keep the existing Home copy but link its VIP hospitality intent to
+        # the already-published, distinct VIP Services page (one visible link).
+        original = 'VIP hospitality requests and security around each stay.'
+        replacement = '<a href="/vip-services-ibiza/" style="text-decoration:underline;text-underline-offset:.16em">VIP hospitality requests</a> and security around each stay.'
+        if text.count(original) != 1:
+            raise SystemExit('Home VIP Services link: expected exactly one copy marker')
+        text = text.replace(original, replacement, 1)
         text = re.sub(r'<title>.*?</title>', f'<title>{HOME_TITLE}</title>', text, count=1, flags=re.I | re.S)
         for attr, value in (
             ('name="description"', HOME_DESC),
