@@ -51,13 +51,30 @@ for lang,(path,role_label,area_label,roles,areas) in CONTACTS.items():
         if n!=1: raise SystemExit(f'Phase 107 could not mark qualified form: {path}')
     # Opening WhatsApp prepares a message; it does not send the enquiry.
     # Keep the existing confirmation terms, fields and routing unchanged.
-    if lang == 'en':
-        handoff_copy = (
+    handoff_copy_by_language = {
+        'en': (
             ('>Send Private Brief</button>', '>Continue to WhatsApp</button>'),
             ('Submitting opens a private WhatsApp conversation with the details above.',
              'Opens WhatsApp with your details. Review the message and press Send there.'),
-        )
-        for old_copy, new_copy in handoff_copy:
+        ),
+        'fr': (
+            ('>Envoyer le brief privé</button>', '>Continuer sur WhatsApp</button>'),
+            ('L’envoi ouvre une conversation WhatsApp privée avec ces informations.',
+             'WhatsApp s’ouvre avec vos informations. Vérifiez le message, puis appuyez sur Envoyer dans WhatsApp.'),
+        ),
+        'de': (
+            ('>Privates Briefing senden</button>', '>Weiter zu WhatsApp</button>'),
+            ('Beim Senden öffnet sich eine private WhatsApp-Unterhaltung mit diesen Angaben.',
+             'WhatsApp öffnet sich mit Ihren Angaben. Prüfen Sie die Nachricht und senden Sie sie dort ab.'),
+        ),
+        'ar': (
+            ('>إرسال الطلب الخاص</button>', '>المتابعة عبر واتساب</button>'),
+            ('عند الإرسال سيتم فتح محادثة واتساب خاصة بهذه المعلومات.',
+             'سيُفتح واتساب مع معلوماتك. راجع الرسالة ثم اضغط على إرسال داخل واتساب.'),
+        ),
+    }
+    if lang in handoff_copy_by_language:
+        for old_copy, new_copy in handoff_copy_by_language[lang]:
             if html.count(old_copy) == 1:
                 html = html.replace(old_copy, new_copy, 1)
             elif html.count(new_copy) != 1:
