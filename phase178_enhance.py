@@ -17,7 +17,7 @@ HOME_SITEMAP = Path('_site/sitemap.xml')
 HOME_OLD_LEAD = '<p class="ivm-seo-lead">Ibiza VIP Move is a luxury concierge in Ibiza for private clients and professional teams who want one discreet on-island point of coordination.</p>'
 HOME_NEW_LEAD = '<p class="ivm-seo-lead">Our Ibiza concierge service helps private clients, personal assistants, family offices and luxury travel advisors plan their stay through one discreet local contact.</p>'
 HOME_OLD_SERVICE = '<p>Private chauffeur, villas, yachts, aviation, access and protection are coordinated around the stay rather than treated as isolated bookings.</p>'
-HOME_NEW_SERVICE = '<p>We coordinate chauffeur transport, villas, yachts, aviation, VIP hospitality requests and security around each stay.</p>'
+HOME_NEW_SERVICE = '<p>We coordinate chauffeur transport, villas, yachts, aviation, <a href="/vip-services-ibiza/" style="color:inherit;text-decoration:underline;text-underline-offset:.16em">VIP hospitality requests</a> and security around each stay.</p>'
 HOME_OLD_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-09-03</lastmod>'
 HOME_NEW_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-10-21</lastmod>'
 
@@ -61,11 +61,15 @@ def enhance_home_readability():
         raise SystemExit('Home clarity: expected one historical Home sitemap lastmod')
     if html.count('<link rel="canonical" href="https://ibizavipmove.com/">') != 1:
         raise SystemExit('Home clarity: wrong Home canonical')
+    vip_target = Path('_site/vip-services-ibiza/index.html')
+    if (not vip_target.is_file() or
+            vip_target.read_text(encoding='utf-8').count('<link rel="canonical" href="https://ibizavipmove.com/vip-services-ibiza/">') != 1):
+        raise SystemExit('Home VIP link: confirmed canonical destination missing')
     updated = html.replace(HOME_OLD_LEAD, HOME_NEW_LEAD, 1).replace(
         HOME_OLD_SERVICE, HOME_NEW_SERVICE, 1)
     if (updated.split('</head>', 1)[0] != html.split('</head>', 1)[0]
             or updated.count('<h1') != html.count('<h1')
-            or updated.count('<a ') != html.count('<a ')
+            or updated.count('<a ') != html.count('<a ') + 1
             or updated.count('<script') != html.count('<script')
             or updated.count('<img ') != html.count('<img ')):
         raise SystemExit('Home clarity: unexpected structure or head drift')
