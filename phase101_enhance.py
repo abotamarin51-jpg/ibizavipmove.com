@@ -1,3 +1,62 @@
+# Temporary PR-only evidence capture for the isolated Home-link release.
+# Read only allowlisted public first-party files; never execute page scripts.
+import os as _diag_os
+if _diag_os.environ.get('GITHUB_EVENT_NAME') == 'pull_request':
+    from pathlib import Path as _DiagPath
+    from datetime import datetime as _DiagDateTime, timezone as _DiagTimezone
+    from urllib.request import build_opener as _diag_opener, HTTPRedirectHandler as _DiagRedirect, Request as _DiagRequest
+    from urllib.error import HTTPError as _DiagHTTPError
+    import hashlib as _diag_hashlib
+    import json as _diag_json
+
+    class _NoDiagnosticRedirect(_DiagRedirect):
+        def redirect_request(self, req, fp, code, msg, headers, newurl):
+            return None
+
+    _diag_root = (_DiagPath(_diag_os.environ['RUNNER_TEMP']) / 'ivm-contact-review' / 'build-drift').resolve()
+    if _diag_root.is_relative_to(_DiagPath('_site').resolve()):
+        raise SystemExit('Diagnostic evidence must stay outside published output')
+    _diag_root.mkdir(parents=True, exist_ok=True)
+    _diag_report = {'checkedAt': _DiagDateTime.now(_DiagTimezone.utc).isoformat(), 'commit': _diag_os.environ.get('GITHUB_SHA'), 'files': [], 'sources': []}
+    _diag_paths = ['/', '/vip-services-ibiza/', '/404.html', '/llms.txt'] + [
+        '/assets/images/' + name + '.jpg' for name in (
+            'hero', 'hero-mobile', 'hero-desktop', 'yacht', 'nightlife', 'events', 'chef', 'aviation')
+    ]
+    _diag_client = _diag_opener(_NoDiagnosticRedirect())
+    for _diag_path in _diag_paths:
+        _diag_item = {'path': _diag_path}
+        try:
+            _diag_request = _DiagRequest('https://ibizavipmove.com' + _diag_path,
+                headers={'User-Agent': 'IbizaVIPMove-ReleaseVerification/1.0', 'Accept-Encoding': 'identity'})
+            try:
+                _diag_response = _diag_client.open(_diag_request, timeout=20)
+            except _DiagHTTPError as _diag_error:
+                if _diag_path != '/404.html' or _diag_error.code != 404:
+                    raise
+                _diag_response = _diag_error
+            with _diag_response:
+                _diag_data = _diag_response.read(2_000_001)
+                if len(_diag_data) > 2_000_000:
+                    raise ValueError('Public response exceeded evidence size bound')
+                if _diag_response.status not in (200, 404):
+                    raise ValueError('Unexpected public response status')
+                _diag_item.update(status=_diag_response.status, bytes=len(_diag_data), sha256=_diag_hashlib.sha256(_diag_data).hexdigest())
+            _diag_name = 'home.html' if _diag_path == '/' else ('vip-services.html' if _diag_path == '/vip-services-ibiza/' else _diag_path.rsplit('/', 1)[-1])
+            (_diag_root / _diag_name).write_bytes(_diag_data)
+        except Exception as _diag_error:
+            _diag_item['error'] = str(_diag_error)
+        _diag_report['files'].append(_diag_item)
+    # Only public, tracked-style build sources relevant to these output differences.
+    for _diag_source in sorted(_DiagPath('.').glob('*.py')):
+        if _diag_source.name == 'phase101_enhance.py':
+            continue
+        _diag_text = _diag_source.read_text(encoding='utf-8')
+        if any(_diag_term in _diag_text for _diag_term in ('performance.css', '404.html', 'Last updated:')):
+            (_diag_root / ('source-' + _diag_source.name)).write_text(_diag_text, encoding='utf-8')
+            _diag_report['sources'].append(_diag_source.name)
+    (_diag_root / 'manifest.json').write_text(_diag_json.dumps(_diag_report, indent=2), encoding='utf-8')
+    print('PR-only release evidence captured outside website output; no publication performed')
+
 from pathlib import Path
 from urllib.request import Request, urlopen
 import hashlib
