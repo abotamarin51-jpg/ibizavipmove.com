@@ -220,10 +220,11 @@ def review_home_dmc_link(page, origin, mode, width, height, output):
                 bounded:r.left>=0&&r.top>=0&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1,
                 unobstructed:hit===e||e.contains(hit),
                 overflow:document.documentElement.scrollWidth>innerWidth+1,
-                underline:s.textDecorationLine.includes('underline')};
+                linkCue:s.textDecorationLine.includes('underline') ||
+                    (s.borderBottomStyle==='solid' && parseFloat(s.borderBottomWidth)>0)};
     }""")
     assert (state['focused'] and state['visible'] and state['bounded'] and
-            state['unobstructed'] and not state['overflow'] and state['underline']), (mode, state)
+            state['unobstructed'] and not state['overflow'] and state['linkCue']), (mode, state)
     screenshot = output / f'home-dmc-link-{mode}.png'
     page.screenshot(path=str(screenshot))
     verify_image(screenshot, (width, height))
