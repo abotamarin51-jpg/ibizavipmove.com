@@ -204,7 +204,12 @@ def review_home_dmc_link(page, origin, mode, width, height, output):
     assert response and response.status == 200
     link = page.locator('main .ivm-home-authority-pathways a[href="/destination-management-ibiza/"]')
     assert link.count() == 1, 'One contextual Home DMC pathway expected'
-    assert link.inner_text().strip() == 'Ibiza destination management for travel advisors →'
+    label = 'Ibiza destination management for travel advisors →'
+    # CSS intentionally uppercases .text-link visually. Verify the real source
+    # wording and the rendered visible label rather than assuming identical case.
+    assert (link.text_content() or '').strip() == label
+    assert link.inner_text().strip().casefold() == label.casefold()
+    assert link.evaluate("e => getComputedStyle(e).textTransform") == 'uppercase'
     assert page.locator('main .ivm-home-authority-pathways a').count() == 3
     link.evaluate('e => e.scrollIntoView({block:"center", behavior:"instant"})')
     link.focus()
