@@ -157,8 +157,9 @@ def main():
                         lead = page.locator('p.ivm-seo-lead')
                         assert lead.count() == 1, 'Exactly one Home concierge introduction required'
                         assert lead.inner_text().strip() == (
-                            'Our Ibiza concierge service helps private clients, personal assistants, '
-                            'family offices and luxury travel advisors plan their stay through one discreet local contact.'
+                            'Ibiza VIP Move provides luxury and VIP concierge services in Ibiza for private '
+                            'clients, personal assistants, family offices and luxury travel advisors '
+                            'through one discreet local point of contact.'
                         )
                         assert (
                             'We coordinate chauffeur transport, villas, yachts, aviation, '
