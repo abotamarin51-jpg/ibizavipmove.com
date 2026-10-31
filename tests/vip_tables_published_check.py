@@ -128,7 +128,7 @@ def parse_page(body):
     if len(tags.main_wa) != 3 or any(urlsplit(u).path != "/34600703303" for u in tags.main_wa):
         raise ValueError("Main WhatsApp CTAs do not use the approved destination")
     for literal in ("[UNVRS]", "O Beach Ibiza", "Sant Antoni de Portmany",
-                    "Last updated: 21 October 2026", "Terms before confirmation",
+                    "Last updated: 31 October 2026", "Terms before confirmation",
                     "not confirmed booking relationships"):
         if literal not in html:
             raise ValueError("Reviewed content not served: " + literal)
@@ -145,7 +145,7 @@ def parse_page(body):
         if values.count(kind) != 1:
             raise ValueError("Missing or duplicate schema type: " + kind)
     webpage = next(n for n in schemas if n.get("@type") == "WebPage")
-    if webpage.get("dateModified") != "2026-10-21":
+    if webpage.get("dateModified") != "2026-10-31":
         raise ValueError("Unverified page modification date")
     return {"httpStatus": 200, "htmlSha256": hashlib.sha256(body).hexdigest(),
             "h1": tags.h1_count, "visibleFaqs": tags.faq_count,
