@@ -244,6 +244,58 @@ def review_home_dmc_link(page, origin, mode, width, height, output):
             'screenshots':[screenshot.name, destination.name]}
 
 
+def review_spanish_faq_briefs(page, origin, mode, width, height, output):
+    """Review two practical Spanish answers on both viewports without sending enquiries."""
+    from phase188_customer_questions import UPDATES
+    results = []
+    for route, label in (('/es/yate-privado-ibiza/', 'yacht'),
+                         ('/es/seguridad-privada-ibiza/', 'security')):
+        question, answer = UPDATES[route][0]
+        response = page.goto(origin + route, wait_until='load', timeout=15000)
+        assert response and response.status == 200, (mode, route)
+        assert page.locator('html').get_attribute('lang') == 'es', route
+        assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com' + route
+        details = page.locator('main section.ivm-service-faq details')
+        assert details.count() == 4, route
+        first = details.first
+        assert first.locator('summary').inner_text().strip() == question, route
+        first.locator('summary').click()
+        assert first.get_attribute('open') is not None, route
+        paragraph = first.locator('p[id="faq-answer-1"]')
+        assert paragraph.count() == 1 and paragraph.inner_text().strip() == answer, route
+        nodes = page.locator('script[type="application/ld+json"]').evaluate_all(
+            'elements => elements.map(e => JSON.parse(e.textContent))'
+        )
+        schemas = [node for node in nodes if node.get('@type') == 'FAQPage']
+        assert len(schemas) == 1 and schemas[0]['inLanguage'] == 'es', route
+        first_schema = schemas[0]['mainEntity'][0]
+        assert first_schema['name'] == question and first_schema['acceptedAnswer']['text'] == answer, route
+        assert not answer.startswith('Sí.'), route
+        whatsapp = page.locator('main a[href^="https://wa.me/"]')
+        assert whatsapp.count() > 0 and all(
+            urlsplit(whatsapp.nth(i).get_attribute('href')).path == '/34600703303'
+            for i in range(whatsapp.count())
+        ), route
+        page.evaluate('document.fonts.ready')
+        paragraph.evaluate('e => e.scrollIntoView({block:"center", behavior:"instant"})')
+        geometry = paragraph.evaluate("""e => {
+            const r=e.getBoundingClientRect();
+            return {left:r.left, right:r.right, top:r.top, bottom:r.bottom,
+                visible:r.width>20&&r.height>20,
+                overflow:document.documentElement.scrollWidth>innerWidth+1};
+        }""")
+        assert (geometry['visible'] and geometry['left'] >= 0 and
+                geometry['right'] <= width + 1 and not geometry['overflow']), (mode, route, geometry)
+        shot = output / f'es-faq-{label}-{mode}.png'
+        page.screenshot(path=str(shot))
+        verify_image(shot, (width, height))
+        results.append({'route': route, 'mode': mode, 'httpStatus': response.status,
+                        'question': question, 'schemaMatchesVisibleAnswer': True,
+                        'geometry': geometry, 'screenshot': shot.name,
+                        'contactDestinations': 'preserved; not activated'})
+    return results
+
+
 def main():
     root = Path('_site').resolve()
     output = (Path(os.environ['RUNNER_TEMP']) / 'ivm-contact-review').resolve()
@@ -370,6 +422,11 @@ def main():
                         )
                         assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         print(f'PASS: French yacht headline, canonical, mobile/desktop layout and contact destinations: {mode}')
+                        report.setdefault('spanishFaqBriefs', []).extend(
+                            review_spanish_faq_briefs(page, origin, mode, width, height, output)
+                        )
+                        assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
+                        print(f'PASS: Spanish yacht/security FAQs, structured answers and mobile/desktop layout: {mode}')
                     finally:
                         context.close()
             finally:
