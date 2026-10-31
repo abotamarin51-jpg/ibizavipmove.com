@@ -1,0 +1,87 @@
+"""Check rendered FAQ text, entity references and existing canonical inventory."""
+from html.parser import HTMLParser
+from html import unescape
+from pathlib import Path
+import json
+import re
+import xml.etree.ElementTree as ET
+
+from phase188_customer_questions import BASE, ORG, ROUTES
+
+
+class Page(HTMLParser):
+    def __init__(self, html):
+        super().__init__(convert_charrefs=True)
+        self.ids = []
+        self.json_buffer = None
+        self.nodes = []
+        self.canonicals = []
+        self.feed(html)
+
+    def handle_starttag(self, tag, attrs):
+        attrs = dict(attrs)
+        identifier = attrs.get('id')
+        if identifier:
+            self.ids.append(identifier)
+        if tag == 'link' and attrs.get('rel') == 'canonical':
+            self.canonicals.append(attrs['href'])
+        if tag == 'script' and attrs.get('type') == 'application/ld+json':
+            self.json_buffer = []
+
+    def handle_endtag(self, tag):
+        if self.json_buffer is not None and tag == 'script':
+            self.nodes.append(json.loads(''.join(self.json_buffer)))
+            self.json_buffer = None
+
+    def handle_data(self, value):
+        if self.json_buffer is not None:
+            self.json_buffer.append(value)
+
+
+def audit(root=Path('_site')):
+    ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
+    urls = [u.find('s:loc', ns).text for u in ET.parse(root / 'sitemap.xml').getroot()]
+    if len(urls) != 157 or len(set(urls)) != 157:
+        raise ValueError('Customer questions audit: canonical inventory changed')
+    for route in ROUTES:
+        canonical = BASE + route
+        html = (root / route.strip('/') / 'index.html').read_text(encoding='utf-8')
+        page = Page(html)
+        assert page.canonicals == [canonical] and canonical in urls, route
+        assert len(page.ids) == len(set(page.ids)), (route, 'duplicate HTML IDs')
+        selected = {}
+        for kind in ('WebPage', 'Service', 'FAQPage'):
+            matches = [n for n in page.nodes if n.get('@type') == kind]
+            assert len(matches) == 1, (route, kind)
+            selected[kind] = matches[0]
+        webpage, service, faq = (selected[k] for k in ('WebPage', 'Service', 'FAQPage'))
+        assert webpage['mainEntity'] == {'@id': service['@id']}, route
+        assert service['mainEntityOfPage'] == {'@id': webpage['@id']}, route
+        assert service['provider'] == {'@id': ORG}, route
+        assert {'@id': faq['@id']} in webpage['hasPart'], route
+        assert faq['isPartOf'] == {'@id': webpage['@id']}, route
+        assert faq['about'] == {'@id': service['@id']}, route
+        assert faq['publisher'] == {'@id': ORG}, route
+        assert len(faq['mainEntity']) == 4, route
+        assert faq['inLanguage'] == ('es' if route.startswith('/es/') else 'en'), route
+        for index, question in enumerate(faq['mainEntity'], 1):
+            answer = question['acceptedAnswer']
+            question_id = 'faq-question-' + str(index)
+            answer_id = 'faq-answer-' + str(index)
+            assert question['@id'] == canonical + '#' + question_id, route
+            assert answer['@id'] == canonical + '#' + answer_id, route
+            # A <details> includes its summary and answer. Independently inspect each.
+            detail = re.search(r'<details id="' + question_id + r'">(.*?)</details>', html, re.S)
+            assert detail is not None, route
+            summary = re.search(r'<summary>(.*?)</summary>', detail.group(1), re.S)
+            assert unescape(summary.group(1)) == question['name'], route
+            answer_match = re.search(r'<p id="' + answer_id + r'">(.*?)</p>', detail.group(1), re.S)
+            assert answer_match is not None and unescape(answer_match.group(1)) == answer['text'], route
+            assert answer_id in page.ids and question_id in page.ids, route
+        questions = re.findall(r'<summary\b[^>]*>(.*?)</summary>', html, re.S)
+        assert len(questions) == len(set(questions)), (route, 'duplicate visible question')
+    print('PASS: Customer questions audit — 48 visible Q&As match JSON-LD, IDs and service/page relationships across 12 existing pages')
+
+
+if __name__ == '__main__':
+    audit()
