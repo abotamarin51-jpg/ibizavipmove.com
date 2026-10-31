@@ -49,7 +49,8 @@ def review_google_maps_link(page, mode, slot):
         unobstructed:hit===el||el.contains(hit),
         overflow:document.documentElement.scrollWidth>innerWidth+1};
     }""")
-    assert all(state.values()) if not state['overflow'] else False, (mode, slot, state)
+    assert (state['focused'] and state['visible'] and state['bounded']
+            and state['unobstructed'] and not state['overflow']), (mode, slot, state)
     return state
 
 
