@@ -51,7 +51,7 @@ UPDATES = {
     },
     '/es/yate-privado-ibiza/': {
         0: ('¿Cómo organizar una excursión en yate privado de Ibiza a Formentera?',
-            'Sí. Puedes solicitar un día de yate privado desde Ibiza con Formentera como destino propuesto. Indica fecha, invitados, marina de salida si la conoces, recorrido y planes de comida. Embarcación, capacidad, horarios y posibles traslados a la marina se confirman antes de reservar. La ruta queda sujeta al tiempo y a la decisión del capitán.'),
+            'Para organizar un día de yate privado desde Ibiza hacia Formentera, indica la fecha, el número de invitados, la marina de salida si la conoces, la ruta deseada y los planes de comida. Revisamos las opciones y, antes de reservar, confirmamos la embarcación, su capacidad, los horarios y los traslados que se necesiten. La ruta definitiva depende del tiempo y de la decisión del capitán.'),
         3: ('¿Qué debo revisar en el presupuesto de un yate en Ibiza?',
             'Revisa la embarcación, capacidad de pasajeros, horas de alquiler, salida y condiciones de cancelación. Consulta qué gastos están incluidos y cuáles se cobran aparte, especialmente combustible, tripulación, catering, tasas de marina y traslados. Ibiza VIP Move aclara las condiciones del operador para el yate elegido antes de confirmar.'),
     },
@@ -69,7 +69,7 @@ UPDATES = {
     },
     '/es/seguridad-privada-ibiza/': {
         0: ('¿Cómo solicitar seguridad privada y escoltas en Ibiza?',
-            'Sí. Ibiza VIP Move coordina solicitudes de seguridad privada y protección personal alrededor de la estancia. Comparte de forma privada fechas, lugares, transporte previsto y necesidades generales. El equipo adecuado, alcance, disponibilidad y condiciones del servicio se concretan para cada solicitud antes de confirmar.'),
+            'Para solicitar seguridad privada o escoltas en Ibiza, comparte por WhatsApp o mediante el formulario las fechas, las zonas de servicio, los horarios previstos y las necesidades generales. Evita incluir información sensible en el primer mensaje. Revisamos el equipo adecuado, el alcance, la disponibilidad y las condiciones antes de confirmar el servicio.'),
     },
     '/private-concierge-ibiza/': {
         0: ('What does a luxury concierge service in Ibiza include?',
