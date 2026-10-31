@@ -111,6 +111,12 @@ def transform(html, route, lang, service):
     return updated
 
 
+FAQ_COPY_LASTMOD = {
+    'es/yate-privado-ibiza': '2026-11-01',
+    'es/seguridad-privada-ibiza': '2026-11-01',
+}
+
+
 def enhance(root=Path('_site')):
     pending = {}
     bundles = {}
@@ -138,7 +144,7 @@ def enhance(root=Path('_site')):
             after = after.replace(styles[0].group(), f'<link rel="stylesheet" href="{href}">', 1)
             pending[path] = after
             pattern = rf'(<url><loc>{re.escape(BASE + "/" + route + "/")}</loc><lastmod>)[^<]+(</lastmod>)'
-            sitemap, count = re.subn(pattern, r'\g<1>2026-10-31\g<2>', sitemap)
+            sitemap, count = re.subn(pattern, rf'\g<1>{FAQ_COPY_LASTMOD.get(route, "2026-10-31")}\g<2>', sitemap)
             assert count == 1, f'Sitemap entry: {route}'
     for path, html in pending.items():
         path.write_text(html, encoding='utf-8')
