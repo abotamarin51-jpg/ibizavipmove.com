@@ -1,0 +1,14 @@
+.ivm-booking-guide{padding:clamp(48px,7vw,96px) 7vw;background:#f7f3ec;color:#191816}
+.ivm-booking-guide .section-head{max-width:880px;margin:0 0 36px;text-align:start}
+.ivm-booking-guide .section-head h2{font-size:clamp(32px,4.2vw,54px);line-height:1.12;margin:12px 0 20px}
+.ivm-booking-guide .section-head p{max-width:760px;font-size:16px;line-height:1.7;color:#514b43}
+.ivm-booking-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(22px,3vw,44px)}
+.ivm-booking-grid article{min-width:0;border-top:1px solid #b8ab96;padding-top:20px}
+.ivm-booking-step{display:block;font-size:12px;letter-spacing:.12em;color:#6b5940;margin-bottom:14px}
+.ivm-booking-grid h3{font-size:24px;line-height:1.25;margin:0 0 14px;overflow-wrap:anywhere}
+.ivm-booking-grid p{font-size:16px;line-height:1.75;margin:0;color:#514b43;overflow-wrap:anywhere}
+.ivm-booking-actions{display:flex;align-items:center;gap:24px;flex-wrap:wrap;margin-top:32px}
+.ivm-booking-actions .btn{max-width:100%;white-space:normal;text-align:center;min-height:48px}
+.ivm-booking-actions .text-link{padding-block:12px;min-height:44px;color:#332c22}
+.ivm-booking-actions a:focus-visible{outline:2px solid #6b5940;outline-offset:5px}
+@media(max-width:800px){.ivm-booking-guide{padding:44px 6vw}.ivm-booking-grid{grid-template-columns:1fr;gap:28px}.ivm-booking-guide .section-head{margin-bottom:28px}.ivm-booking-actions{gap:12px 20px}}
