@@ -9,6 +9,7 @@ from phase183_travel_concierge_context import enhance as enhance_travel_concierg
 from phase184_lifestyle_context import enhance as enhance_lifestyle_context
 from phase185_personal_concierge_context import enhance as enhance_personal_concierge_context
 from phase186_vip_services_context import enhance as enhance_vip_services_context
+from phase187_google_maps_profile import add_google_maps_profile_links
 
 
 # One Home-only editorial refinement. Preserve SEO metadata, headings, layout and contact routes.
@@ -189,3 +190,4 @@ if __name__ == '__main__':
     enhance_vip_services_context()
     enhance_villa_staffing_brief()
     enhance_assistant_villa_checklist()
+    add_google_maps_profile_links()
