@@ -16,7 +16,7 @@ MAPS_LINK_CONTACT = (
     'target="_blank" rel="noopener noreferrer external" '
     'aria-label="View Ibiza VIP Move on Google Maps">View Ibiza VIP Move on Google Maps</a>'
 )
-MAPS_ANCHOR_HOME = '<a href="/about/">Official brand information</a>'
+MAPS_ANCHOR_HOME = '<a href="mailto:partnership@ibizavipmove.com">partnership@ibizavipmove.com</a>'
 MAPS_ANCHOR_CONTACT = '<div><span>Coverage</span><strong>Ibiza · Private client support</strong></div>'
 
 
