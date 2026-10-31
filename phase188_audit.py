@@ -92,7 +92,7 @@ def audit(root=Path('_site'), routes=ROUTES):
             first = faq['mainEntity'][0]
             assert (first['name'], first['acceptedAnswer']['text']) == (expected_question, expected_answer), route
             assert not expected_answer.startswith('Sí.'), (route, 'answer must explain how')
-        questions = re.findall(r'<summary\\b[^>]*>(.*?)</summary>', html, re.S)
+        questions = re.findall(r'<summary\b[^>]*>(.*?)</summary>', html, re.S)
         assert len(questions) == len(set(questions)), (route, 'duplicate visible question')
     print(f'PASS: Customer questions audit — {len(routes) * 4} visible Q&As match JSON-LD, languages, IDs and service/page relationships across {len(routes)} existing pages')
 
