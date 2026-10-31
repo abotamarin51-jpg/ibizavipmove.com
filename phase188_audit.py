@@ -6,7 +6,7 @@ import json
 import re
 import xml.etree.ElementTree as ET
 
-from phase188_customer_questions import BASE, ORG, ROUTES
+from phase188_customer_questions import BASE, ORG, ROUTES, UPDATES
 
 
 class Page(HTMLParser):
@@ -86,7 +86,13 @@ def audit(root=Path('_site'), routes=ROUTES):
             answer_match = re.search(r'<p id="' + answer_id + r'">(.*?)</p>', detail.group(1), re.S)
             assert answer_match is not None and unescape(answer_match.group(1)) == answer['text'], route
             assert answer_id in page.ids and question_id in page.ids, route
-        questions = re.findall(r'<summary\b[^>]*>(.*?)</summary>', html, re.S)
+        # Guard two corrected booking answers against a return to "Sí." for "Cómo".
+        if route in ('/es/yate-privado-ibiza/', '/es/seguridad-privada-ibiza/'):
+            expected_question, expected_answer = UPDATES[route][0]
+            first = faq['mainEntity'][0]
+            assert (first['name'], first['acceptedAnswer']['text']) == (expected_question, expected_answer), route
+            assert not expected_answer.startswith('Sí.'), (route, 'answer must explain how')
+        questions = re.findall(r'<summary\\b[^>]*>(.*?)</summary>', html, re.S)
         assert len(questions) == len(set(questions)), (route, 'duplicate visible question')
     print(f'PASS: Customer questions audit — {len(routes) * 4} visible Q&As match JSON-LD, languages, IDs and service/page relationships across {len(routes)} existing pages')
 
