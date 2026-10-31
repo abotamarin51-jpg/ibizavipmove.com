@@ -123,14 +123,27 @@ def parse_page(body):
         raise ValueError("Unexpected robots directive")
     if tags.og != [SOCIAL] or tags.twitter != [SOCIAL]:
         raise ValueError("Open Graph / Twitter image URL differs from approved asset")
-    if tags.h1_count != 1 or tags.faq_count != 9:
-        raise ValueError("H1/FAQ structure mismatch")
+    if tags.h1_count != 1:
+        raise ValueError("Expected a single VIP page H1")
+    new_question = "Can I change or cancel an Ibiza VIP table booking?"
+    new_copy_served = new_question in html
+    if new_copy_served:
+        if tags.faq_count != 9 or "Whether food counts toward that minimum" not in html:
+            raise ValueError("Published nine-question VIP FAQ or spend clarification missing")
+        if "Tables are commonly sold against a minimum spend on drinks and food" in html:
+            raise ValueError("Superseded VIP table spend wording still served")
+    else:
+        # A PR reviews the *previously deployed* page before this branch can publish.
+        # Only its exact approved eight-question baseline is allowed, and only in PR CI.
+        if os.environ.get("GITHUB_EVENT_NAME") != "pull_request":
+            raise ValueError("New VIP table FAQ not yet served after deployment")
+        if tags.faq_count != 8 or "Tables are commonly sold against a minimum spend on drinks and food" not in html:
+            raise ValueError("Pre-release VIP table baseline differs from approved production")
     if len(tags.main_wa) != 3 or any(urlsplit(u).path != "/34600703303" for u in tags.main_wa):
         raise ValueError("Main WhatsApp CTAs do not use the approved destination")
     for literal in ("[UNVRS]", "O Beach Ibiza", "Sant Antoni de Portmany",
                     "Last updated: 31 October 2026", "Terms before confirmation",
-                    "not confirmed booking relationships",
-                    "Can I change or cancel an Ibiza VIP table booking?"):
+                    "not confirmed booking relationships"):
         if literal not in html:
             raise ValueError("Reviewed content not served: " + literal)
     for marker in ("[FECHA]", "[CONFIRMAR:", "[OPCIONAL:", "[PENDIENTE:",
@@ -145,6 +158,14 @@ def parse_page(body):
     for kind in ("Organization", "WebSite", "WebPage", "Service", "BreadcrumbList", "FAQPage"):
         if values.count(kind) != 1:
             raise ValueError("Missing or duplicate schema type: " + kind)
+    faq_schema = next(n for n in schemas if n.get("@type") == "FAQPage")
+    questions = faq_schema.get("mainEntity", [])
+    if len(questions) != tags.faq_count:
+        raise ValueError("Visible questions differ from structured FAQ count")
+    if new_copy_served and sum(q.get("name") == new_question for q in questions) != 1:
+        raise ValueError("The new VIP cancellation question is not in FAQ schema")
+    if not new_copy_served and any(q.get("name") == new_question for q in questions):
+        raise ValueError("Pre-release FAQ schema improperly contains unpublished question")
     webpage = next(n for n in schemas if n.get("@type") == "WebPage")
     if webpage.get("dateModified") != "2026-10-31":
         raise ValueError("Unverified page modification date")
