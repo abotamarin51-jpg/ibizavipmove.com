@@ -175,7 +175,10 @@ def review_french_yacht_heading(page, origin, mode, width, height, output):
     image = page.locator('main .page-hero-media img')
     assert image.count() == 1
     assert (image.get_attribute('alt') or '').startswith(heading + ' — Ibiza VIP Move')
-    assert page.locator('main a[href="https://wa.me/34600703303"]').count() >= 1
+    wa_links = page.locator('main a[href^="https://wa.me/"]')
+    assert wa_links.count() >= 1
+    assert all(urlsplit(wa_links.nth(i).get_attribute('href')).path == '/34600703303'
+               for i in range(wa_links.count())), 'Approved WhatsApp destination changed'
     assert page.locator('main a[href="/fr/contact/?service=yacht"]').count() == 1
     page.evaluate('document.fonts.ready')
     h1.evaluate('e => e.scrollIntoView({block:"center", behavior:"instant"})')
