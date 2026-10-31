@@ -123,13 +123,14 @@ def parse_page(body):
         raise ValueError("Unexpected robots directive")
     if tags.og != [SOCIAL] or tags.twitter != [SOCIAL]:
         raise ValueError("Open Graph / Twitter image URL differs from approved asset")
-    if tags.h1_count != 1 or tags.faq_count != 8:
+    if tags.h1_count != 1 or tags.faq_count != 9:
         raise ValueError("H1/FAQ structure mismatch")
     if len(tags.main_wa) != 3 or any(urlsplit(u).path != "/34600703303" for u in tags.main_wa):
         raise ValueError("Main WhatsApp CTAs do not use the approved destination")
     for literal in ("[UNVRS]", "O Beach Ibiza", "Sant Antoni de Portmany",
                     "Last updated: 31 October 2026", "Terms before confirmation",
-                    "not confirmed booking relationships"):
+                    "not confirmed booking relationships",
+                    "Can I change or cancel an Ibiza VIP table booking?"):
         if literal not in html:
             raise ValueError("Reviewed content not served: " + literal)
     for marker in ("[FECHA]", "[CONFIRMAR:", "[OPCIONAL:", "[PENDIENTE:",
