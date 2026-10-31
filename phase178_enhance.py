@@ -14,6 +14,7 @@ from phase188_customer_questions import enhance as enhance_customer_questions
 from phase188_audit import audit as audit_customer_questions
 from phase189_international_questions import enhance as enhance_international_questions
 from phase191_approved_english_faqs import enhance as enhance_approved_english_faqs
+from phase192_booking_clarity import enhance as enhance_booking_clarity
 
 
 # One Home-only editorial refinement. Preserve SEO metadata, headings, layout and contact routes.
@@ -199,3 +200,4 @@ if __name__ == '__main__':
     audit_customer_questions()
     enhance_international_questions()
     enhance_approved_english_faqs()
+    enhance_booking_clarity()
