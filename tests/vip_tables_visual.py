@@ -138,7 +138,8 @@ def review(root: Path, output: Path) -> dict:
                         assert page.locator('h1').count() == 1
                         assert page.locator('h1').inner_text().strip() == 'VIP tables and club access in Ibiza, arranged privately.'
                         assert page.locator('table').count() == 2
-                        assert page.locator('details').count() == 8
+                        assert page.locator('details').count() == 9
+                        assert page.locator('details').filter(has_text='Can I change or cancel an Ibiza VIP table booking?').count() == 1
                         assert page.locator('nav.ivm-language-links a').count() == 1
                         assert page.locator('nav.ivm-language-links a').get_attribute('aria-current') == 'page'
                         source = page.content()
