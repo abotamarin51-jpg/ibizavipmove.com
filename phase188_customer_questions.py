@@ -90,6 +90,14 @@ ES_CONCIERGE_ITEMS = [
      'La disponibilidad, depósitos, consumo mínimo, condiciones de acceso y términos de cada proveedor se comprueban antes de confirmar. Una solicitud de reserva no equivale a una reserva confirmada.'),
 ]
 ROUTES = tuple(UPDATES) + (ES_CONCIERGE,)
+ADDITIONS = {
+    ES_CONCIERGE: {
+        'items': ES_CONCIERGE_ITEMS,
+        'kicker': 'Preguntas frecuentes',
+        'heading': 'Cómo organizar tu estancia en Ibiza.',
+        'service_name': 'Concierge privado en Ibiza',
+    },
+}
 
 
 def require(condition, message):
@@ -105,9 +113,10 @@ def script(node):
     return '<script type="application/ld+json">' + json.dumps(node, ensure_ascii=False).replace('<', '\\u003c') + '</script>'
 
 
-def transform(html, route):
+def transform(html, route, *, updates=UPDATES, additions=ADDITIONS):
     canonical = BASE + route
-    lang = 'es' if route.startswith('/es/') else 'en'
+    prefix = route.split('/')[1]
+    lang = prefix if prefix in ('es', 'fr', 'de', 'ar') else 'en'
     require(html.count(f'<link rel="canonical" href="{canonical}">') == 1, 'canonical mismatch: ' + route)
     require(html.count('</head>') == 1 and html.count('</main>') == 1, 'page landmarks: ' + route)
     nodes = [json.loads(m.group(1)) for m in SCRIPT.finditer(html)]
@@ -116,13 +125,14 @@ def transform(html, route):
     faqs = [n for n in nodes if n.get('@type') == 'FAQPage']
     require(len(webpages) == 1, 'expected one WebPage: ' + route)
     require(webpages[0].get('url') == canonical, 'WebPage URL mismatch: ' + route)
-    is_new = route == ES_CONCIERGE
-    section_re = CONCIERGE_SECTION if 'concierge-privado' in route or route == '/private-concierge-ibiza/' else CORE_SECTION
+    addition = additions.get(route)
+    is_new = addition is not None
+    section_re = CONCIERGE_SECTION if is_new or route == '/private-concierge-ibiza/' else CORE_SECTION
     sections = list(section_re.finditer(html))
     if is_new and not sections:
-        require(not faqs and not services, 'unexpected Spanish concierge entities')
-        items = ES_CONCIERGE_ITEMS
-        section = '<section class="faq" id="faq"><div class="section-head"><div class="kicker dark">Preguntas frecuentes</div><h2>Cómo organizar tu estancia en Ibiza.</h2></div>ITEMS</section>'
+        require(not faqs and not services, 'unexpected concierge entities: ' + route)
+        items = addition['items']
+        section = '<section class="faq" id="faq"><div class="section-head"><div class="kicker dark">' + escape(addition['kicker']) + '</div><h2>' + escape(addition['heading']) + '</h2></div>ITEMS</section>'
     else:
         require(len(sections) == 1 and len(faqs) == 1, 'expected one FAQ section and entity: ' + route)
         section = sections[0].group(0)
@@ -136,14 +146,18 @@ def transform(html, route):
             items.append((text(q.group(1)), text(a.group(1))))
         recorded = [(q['name'], q['acceptedAnswer']['text']) for q in faqs[0].get('mainEntity', [])]
         require(items == recorded, 'pre-existing FAQ text/schema mismatch: ' + route)
-        for position, replacement in UPDATES.get(route, {}).items():
+        for position, replacement in updates.get(route, {}).items():
             items[position] = replacement
         if is_new:
-            require(items == ES_CONCIERGE_ITEMS, 'Spanish concierge content drift')
+            require(items == addition['items'], 'concierge content drift: ' + route)
         # Retain the existing section heading, structure, classes and explanatory text.
         section = section[:details[0].start()] + 'ITEMS' + section[details[-1].end():]
         if 'id="faq"' not in section:
             section = section.replace('<section ', '<section id="faq" ', 1)
+
+    labels = {'fr': 'Questions fréquentes', 'de': 'Häufige Fragen', 'ar': 'الأسئلة الشائعة'}
+    if lang in labels:
+        section = re.sub(r'aria-label="[^"]*"', 'aria-label="' + labels[lang] + '"', section, count=1)
 
     details_html = ''.join(
         f'<details id="faq-question-{i}"><summary>{escape(q)}</summary><p id="faq-answer-{i}">{escape(a)}</p></details>'
@@ -154,7 +168,7 @@ def transform(html, route):
         html = html[:sections[0].start()] + section + html[sections[0].end():]
     else:
         anchor = '<section class="closing-simple">'
-        require(html.count(anchor) == 1, 'Spanish concierge insertion point')
+        require(html.count(anchor) == 1, 'concierge insertion point: ' + route)
         html = html.replace(anchor, section + anchor, 1)
 
     webpage = deepcopy(webpages[0])
@@ -167,7 +181,7 @@ def transform(html, route):
     else:
         require(is_new, 'service missing: ' + route)
         service = {'@context': 'https://schema.org', '@type': 'Service',
-                   'name': 'Concierge privado en Ibiza', 'url': canonical,
+                   'name': addition['service_name'], 'url': canonical,
                    'description': webpage['description'], 'provider': {'@id': ORG},
                    'areaServed': {'@type': 'Place', 'name': 'Ibiza, Spain'}}
     service.setdefault('@id', canonical + '#service')
@@ -201,12 +215,13 @@ def transform(html, route):
     return html
 
 
-def enhance(root=Path('_site')):
+def enhance(root=Path('_site'), *, updates=UPDATES, additions=ADDITIONS):
+    routes = tuple(dict.fromkeys((*updates, *additions)))
     pending = []
-    for route in ROUTES:
+    for route in routes:
         path = root / route.strip('/') / 'index.html'
         original = path.read_text(encoding='utf-8')
-        updated = transform(original, route)
+        updated = transform(original, route, updates=updates, additions=additions)
         # Metadata outside the JSON-LD, contacts, original H1 and assets stay untouched.
         require(SCRIPT.sub('', original.split('</head>')[0]) == SCRIPT.sub('', updated.split('</head>')[0]), 'unrelated head change: ' + route)
         for pattern in (r'<h1\b.*?</h1>', r'<a\b[^>]*>', r'<img\b[^>]*>', r'<script\b(?!\s+type="application/ld\+json")[^>]*>.*?</script>'):
@@ -214,7 +229,7 @@ def enhance(root=Path('_site')):
         pending.append((path, updated))
     sitemap_path = root / 'sitemap.xml'
     sitemap = sitemap_path.read_text(encoding='utf-8')
-    for route in ROUTES:
+    for route in routes:
         pattern = rf'(<url>\s*<loc>{re.escape(BASE + route)}</loc>\s*<lastmod>)[^<]+(</lastmod>)'
         sitemap, count = re.subn(pattern, rf'\g<1>{LASTMOD}\g<2>', sitemap)
         require(count == 1, 'expected one existing sitemap entry: ' + route)
@@ -222,7 +237,7 @@ def enhance(root=Path('_site')):
     for path, updated in pending:
         path.write_text(updated, encoding='utf-8')
     sitemap_path.write_text(sitemap, encoding='utf-8')
-    print('PASS: Customer questions — 12 existing EN/ES pages; visible answers, stable IDs and connected entities; existing contacts preserved')
+    print(f'PASS: Customer questions — {len(routes)} existing pages; visible answers, stable IDs and connected entities; existing contacts preserved')
 
 
 if __name__ == '__main__':

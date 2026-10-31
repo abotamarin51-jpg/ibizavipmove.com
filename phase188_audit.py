@@ -16,10 +16,15 @@ class Page(HTMLParser):
         self.json_buffer = None
         self.nodes = []
         self.canonicals = []
+        self.language = None
+        self.direction = None
         self.feed(html)
 
     def handle_starttag(self, tag, attrs):
         attrs = dict(attrs)
+        if tag == 'html':
+            self.language = attrs.get('lang')
+            self.direction = attrs.get('dir', 'ltr')
         identifier = attrs.get('id')
         if identifier:
             self.ids.append(identifier)
@@ -38,12 +43,12 @@ class Page(HTMLParser):
             self.json_buffer.append(value)
 
 
-def audit(root=Path('_site')):
+def audit(root=Path('_site'), routes=ROUTES):
     ns = {'s': 'http://www.sitemaps.org/schemas/sitemap/0.9'}
     urls = [u.find('s:loc', ns).text for u in ET.parse(root / 'sitemap.xml').getroot()]
     if len(urls) != 157 or len(set(urls)) != 157:
         raise ValueError('Customer questions audit: canonical inventory changed')
-    for route in ROUTES:
+    for route in routes:
         canonical = BASE + route
         html = (root / route.strip('/') / 'index.html').read_text(encoding='utf-8')
         page = Page(html)
@@ -63,7 +68,10 @@ def audit(root=Path('_site')):
         assert faq['about'] == {'@id': service['@id']}, route
         assert faq['publisher'] == {'@id': ORG}, route
         assert len(faq['mainEntity']) == 4, route
-        assert faq['inLanguage'] == ('es' if route.startswith('/es/') else 'en'), route
+        prefix = route.split('/')[1]
+        language = prefix if prefix in ('es', 'fr', 'de', 'ar') else 'en'
+        assert faq['inLanguage'] == page.language == language, route
+        assert page.direction == ('rtl' if language == 'ar' else 'ltr'), route
         for index, question in enumerate(faq['mainEntity'], 1):
             answer = question['acceptedAnswer']
             question_id = 'faq-question-' + str(index)
@@ -80,7 +88,7 @@ def audit(root=Path('_site')):
             assert answer_id in page.ids and question_id in page.ids, route
         questions = re.findall(r'<summary\b[^>]*>(.*?)</summary>', html, re.S)
         assert len(questions) == len(set(questions)), (route, 'duplicate visible question')
-    print('PASS: Customer questions audit — 48 visible Q&As match JSON-LD, IDs and service/page relationships across 12 existing pages')
+    print(f'PASS: Customer questions audit — {len(routes) * 4} visible Q&As match JSON-LD, languages, IDs and service/page relationships across {len(routes)} existing pages')
 
 
 if __name__ == '__main__':
