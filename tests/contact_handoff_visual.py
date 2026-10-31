@@ -28,10 +28,36 @@ def verify_image(path, size=None):
         return variance
 
 
+MAPS_PROFILE = 'https://maps.app.goo.gl/z1z9RaegNvDc8YFb9?g_st=ic'
+
+
+def review_google_maps_link(page, mode, slot):
+    """Inspect only: do not navigate to Maps or generate contact events."""
+    link = page.locator(f'a[data-ivm-google-maps-profile="{slot}"]')
+    assert link.count() == 1, (mode, slot, 'unique public profile link')
+    assert link.get_attribute('href') == MAPS_PROFILE, (mode, slot, 'approved destination')
+    assert link.get_attribute('target') == '_blank', (mode, slot, 'external target')
+    assert {'noopener', 'noreferrer'}.issubset(set((link.get_attribute('rel') or '').split()))
+    assert 'Ibiza VIP Move' in (link.get_attribute('aria-label') or '')
+    link.evaluate("el => el.scrollIntoView({block:'center', behavior:'instant'})")
+    link.focus()
+    state = link.evaluate("""el => {
+      const r=el.getBoundingClientRect();
+      const hit=document.elementFromPoint(r.x+r.width/2,r.y+r.height/2);
+      return {focused:document.activeElement===el, visible:r.width>=24&&r.height>=12,
+        bounded:r.left>=0&&r.top>=0&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1,
+        unobstructed:hit===el||el.contains(hit),
+        overflow:document.documentElement.scrollWidth>innerWidth+1};
+    }""")
+    assert all(state.values()) if not state['overflow'] else False, (mode, slot, state)
+    return state
+
+
 def review_home_vip_link(page, origin, mode, width, height, output):
     """Check the internal Home link; never activate a contact destination."""
     response = page.goto(origin + '/', wait_until='load', timeout=15000)
     assert response and response.status == 200
+    maps_state = review_google_maps_link(page, mode, 'home')
     page.evaluate('document.fonts.ready')
     assert page.evaluate("document.fonts.check('16px Manrope')"), 'Home font did not load'
     link = page.locator('a[href="/vip-services-ibiza/"]').filter(has_text='VIP hospitality requests')
@@ -188,6 +214,7 @@ def main():
                                 if response.status >= 400 and response.url.startswith(origin + '/') else None)
                         response = page.goto(origin + '/contact/', wait_until='load', timeout=15000)
                         assert response and response.status == 200
+                        report.setdefault('mapsProfile', []).append({'mode': mode, 'slot': 'contact', 'state': review_google_maps_link(page, mode, 'contact')})
                         page.evaluate('document.fonts.ready')
                         assert page.evaluate("document.fonts.check('16px Manrope')"), 'Site font did not load'
                         page.wait_for_function('Boolean(window.IVMCookieConsent)', timeout=5000)
