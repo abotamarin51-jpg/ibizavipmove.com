@@ -162,6 +162,38 @@ def review_localized_contact_copy(page, origin, mode, width, height, output):
                         'geometry': geometry, 'screenshot': shot.name})
     return results
 
+def review_french_yacht_heading(page, origin, mode, width, height, output):
+    """Check the French yacht offer on both viewports without activating contacts."""
+    route = '/fr/location-yacht-ibiza/'
+    heading = 'Location de yacht privé à Ibiza, intégrée à votre séjour.'
+    response = page.goto(origin + route, wait_until='load', timeout=15000)
+    assert response and response.status == 200
+    assert page.locator('html').get_attribute('lang') == 'fr'
+    assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com' + route
+    h1 = page.locator('main h1')
+    assert h1.count() == 1 and h1.inner_text().strip() == heading
+    image = page.locator('main .page-hero-media img')
+    assert image.count() == 1
+    assert (image.get_attribute('alt') or '').startswith(heading + ' — Ibiza VIP Move')
+    assert page.locator('main a[href="https://wa.me/34600703303"]').count() >= 1
+    assert page.locator('main a[href="/fr/contact/?service=yacht"]').count() == 1
+    page.evaluate('document.fonts.ready')
+    h1.evaluate('e => e.scrollIntoView({block:"center", behavior:"instant"})')
+    geometry = h1.evaluate("""e => {
+        const r=e.getBoundingClientRect(), s=getComputedStyle(e);
+        return {left:r.left, right:r.right, top:r.top, bottom:r.bottom,
+            visible:s.display!=='none'&&s.visibility==='visible'&&r.height>0,
+            overflow:document.documentElement.scrollWidth>innerWidth+1};
+    }""")
+    assert (geometry['visible'] and geometry['left'] >= 0 and
+            geometry['right'] <= width + 1 and not geometry['overflow']), (mode, geometry)
+    shot = output / f'fr-yacht-heading-{mode}.png'
+    page.screenshot(path=str(shot))
+    verify_image(shot, (width, height))
+    return {'mode': mode, 'httpStatus': response.status, 'geometry': geometry,
+            'contactDestinations': 'preserved; not activated', 'screenshot': shot.name}
+
+
 def main():
     root = Path('_site').resolve()
     output = (Path(os.environ['RUNNER_TEMP']) / 'ivm-contact-review').resolve()
@@ -278,6 +310,11 @@ def main():
                         )
                         assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         print(f'PASS: Localized WhatsApp labels and help, mobile/desktop: {mode}')
+                        report.setdefault('frenchYacht', []).append(
+                            review_french_yacht_heading(page, origin, mode, width, height, output)
+                        )
+                        assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
+                        print(f'PASS: French yacht headline, canonical, mobile/desktop layout and contact destinations: {mode}')
                     finally:
                         context.close()
             finally:
