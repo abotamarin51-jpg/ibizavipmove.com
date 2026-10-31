@@ -197,6 +197,47 @@ def review_french_yacht_heading(page, origin, mode, width, height, output):
             'contactDestinations': 'preserved; not activated', 'screenshot': shot.name}
 
 
+
+def review_home_dmc_link(page, origin, mode, width, height, output):
+    """Check the real professional journey without opening a contact channel."""
+    response = page.goto(origin + '/', wait_until='load', timeout=15000)
+    assert response and response.status == 200
+    link = page.locator('main .ivm-home-authority-pathways a[href="/destination-management-ibiza/"]')
+    assert link.count() == 1, 'One contextual Home DMC pathway expected'
+    assert link.inner_text().strip() == 'Ibiza destination management for travel advisors →'
+    assert page.locator('main .ivm-home-authority-pathways a').count() == 3
+    link.evaluate('e => e.scrollIntoView({block:"center", behavior:"instant"})')
+    link.focus()
+    state = link.evaluate("""e => {
+        const r=e.getBoundingClientRect(), s=getComputedStyle(e);
+        const hit=document.elementFromPoint(r.left+r.width/2, r.top+r.height/2);
+        return {focused:document.activeElement===e, visible:r.width>15&&r.height>12,
+                bounded:r.left>=0&&r.top>=0&&r.right<=innerWidth+1&&r.bottom<=innerHeight+1,
+                unobstructed:hit===e||e.contains(hit),
+                overflow:document.documentElement.scrollWidth>innerWidth+1,
+                underline:s.textDecorationLine.includes('underline')};
+    }""")
+    assert (state['focused'] and state['visible'] and state['bounded'] and
+            state['unobstructed'] and not state['overflow'] and state['underline']), (mode, state)
+    screenshot = output / f'home-dmc-link-{mode}.png'
+    page.screenshot(path=str(screenshot))
+    verify_image(screenshot, (width, height))
+    with page.expect_navigation(wait_until='load', timeout=15000) as navigation:
+        page.keyboard.press('Enter')
+    assert navigation.value and navigation.value.status == 200
+    assert page.url == origin + '/destination-management-ibiza/'
+    assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com/destination-management-ibiza/'
+    assert page.locator('h1').count() == 1
+    assert page.locator('a[href="/contact/?service=dmc"]').count() >= 2
+    assert page.locator('main a[href^="https://wa.me/34600703303"]').count() >= 1
+    destination = output / f'home-dmc-target-{mode}.png'
+    page.screenshot(path=str(destination))
+    verify_image(destination, (width, height))
+    return {'mode':mode, 'httpStatus':navigation.value.status, 'linkState':state,
+            'destination':'/destination-management-ibiza/', 'contactDestinations':'not activated',
+            'screenshots':[screenshot.name, destination.name]}
+
+
 def main():
     root = Path('_site').resolve()
     output = (Path(os.environ['RUNNER_TEMP']) / 'ivm-contact-review').resolve()
@@ -308,6 +349,11 @@ def main():
                         )
                         assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         print(f'PASS: Home VIP link, keyboard navigation and nonblank screenshots: {mode}')
+                        report.setdefault('homeDMC', []).append(
+                            review_home_dmc_link(page, origin, mode, width, height, output)
+                        )
+                        assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
+                        print(f'PASS: Home to Ibiza DMC travel-advisor journey: {mode}')
                         report.setdefault('localizedContact', []).extend(
                             review_localized_contact_copy(page, origin, mode, width, height, output)
                         )
