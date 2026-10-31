@@ -92,7 +92,8 @@ def run() -> None:
         if loc:
             values[loc.rstrip('/') + '/'] = node.findtext(f'{{{NS}}}lastmod')
     require(len(values) == 157, f'sitemap inventory drift: {len(values)}')
-    require(values.get(CANONICAL) == '2026-10-27', 'Private Office lastmod is not the verified change date')
+    # The approved English FAQ publication is the latest substantive page edit.
+    require(values.get(CANONICAL) == '2026-10-31', 'Private Office lastmod is not the verified change date')
 
     print('PASS: Phase 179 audit — English Private Office handoff, privacy guidance, Contact route, localized isolation and truthful lastmod')
 

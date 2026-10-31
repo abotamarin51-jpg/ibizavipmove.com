@@ -13,6 +13,7 @@ from phase187_google_maps_profile import add_google_maps_profile_links
 from phase188_customer_questions import enhance as enhance_customer_questions
 from phase188_audit import audit as audit_customer_questions
 from phase189_international_questions import enhance as enhance_international_questions
+from phase191_approved_english_faqs import enhance as enhance_approved_english_faqs
 
 
 # One Home-only editorial refinement. Preserve SEO metadata, headings, layout and contact routes.
@@ -197,3 +198,4 @@ if __name__ == '__main__':
     enhance_customer_questions()
     audit_customer_questions()
     enhance_international_questions()
+    enhance_approved_english_faqs()
