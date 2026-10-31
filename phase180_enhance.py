@@ -23,7 +23,7 @@ GENERATED_SCHEMA = Path('generated-schema.json')
 BASE = 'https://ibizavipmove.com'
 PATH = '/vip-tables-club-access-ibiza/'
 CANONICAL = BASE + PATH
-LASTMOD = '2026-10-21'
+LASTMOD = '2026-10-31'
 TITLE = 'Ibiza VIP Table & Bottle Service Booking | Ibiza VIP Move'
 DESCRIPTION = (
     'VIP tables, bottle service and club access in Ibiza, arranged privately. '
@@ -33,7 +33,7 @@ WA = (
     'https://wa.me/34600703303?text=Hello%20Ibiza%20VIP%20Move%2C%20I%27d%20like%20to%20request%20a%20VIP%20table%20in%20Ibiza.'
     '%20Could%20you%20please%20help%20me%20with%20availability%20and%20the%20next%20steps%3F%20Thank%20you.'
 )
-VISIBLE_DATE = '21 October 2026'
+VISIBLE_DATE = '31 October 2026'
 SOCIAL_SOURCE = ROOT / 'assets/images/private-office.jpg'
 SOCIAL_TARGET = ROOT / 'assets/images/vip-tables-social.jpg'
 SOCIAL_PUBLIC = '/assets/images/vip-tables-social.jpg'
@@ -47,9 +47,15 @@ FAQS = [
     (
         'How much does a VIP table cost in Ibiza?',
         "It depends on the venue, the date, the night's program, table position and group size. "
-        'Tables are commonly sold against a minimum spend on drinks and food rather than a flat fee, '
-        'and a deposit is usually required. We confirm the exact minimum spend, deposit and conditions '
-        'in writing for each request before it is treated as booked.',
+        'Many venues use a minimum spend on drinks or bottle service rather than a fixed table fee. '
+        'Whether food counts toward that minimum and whether a deposit is required depend on the venue. '
+        'We confirm the minimum spend, inclusions, deposit and terms in writing before booking.',
+    ),
+    (
+        'Can I change or cancel an Ibiza VIP table booking?',
+        'Each venue and event has its own deadline, deposit and refund or date-transfer terms. '
+        'Before paying, ask us to confirm those terms and how cancellation requests must be submitted. '
+        'We can relay a change request, but approval and any refund or credit depend on the provider.',
     ),
     (
         'Can you guarantee a table or entry at a specific club?',
@@ -324,7 +330,7 @@ def main_html() -> str:
 </section>
 <section class="editorial service-detail">
   <div><div class="kicker dark">Direct answer</div><h2>What is a VIP table in Ibiza?</h2></div>
-  <div><p class="large">A VIP table in Ibiza is a reserved table at a club or beach club, usually booked against a minimum spend on drinks and food, with a deposit and an agreed arrival time. Ibiza VIP Move requests tables and club access for private clients, assistants and travel advisors, and confirms the price, minimum spend and conditions in writing before anything is treated as booked.</p></div>
+  <div><p class="large">A VIP table in Ibiza is a reserved table at a club or beach club, often booked against a minimum spend for drinks or bottle service. Whether food counts, any required deposit and the agreed arrival time depend on the venue and event. Ibiza VIP Move requests tables and club access for private clients, assistants and travel advisors, and confirms the price, minimum spend and conditions in writing before anything is treated as booked.</p></div>
 </section>
 <section class="editorial">
   <div><div class="kicker dark">Choose the format</div><h2>Tables, tickets and guest list: what is the difference?</h2></div>
