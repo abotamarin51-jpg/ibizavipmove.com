@@ -15,13 +15,14 @@ from phase188_audit import audit as audit_customer_questions
 from phase189_international_questions import enhance as enhance_international_questions
 from phase191_approved_english_faqs import enhance as enhance_approved_english_faqs
 from phase192_booking_clarity import enhance as enhance_booking_clarity
+from phase193_approved_copy import enhance as enhance_seo_copy
 
 
 # One Home-only editorial refinement. Preserve SEO metadata, headings, layout and contact routes.
 HOME = Path('_site/index.html')
 HOME_SITEMAP = Path('_site/sitemap.xml')
 HOME_OLD_LEAD = '<p class="ivm-seo-lead">Ibiza VIP Move is a luxury concierge in Ibiza for private clients and professional teams who want one discreet on-island point of coordination.</p>'
-HOME_NEW_LEAD = '<p class="ivm-seo-lead">Our Ibiza concierge service helps private clients, personal assistants, family offices and luxury travel advisors plan their stay through one discreet local contact.</p>'
+HOME_NEW_LEAD = '<p class="ivm-seo-lead">Ibiza VIP Move provides luxury and VIP concierge services in Ibiza for private clients, personal assistants, family offices and luxury travel advisors through one discreet local point of contact.</p>'
 HOME_OLD_SERVICE = '<p>Private chauffeur, villas, yachts, aviation, access and protection are coordinated around the stay rather than treated as isolated bookings.</p>'
 HOME_NEW_SERVICE = '<p>We coordinate chauffeur transport, villas, yachts, aviation, <a href="/vip-services-ibiza/" style="color:inherit;text-decoration:underline;text-underline-offset:.16em">VIP hospitality requests</a> and security around each stay.</p>'
 HOME_OLD_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-09-03</lastmod>'
@@ -201,3 +202,4 @@ if __name__ == '__main__':
     enhance_international_questions()
     enhance_approved_english_faqs()
     enhance_booking_clarity()
+    enhance_seo_copy()
