@@ -251,6 +251,9 @@ jobs:
           python3 phase71_audit.py
           python3 phase72_audit.py
           python3 phase67_final_audit.py
+          python3 phase190_club_guides.py
+          python3 phase190_audit.py
+          python3 phase67_final_audit.py
           python3 phase174_whatsapp_access.py
           "$RUNNER_TEMP/ivm-image-tools/bin/python" -m pip install --disable-pip-version-check --only-binary=:all: "playwright==1.57.0"
           "$RUNNER_TEMP/ivm-image-tools/bin/python" tests/phase174_browser_check.py
