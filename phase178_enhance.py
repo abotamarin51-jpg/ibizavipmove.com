@@ -26,7 +26,7 @@ HOME_NEW_LEAD = '<p class="ivm-seo-lead">Ibiza VIP Move provides luxury and VIP 
 HOME_OLD_SERVICE = '<p>Private chauffeur, villas, yachts, aviation, access and protection are coordinated around the stay rather than treated as isolated bookings.</p>'
 HOME_NEW_SERVICE = '<p>We coordinate chauffeur transport, villas, yachts, aviation, <a href="/vip-services-ibiza/" style="color:inherit;text-decoration:underline;text-underline-offset:.16em">VIP hospitality requests</a> and security around each stay.</p>'
 HOME_OLD_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-09-03</lastmod>'
-HOME_NEW_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-10-21</lastmod>'
+HOME_NEW_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-10-31</lastmod>'
 
 PATH = Path('_site/fr/services/index.html')
 OLD = 'Passez par le concierge plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'

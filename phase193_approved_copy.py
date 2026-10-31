@@ -9,6 +9,10 @@ from html.parser import HTMLParser
 import json
 import re
 
+HOME_DMC_OLD = "<p class=\"ivm-home-authority-pathways\"><a class=\"text-link\" href=\"/private-concierge-ibiza/\">Explore Private Concierge Ibiza →</a> · <a class=\"text-link\" href=\"/international-clients/\">International private client support →</a></p>"
+HOME_DMC_NEW = "<p class=\"ivm-home-authority-pathways\"><a class=\"text-link\" href=\"/private-concierge-ibiza/\">Explore Private Concierge Ibiza →</a> · <a class=\"text-link\" href=\"/international-clients/\">International private client support →</a> · <a class=\"text-link\" href=\"/destination-management-ibiza/\">Ibiza destination management for travel advisors →</a></p>"
+DMC_URL = '/destination-management-ibiza/'
+
 HOME_LEAD = ('<p class="ivm-seo-lead">Ibiza VIP Move provides luxury and VIP '
              'concierge services in Ibiza for private clients, personal assistants, '
              'family offices and luxury travel advisors through one discreet '
@@ -23,6 +27,7 @@ VIP_NEW_SUMMARY = ('VIP services in Ibiza for private clients: chauffeur transpo
 # Exact reviewed source phrases: never replace unknown sections or general keywords.
 CHANGES = {
     'index.html': (
+        (HOME_DMC_OLD, HOME_DMC_NEW, 1),
         ('<p>From airport to villa, marina to dinner, security to last-minute changes, '
          'Ibiza VIP Move keeps confirmed services connected through one clear line of communication.</p>',
          '<p>From airport arrivals and chauffeur transport to villas, yachts, dining, '
@@ -100,8 +105,19 @@ def inspect(relative, before, after):
         for token in ('https://wa.me/34600703303', 'tel:+34600703303',
                       'partnership@ibizavipmove.com', '/assets/brand-logo.svg'):
             require(token in html, relative + ': contact or brand missing: ' + token)
-    require(Anchors(before).hrefs == Anchors(after).hrefs,
-            relative + ': links/destinations changed')
+    old_links, new_links = Anchors(before).hrefs, Anchors(after).hrefs
+    if relative == 'index.html':
+        require(new_links.count(DMC_URL) == 1,
+                'Home: exactly one destination-management pathway')
+        if DMC_URL not in old_links:
+            require([link for link in new_links if link != DMC_URL] == old_links,
+                    'Home: existing destinations or link order changed')
+        else:
+            require(old_links.count(DMC_URL) == 1 and new_links == old_links,
+                    'Home: rerun changed approved destinations')
+    else:
+        require(old_links == new_links,
+                relative + ': links/destinations changed')
     for token in ('<h2', '<h3', '<img', '<picture', '<form', '<script',
                   '<details', '<summary', 'data-ivm-google-maps-profile'):
         require(before.count(token) == after.count(token), relative + ': structure changed: ' + token)
@@ -119,6 +135,13 @@ def inspect(relative, before, after):
             json.loads(payload)
     if relative == 'index.html':
         require(after.count(HOME_LEAD) == 1, 'Home: approved introductory lead missing')
+        require(after.count(HOME_DMC_NEW) == 1 and HOME_DMC_OLD not in after,
+                'Home: destination-management link not in approved pathway')
+        target = Path('_site/destination-management-ibiza/index.html')
+        require(target.is_file() and
+                '<link rel="canonical" href="https://ibizavipmove.com/destination-management-ibiza/">' in
+                target.read_text(encoding='utf-8'),
+                'Home: verified DMC destination missing')
 
 
 def enhance(root=Path('_site')):
