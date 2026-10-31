@@ -65,7 +65,7 @@ SERVICES = {
             'title': 'Location yacht Ibiza & Formentera | Ibiza VIP Move',
             'desc': 'Yacht privé et charter à Ibiza et Formentera avec coordination de la marina, du chauffeur, du catering et du planning par Ibiza VIP Move.',
             'kicker': 'Yacht privé · Ibiza & Formentera',
-            'h1': 'Une journée en yacht, intégrée à votre itinéraire.',
+            'h1': 'Location de yacht privé à Ibiza, intégrée à votre séjour.',
             'lead': 'Le yacht, la marina, le transport terrestre et la suite de la journée sont coordonnés autour du même planning.',
             'section': 'De la villa au pont, sans rupture.',
             'large': 'Le meilleur planning en mer tient compte de ce qui se passe avant l’embarquement et après le retour à terre.',
