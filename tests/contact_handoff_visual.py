@@ -119,6 +119,53 @@ def review_home_vip_link(page, origin, mode, width, height, output):
         'targetScreenshot': target_image.name}
 
 
+
+def review_home_first_brief(page, origin, mode, width, height, output):
+    """Review the edited Home closing copy and unchanged contact controls without activating them."""
+    response = page.goto(origin + '/', wait_until='load', timeout=15000)
+    assert response and response.status == 200
+    assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com/'
+    assert page.locator('h1').count() == 1
+    text = ("Share your Ibiza dates, guest count and services needed. "
+            "Personal assistants and travel advisors can enquire on a client's behalf.")
+    section = page.locator('section.ivm-ref-final')
+    assert section.count() == 1, 'Home closing section missing'
+    paragraph = section.locator('p')
+    assert paragraph.count() == 1 and paragraph.inner_text().strip() == text
+    assert paragraph.is_visible()
+    paragraph.evaluate('e => e.scrollIntoView({block:"center", behavior:"instant"})')
+    geometry = paragraph.evaluate("""e => {
+        const r=e.getBoundingClientRect(),s=getComputedStyle(e);
+        return {left:r.left,top:r.top,right:r.right,bottom:r.bottom,
+          fontSize:s.fontSize,visible:s.visibility==='visible'&&s.display!=='none',
+          overflow:document.documentElement.scrollWidth>innerWidth+1};
+    }""")
+    assert geometry['visible'] and not geometry['overflow'], (mode, geometry)
+    assert (geometry['left'] >= 0 and geometry['top'] >= 0 and
+            geometry['right'] <= width + 1 and geometry['bottom'] <= height + 1), (mode, geometry)
+    request = section.locator('a[href="/contact/"]')
+    whatsapp = section.locator('a[href^="https://wa.me/"]')
+    assert request.count() == 1 and whatsapp.count() == 1, 'Changed or duplicated Home contact routes'
+    wa_url = urlsplit(whatsapp.get_attribute('href') or '')
+    assert (wa_url.scheme == 'https' and wa_url.netloc == 'wa.me'
+            and wa_url.path == '/34600703303'
+            and (not wa_url.query or wa_url.query.startswith('text='))), 'Approved WhatsApp number or query changed'
+    assert section.locator('a').count() == 2
+    # inner_text() reflects CSS text-transform (uppercase); verify exact source labels.
+    assert request.text_content().strip() == 'Request Concierge'
+    assert whatsapp.text_content().strip() == 'WhatsApp 24/7'
+    # trial=True checks hit testing without navigation, messages, contact clicks or Analytics.
+    request.click(trial=True, timeout=7000)
+    whatsapp.click(trial=True, timeout=7000)
+    screenshot = output / f'home-first-brief-{mode}.png'
+    paragraph.evaluate('e => e.scrollIntoView({block:"center", behavior:"instant"})')
+    page.screenshot(path=str(screenshot), animations='disabled')
+    verify_image(screenshot, (width, height))
+    return {'mode':mode,'viewport':[width,height],'copy':text,'geometry':geometry,
+            'contactDestinations':'preserved; trial only','screenshot':screenshot.name}
+
+
+
 def review_localized_contact_copy(page, origin, mode, width, height, output):
     """Verify localized WhatsApp draft handoff, without submitting anything."""
     cases = (
@@ -407,6 +454,11 @@ def main():
                         )
                         assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         print(f'PASS: Home VIP link, keyboard navigation and nonblank screenshots: {mode}')
+                        report.setdefault('homeFirstBrief', []).append(
+                            review_home_first_brief(page, origin, mode, width, height, output)
+                        )
+                        assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
+                        print(f'PASS: Home first-brief copy, layout and contact hit targets: {mode}')
                         report.setdefault('homeDMC', []).append(
                             review_home_dmc_link(page, origin, mode, width, height, output)
                         )

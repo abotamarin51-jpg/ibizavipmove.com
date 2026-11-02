@@ -232,6 +232,9 @@ def main():
                             assert photo.evaluate(
                                 '(img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0'
                             ), slug
+                            # decoding="async" allows complete/naturalWidth before paint.
+                            # Await actual decoding; keep the same pixel-difference gate.
+                            photo.evaluate('(img) => img.decode()')
                             assert page.get_by_role('link', name='Start a private brief').is_visible(), slug
                             assert not page.evaluate(
                                 'document.documentElement.scrollWidth > innerWidth + 1'
