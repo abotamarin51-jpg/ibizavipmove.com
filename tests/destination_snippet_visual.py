@@ -206,6 +206,63 @@ def main():
                         }
                         report['results'][-1]['privateClientPhotoVisualDelta'] = round(client_delta, 2)
                         print(f'PASS: Private Client hero photograph visible on {mode}')
+                        # Four further existing EN intent pages share the same
+                        # previously hidden CSS-only hero pattern. Test actual
+                        # rendered pixels on both devices without contacting anyone.
+                        additional_heros = (
+                            ('luxury-lifestyle-management-ibiza', '/assets/images/villa.jpg', 'Modern villa with a swimming pool and lush greenery', 'Luxury Lifestyle Management Ibiza | Ibiza VIP Move'),
+                            ('personal-concierge-ibiza', '/assets/images/hero.jpg', 'Mediterranean terrace overlooking the sea', 'Personal Concierge Ibiza | Dedicated Private Assistance'),
+                            ('luxury-travel-concierge-ibiza', '/assets/images/aviation.jpg', 'Private jet parked on an airport tarmac', 'Luxury Travel Concierge Ibiza | Private Trip Coordination'),
+                            ('vip-services-ibiza', '/assets/images/nightlife.jpg', 'Elegant dining table overlooking the sea at sunset', 'VIP Services Ibiza | Access, Transport & Private Hospitality'),
+                        )
+                        for slug, photo_src, photo_alt, expected_title in additional_heros:
+                            result = page.goto(
+                                origin + '/' + slug + '/', wait_until='load', timeout=15000
+                            )
+                            assert result and result.status == 200, slug
+                            assert page.title() == expected_title, slug
+                            assert page.locator('link[rel="canonical"]').get_attribute('href') == (
+                                'https://ibizavipmove.com/' + slug + '/'
+                            ), slug
+                            assert page.locator('h1').count() == 1, slug
+                            photo = page.locator('section.page-hero > .page-hero-media img')
+                            assert photo.count() == 1, slug
+                            assert photo.get_attribute('src') == photo_src, slug
+                            assert photo.get_attribute('alt') == photo_alt, slug
+                            assert photo.evaluate(
+                                '(img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0'
+                            ), slug
+                            assert page.get_by_role('link', name='Start a private brief').is_visible(), slug
+                            assert not page.evaluate(
+                                'document.documentElement.scrollWidth > innerWidth + 1'
+                            ), slug
+                            page.evaluate('window.scrollTo(0, 0)')
+                            photo_shot = output / f'{slug}-{mode}.png'
+                            page.screenshot(path=str(photo_shot), animations='disabled')
+                            verify_image(photo_shot, (width, height))
+                            visible_photo = Image.open(photo_shot).convert('RGB')
+                            photo.evaluate("img => img.parentElement.style.display = 'none'")
+                            hidden_photo = Image.open(
+                                BytesIO(page.screenshot(animations='disabled'))
+                            ).convert('RGB')
+                            photo.evaluate("img => img.parentElement.style.display = ''")
+                            photo_delta = max(ImageStat.Stat(ImageChops.difference(
+                                visible_photo.crop(region), hidden_photo.crop(region)
+                            )).mean)
+                            assert photo_delta > 2, (
+                                f'{mode}: {slug} photograph visually hidden ({photo_delta:.3f})'
+                            )
+                            assert not errors and not missing, {
+                                'javascriptErrors': errors,
+                                'missingLocalResources': missing,
+                                'slug': slug
+                            }
+                            report['results'][-1].setdefault('additionalHeroPhotos', []).append({
+                                'slug': slug,
+                                'pixelDifference': round(photo_delta, 2)
+                            })
+                            print(f'PASS: {slug} photograph visibly rendered on {mode}')
+
                     finally:
                         context.close()
             finally:
