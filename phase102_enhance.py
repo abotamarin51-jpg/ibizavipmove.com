@@ -347,7 +347,18 @@ def render_body(data):
         for label, url in data['related']
     )
     whatsapp_text = escape(data['service_type'], quote=True).replace(' ', '%20')
-    return f'''<section class="page-hero service-hero" style="--hero:url('/assets/images/{escape(data["hero"], quote=True)}')"><div><div class="kicker light">{data["kicker"]}</div><h1>{data["h1"]}</h1><p>{escape(data["description"])}</p><div class="hero-actions"><a class="btn gold" href="{WA}?text=Hello%20Ibiza%20VIP%20Move%2C%20I%20would%20like%20to%20discuss%20{whatsapp_text}.">Start a private brief</a><a class="btn ghost" href="/private-concierge-ibiza/">Private Concierge</a></div></div></section>
+    # The editorial template has an opaque hero background and relies on a
+    # dedicated media element. Replacing <main> discarded that original media.
+    # Restore the existing asset for this reported DMC presentation defect only.
+    hero_media = ''
+    if data['slug'] == 'destination-management-ibiza':
+        hero_media = (
+            '<div class="page-hero-media">'
+            f'<img src="/assets/images/{escape(data["hero"], quote=True)}" alt="" '
+            'width="1800" height="1200" fetchpriority="high" decoding="async">'
+            '</div>'
+        )
+    return f'''<section class="page-hero service-hero" style="--hero:url('/assets/images/{escape(data["hero"], quote=True)}')">{hero_media}<div><div class="kicker light">{data["kicker"]}</div><h1>{data["h1"]}</h1><p>{escape(data["description"])}</p><div class="hero-actions"><a class="btn gold" href="{WA}?text=Hello%20Ibiza%20VIP%20Move%2C%20I%20would%20like%20to%20discuss%20{whatsapp_text}.">Start a private brief</a><a class="btn ghost" href="/private-concierge-ibiza/">Private Concierge</a></div></div></section>
 <section class="editorial"><div><div class="kicker dark">Ibiza · Balearic Islands · Spain</div><h2>{escape(data["lead_title"])}</h2></div><div><p class="large">{escape(data["lead"])}</p><p>{escape(data["detail"])}</p><a class="text-link" href="/contact/">Request private support →</a></div></section>
 <section class="dark-panel"><div class="kicker light">Why this service exists</div><h2>Local coordination.<br>Clear private execution.</h2><div class="trust-grid">{pillars}</div></section>
 <section class="process"><div class="section-head"><div class="kicker dark">Working model</div><h2>From brief to coordinated stay.</h2><p>Availability, scope and terms are confirmed for each request. No service, reservation or access is represented as confirmed until it has been agreed in writing.</p></div><div class="process-grid">{process}</div></section>
