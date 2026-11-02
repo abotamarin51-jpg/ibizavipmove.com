@@ -151,8 +151,9 @@ def review_home_first_brief(page, origin, mode, width, height, output):
             and wa_url.path == '/34600703303'
             and (not wa_url.query or wa_url.query.startswith('text='))), 'Approved WhatsApp number or query changed'
     assert section.locator('a').count() == 2
-    assert request.inner_text().strip() == 'Request Concierge'
-    assert whatsapp.inner_text().strip() == 'WhatsApp 24/7'
+    # inner_text() reflects CSS text-transform (uppercase); verify exact source labels.
+    assert request.text_content().strip() == 'Request Concierge'
+    assert whatsapp.text_content().strip() == 'WhatsApp 24/7'
     # trial=True checks hit testing without navigation, messages, contact clicks or Analytics.
     request.click(trial=True, timeout=7000)
     whatsapp.click(trial=True, timeout=7000)
