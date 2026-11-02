@@ -56,6 +56,11 @@ for slug in SLUGS:
     descriptions.add(desc)
 
     if slug == 'destination-management-ibiza':
+        # The existing editorial CSS masks background images behind an opaque
+        # fill; this visible media element must survive future site builds.
+        hero_photo = '<div class="page-hero-media"><img src="/assets/images/events.jpg" alt="" '
+        if html.count(hero_photo) != 1:
+            raise SystemExit('Phase 102 DMC hero image missing or duplicated')
         expected = "Destination management company in Ibiza for luxury travel advisors and concierge firms. We coordinate transport, villas, yachts and guest logistics."
         if desc != expected:
             raise SystemExit(f'Phase 102 audit destination description drift: {desc}')
