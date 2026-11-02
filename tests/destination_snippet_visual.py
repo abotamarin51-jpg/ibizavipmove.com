@@ -1,5 +1,6 @@
 """Review the built Destination Management snippet in desktop and mobile Chromium."""
 from functools import partial
+from io import BytesIO
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
@@ -8,7 +9,7 @@ import json
 import os
 import shutil
 
-from PIL import Image, ImageStat
+from PIL import Image, ImageChops, ImageStat
 from playwright.sync_api import sync_playwright
 
 EXPECTED_TITLE = 'Destination Management Company in Ibiza | Ibiza VIP Move'
@@ -95,6 +96,15 @@ def main():
                             page.evaluate('window.IVMCookieConsent.reject()')
 
                         assert page.title() == EXPECTED_TITLE
+                        # The hero is decorative but must be a genuinely rendered
+                        # existing asset, not an invisible CSS background URL.
+                        hero_image = page.locator('section.page-hero > .page-hero-media img')
+                        assert hero_image.count() == 1
+                        assert hero_image.get_attribute('src') == '/assets/images/events.jpg'
+                        assert hero_image.get_attribute('alt') == ''
+                        assert hero_image.evaluate(
+                            '(img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0'
+                        )
                         assert page.locator('meta[name="description"]').get_attribute('content') == EXPECTED_DESC
                         assert page.locator('link[rel="canonical"]').get_attribute('href') == CANONICAL
                         assert page.locator('h1').count() == 1
@@ -124,9 +134,27 @@ def main():
                         }
 
                         screenshot = output / f'destination-{mode}.png'
-                        page.screenshot(path=str(screenshot))
+                        page.evaluate('window.scrollTo(0, 0)')
+                        page.screenshot(path=str(screenshot), animations='disabled')
                         verify_image(screenshot, (width, height))
+                        # Compare the actual rendered hero with the same image
+                        # hidden, away from the headline. A loaded-but-covered
+                        # image must not falsely pass this visual regression.
+                        with_photo = Image.open(screenshot).convert('RGB')
+                        hero_image.evaluate("img => img.parentElement.style.display = 'none'")
+                        without_photo = Image.open(
+                            BytesIO(page.screenshot(animations='disabled'))
+                        ).convert('RGB')
+                        hero_image.evaluate("img => img.parentElement.style.display = ''")
+                        region = (int(width * .76), int(height * .25),
+                                  int(width * .94), int(height * .68))
+                        difference = ImageChops.difference(
+                            with_photo.crop(region), without_photo.crop(region)
+                        )
+                        photo_delta = max(ImageStat.Stat(difference).mean)
+                        assert photo_delta > 2, f'{mode}: DMC photo visually hidden ({photo_delta:.3f})'
                         report['results'].append({
+                            'heroPhotoVisualDelta': round(photo_delta, 2),
                             'mode': mode,
                             'viewport': [width, height],
                             'geometry': geometry,
