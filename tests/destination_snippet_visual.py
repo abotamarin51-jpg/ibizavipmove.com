@@ -165,6 +165,47 @@ def main():
                             'description': EXPECTED_DESC,
                         })
                         print(f'PASS: Destination snippet visible without overflow: {mode}')
+                        # Also verify the private-client photo is visibly painted,
+                        # not merely loaded behind an opaque background.
+                        client_response = page.goto(
+                            origin + '/private-client-services-ibiza/', wait_until='load', timeout=15000
+                        )
+                        assert client_response and client_response.status == 200
+                        assert page.title() == 'Private Client Services Ibiza | Principals, PAs & Family Offices'
+                        assert page.locator('link[rel="canonical"]').get_attribute('href') == (
+                            'https://ibizavipmove.com/private-client-services-ibiza/'
+                        )
+                        client_image = page.locator('section.page-hero > .page-hero-media img')
+                        assert client_image.count() == 1
+                        assert client_image.get_attribute('src') == '/assets/images/chauffeur.jpg'
+                        assert client_image.get_attribute('alt') == (
+                            'Luxury car interior with steering wheel and dashboard'
+                        )
+                        assert client_image.evaluate(
+                            '(img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0'
+                        )
+                        assert page.get_by_role('link', name='Start a private brief').is_visible()
+                        assert not page.evaluate('document.documentElement.scrollWidth > innerWidth + 1')
+                        page.evaluate('window.scrollTo(0, 0)')
+                        client_with = Image.open(
+                            BytesIO(page.screenshot(animations='disabled'))
+                        ).convert('RGB')
+                        client_image.evaluate("img => img.parentElement.style.display = 'none'")
+                        client_without = Image.open(
+                            BytesIO(page.screenshot(animations='disabled'))
+                        ).convert('RGB')
+                        client_delta = max(ImageStat.Stat(ImageChops.difference(
+                            client_with.crop(region), client_without.crop(region)
+                        )).mean)
+                        assert client_delta > 2, (
+                            f'{mode}: Private Client photo visually hidden ({client_delta:.3f})'
+                        )
+                        assert not errors and not missing, {
+                            'javascriptErrors': errors,
+                            'missingLocalResources': missing,
+                        }
+                        report['results'][-1]['privateClientPhotoVisualDelta'] = round(client_delta, 2)
+                        print(f'PASS: Private Client hero photograph visible on {mode}')
                     finally:
                         context.close()
             finally:
