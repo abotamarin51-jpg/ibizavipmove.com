@@ -17,6 +17,9 @@ HOME_LEAD = ('<p class="ivm-seo-lead">Ibiza VIP Move provides luxury and VIP '
              'concierge services in Ibiza for private clients, personal assistants, '
              'family offices and luxury travel advisors through one discreet '
              'local point of contact.</p>')
+HOME_BRIEF_OLD = 'Our team is available around the clock.'
+HOME_BRIEF_NEW = ("Share your Ibiza dates, guest count and services needed. "
+                  "Personal assistants and travel advisors can enquire on a client's behalf.")
 VIP_OLD_SUMMARY = ('VIP services in Ibiza combining private transport, dining and '
                    'nightlife coordination, yachts, villas, security, hospitality '
                    'support and bespoke requests through one private contact.')
@@ -28,6 +31,7 @@ VIP_NEW_SUMMARY = ('VIP services in Ibiza for private clients: chauffeur transpo
 CHANGES = {
     'index.html': (
         (HOME_DMC_OLD, HOME_DMC_NEW, 1),
+        (HOME_BRIEF_OLD, HOME_BRIEF_NEW, 1),
         ('<p>From airport to villa, marina to dinner, security to last-minute changes, '
          'Ibiza VIP Move keeps confirmed services connected through one clear line of communication.</p>',
          '<p>From airport arrivals and chauffeur transport to villas, yachts, dining, '
@@ -135,6 +139,8 @@ def inspect(relative, before, after):
             json.loads(payload)
     if relative == 'index.html':
         require(after.count(HOME_LEAD) == 1, 'Home: approved introductory lead missing')
+        require(after.count(HOME_BRIEF_NEW) == 1 and HOME_BRIEF_OLD not in after,
+                'Home: first enquiry guidance missing or duplicated')
         require(after.count(HOME_DMC_NEW) == 1 and HOME_DMC_OLD not in after,
                 'Home: destination-management link not in approved pathway')
         target = Path('_site/destination-management-ibiza/index.html')
