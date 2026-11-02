@@ -101,7 +101,7 @@ def main():
                         hero_image = page.locator('section.page-hero > .page-hero-media img')
                         assert hero_image.count() == 1
                         assert hero_image.get_attribute('src') == '/assets/images/events.jpg'
-                        assert hero_image.get_attribute('alt') == ''
+                        assert hero_image.get_attribute('alt') == 'Elegant dining table prepared for a private event'
                         assert hero_image.evaluate(
                             '(img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0'
                         )
