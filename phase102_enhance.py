@@ -354,7 +354,7 @@ def render_body(data):
     if data['slug'] == 'destination-management-ibiza':
         hero_media = (
             '<div class="page-hero-media">'
-            f'<img src="/assets/images/{escape(data["hero"], quote=True)}" alt="" '
+            f'<img src="/assets/images/{escape(data["hero"], quote=True)}" alt="Elegant dining table prepared for a private event" '
             'width="1800" height="1200" fetchpriority="high" decoding="async">'
             '</div>'
         )
