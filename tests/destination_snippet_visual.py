@@ -11,7 +11,7 @@ import shutil
 from PIL import Image, ImageStat
 from playwright.sync_api import sync_playwright
 
-EXPECTED_TITLE = 'Luxury DMC & Destination Management Ibiza | Ibiza VIP Move'
+EXPECTED_TITLE = 'Destination Management Company in Ibiza | Ibiza VIP Move'
 EXPECTED_DESC = 'Destination management company in Ibiza for luxury travel advisors and concierge firms. We coordinate transport, villas, yachts and guest logistics.'
 CANONICAL = 'https://ibizavipmove.com/destination-management-ibiza/'
 
