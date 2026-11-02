@@ -368,3 +368,13 @@ Candidate changes exactly the first Q&A answer on the existing `/es/yate-privado
 Existing source and final FAQ audit checks remain enabled. The candidate adds exact-answer and structured-data guards plus desktop/mobile read-only browser checks (including first accordion open, layout and WhatsApp destination) that block external contact and Analytics. No new language, URL, GBP/Maps change, review, outreach, external notification, or indexing request.
 
 Status is **candidate on a separate branch, not published**. Require exact-head CI pass, generated-site output diff against the last Pages release, independent review of new markup, mobile/desktop evidence, no overlap, successful merge and deployment, and live page verification before announcing publication. No customer, click, ranking or AI benefit is assumed.
+
+## 2 November 2026, Europe/Madrid — Private Client hero visibility (draft PR, not published)
+
+Starting main: `f27af7cca7daaf8ba50109599221134cfb648dd8`; no open PR or in-progress/queued workflow at the write gate. Previous Pages deployment and independent DMC and WhatsApp production reviews passed. Earlier PR #175 restored a missing DMC hero photograph; this candidate is a separate, supported follow-up.
+
+Evidence: `/private-client-services-ibiza/` is HTTP 200, indexable, self-canonical, and contains approved contacts. Its Phase 102 generator supplies `--hero` but the existing `editorial-inner.css` sets an opaque background with `!important`; that masks the photo. Unlike DMC, no `page-hero-media` element is currently generated for private-client services. This is a presentation defect, not evidence of lost indexing or failed contact journeys.
+
+Candidate: restore only that page's existing approved car-interior image as a visible editorial media layer, preserving page copy, URLs, schema, branding, canonical, language alternatives, contact destinations, GA4, consent, and CSS. An exact-output audit asserts the image element, while the existing desktop/mobile Chromium visual review checks actual photo pixel difference when hidden versus shown, decode, canonical, CTA, overflow, and local assets with external contact requests blocked. No GBP/Maps edits, sitemap requests or ranking claims.
+
+**Status: separate draft PR, not published.** Exact-head full CI and visual tests, final diff/output review, applicable reviews, no-overlap and live deployment verification are mandatory before merge/publication. Other premium pages require their own evidence; do not broadly alter templates without checks.
