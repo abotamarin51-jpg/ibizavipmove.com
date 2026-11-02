@@ -7,6 +7,7 @@ from PIL import Image, features
 ROOT = Path('_site')
 PAGES = (
     'luxury-villas-ibiza',
+    'luxury-lifestyle-management-ibiza',
     'fr/villas-luxe-ibiza', 'de/luxusvillen-ibiza', 'ar/luxury-villas-ibiza', 'es/villas-lujo-ibiza',
     'fr/conciergerie-privee-ibiza', 'de/privater-concierge-ibiza', 'ar/private-concierge-ibiza', 'es/concierge-privado-ibiza',
     'ibiza-intelligence/villa-arrival-planning',
@@ -15,6 +16,7 @@ PAGES = (
 )
 PRELOAD_PAGES = {
     'luxury-villas-ibiza',
+    'luxury-lifestyle-management-ibiza',
     'fr/conciergerie-privee-ibiza', 'de/privater-concierge-ibiza', 'ar/private-concierge-ibiza', 'es/concierge-privado-ibiza',
     'fr/ibiza-intelligence/villa-arrival-planning', 'de/ibiza-intelligence/villa-arrival-planning',
     'ar/ibiza-intelligence/villa-arrival-planning', 'es/ibiza-intelligence/villa-arrival-planning',

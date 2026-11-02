@@ -55,6 +55,19 @@ for slug in SLUGS:
         raise SystemExit(f'Phase 102 audit duplicate description: {slug}')
     descriptions.add(desc)
 
+    # Keep the four existing premium editorial photos visible and discoverable.
+    other_hero_photos = {
+        'luxury-lifestyle-management-ibiza': ('/assets/images/villa.jpg', 'Modern villa with a swimming pool and lush greenery'),
+        'personal-concierge-ibiza': ('/assets/images/hero.jpg', 'Mediterranean terrace overlooking the sea'),
+        'luxury-travel-concierge-ibiza': ('/assets/images/aviation.jpg', 'Private jet parked on an airport tarmac'),
+        'vip-services-ibiza': ('/assets/images/nightlife.jpg', 'Elegant dining table overlooking the sea at sunset'),
+    }
+    if slug in other_hero_photos:
+        asset, label = other_hero_photos[slug]
+        expected_photo = f'<div class="page-hero-media"><img src="{asset}" alt="{label}" '
+        if html.count(expected_photo) != 1:
+            raise SystemExit(f'Phase 102 premium hero photograph missing or duplicated: {slug}')
+
     if slug == 'private-client-services-ibiza':
         # CSS-only --hero URL is hidden by the opaque editorial fill.
         private_client_photo = '<div class="page-hero-media"><img src="/assets/images/chauffeur.jpg" alt="Luxury car interior with steering wheel and dashboard" '

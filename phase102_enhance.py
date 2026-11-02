@@ -367,6 +367,21 @@ def render_body(data):
             'width="1800" height="1200" fetchpriority="high" decoding="async">'
             '</div>'
         )
+    # Reuse the existing, approved editorial photographs for the four EN
+    # commercial pages whose CSS-only hero was masked by an opaque background.
+    other_hero_alts = {
+        'luxury-lifestyle-management-ibiza': 'Modern villa with a swimming pool and lush greenery',
+        'personal-concierge-ibiza': 'Mediterranean terrace overlooking the sea',
+        'luxury-travel-concierge-ibiza': 'Private jet parked on an airport tarmac',
+        'vip-services-ibiza': 'Elegant dining table overlooking the sea at sunset',
+    }
+    if data['slug'] in other_hero_alts:
+        hero_media = (
+            '<div class="page-hero-media">'
+            f'<img src="/assets/images/{escape(data["hero"], quote=True)}" alt="{escape(other_hero_alts[data["slug"]], quote=True)}" '
+            'width="1800" height="1200" fetchpriority="high" decoding="async">'
+            '</div>'
+        )
     return f'''<section class="page-hero service-hero" style="--hero:url('/assets/images/{escape(data["hero"], quote=True)}')">{hero_media}<div><div class="kicker light">{data["kicker"]}</div><h1>{data["h1"]}</h1><p>{escape(data["description"])}</p><div class="hero-actions"><a class="btn gold" href="{WA}?text=Hello%20Ibiza%20VIP%20Move%2C%20I%20would%20like%20to%20discuss%20{whatsapp_text}.">Start a private brief</a><a class="btn ghost" href="/private-concierge-ibiza/">Private Concierge</a></div></div></section>
 <section class="editorial"><div><div class="kicker dark">Ibiza · Balearic Islands · Spain</div><h2>{escape(data["lead_title"])}</h2></div><div><p class="large">{escape(data["lead"])}</p><p>{escape(data["detail"])}</p><a class="text-link" href="/contact/">Request private support →</a></div></section>
 <section class="dark-panel"><div class="kicker light">Why this service exists</div><h2>Local coordination.<br>Clear private execution.</h2><div class="trust-grid">{pillars}</div></section>
