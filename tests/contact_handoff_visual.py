@@ -144,8 +144,12 @@ def review_home_first_brief(page, origin, mode, width, height, output):
     assert (geometry['left'] >= 0 and geometry['top'] >= 0 and
             geometry['right'] <= width + 1 and geometry['bottom'] <= height + 1), (mode, geometry)
     request = section.locator('a[href="/contact/"]')
-    whatsapp = section.locator('a[href="https://wa.me/34600703303"]')
+    whatsapp = section.locator('a[href^="https://wa.me/"]')
     assert request.count() == 1 and whatsapp.count() == 1, 'Changed or duplicated Home contact routes'
+    wa_url = urlsplit(whatsapp.get_attribute('href') or '')
+    assert (wa_url.scheme == 'https' and wa_url.netloc == 'wa.me'
+            and wa_url.path == '/34600703303'
+            and (not wa_url.query or wa_url.query.startswith('text='))), 'Approved WhatsApp number or query changed'
     assert section.locator('a').count() == 2
     assert request.inner_text().strip() == 'Request Concierge'
     assert whatsapp.inner_text().strip() == 'WhatsApp 24/7'
