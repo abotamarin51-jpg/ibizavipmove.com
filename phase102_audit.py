@@ -55,6 +55,12 @@ for slug in SLUGS:
         raise SystemExit(f'Phase 102 audit duplicate description: {slug}')
     descriptions.add(desc)
 
+    if slug == 'private-client-services-ibiza':
+        # CSS-only --hero URL is hidden by the opaque editorial fill.
+        private_client_photo = '<div class="page-hero-media"><img src="/assets/images/chauffeur.jpg" alt="Luxury car interior with steering wheel and dashboard" '
+        if html.count(private_client_photo) != 1:
+            raise SystemExit('Phase 102 private-client hero photograph missing or duplicated')
+
     if slug == 'destination-management-ibiza':
         # The existing editorial CSS masks background images behind an opaque
         # fill; this visible media element must survive future site builds.
