@@ -378,3 +378,12 @@ Evidence: `/private-client-services-ibiza/` is HTTP 200, indexable, self-canonic
 Candidate: restore only that page's existing approved car-interior image as a visible editorial media layer, preserving page copy, URLs, schema, branding, canonical, language alternatives, contact destinations, GA4, consent, and CSS. An exact-output audit asserts the image element, while the existing desktop/mobile Chromium visual review checks actual photo pixel difference when hidden versus shown, decode, canonical, CTA, overflow, and local assets with external contact requests blocked. No GBP/Maps edits, sitemap requests or ranking claims.
 
 **Status: separate draft PR, not published.** Exact-head full CI and visual tests, final diff/output review, applicable reviews, no-overlap and live deployment verification are mandatory before merge/publication. Other premium pages require their own evidence; do not broadly alter templates without checks.
+
+
+## 2 November 2026, Europe/Madrid — remaining premium hero photographs
+
+Following the deployed PR #175 DMC image fix and PR #176 Private Client image fix, the four other Phase 102 English intent pages still use CSS-only hero URLs masked by the existing opaque editorial background. The existing approved site assets are villa.jpg (Lifestyle Management), hero.jpg (Personal Concierge), aviation.jpg (Luxury Travel Concierge) and nightlife.jpg (VIP Services). All four are already present in the production asset set and described in IMAGE_SOURCES.md; no images or third-party downloads are added by this candidate.
+
+This branch restores those exact four images as real HTML hero media with truthful alt text. It preserves all existing page copy, design/CSS, H1, canonical/hreflang, JSON-LD, WhatsApp/phone/email/form routing, services, rates, consent, analytics and Google Business Profile. A Phase 102 output assertion and desktop/mobile Chromium browser tests require each photo to load and show a measurable pixel difference against the same screenshot with the hero photo hidden; outgoing contact requests remain blocked.
+
+Status: candidate PR only until exact-head CI, scoped diff/output review, applicable approvals, no-overlap gate, successful deployment and live verification. No claims about rankings, Google image thumbnails, enquiries or clients.
