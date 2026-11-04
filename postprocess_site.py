@@ -41,7 +41,7 @@ SEO = {
     ),
     'luxury-villas-ibiza': (
         'Luxury Villa Concierge Ibiza | Private Stays | Ibiza VIP Move',
-        'Luxury villa concierge in Ibiza with private stay sourcing, pre-arrival preparation, housekeeping coordination and in-villa lifestyle support.'
+        'Luxury villa concierge in Ibiza for private stays, arrivals and discreet coordination of private chefs, villa staffing, housekeeping and guest support.'
     ),
     'yacht-charter-ibiza': (
         'Yacht Charter Ibiza & Formentera | Ibiza VIP Move',
