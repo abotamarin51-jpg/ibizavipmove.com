@@ -24,7 +24,7 @@ HOME_SITEMAP = Path('_site/sitemap.xml')
 HOME_OLD_LEAD = '<p class="ivm-seo-lead">Ibiza VIP Move is a luxury concierge in Ibiza for private clients and professional teams who want one discreet on-island point of coordination.</p>'
 HOME_NEW_LEAD = '<p class="ivm-seo-lead">Ibiza VIP Move provides luxury and VIP concierge services in Ibiza for private clients, personal assistants, family offices and luxury travel advisors through one discreet local point of contact.</p>'
 HOME_OLD_SERVICE = '<p>Private chauffeur, villas, yachts, aviation, access and protection are coordinated around the stay rather than treated as isolated bookings.</p>'
-HOME_NEW_SERVICE = '<p>We coordinate chauffeur transport, villas, yachts, aviation, <a href="/vip-services-ibiza/" style="color:inherit;text-decoration:underline;text-underline-offset:.16em">VIP hospitality requests</a> and security around each stay.</p>'
+HOME_NEW_SERVICE = '<p>We coordinate chauffeur transport, villas, yachts, aviation, <a href="/vip-services-ibiza/" style="color:inherit;text-decoration:underline;text-underline-offset:.16em">VIP services in Ibiza</a> and security around each stay.</p>'
 HOME_OLD_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-09-03</lastmod>'
 HOME_NEW_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-10-31</lastmod>'
 
