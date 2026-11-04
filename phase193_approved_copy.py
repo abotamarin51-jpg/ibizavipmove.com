@@ -28,7 +28,7 @@ VIP_NEW_SUMMARY = ('VIP services in Ibiza for private clients: chauffeur transpo
                    'dining, nightlife, yachts, villas and security, coordinated '
                    'through one discreet contact.')
 CONCIERGE_OLD_TITLE = 'Private Concierge Ibiza | Ibiza VIP Move'
-CONCIERGE_NEW_TITLE = 'Private Concierge Services Ibiza | Ibiza VIP Move'
+CONCIERGE_NEW_TITLE = 'Private Concierge Services in Ibiza | Ibiza VIP Move'
 CONCIERGE_OLD_SUMMARY = ('Private concierge in Ibiza for discreet lifestyle management, '
                          'chauffeur transport, villas, yachts, dining, aviation, '
                          'security and multi-service stays.')
