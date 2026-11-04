@@ -24,11 +24,13 @@ on:
       - "submit_indexnow.py"
       - "validate_site.py"
       - "build_site.sh"
+      - "frozen_image_inputs.py"
       - "premium.css"
       - "luxury-overrides.css"
       - "premium.js"
       - "tests/phone-activation.cjs"
       - "tests/pinned_performance_images_check.py"
+      - "tests/frozen_image_inputs_check.py"
       - "tests/phase174_browser_check.py"
       - "tests/contact_handoff_visual.py"
       - "tests/destination_snippet_visual.py"
@@ -56,6 +58,8 @@ jobs:
           node tests/phone-activation.cjs premium.js
       - name: Test frozen performance images without network access
         run: python3 tests/pinned_performance_images_check.py
+      - name: Test legacy image stages without network access
+        run: python3 tests/frozen_image_inputs_check.py
       - name: Build and validate website without deploying
         run: |
           bash build_site.sh

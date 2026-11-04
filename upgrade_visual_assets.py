@@ -1,5 +1,5 @@
 from pathlib import Path
-from urllib.request import Request, urlopen
+from frozen_image_inputs import read_image
 
 ASSETS = {
     "aviation": "https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=86&w=2200",
@@ -15,9 +15,7 @@ out.mkdir(parents=True, exist_ok=True)
 
 for name, url in ASSETS.items():
     target = out / f"{name}.jpg"
-    req = Request(url, headers={"User-Agent": "Mozilla/5.0 IbizaVIPMoveBuild/1.0"})
-    with urlopen(req, timeout=30) as response:
-        data = response.read()
+    data = read_image('secondary', f'{name}.jpg', source_url=url)
     if len(data) < 50_000:
         raise SystemExit(f"Downloaded {name} image is unexpectedly small: {len(data)} bytes")
     target.write_bytes(data)
