@@ -1,5 +1,5 @@
 from pathlib import Path
-from urllib.request import Request, urlopen
+from frozen_image_inputs import read_image
 import re
 
 ROOT = Path('_site')
@@ -12,9 +12,7 @@ variants = {
 }
 
 for name, url in variants.items():
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0 IbizaVIPMoveBuild/1.0'})
-    with urlopen(req, timeout=30) as response:
-        data = response.read()
+    data = read_image('responsive', name, source_url=url)
     if len(data) < 50_000:
         raise SystemExit(f'{name} unexpectedly small: {len(data)} bytes')
     (IMG / name).write_bytes(data)

@@ -118,6 +118,7 @@ on:
       - "submit_indexnow.py"
       - "validate_site.py"
       - "build_site.sh"
+      - "frozen_image_inputs.py"
       - "premium.css"
       - "luxury-overrides.css"
       - "premium.js"

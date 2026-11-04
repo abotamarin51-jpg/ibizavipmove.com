@@ -12,32 +12,12 @@ cp brand-logo.jpg _site/assets/brand-logo.jpg
 cp brand-logo.svg _site/assets/brand-logo.svg
 cp brand-mark.svg _site/assets/brand-mark.svg
 
-# Curated editorial imagery. Phase 157 pins the production-approved villa JPEG
-# inside the repository so villa builds no longer depend on a mutable upstream
-# transform. The remaining legacy assets are still fetched and will be frozen
-# progressively behind the same checksum gate.
-fetch_image() {
-  name="$1"
-  source="$2"
-  target="_site/assets/images/${name}.jpg"
-  curl -LfsS --retry 3 --connect-timeout 15 "$source" -o "$target"
-  test -s "$target"
-}
-
-fetch_image hero 'https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2400&q=90&fm=jpg'
+# Preserve each original stage input locally, including its reviewed checksum.
+# Later phases still apply their existing image and performance checks.
+python3 frozen_image_inputs.py initial _site/assets/images
 VILLA_SHA256='920a2d479f869c385e47bbaf7cec73235da990c450283a75c0fb8d687de945dd'
 printf '%s  %s\n' "$VILLA_SHA256" editorial-assets/villa.jpg | sha256sum -c -
 cp editorial-assets/villa.jpg _site/assets/images/villa.jpg
-fetch_image yacht 'https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2400&q=90&fm=jpg'
-fetch_image aviation 'https://images.unsplash.com/photo-1773554644657-2c9a9ecc95f9?auto=format&fit=crop&w=2400&q=90&fm=jpg'
-fetch_image chauffeur 'https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2400&q=90&fm=jpg'
-fetch_image nightlife 'https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=2200&q=90&fm=jpg'
-fetch_image security 'https://images.unsplash.com/photo-1773580995586-b0195c43386c?auto=format&fit=crop&w=2200&q=88&fm=jpg'
-fetch_image chef 'https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=2200&q=88&fm=jpg'
-fetch_image events 'https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=2200&q=90&fm=jpg'
-fetch_image wellness 'https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=2200&q=88&fm=jpg'
-fetch_image bespoke 'https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=88&fm=jpg'
-
 python3 - <<'PY'
 from pathlib import Path
 replacements = {

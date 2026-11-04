@@ -1,5 +1,5 @@
 from pathlib import Path
-from urllib.request import Request, urlopen
+from frozen_image_inputs import read_image
 import re
 
 ROOT = Path('_site')
@@ -18,9 +18,7 @@ OPTIMIZED = {
 
 out = ROOT / 'assets' / 'images'
 for name, url in OPTIMIZED.items():
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0 IbizaVIPMoveBuild/1.0'})
-    with urlopen(req, timeout=30) as response:
-        data = response.read()
+    data = read_image('optimized', f'{name}.jpg', source_url=url)
     if len(data) < 40_000:
         raise SystemExit(f'Optimized {name} unexpectedly small: {len(data)}')
     (out / f'{name}.jpg').write_bytes(data)

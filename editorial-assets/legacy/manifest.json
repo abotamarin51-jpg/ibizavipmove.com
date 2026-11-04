@@ -1,0 +1,206 @@
+{
+  "version": 1,
+  "captured_on": "2026-11-04",
+  "baseline_commit": "4ed8f4287934309d341f3e04fb1db8b18efa9634",
+  "stages": {
+    "initial": {
+      "hero.jpg": {
+        "file": "initial/hero.jpg",
+        "bytes": 1092324,
+        "sha256": "1e7781fca082f4848e25f46f27a07aa22c1cdbce01640bf4abf997cb05b15668",
+        "source_url": "https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2400&q=90&fm=jpg"
+      },
+      "yacht.jpg": {
+        "file": "initial/yacht.jpg",
+        "bytes": 687468,
+        "sha256": "0e5e228179de45e86f84614195ec71051b5f312ec739d04cb8cdd08e2f112966",
+        "source_url": "https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2400&q=90&fm=jpg"
+      },
+      "aviation.jpg": {
+        "file": "initial/aviation.jpg",
+        "bytes": 583309,
+        "sha256": "a2d86ef053d88af1d21d84a2dd8daf90662906182b9d8387da085423dc5c52a0",
+        "source_url": "https://images.unsplash.com/photo-1773554644657-2c9a9ecc95f9?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1773554644657-2c9a9ecc95f9?auto=format&fit=crop&w=2400&q=90&fm=jpg"
+      },
+      "chauffeur.jpg": {
+        "file": "initial/chauffeur.jpg",
+        "bytes": 547413,
+        "sha256": "1cf998d07d77c950b302662f5339cc01e4f6f382ec5fd5061de3a642ae241767",
+        "source_url": "https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2400&q=90&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2400&q=90&fm=jpg"
+      },
+      "nightlife.jpg": {
+        "file": "initial/nightlife.jpg",
+        "bytes": 726415,
+        "sha256": "33cbde87db3aa80c17c6422c9b08c60f92d86d9b751736798b4623997ded282d",
+        "source_url": "https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=2200&q=90&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=2200&q=90&fm=jpg"
+      },
+      "security.jpg": {
+        "file": "initial/security.jpg",
+        "bytes": 480220,
+        "sha256": "ea3d6c45eae76cd789393fbc5f8d8f546b99e35657f815538cad0e15769469e4",
+        "source_url": "https://images.unsplash.com/photo-1773580995586-b0195c43386c?auto=format&fit=crop&w=2200&q=88&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1773580995586-b0195c43386c?auto=format&fit=crop&w=2200&q=88&fm=jpg"
+      },
+      "chef.jpg": {
+        "file": "initial/chef.jpg",
+        "bytes": 392206,
+        "sha256": "a610146de5307fcaefb90f0dd9e35090e4763ab027ff2e78d95f01dfdf9e4b14",
+        "source_url": "https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=2200&q=88&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=2200&q=88&fm=jpg"
+      },
+      "events.jpg": {
+        "file": "initial/events.jpg",
+        "bytes": 474324,
+        "sha256": "4c67ef1253d10130b57d18faac72124c8c8975ff012e26100de8087e1d12cce6",
+        "source_url": "https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=2200&q=90&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=2200&q=90&fm=jpg"
+      },
+      "wellness.jpg": {
+        "file": "initial/wellness.jpg",
+        "bytes": 415437,
+        "sha256": "43ac4ba2f4c25a1b358e48e5f6918f800f2d4dae2cb9ae089c585082d07eddc2",
+        "source_url": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=2200&q=88&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1540555700478-4be289fbecef?auto=format&fit=crop&w=2200&q=88&fm=jpg"
+      },
+      "bespoke.jpg": {
+        "file": "initial/bespoke.jpg",
+        "bytes": 1350028,
+        "sha256": "67a2f9ba1e9f0a82f47a97fe9339fbf1bbe45b190cb10c0830af1fa1addebbea",
+        "source_url": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=88&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=2200&q=88&fm=jpg"
+      }
+    },
+    "secondary": {
+      "aviation.jpg": {
+        "file": "secondary/aviation.jpg",
+        "bytes": 496255,
+        "sha256": "725021db57ee924659a85ba1ca36f07d18f8a5fe948552232d0c540e4b7e792e",
+        "source_url": "https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=86&w=2200",
+        "capture_url": "https://images.unsplash.com/photo-1770334618960-d246fc142297?auto=format&fit=crop&fm=jpg&q=86&w=2200"
+      },
+      "security.jpg": {
+        "file": "secondary/security.jpg",
+        "bytes": 369499,
+        "sha256": "33ec8a8546c2b427e1f1618b3447cf54218febe36a6fef964ffb4e4957e99119",
+        "source_url": "https://images.pexels.com/photos/38702227/pexels-photo-38702227.jpeg?auto=compress&cs=tinysrgb&w=1900",
+        "capture_url": "https://ibizavipmove.com/assets/images/security.jpg"
+      },
+      "chef.jpg": {
+        "file": "secondary/chef.jpg",
+        "bytes": 2548959,
+        "sha256": "d67fb815bdbf7d6a91c728cf69a39d3517a2f78b54b9eac9bf5433a509857cbc",
+        "source_url": "https://images.pexels.com/photos/12258207/pexels-photo-12258207.png?cs=srgb&dl=pexels-paolino96-12258207.jpg&fm=jpg",
+        "capture_url": "https://images.pexels.com/photos/12258207/pexels-photo-12258207.png?cs=srgb&dl=pexels-paolino96-12258207.jpg&fm=jpg"
+      },
+      "wellness.jpg": {
+        "file": "secondary/wellness.jpg",
+        "bytes": 274216,
+        "sha256": "f834ac101f61fdb0306f2fa5758e454a856790e694a3ecfdf91374c06e0d366b",
+        "source_url": "https://images.pexels.com/photos/35884502/pexels-photo-35884502.jpeg?auto=compress&cs=tinysrgb&w=1900",
+        "capture_url": "https://ibizavipmove.com/assets/images/wellness.jpg"
+      },
+      "bespoke.jpg": {
+        "file": "secondary/bespoke.jpg",
+        "bytes": 350498,
+        "sha256": "eee554aa0525616066f4c9d81d6fc7ef694d1f9dfa7607771193a93d29276f94",
+        "source_url": "https://images.pexels.com/photos/8387121/pexels-photo-8387121.jpeg?auto=compress&cs=tinysrgb&w=1900",
+        "capture_url": "https://ibizavipmove.com/assets/images/bespoke.jpg"
+      },
+      "private-office.jpg": {
+        "file": "secondary/private-office.jpg",
+        "bytes": 727490,
+        "sha256": "65eb4ddf8d46b7cc97b97ebf9b8a36fb38953f27f386088319ec40bf7e86466f",
+        "source_url": "https://images.pexels.com/photos/27901676/pexels-photo-27901676.jpeg?cs=srgb&dl=pexels-arina-shabalina-1697416785-27901676.jpg&fm=jpg",
+        "capture_url": "https://ibizavipmove.com/assets/images/private-office.jpg"
+      }
+    },
+    "optimized": {
+      "hero.jpg": {
+        "file": "optimized/hero.jpg",
+        "bytes": 714903,
+        "sha256": "1e176d06048ea1e74a68d25ac24e92eab849292d9ffd071bd66e1983816df4cb",
+        "source_url": "https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2000&q=84&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=2000&q=84&fm=jpg"
+      },
+      "villa.jpg": {
+        "file": "optimized/villa.jpg",
+        "bytes": 738441,
+        "sha256": "0ee2217afce01aab42d632e0cc752290e436b098bf1574dc27ea92f4a749526e",
+        "source_url": "https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2000&q=84&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1778694276931-056406c4f4d9?auto=format&fit=crop&w=2000&q=84&fm=jpg"
+      },
+      "yacht.jpg": {
+        "file": "optimized/yacht.jpg",
+        "bytes": 466547,
+        "sha256": "6ced4277b2e8ab0bd299108901acd0a9b8d56271b1695d986932a9be01d13c14",
+        "source_url": "https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2000&q=84&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1779987680720-ca6e1b6fb4b0?auto=format&fit=crop&w=2000&q=84&fm=jpg"
+      },
+      "chauffeur.jpg": {
+        "file": "optimized/chauffeur.jpg",
+        "bytes": 401714,
+        "sha256": "9a3d19f038ed06a1fe6a2f19213e6c9628a67c77821c0d3b36a743a4555440d8",
+        "source_url": "https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2000&q=84&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1780296269553-84ec2dd53065?auto=format&fit=crop&w=2000&q=84&fm=jpg"
+      },
+      "nightlife.jpg": {
+        "file": "optimized/nightlife.jpg",
+        "bytes": 525814,
+        "sha256": "a5e7e54ed6f39184f4d54dec9d70d5ff9ea5ec3d12f3290f0d563b45360f2ebc",
+        "source_url": "https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=1800&q=84&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1778694276945-a3ee92331709?auto=format&fit=crop&w=1800&q=84&fm=jpg"
+      },
+      "events.jpg": {
+        "file": "optimized/events.jpg",
+        "bytes": 341264,
+        "sha256": "1cdd1676ca353388b5a90d65d1548ae7823c3da69c0e3905af4bf3f962e22575",
+        "source_url": "https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=1800&q=84&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1770140304098-46700a5c45c8?auto=format&fit=crop&w=1800&q=84&fm=jpg"
+      },
+      "chef.jpg": {
+        "file": "optimized/chef.jpg",
+        "bytes": 275956,
+        "sha256": "f350eee9aa5b8d64825a1321b984d6cec30a7d459d300fb114b948fdb4b13c38",
+        "source_url": "https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=82&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1653233797467-1a528819fd4f?auto=format&fit=crop&w=1800&q=82&fm=jpg"
+      }
+    },
+    "responsive": {
+      "hero-desktop.jpg": {
+        "file": "responsive/hero-desktop.jpg",
+        "bytes": 388180,
+        "sha256": "f51633bac139f98b725efacc8b8f77b866535dae60d2ed39d83b7f71ef38e21c",
+        "source_url": "https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=1920&h=1200&q=82&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=1920&h=1200&q=82&fm=jpg"
+      },
+      "hero-mobile.jpg": {
+        "file": "responsive/hero-mobile.jpg",
+        "bytes": 158679,
+        "sha256": "f4edfdde6c9973fb00ef21e48ff82f3b4091488de04c355b51add3a07e93783c",
+        "source_url": "https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=900&h=1200&q=80&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1782113326494-87602b41cbdf?auto=format&fit=crop&w=900&h=1200&q=80&fm=jpg"
+      }
+    },
+    "ibiza-hero": {
+      "hero-desktop.jpg": {
+        "file": "ibiza-hero/hero-desktop.jpg",
+        "bytes": 520937,
+        "sha256": "e90a0652dfdd9e3f38f8d3037340e2f17f370ad5dbd8bd6f0727b646a5f03039",
+        "source_url": "https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=2200&h=1400&q=84&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=2200&h=1400&q=84&fm=jpg"
+      },
+      "hero-mobile.jpg": {
+        "file": "ibiza-hero/hero-mobile.jpg",
+        "bytes": 207213,
+        "sha256": "1c678f2042e7aaf2d5312fc9304c47c028aee6184094440c0cec66c729403e37",
+        "source_url": "https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=900&h=1250&q=82&fm=jpg",
+        "capture_url": "https://images.unsplash.com/photo-1631193722492-9eee3ca45896?auto=format&fit=crop&w=900&h=1250&q=82&fm=jpg"
+      }
+    }
+  }
+}
