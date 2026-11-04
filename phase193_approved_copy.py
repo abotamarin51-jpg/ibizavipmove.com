@@ -1,7 +1,8 @@
 """Tightly scoped, owner-approved English SEO copy for three existing pages.
 
 Run after phase192 within phase178_enhance.py. Keep the branded design, H1,
-URLs, booking flows, existing FAQs, structured data and consent unchanged.
+URLs, booking flows, existing FAQs and consent unchanged. Apply only the
+reviewed title/description values to the existing structured metadata.
 The Home introductory lead is set by HOME_NEW_LEAD in phase178_enhance.py.
 """
 from pathlib import Path
@@ -26,6 +27,22 @@ VIP_OLD_SUMMARY = ('VIP services in Ibiza combining private transport, dining an
 VIP_NEW_SUMMARY = ('VIP services in Ibiza for private clients: chauffeur transport, '
                    'dining, nightlife, yachts, villas and security, coordinated '
                    'through one discreet contact.')
+CONCIERGE_OLD_TITLE = 'Private Concierge Ibiza | Ibiza VIP Move'
+CONCIERGE_NEW_TITLE = 'Private Concierge Services Ibiza | Ibiza VIP Move'
+CONCIERGE_OLD_SUMMARY = ('Private concierge in Ibiza for discreet lifestyle management, '
+                         'chauffeur transport, villas, yachts, dining, aviation, '
+                         'security and multi-service stays.')
+CONCIERGE_NEW_SUMMARY = ('Private concierge services in Ibiza for complete stays. '
+                         'Chauffeurs, villas, yachts, dining and VIP tables, '
+                         'coordinated through one discreet local contact.')
+CONCIERGE_OLD_LEAD = ('<p>One dedicated contact coordinating chauffeur transport, '
+                      'restaurant reservations, <a class="text-link" '
+                      'data-ivm180="vip-tables-link" href="/vip-tables-club-access-ibiza/">'
+                      'VIP tables</a>, villas, yachts, security, staff and the unexpected.</p>')
+CONCIERGE_NEW_LEAD = ('<p>Private and VIP concierge services in Ibiza: chauffeur transport, '
+                      'restaurant reservations, <a class="text-link" '
+                      'data-ivm180="vip-tables-link" href="/vip-tables-club-access-ibiza/">'
+                      'VIP tables</a>, villas, yachts, security and staff through one local contact.</p>')
 
 # Exact reviewed source phrases: never replace unknown sections or general keywords.
 CHANGES = {
@@ -55,6 +72,9 @@ CHANGES = {
          'availability and written confirmation.</p>', 1),
     ),
     'private-concierge-ibiza/index.html': (
+        (CONCIERGE_OLD_TITLE, CONCIERGE_NEW_TITLE, 4),
+        (CONCIERGE_OLD_SUMMARY, CONCIERGE_NEW_SUMMARY, 5),
+        (CONCIERGE_OLD_LEAD, CONCIERGE_NEW_LEAD, 1),
         ('<p class="large">Ibiza VIP Move is a private concierge for clients who do '
          'not want to manage separate suppliers throughout their stay. We centralise '
          'communication, align timing and keep the confirmed itinerary moving.</p>',
@@ -125,7 +145,23 @@ def inspect(relative, before, after):
     for token in ('<h2', '<h3', '<img', '<picture', '<form', '<script',
                   '<details', '<summary', 'data-ivm-google-maps-profile'):
         require(before.count(token) == after.count(token), relative + ': structure changed: ' + token)
-    if relative != 'vip-services-ibiza/index.html':
+    if relative == 'private-concierge-ibiza/index.html':
+        require(after.count(CONCIERGE_NEW_TITLE) == 4 and CONCIERGE_OLD_TITLE not in after,
+                'Concierge: title copies not synchronized')
+        require(after.count(CONCIERGE_NEW_SUMMARY) == 5 and CONCIERGE_OLD_SUMMARY not in after,
+                'Concierge: descriptions not synchronized')
+        require(after.split('</head>', 1)[0]
+                .replace(CONCIERGE_NEW_TITLE, CONCIERGE_OLD_TITLE)
+                .replace(CONCIERGE_NEW_SUMMARY, CONCIERGE_OLD_SUMMARY)
+                == before.split('</head>', 1)[0]
+                .replace(CONCIERGE_NEW_TITLE, CONCIERGE_OLD_TITLE)
+                .replace(CONCIERGE_NEW_SUMMARY, CONCIERGE_OLD_SUMMARY),
+                'Concierge: other SEO head changes')
+        require(after.count(CONCIERGE_NEW_LEAD) == 1 and CONCIERGE_OLD_LEAD not in after,
+                'Concierge: introductory service copy missing or duplicated')
+        for payload in re.findall(r'<script\s+type="application/ld\+json">(.*?)</script>', after, re.S):
+            json.loads(payload)
+    elif relative != 'vip-services-ibiza/index.html':
         require(before.split('</head>', 1)[0] == after.split('</head>', 1)[0],
                 relative + ': unexpected SEO head drift')
     else:
@@ -171,7 +207,7 @@ def enhance(root=Path('_site')):
     for path, before, after in pending:
         if before != after:
             path.write_text(after, encoding='utf-8')
-    print('PASS: Phase 193 — three approved English pages; design, FAQs, schema, links and contacts preserved')
+    print('PASS: Phase 193 — reviewed English copy and metadata; design, FAQs, links and contacts preserved')
 
 
 if __name__ == '__main__':
