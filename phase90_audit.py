@@ -7,7 +7,7 @@ PAGES={
 'en':('/private-office/','Ibiza Concierge for Family Offices & Personal Assistants | Ibiza VIP Move','family offices and personal assistants'),
 'es':('/es/private-office/','Concierge Ibiza para Family Offices y Personal Assistants | Ibiza VIP Move','family offices y personal assistants'),
 'fr':('/fr/private-office/','Conciergerie Ibiza pour assistants et family offices | Ibiza VIP Move','family offices et assistants personnels'),
-'de':('/de/private-office/','Ibiza Concierge für Family Offices & Personal Assistants | Ibiza VIP Move','family offices und personal assistants'),
+'de':('/de/private-office/','Ibiza Concierge für Family Offices & Personal Assistants | Ibiza VIP Move','family offices und persönliche assistenten'),
 'ar':('/ar/private-office/','كونسيرج إيبيزا للمكاتب العائلية والمساعدين الشخصيين | Ibiza VIP Move','للمكاتب العائلية والمساعدين الشخصيين')}
 SCRIPT_RE=re.compile(r'<script\s+type=["\']application/ld\+json["\']>(.*?)</script>',re.I|re.S)
 
