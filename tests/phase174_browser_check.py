@@ -163,7 +163,7 @@ def main():
                         )
                         assert (
                             'We coordinate chauffeur transport, villas, yachts, aviation, '
-                            'VIP hospitality requests and security around each stay.'
+                            'VIP services in Ibiza and security around each stay.'
                         ) in page.locator('main').inner_text()
                         lead.scroll_into_view_if_needed()
                         assert lead.evaluate(INSIDE_JS), 'Home paragraph does not fit the viewport'
