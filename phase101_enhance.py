@@ -1,5 +1,4 @@
 from pathlib import Path
-from urllib.request import Request, urlopen
 import hashlib
 import re
 
@@ -8,20 +7,11 @@ IMG = ROOT / 'assets' / 'images'
 HOME = ROOT / 'index.html'
 
 # Preserve the reviewed, currently published image bytes during unrelated releases.
-# Villa and chauffeur already use checksum-verified repository assets. Extend the
-# existing same-origin hero checksum gate to the six remaining optimized images;
-# a changed or unavailable source fails the build instead of changing the design.
+# Villa and chauffeur already use checksum-verified repository assets. The eight
+# remaining optimized images now use the same approach, with no network fetch.
+# A missing or changed frozen file fails the build instead of changing the design.
 # Dimensions, crop, image URLs and the original performance assertions stay intact.
-SOURCES = {
-    'hero.jpg': 'https://ibizavipmove.com/assets/images/hero.jpg',
-    'yacht.jpg': 'https://ibizavipmove.com/assets/images/yacht.jpg',
-    'nightlife.jpg': 'https://ibizavipmove.com/assets/images/nightlife.jpg',
-    'events.jpg': 'https://ibizavipmove.com/assets/images/events.jpg',
-    'chef.jpg': 'https://ibizavipmove.com/assets/images/chef.jpg',
-    'aviation.jpg': 'https://ibizavipmove.com/assets/images/aviation.jpg',
-    'hero-desktop.jpg': 'https://ibizavipmove.com/assets/images/hero-desktop.jpg',
-    'hero-mobile.jpg': 'https://ibizavipmove.com/assets/images/hero-mobile.jpg',
-}
+FROZEN_PERFORMANCE = Path('editorial-assets/performance')
 
 FROZEN_VILLA = Path('editorial-assets/villa.jpg')
 FROZEN_VILLA_SHA256 = '920a2d479f869c385e47bbaf7cec73235da990c450283a75c0fb8d687de945dd'
@@ -34,7 +24,7 @@ APPROVED_HERO_MOBILE_SHA256 = '93e8146cff4a8cfe66ecb412be2fca12d07a2d4e37aab081b
 APPROVED_HERO_MOBILE_BYTES = 187_724
 
 # Verified against the pre-release public site; no re-encoding or fallback.
-APPROVED_REMOTE = {
+APPROVED_PERFORMANCE = {
     'hero.jpg': (APPROVED_HERO_BYTES, APPROVED_HERO_SHA256),
     'yacht.jpg': (439253, '3afc331cc9af5ec06dc51a51da8961ad37bdb1e96b879bdbc5c4c367e9754580'),
     'nightlife.jpg': (496646, '5f177be5068e0f9f15a407fdd622ea215dd289ec5a9ba120825f311bf6588233'),
@@ -84,15 +74,15 @@ print(
     f'(pinned {chauffeur_digest[:12]})'
 )
 
-for name, url in SOURCES.items():
+for name, expected in APPROVED_PERFORMANCE.items():
     target = IMG / name
     if not target.exists():
         raise SystemExit(f'Phase 101 expected existing image: {name}')
     before[name] = target.stat().st_size
-    req = Request(url, headers={'User-Agent': 'Mozilla/5.0 IbizaVIPMoveBuild/1.0'})
-    with urlopen(req, timeout=30) as response:
-        data = response.read()
-    expected = APPROVED_REMOTE[name]
+    frozen = FROZEN_PERFORMANCE / name
+    if not frozen.is_file():
+        raise SystemExit(f'Phase 101 frozen performance image missing: {name}')
+    data = frozen.read_bytes()
     digest = hashlib.sha256(data).hexdigest()
     if len(data) != expected[0] or digest != expected[1]:
         raise SystemExit(
