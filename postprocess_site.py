@@ -28,8 +28,8 @@ SEO = {
         'Luxury concierge in Ibiza for private chauffeur, villas, yachts, private aviation, nightlife, security and bespoke lifestyle support.'
     ),
     'services': (
-        'Luxury Concierge Services Ibiza | Ibiza VIP Move',
-        'Explore luxury concierge services in Ibiza including private chauffeur, villas, yachts, aviation, security, nightlife, staffing and wellness.'
+        'Ibiza Private Services | Ibiza VIP Move',
+        'Explore private services in Ibiza: chauffeurs, villas, yachts, dining, VIP tables, aviation, security and staffing. Choose a service or plan your stay.'
     ),
     'private-concierge-ibiza': (
         'Private Concierge Ibiza | Luxury Lifestyle Management | Ibiza VIP Move',
