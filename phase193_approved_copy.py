@@ -1,8 +1,8 @@
-"""Tightly scoped, owner-approved English SEO copy for three existing pages.
+"""Scoped English SEO and booking copy for four existing pages.
 
 Run after phase192 within phase178_enhance.py. Keep the branded design, H1,
-URLs, booking flows, existing FAQs and consent unchanged. Apply only the
-reviewed title/description values to the existing structured metadata.
+URLs, booking flows, existing FAQs and consent unchanged. Keep changed
+title/description values synchronized with the existing structured metadata.
 The Home introductory lead is set by HOME_NEW_LEAD in phase178_enhance.py.
 """
 from pathlib import Path
@@ -44,8 +44,36 @@ CONCIERGE_NEW_LEAD = ('<p>Private and VIP concierge services in Ibiza: chauffeur
                       'data-ivm180="vip-tables-link" href="/vip-tables-club-access-ibiza/">'
                       'VIP tables</a>, villas, yachts, security and staff through one local contact.</p>')
 
+STAFFING_ROUTE = 'private-chef-staffing-ibiza/index.html'
+STAFFING_URL = 'https://ibizavipmove.com/private-chef-staffing-ibiza/'
+STAFFING_DATE = '2026-11-04'
+STAFFING_OLD_PROCESS = (
+    '<section class="process"><div class="section-head"><div class="kicker dark">How it works</div>'
+    '<h2>Simple for you. Detailed behind the scenes.</h2></div><div class="process-grid">'
+    '<article><span>01</span><h3>Brief</h3><p>Share dates, guests, preferences and priorities.</p></article>'
+    '<article><span>02</span><h3>Clarify</h3><p>We confirm the operational details needed for the request.</p></article>'
+    '<article><span>03</span><h3>Confirm</h3><p>Availability, scope and applicable terms are agreed in writing.</p></article>'
+    '<article><span>04</span><h3>Coordinate</h3><p>The service is aligned with the confirmed Ibiza itinerary.</p></article>'
+    '</div></section>'
+)
+STAFFING_NEW_PROCESS = (
+    '<section class="process"><div class="section-head"><div class="kicker dark">How it works</div>'
+    '<h2>Plan your private chef and villa staff in Ibiza.</h2></div><div class="process-grid">'
+    '<article><span>01</span><h3>Share the brief</h3><p>Send your Ibiza dates, villa area, guest count, '
+    'required roles and daily hours. For a chef, include meals, dietary requirements and preferred service style.</p></article>'
+    '<article><span>02</span><h3>Clarify the setup</h3><p>We clarify duties, kitchen facilities and access '
+    'with the agreed villa contact. Tell us about preparation, service and clearing-up needs so the scope covers the full visit.</p></article>'
+    '<article><span>03</span><h3>Review the proposal</h3><p>Check staff fees, service hours and whether '
+    'groceries, shopping, additional staff and extra hours are included or charged separately. '
+    'Confirm payment and cancellation terms before accepting.</p></article>'
+    '<article><span>04</span><h3>Confirm the schedule</h3><p>Once availability and terms are confirmed, '
+    'we coordinate staff arrival, villa access and service times around the stay. '
+    'Share changes to guest numbers or timings early.</p></article></div></section>'
+)
+
 # Exact reviewed source phrases: never replace unknown sections or general keywords.
 CHANGES = {
+    STAFFING_ROUTE: ((STAFFING_OLD_PROCESS, STAFFING_NEW_PROCESS, 1),),
     'index.html': (
         (HOME_DMC_OLD, HOME_DMC_NEW, 1),
         (HOME_BRIEF_OLD, HOME_BRIEF_NEW, 1),
@@ -90,6 +118,7 @@ CHANGES = {
 }
 
 CANONICALS = {
+    STAFFING_ROUTE: (STAFFING_URL, '<h1>Private Chefs & Villa Staffing</h1>'),
     'index.html': ('https://ibizavipmove.com/',
                    '<h1>Luxury concierge in Ibiza,<br>handled privately.</h1>'),
     'vip-services-ibiza/index.html': (
@@ -187,7 +216,7 @@ def inspect(relative, before, after):
 
 
 def enhance(root=Path('_site')):
-    """Validate all three pages in memory before writing any; reruns are safe."""
+    """Validate all four pages and sitemap in memory before writing; reruns are safe."""
     pending = []
     for relative, changes in CHANGES.items():
         path = root / relative
@@ -204,9 +233,16 @@ def enhance(root=Path('_site')):
                 require(False, relative + ': unknown or duplicated source copy')
         inspect(relative, before, after)
         pending.append((path, before, after))
+    sitemap_path = root / 'sitemap.xml'
+    sitemap = sitemap_path.read_text(encoding='utf-8')
+    pattern = rf'(<url>\s*<loc>{re.escape(STAFFING_URL)}</loc>\s*<lastmod>)[^<]+(</lastmod>)'
+    sitemap, count = re.subn(pattern, lambda m: m.group(1) + STAFFING_DATE + m.group(2), sitemap)
+    require(count == 1, 'Staffing: expected one existing sitemap entry')
     for path, before, after in pending:
         if before != after:
             path.write_text(after, encoding='utf-8')
+    if sitemap != sitemap_path.read_text(encoding='utf-8'):
+        sitemap_path.write_text(sitemap, encoding='utf-8')
     print('PASS: Phase 193 — reviewed English copy and metadata; design, FAQs, links and contacts preserved')
 
 
