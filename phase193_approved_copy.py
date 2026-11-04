@@ -1,4 +1,4 @@
-"""Scoped English SEO and booking copy for four existing pages.
+"""Scoped English SEO and booking copy for five existing pages.
 
 Run after phase192 within phase178_enhance.py. Keep the branded design, H1,
 URLs, booking flows, existing FAQs and consent unchanged. Keep changed
@@ -6,6 +6,7 @@ title/description values synchronized with the existing structured metadata.
 The Home introductory lead is set by HOME_NEW_LEAD in phase178_enhance.py.
 """
 from pathlib import Path
+from html import escape
 from html.parser import HTMLParser
 import json
 import re
@@ -44,6 +45,16 @@ CONCIERGE_NEW_LEAD = ('<p>Private and VIP concierge services in Ibiza: chauffeur
                       'data-ivm180="vip-tables-link" href="/vip-tables-club-access-ibiza/">'
                       'VIP tables</a>, villas, yachts, security and staff through one local contact.</p>')
 
+OFFICE_ROUTE = 'private-office/index.html'
+OFFICE_URL = 'https://ibizavipmove.com/private-office/'
+OFFICE_DATE = '2026-11-04'
+OFFICE_OLD_TITLE = 'Ibiza Concierge for Family Offices & Personal Assistants | Ibiza VIP Move'
+OFFICE_NEW_TITLE = 'Ibiza Concierge for PAs & Family Offices | Ibiza VIP Move'
+OFFICE_OLD_SUMMARY = ('Ibiza concierge support for family offices, personal assistants, principals '
+                      'and private teams coordinating complex stays, transport, villas, yachts, aviation and security.')
+OFFICE_NEW_SUMMARY = ('Ibiza concierge for personal assistants and family offices. Coordinate chauffeurs, '
+                      'villas, yachts, VIP tables and security through one discreet local contact.')
+
 STAFFING_ROUTE = 'private-chef-staffing-ibiza/index.html'
 STAFFING_URL = 'https://ibizavipmove.com/private-chef-staffing-ibiza/'
 STAFFING_DATE = '2026-11-04'
@@ -73,6 +84,11 @@ STAFFING_NEW_PROCESS = (
 
 # Exact reviewed source phrases: never replace unknown sections or general keywords.
 CHANGES = {
+    OFFICE_ROUTE: (
+        (OFFICE_OLD_TITLE, OFFICE_NEW_TITLE, 3),
+        (escape(OFFICE_OLD_TITLE), escape(OFFICE_NEW_TITLE), 2),
+        (OFFICE_OLD_SUMMARY, OFFICE_NEW_SUMMARY, 5),
+    ),
     STAFFING_ROUTE: ((STAFFING_OLD_PROCESS, STAFFING_NEW_PROCESS, 1),),
     'index.html': (
         (HOME_DMC_OLD, HOME_DMC_NEW, 1),
@@ -118,6 +134,7 @@ CHANGES = {
 }
 
 CANONICALS = {
+    OFFICE_ROUTE: (OFFICE_URL, '<h1>Ibiza concierge support for family offices and personal assistants.</h1>'),
     STAFFING_ROUTE: (STAFFING_URL, '<h1>Private Chefs & Villa Staffing</h1>'),
     'index.html': ('https://ibizavipmove.com/',
                    '<h1>Luxury concierge in Ibiza,<br>handled privately.</h1>'),
@@ -190,6 +207,22 @@ def inspect(relative, before, after):
                 'Concierge: introductory service copy missing or duplicated')
         for payload in re.findall(r'<script\s+type="application/ld\+json">(.*?)</script>', after, re.S):
             json.loads(payload)
+    elif relative == OFFICE_ROUTE:
+        require(after.count(OFFICE_NEW_TITLE) == 3 and after.count(escape(OFFICE_NEW_TITLE)) == 2,
+                'Private Office: title copies not synchronized')
+        require(after.count(OFFICE_NEW_SUMMARY) == 5,
+                'Private Office: descriptions not synchronized')
+        def original_head(html):
+            head = html.split('</head>', 1)[0]
+            for old, new, occurrences in CHANGES[OFFICE_ROUTE]:
+                head = head.replace(new, old)
+            return head
+        require(original_head(before) == original_head(after),
+                'Private Office: other SEO head changes')
+        require(before.split('</head>', 1)[1] == after.split('</head>', 1)[1],
+                'Private Office: body changed')
+        for payload in re.findall(r'<script\s+type="application/ld\+json">(.*?)</script>', after, re.S):
+            json.loads(payload)
     elif relative != 'vip-services-ibiza/index.html':
         require(before.split('</head>', 1)[0] == after.split('</head>', 1)[0],
                 relative + ': unexpected SEO head drift')
@@ -216,7 +249,7 @@ def inspect(relative, before, after):
 
 
 def enhance(root=Path('_site')):
-    """Validate all four pages and sitemap in memory before writing; reruns are safe."""
+    """Validate all five pages and sitemap in memory before writing; reruns are safe."""
     pending = []
     for relative, changes in CHANGES.items():
         path = root / relative
@@ -235,9 +268,10 @@ def enhance(root=Path('_site')):
         pending.append((path, before, after))
     sitemap_path = root / 'sitemap.xml'
     sitemap = sitemap_path.read_text(encoding='utf-8')
-    pattern = rf'(<url>\s*<loc>{re.escape(STAFFING_URL)}</loc>\s*<lastmod>)[^<]+(</lastmod>)'
-    sitemap, count = re.subn(pattern, lambda m: m.group(1) + STAFFING_DATE + m.group(2), sitemap)
-    require(count == 1, 'Staffing: expected one existing sitemap entry')
+    for url, updated in ((STAFFING_URL, STAFFING_DATE), (OFFICE_URL, OFFICE_DATE)):
+        pattern = rf'(<url>\s*<loc>{re.escape(url)}</loc>\s*<lastmod>)[^<]+(</lastmod>)'
+        sitemap, count = re.subn(pattern, lambda m: m.group(1) + updated + m.group(2), sitemap)
+        require(count == 1, 'expected one existing sitemap entry: ' + url)
     for path, before, after in pending:
         if before != after:
             path.write_text(after, encoding='utf-8')
