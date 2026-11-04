@@ -9,7 +9,7 @@ from phase179_enhance import BRIEF, CANONICAL, CONTACT, MESSAGE, WA_HREF
 ROOT = Path('_site')
 PAGE = ROOT / 'private-office' / 'index.html'
 NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
-EXPECTED_TITLE = 'Ibiza Concierge for Family Offices & Personal Assistants | Ibiza VIP Move'
+EXPECTED_TITLE = 'Ibiza Concierge for PAs & Family Offices | Ibiza VIP Move'
 EXPECTED_H1 = 'Ibiza concierge support for family offices and personal assistants.'
 
 
@@ -92,8 +92,8 @@ def run() -> None:
         if loc:
             values[loc.rstrip('/') + '/'] = node.findtext(f'{{{NS}}}lastmod')
     require(len(values) == 157, f'sitemap inventory drift: {len(values)}')
-    # The approved English FAQ publication is the latest substantive page edit.
-    require(values.get(CANONICAL) == '2026-10-31', 'Private Office lastmod is not the verified change date')
+    # English search copy was updated after the existing FAQ publication.
+    require(values.get(CANONICAL) == '2026-11-04', 'Private Office lastmod is not the verified change date')
 
     print('PASS: Phase 179 audit — English Private Office handoff, privacy guidance, Contact route, localized isolation and truthful lastmod')
 
