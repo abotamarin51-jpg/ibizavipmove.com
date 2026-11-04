@@ -61,10 +61,10 @@ def review_home_vip_link(page, origin, mode, width, height, output):
     maps_state = review_google_maps_link(page, mode, 'home')
     page.evaluate('document.fonts.ready')
     assert page.evaluate("document.fonts.check('16px Manrope')"), 'Home font did not load'
-    link = page.locator('a[href="/vip-services-ibiza/"]').filter(has_text='VIP hospitality requests')
+    link = page.locator('a[href="/vip-services-ibiza/"]').filter(has_text='VIP services in Ibiza')
     assert link.count() == 1, 'Expected exactly one Home VIP hospitality link'
-    assert link.inner_text() == 'VIP hospitality requests'
-    assert link.locator('..').inner_text() == 'We coordinate chauffeur transport, villas, yachts, aviation, VIP hospitality requests and security around each stay.'
+    assert link.inner_text() == 'VIP services in Ibiza'
+    assert link.locator('..').inner_text() == 'We coordinate chauffeur transport, villas, yachts, aviation, VIP services in Ibiza and security around each stay.'
     assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com/'
     # Avoid sampling geometry midway through the site's normal smooth scrolling.
     link.evaluate('e => e.scrollIntoView({block: "center", behavior: "instant"})')
