@@ -28,6 +28,7 @@ on:
       - "luxury-overrides.css"
       - "premium.js"
       - "tests/phone-activation.cjs"
+      - "tests/pinned_performance_images_check.py"
       - "tests/phase174_browser_check.py"
       - "tests/contact_handoff_visual.py"
       - "tests/destination_snippet_visual.py"
@@ -53,6 +54,8 @@ jobs:
         run: |
           node --check premium.js
           node tests/phone-activation.cjs premium.js
+      - name: Test frozen performance images without network access
+        run: python3 tests/pinned_performance_images_check.py
       - name: Build and validate website without deploying
         run: |
           bash build_site.sh
