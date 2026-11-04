@@ -6,8 +6,8 @@ ROOT = Path('_site')
 PAGE = ROOT / 'services' / 'index.html'
 SITEMAP = ROOT / 'sitemap.xml'
 URL = 'https://ibizavipmove.com/services/'
-EXPECTED_H1_TEXT = 'Luxury concierge services in Ibiza, connected through one trusted contact.'
-EXPECTED_TITLE = 'Luxury Concierge Services Ibiza | Ibiza VIP Move'
+EXPECTED_H1_TEXT = 'Private services in Ibiza, connected through one trusted contact.'
+EXPECTED_TITLE = 'Ibiza Private Services | Ibiza VIP Move'
 REQUIRED_LINKS = (
     '/personal-concierge-ibiza/',
     '/luxury-travel-concierge-ibiza/',
@@ -33,8 +33,8 @@ m = re.search(r'<title>(.*?)</title>', html, re.I | re.S)
 if not m or re.sub(r'\s+', ' ', m.group(1)).strip() != EXPECTED_TITLE:
     raise SystemExit('Phase 132 audit title drift')
 
-if not re.search(r'<meta\s+name=["\']description["\'][^>]+content=["\'][^"\']*luxury concierge services in Ibiza', html, re.I):
-    raise SystemExit('Phase 132 audit meta description no longer states luxury concierge services in Ibiza')
+if not re.search(r'<meta\s+name=["\']description["\'][^>]+content=["\'][^"\']*private services in Ibiza', html, re.I):
+    raise SystemExit('Phase 132 audit meta description no longer states private services in Ibiza')
 if html.count(f'<link rel="canonical" href="{URL}">') != 1:
     raise SystemExit('Phase 132 audit self-canonical drift')
 if re.search(r'<meta\s+name=["\']robots["\'][^>]+noindex', html, re.I):
@@ -52,4 +52,4 @@ if xml.count(f'<loc>{URL}</loc>') != 1:
 if xml.count('<loc>') != 156:
     raise SystemExit(f'Phase 132 audit sitemap inventory drift: {xml.count("<loc>")}')
 
-print('PASS: Phase 132 audit — /services/ has one descriptive Ibiza concierge H1, preserved metadata/canonical/indexability, all six service-model links, and the unchanged 156-URL sitemap')
+print('PASS: Phase 132 audit — distinct private-services catalogue title/H1, self-canonical/indexability, all six service-model links and the unchanged 156-URL sitemap inventory')

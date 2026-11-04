@@ -1,17 +1,18 @@
-"""Clarify the English services hub H1 around its actual Ibiza concierge intent.
+"""Identify the English service catalogue separately from full-stay concierge.
 
-Verified Search Console performance shows /services/ receiving impressions for
-concierge/VIP-service queries while the existing title and description are
-explicit but the visible H1 is purely editorial. This phase keeps the same URL,
-title, metadata, schema, navigation and service inventory and replaces only the
-H1 with a descriptive people-first heading that states the service and place.
+The catalogue title and description are set in postprocess_site.py. Match its
+visible heading to that role and update only its existing sitemap date. Keep
+the service inventory, navigation, imagery and contact routes unchanged.
 """
 from pathlib import Path
+import re
 
 ROOT = Path('_site')
 PAGE = ROOT / 'services' / 'index.html'
+SITEMAP = ROOT / 'sitemap.xml'
+UPDATED = '2026-11-04'
 OLD = '<h1>One private ecosystem.<br>Every moving part connected.</h1>'
-NEW = '<h1>Luxury concierge services in Ibiza,<br>connected through one trusted contact.</h1>'
+NEW = '<h1>Private services in Ibiza,<br>connected through one trusted contact.</h1>'
 
 
 def enhance():
@@ -19,18 +20,23 @@ def enhance():
         raise SystemExit('Phase 132 services page missing')
     html = PAGE.read_text(encoding='utf-8')
 
-    # Idempotent already-enhanced state.
     if NEW in html and OLD not in html:
         if html.count(NEW) != 1:
             raise SystemExit(f'Phase 132 enhanced H1 cardinality drift: {html.count(NEW)}')
-        print('PASS: Phase 132 services H1 already aligned')
-        return
-
-    if html.count(OLD) != 1:
+    elif html.count(OLD) == 1 and NEW not in html:
+        html = html.replace(OLD, NEW, 1)
+    else:
         raise SystemExit(f'Phase 132 expected one original services H1: {html.count(OLD)}')
-    html = html.replace(OLD, NEW, 1)
+
+    sitemap = SITEMAP.read_text(encoding='utf-8')
+    pattern = r'(<url>\s*<loc>https://ibizavipmove\.com/services/</loc>\s*<lastmod>)[^<]+(</lastmod>)'
+    sitemap, count = re.subn(pattern, lambda m: m.group(1) + UPDATED + m.group(2), sitemap)
+    if count != 1:
+        raise SystemExit('Phase 132 expected one existing Services sitemap entry')
+
     PAGE.write_text(html, encoding='utf-8')
-    print('PASS: Phase 132 clarified /services/ H1 without changing URL, metadata or service scope')
+    SITEMAP.write_text(sitemap, encoding='utf-8')
+    print('PASS: Phase 132 — private-services catalogue heading and matching sitemap freshness')
 
 
 if __name__ == '__main__':
