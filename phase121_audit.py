@@ -12,7 +12,7 @@ VERIFIED = {
     '/fr/clients-internationaux/': '2026-09-12', '/de/internationale-kunden/': '2026-09-12',
     '/ar/international-clients/': '2026-09-12',
     '/private-office/': '2026-10-21',
-    '/fr/private-office/': '2026-09-12', '/de/private-office/': '2026-09-12', '/ar/private-office/': '2026-09-12',
+    '/fr/private-office/': '2026-11-04', '/de/private-office/': '2026-09-12', '/ar/private-office/': '2026-09-12',
     '/destination-management-ibiza/': '2026-10-23',
 }
 
