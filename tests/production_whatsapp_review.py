@@ -12,6 +12,7 @@ import json
 import os
 from pathlib import Path
 import shutil
+import time
 from datetime import datetime
 from urllib.parse import urlsplit
 from zoneinfo import ZoneInfo
@@ -115,6 +116,18 @@ def navigation_link(page, target: str):
     return sorted(candidates, key=lambda item: item[0], reverse=True)[0][1]
 
 
+def finish_started_images(page, pending: set) -> None:
+    """Finish allowed image requests before a navigation can cancel them.
+
+    Request failures are still recorded by the normal error handler. A stalled
+    image also fails this bounded wait; no network error is filtered out.
+    """
+    deadline = time.monotonic() + 30
+    while pending:
+        assert time.monotonic() < deadline, 'Image requests did not finish before navigation: ' + ', '.join(sorted(req.url for req in pending))
+        page.wait_for_timeout(50)
+
+
 def run_review(output: Path, inline_crops: bool, candidate_css: Path | None = None, baseline_css: Path | None = None) -> dict:
     from playwright.sync_api import sync_playwright
     replacement = None
@@ -173,6 +186,11 @@ def run_review(output: Path, inline_crops: bool, candidate_css: Path | None = No
                     context.route_web_socket('**/*',lambda ws: ws.close())
                     page = context.new_page()
                     page.set_default_timeout(7000)
+                    pending_images = set()
+                    page.on('request', lambda req: pending_images.add(req)
+                        if req.resource_type == 'image' and allowed_request(req.url,req.method,req.resource_type) else None)
+                    page.on('requestfinished', pending_images.discard)
+                    page.on('requestfailed', pending_images.discard)
                     page.on('pageerror', lambda error: result['javascriptErrors'].append(str(error)))
                     page.on('requestfailed', lambda req: result['networkErrors'].append({'url':req.url,'failure':req.failure})
                         if allowed_request(req.url,req.method,req.resource_type) else None)
@@ -196,6 +214,12 @@ def run_review(output: Path, inline_crops: bool, candidate_css: Path | None = No
                         for index,path in enumerate(PAGES):
                             if index:
                                 link=navigation_link(page,path)
+                                link.scroll_into_view_if_needed()
+                                page.wait_for_function('''() => [...document.images].filter(img => {
+                                  const r=img.getBoundingClientRect();
+                                  return r.width>0 && r.height>0 && r.bottom>0 && r.top<innerHeight && r.right>0 && r.left<innerWidth;
+                                }).every(img=>img.complete && img.naturalWidth>0)''', timeout=30000)
+                                finish_started_images(page, pending_images)
                                 with page.expect_navigation(wait_until='load',timeout=30000) as nav:
                                     link.click()
                                 response=nav.value
@@ -266,6 +290,7 @@ def run_review(output: Path, inline_crops: bool, candidate_css: Path | None = No
                                     print('IVM_CTA_CROP '+mode+' '+base64.b64encode(image).decode('ascii'),flush=True)
                             result['pages'].append(data)
                             print('PRODUCTION_PAGE_REVIEW '+json.dumps({'mode':mode,**data}),flush=True)
+                        finish_started_images(page, pending_images)
                         assert not result['httpErrors'] and not result['networkErrors'] and not result['javascriptErrors'], 'See resource/JavaScript errors in report'
                         script=result['assets'].get('/assets/premium.js')
                         assert script and script['status']==200 and script['iconMarkerPresent'] and script['floatingMarkerPresent'], 'Production premium.js markers missing'

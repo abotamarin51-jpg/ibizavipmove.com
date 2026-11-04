@@ -44,8 +44,12 @@ jobs:
         env:
           BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
-          git show "$BASE_SHA:phase32.css" > "$RUNNER_TEMP/phase32-baseline.css"
-          "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --candidate-css phase32.css --baseline-css "$RUNNER_TEMP/phase32-baseline.css" --inline-crops --output "$RUNNER_TEMP/ivm-production-contact-review"
+          if git diff --quiet "$BASE_SHA" HEAD -- phase32.css; then
+            "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --inline-crops --output "$RUNNER_TEMP/ivm-production-contact-review"
+          else
+            git show "$BASE_SHA:phase32.css" > "$RUNNER_TEMP/phase32-baseline.css"
+            "$RUNNER_TEMP/ivm-production-review-tools/bin/python" tests/production_whatsapp_review.py --candidate-css phase32.css --baseline-css "$RUNNER_TEMP/phase32-baseline.css" --inline-crops --output "$RUNNER_TEMP/ivm-production-contact-review"
+          fi
       - name: Verify unmodified production after deployment
         if: github.event_name == 'workflow_dispatch' || github.event_name == 'workflow_run'
         run: |
