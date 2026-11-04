@@ -1,0 +1,104 @@
+{
+  "version": 1,
+  "captured_on": "2026-11-04",
+  "source": "Owner-supplied Ibiza_VIP_Move_Borrador_Experiencias (4).html; original photos preserved; resized and encoded for card delivery.",
+  "assets": {
+    "experience-villa-480.webp": {
+      "bytes": 51146,
+      "sha256": "6ea72b8d00401226d05dab09223c520902458b2cd4da7dfdb14b512c18cf8dbb",
+      "width": 480,
+      "height": 360,
+      "format": "WEBP"
+    },
+    "experience-villa-480.jpg": {
+      "bytes": 55469,
+      "sha256": "cc3bcd671fd54964af7dd3af1babc4dfdbf2b8ea9ac60a116062f44ee7f95be4",
+      "width": 480,
+      "height": 360,
+      "format": "JPEG"
+    },
+    "experience-villa-960.webp": {
+      "bytes": 187144,
+      "sha256": "fb81d33180b6ef18b68f15e13611ea82ae6db50141f337d2de4fca2d964a26a0",
+      "width": 960,
+      "height": 719,
+      "format": "WEBP"
+    },
+    "experience-villa-960.jpg": {
+      "bytes": 208057,
+      "sha256": "db2b6f39968af2a30d992c1c8942d9f15172840322a2102b906e5897ce65f6ae",
+      "width": 960,
+      "height": 719,
+      "format": "JPEG"
+    },
+    "experience-yacht-480.webp": {
+      "bytes": 17488,
+      "sha256": "d6d1ac0f421ab78829849bbf49670a55b1e0d4e9da6f5c55795e3927abcd9500",
+      "width": 480,
+      "height": 320,
+      "format": "WEBP"
+    },
+    "experience-yacht-480.jpg": {
+      "bytes": 25631,
+      "sha256": "2e149e132ea3f10448f5329f45119f3fc19ebaedfcf67ed7beb506ca623be05f",
+      "width": 480,
+      "height": 320,
+      "format": "JPEG"
+    },
+    "experience-yacht-960.webp": {
+      "bytes": 62332,
+      "sha256": "a92a2430c2f40a9dcff83acb520b2437c6d177c59607e2acc4bdbd338f9067d5",
+      "width": 960,
+      "height": 640,
+      "format": "WEBP"
+    },
+    "experience-yacht-960.jpg": {
+      "bytes": 92203,
+      "sha256": "a7a5db680ff4d8969e6bd8999d3bf9deb7a7fab34d06494599e5c4c7bca6d793",
+      "width": 960,
+      "height": 640,
+      "format": "JPEG"
+    },
+    "experience-nightlife-480.webp": {
+      "bytes": 36222,
+      "sha256": "f4fc00437b8cb0052119443165a8eee18b245bc0dc7145d81c92aba86e6c2e9f",
+      "width": 480,
+      "height": 320,
+      "format": "WEBP"
+    },
+    "experience-nightlife-480.jpg": {
+      "bytes": 44592,
+      "sha256": "60cbfefb3aae1fddfd7f5507d791325b628110a7c4db907cb06f4cfc8a4406e5",
+      "width": 480,
+      "height": 320,
+      "format": "JPEG"
+    },
+    "experience-nightlife-960.webp": {
+      "bytes": 93324,
+      "sha256": "1b3d536451c3b199c98cc9153a369278d7e94c9253276a0af4ecab8268f97176",
+      "width": 960,
+      "height": 641,
+      "format": "WEBP"
+    },
+    "experience-nightlife-960.jpg": {
+      "bytes": 129852,
+      "sha256": "2832ca509ca8879f6f3c0d2de77aa83681758cea1ef80fa512225f51836852c4",
+      "width": 960,
+      "height": 641,
+      "format": "JPEG"
+    }
+  },
+  "provenance": {
+    "villa": {
+      "source_url": "https://www.tasteibiza.com/villa/luxiry-villa-rentals-ibza-villa-lucy/",
+      "description": "Villa Lucy reference photograph supplied by the owner in the approved visual draft; no specific property availability is represented."
+    },
+    "yacht": {
+      "description": "The yacht photograph supplied in the approved visual draft, matching the existing editorial direction."
+    },
+    "nightlife": {
+      "source_url": "https://www.ibiza-spotlight.it/night/promoters/vintage-lio",
+      "description": "Original Lío Ibiza photograph supplied by the owner; explicitly retained at the owner’s request. No AI replacement, removal of branding or image retouching."
+    }
+  }
+}

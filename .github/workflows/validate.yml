@@ -33,6 +33,7 @@ on:
       - "tests/frozen_image_inputs_check.py"
       - "tests/phase174_browser_check.py"
       - "tests/contact_handoff_visual.py"
+      - "tests/home_experiences_visual.py"
       - "tests/destination_snippet_visual.py"
       - "tests/club_guides_visual.py"
       - "brand-logo.jpg"
@@ -167,6 +168,7 @@ jobs:
           python3 phase67_final_audit.py
           python3 phase190_club_guides.py
           python3 phase190_audit.py
+          python3 phase194_home_experiences.py
           python3 phase67_final_audit.py
           python3 phase174_whatsapp_access.py
       - name: Test generated contact activation without network calls

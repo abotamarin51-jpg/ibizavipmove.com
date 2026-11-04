@@ -23,3 +23,10 @@ The selected photographs below were surfaced as free-to-use under the Unsplash o
 The target is discreet private-office luxury rather than conspicuous luxury: Mediterranean architecture, real mobility, private aviation, yachts, dining, privacy and execution. Avoid supercar/champagne clichés, posed stock models and imagery that makes the brand feel like a nightclub promoter.
 
 These editorial images are intentionally treated as a premium interim visual layer. The long-term highest-standard direction is to replace the hero, chauffeur and selected service imagery with original Ibiza VIP Move photography produced on location in Ibiza while retaining the same composition and image-SEO structure.
+
+
+## Owner-approved Home experiences - 4 November 2026
+
+The Home cards use the three original photographs supplied in `Ibiza_VIP_Move_Borrador_Experiencias (4).html`: Villa Lucy (Taste Ibiza reference), the supplied editorial yacht, and the original Lío Ibiza image (Ibiza Spotlight reference). The owner explicitly requested keeping that nightlife photograph, superseding the generated alternative. No generated image is used in this release. These illustrate possible requests and do not demonstrate availability, affiliation or completed bookings.
+
+Optimized 480px/960px JPEG and WebP files are stored under `editorial-assets/home-experiences/`; their original source references, dimensions, byte sizes and SHA-256 values are recorded in `manifest.json`. They are encoded from the supplied photos without retouching or removing logos. The build verifies and copies local bytes; it makes no image-provider request.
