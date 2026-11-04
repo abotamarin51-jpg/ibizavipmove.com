@@ -145,7 +145,7 @@ def validate_home_vip(home: bytes, target: bytes, require_link: bool) -> dict:
         raise ValueError('Unexpected Home/VIP canonical')
     if h.headings != 1 or t.headings != 1:
         raise ValueError('Unexpected Home/VIP H1 count')
-    matches = h.links.count(('/vip-services-ibiza/', 'VIP hospitality requests'))
+    matches = h.links.count(('/vip-services-ibiza/', 'VIP services in Ibiza'))
     if matches > 1 or (require_link and matches != 1):
         raise ValueError('Published Home VIP link missing or duplicated')
     hrefs = [href for href, _ in t.links]
@@ -161,7 +161,7 @@ def validate_home_vip(home: bytes, target: bytes, require_link: bool) -> dict:
 
 def home_vip_self_test():
     home = (f'<link rel="canonical" href="{ORIGIN}/"><h1>Home</h1>'
-            '<a href="/vip-services-ibiza/">VIP hospitality requests</a>').encode()
+            '<a href="/vip-services-ibiza/">VIP services in Ibiza</a>').encode()
     target = (f'<link rel="canonical" href="{ORIGIN}/vip-services-ibiza/"><h1>VIP</h1>'
               '<a href="/contact/?service=vip-services">Brief</a>'
               + '<a href="/contact/?service=vip-services">Brief</a>'
