@@ -21,6 +21,8 @@ BASE = 'https://ibizavipmove.com'
 HUB = '/vip-tables-club-access-ibiza/'
 ACCESS = '/restaurants-nightlife-ibiza/'
 DATE = '2026-10-31'
+ACCESS_LINK_DATE = '2026-11-04'
+EXTRA_VENUES = (('[UNVRS]', 'UNVRS', 'unvrs-vip-tables'), ('Amnesia', 'Amnesia', 'amnesia-vip-tables'))
 IMAGE = '/assets/images/vip-tables-social.jpg'
 IMAGE_ALT = 'Illustrative editorial photograph for private concierge planning'
 SM = 'http://www.sitemaps.org/schemas/sitemap/0.9'
@@ -228,6 +230,14 @@ def update_discovery() -> None:
         new = f'<td><a class="text-link" data-ivm190="venue-link" href="{route(club)}">{escape(club["name"])}</a></td>'
         require(html.count(old) + html.count(new) == 1, 'venue table insertion point changed: ' + club['name'])
         html = html.replace(old, new, 1)
+    # The two existing venue entries are reached directly from Access. Keep
+    # their copy and the general guide's editorial date unchanged.
+    for venue, label, fragment in EXTRA_VENUES:
+        old = f'<tr><td>{escape(venue)}</td>'
+        new = f'<tr id="{fragment}" style="scroll-margin-top:110px"><td>{escape(venue)}</td>'
+        require(html.count(old) + html.count(new) == 1, 'existing venue entry changed: ' + venue)
+        html = html.replace(old, new, 1)
+        require(html.count(f'id="{fragment}"') == 1, 'duplicate venue target: ' + venue)
     # The hub's visible and structured freshness follow the new venue links.
     html = html.replace('Last updated: 21 October 2026', 'Last updated: 31 October 2026')
     html = html.replace('"dateModified":"2026-10-21"', f'"dateModified":"{DATE}"')
@@ -235,12 +245,18 @@ def update_discovery() -> None:
     target = page(ACCESS)
     html = target.read_text(encoding='utf-8')
     marker = 'data-ivm190="venue-guides"'
+    links = ', '.join(f'<a class="text-link" href="{route(club)}">{escape(club["name"])}</a>' for club in CLUBS)
+    extra = [f'<a class="text-link" href="{HUB}#{fragment}">{label}</a>' for venue, label, fragment in EXTRA_VENUES]
+    old_guides = f'<p {marker}>Planning a specific night? Explore our table and arrival guides for {links}.</p>'
+    new_guides = f'<p {marker}>Planning a specific night? Explore our table and arrival guides for {links}, {extra[0]} and {extra[1]}.</p>'
     if marker not in html:
         anchor = '<a class="text-link" data-ivm180="vip-tables-link" href="/vip-tables-club-access-ibiza/">VIP Tables &amp; Club Access Ibiza</a>.</p>'
         require(html.count(anchor) == 1, 'nightlife insertion point changed')
-        links = ', '.join(f'<a class="text-link" href="{route(club)}">{escape(club["name"])}</a>' for club in CLUBS)
-        html = html.replace(anchor, anchor + f'<p {marker}>Planning a specific night? Explore our table and arrival guides for {links}.</p>', 1)
-        target.write_text(html, encoding='utf-8')
+        html = html.replace(anchor, anchor + new_guides, 1)
+    else:
+        require(html.count(old_guides) + html.count(new_guides) == 1, 'existing venue-guide paragraph changed')
+        html = html.replace(old_guides, new_guides, 1)
+    target.write_text(html, encoding='utf-8')
 
     ET.register_namespace('', SM)
     ET.register_namespace('image', IM)
@@ -259,7 +275,7 @@ def update_discovery() -> None:
         lastmod = node.find(f'{{{SM}}}lastmod')
         if lastmod is None:
             lastmod = ET.SubElement(node, f'{{{SM}}}lastmod')
-        lastmod.text = DATE
+        lastmod.text = ACCESS_LINK_DATE if path == ACCESS else DATE
     sitemap.write(ROOT / 'sitemap.xml', encoding='utf-8', xml_declaration=True)
     image_sitemap = ET.parse(ROOT / 'image-sitemap.xml')
     root = image_sitemap.getroot()
