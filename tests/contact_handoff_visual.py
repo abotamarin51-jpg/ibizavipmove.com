@@ -13,6 +13,7 @@ from playwright.sync_api import sync_playwright
 from private_office_handoff_check import review as review_private_office
 from private_office_handoff_check import self_test as self_test_private_office
 from vip_tables_visual import review as review_vip_tables
+from home_experiences_visual import review_home_experiences
 
 LABEL = 'Continue to WhatsApp'
 HELPER = 'Opens WhatsApp with your details. Review the message and press Send there.'
@@ -459,6 +460,10 @@ def main():
                         )
                         assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         print(f'PASS: Home first-brief copy, layout and contact hit targets: {mode}')
+                        report.setdefault('homeExperiences', []).append(
+                            review_home_experiences(page, origin, mode, width, height, output)
+                        )
+                        assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         report.setdefault('homeDMC', []).append(
                             review_home_dmc_link(page, origin, mode, width, height, output)
                         )

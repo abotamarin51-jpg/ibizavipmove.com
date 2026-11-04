@@ -405,3 +405,22 @@ The owner asked to continue website SEO while leaving Google Business Profile as
 One customer-facing change: the existing Home anchor label becomes "VIP services in Ibiza" instead of "VIP hospitality requests". Its canonical destination, surrounding sentence, layout, styles, approved contact routes, page titles, metadata, language alternatives, tracking and sitemap remain. The existing browser and production checks are updated only for this literal label; accessibility, focus, destination, contact and asset checks are preserved. No new test suite or conversion/ranking claim.
 
 PR #179 remains a separate villa-description candidate; its source files do not overlap this label change except this append-only worklog. Require current-source validation and the existing desktop/mobile CI checks, review of the generated scope and a fresh main/PR/deployment check before merging; verify Pages and served HTML before reporting publication. At preparation this change is not published. No Maps, messages or indexing submissions.
+
+
+## 4 November 2026 - owner-approved Home experiences integration
+
+The owner approved integrating the supplied `Ibiza_VIP_Move_Borrador_Experiencias (4).html` into the existing Ibiza VIP Move website. Their later instruction explicitly keeps the original supplied nightlife photograph; the generated replacement was rejected and is not used or committed.
+
+The English Home gains the reviewed villa, yacht-day and nightlife cards, the more explicit concierge hero copy, and a short pathway to the existing anonymized weekend case. The six original Move/Stay/Sea/Access/Fly/Protect links remain visible, alongside the existing Private Office, Black Book, Bespoke, commercial/authority pathways and contact routes. The three enquiry actions use the existing editable Contact service selections; no new form, JavaScript, tracking or submission endpoint is introduced.
+
+The 12 480px/960px WebP/JPEG card assets are optimized from the three supplied photos, locally pinned with byte sizes and checksums. All retain their content and source references. Home alone receives a separate content-hashed CSS bundle; existing stylesheets and all other HTML remain unchanged. Only Home's sitemap lastmod and its image-sitemap entry change. No new canonical URL or translated page is added.
+
+Local integration against the last reviewed production artifact passed the structural/contact/indexability checks and an idempotent rerun. Output comparison found exactly Home, sitemap.xml and image-sitemap.xml changed, with 12 new card image variants and one Home-only CSS bundle; all other 159 HTML files were byte-identical. Full source build and exact-head desktop/mobile browser CI are required before publication. Screenshots and diagnostics stay in workflow artifacts, outside the published website. This record describes preparation, not a measured conversion or ranking improvement.
+
+
+Validation checkpoint: the complete local source build passed, followed by the 160-page final SEO/GEO audit and the Home integration audit. A second enhancement run produced identical bytes. The scoped output difference remained exactly Home, its sitemap freshness, its three image-sitemap additions, 12 optimized image variants and one new Home-only CSS bundle; other HTML and contact scripts remained unchanged. Desktop/mobile browser tests are implemented but not yet executed for this candidate.
+
+Publication checkpoint: automatic approval review rejected the GitHub push because it did not consider permission to publish the code and image payload explicit. No alternative upload route was attempted. The candidate remains on the local `feat/home-experiences-20261104` branch; exact-head CI and publication are pending explicit owner authorization. A standalone visual review copy was prepared with the original nightlife image, embedded assets and scripts removed; it is a review artifact, not production source.
+
+
+Owner authorization continuation: the owner explicitly asked to put this version online, after first checking that everything is correct. This authorizes uploading the prepared code, original supplied photographs and tests to the existing public Ibiza VIP Move repository, running exact-head browser CI, and publication only after the required checks and visual review pass. The rejected alternative nightlife image remains excluded.
