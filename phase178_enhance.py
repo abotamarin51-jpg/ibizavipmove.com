@@ -17,6 +17,7 @@ from phase191_approved_english_faqs import enhance as enhance_approved_english_f
 from phase192_booking_clarity import enhance as enhance_booking_clarity
 from phase193_approved_copy import enhance as enhance_seo_copy
 from phase195_yacht_fr_brief import enhance as enhance_french_yacht_brief
+from phase196_yacht_en_brief import enhance as enhance_english_yacht_brief
 
 
 # One Home-only editorial refinement. Preserve SEO metadata, headings, layout and contact routes.
@@ -205,3 +206,4 @@ if __name__ == '__main__':
     enhance_booking_clarity()
     enhance_seo_copy()
     enhance_french_yacht_brief()
+    enhance_english_yacht_brief()
