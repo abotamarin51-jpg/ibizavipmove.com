@@ -37,6 +37,9 @@ FR_INTL_FORM_NEW = '>Préparer ma demande</a>'
 DE_INTL = Path('_site/de/internationale-kunden/index.html')
 DE_INTL_FORM_OLD = '>Anfrage im Formular vorbereiten</a>'
 DE_INTL_FORM_NEW = '>Anfrage vorbereiten</a>'
+ES_INTL = Path('_site/es/clientes-internacionales/index.html')
+ES_INTL_FORM_OLD = '>Preparar la solicitud con el formulario</a>'
+ES_INTL_FORM_NEW = '>Preparar mi solicitud</a>'
 OLD = 'Passez par le concierge plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'
 NEW = 'Passez par la <a class="text-link" href="/fr/conciergerie-privee-ibiza/">conciergerie privée</a> plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'
 
@@ -84,6 +87,20 @@ def enhance_german_international_contact_label():
         raise SystemExit('German international contact: expected one existing form label')
     DE_INTL.write_text(html.replace(DE_INTL_FORM_OLD, DE_INTL_FORM_NEW, 1), encoding='utf-8')
     print('PASS: German international contact — concise localized form label')
+
+
+def enhance_spanish_international_contact_label():
+    """Keep the final Spanish international-client form handoff concise and localized."""
+    html = ES_INTL.read_text(encoding='utf-8')
+    if ES_INTL_FORM_NEW in html and ES_INTL_FORM_OLD not in html:
+        if html.count(ES_INTL_FORM_NEW) != 1:
+            raise SystemExit('Spanish international contact: duplicate form label')
+        print('PASS: Spanish international contact — localized form label already present')
+        return
+    if html.count(ES_INTL_FORM_OLD) != 1 or ES_INTL_FORM_NEW in html:
+        raise SystemExit('Spanish international contact: expected one existing form label')
+    ES_INTL.write_text(html.replace(ES_INTL_FORM_OLD, ES_INTL_FORM_NEW, 1), encoding='utf-8')
+    print('PASS: Spanish international contact — concise localized form label')
 
 
 def enhance_home_readability():
@@ -244,3 +261,4 @@ if __name__ == '__main__':
     enhance_english_yacht_brief()
     enhance_french_international_contact_label()
     enhance_german_international_contact_label()
+    enhance_spanish_international_contact_label()
