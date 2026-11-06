@@ -1,0 +1,26 @@
+#origin-planner {
+  scroll-margin-top: 88px;
+  padding: clamp(44px, 6vw, 88px) max(6vw, calc((100vw - 1220px) / 2));
+  background: #f4f0e8;
+  color: #20241f;
+}
+#origin-planner [hidden] { display: none !important; }
+.origin-layout { display: grid; grid-template-columns: minmax(0, 0.84fr) minmax(0, 1.16fr); gap: clamp(28px, 6vw, 88px); }
+#origin-planner h2 { color: inherit; font: 400 clamp(2.3rem, 4vw, 4.5rem)/1.04 Georgia, serif !important; letter-spacing: -0.035em; margin: 0 0 1.1rem; }
+#origin-planner p { color: inherit; line-height: 1.6; margin: 0 0 1.2rem; }
+.origin-fields { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 15px; }
+.origin-fields label { min-width: 0; display: grid; align-content: start; gap: 6px; font-size: .9rem; font-weight: 600; }
+.origin-fields select, .origin-fields input { width: 100%; min-width: 0; min-height: 46px; padding: 9px; background: #fffdf7; color: #20241f; border: 1px solid #918a7a; border-radius: 0; font: inherit; }
+.origin-wide, .origin-clocks { grid-column: 1 / -1; }
+.origin-clocks { display: flex; flex-wrap: wrap; gap: 10px 24px; padding-block: 12px; border-block: 1px solid #cec6b6; }
+.origin-clocks span { display: grid; gap: 2px; font-size: .84rem; }
+.origin-clocks strong { font-size: 1rem; }
+.origin-actions, .origin-guides { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 14px; }
+.origin-actions { margin-block-start: 18px; }
+#origin-planner a { display: inline-flex; align-items: center; min-height: 44px; color: inherit; text-decoration: underline; text-underline-offset: .23em; }
+#origin-planner .origin-primary { background: #232922; color: #fffaf1; padding: 12px 18px; text-decoration: none; font-weight: 600; line-height: 1.3; }
+#origin-planner :focus-visible { outline: 2px solid #84682f; outline-offset: 3px; }
+.origin-guides { font-size: .9rem; margin-block-start: 18px; }
+.origin-guides span { width: 100%; font-size: .82rem; }
+@media(max-width: 760px) { .origin-layout { grid-template-columns: 1fr; } }
+@media(max-width: 440px) { .origin-fields { grid-template-columns: minmax(0,1fr); } }

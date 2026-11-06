@@ -1,0 +1,6 @@
+.ny-stay .origin-choice { border-block-start: 1px solid var(--ny-rule); padding-block: .35rem 1rem; }
+.ny-stay .origin-choice summary { cursor: pointer; min-height: 44px; padding-block: .75rem; font-family: inherit; font-size: 1.12rem; font-weight: 600; line-height: 1.4; }
+.ny-stay .origin-choice p { margin-block: .4rem .7rem; }
+.ny-stay .origin-choice > a { display: inline-flex; align-items: center; min-height: 44px; }
+.ny-stay .origin-after { margin-block-start: 1.2rem; }
+.ny-stay summary:focus-visible { outline: 2px solid currentColor; outline-offset: 3px; }

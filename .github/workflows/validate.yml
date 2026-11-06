@@ -33,6 +33,7 @@ on:
       - "tests/frozen_image_inputs_check.py"
       - "tests/phase174_browser_check.py"
       - "tests/contact_handoff_visual.py"
+      - "tests/origin_planner_review.py"
       - "tests/home_experiences_visual.py"
       - "tests/destination_snippet_visual.py"
       - "tests/club_guides_visual.py"
