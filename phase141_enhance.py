@@ -15,8 +15,20 @@ ROOT = Path('_site')
 MARKER = 'ivm-phase141-vocabulary'
 TARGET = '<section class="ivm-services-concierge">'
 
+# The previous English section can also be present when rerunning this stage.
+PREVIOUS_ENGLISH_BLOCK = '''<section class="ivm-services-concierge ivm-phase141-vocabulary" aria-labelledby="ivm141-en"><div class="ivm-services-concierge-inner"><div><div class="eyebrow">Search language</div><h2 id="ivm141-en">You do not need to know the word concierge.</h2></div><div><p>If your brief sounds more like Luxury travel planning, Bespoke travel or Custom travel, Itinerary planning, Destination services, On-the-ground support, Travel coordination or Luxury travel services, start here. These are different ways clients describe support around an Ibiza stay, not separate Ibiza VIP Move products.</p></div></div></section>'''
+
 COPY = {
-    'services': '''<section class="ivm-services-concierge ivm-phase141-vocabulary" aria-labelledby="ivm141-en"><div class="ivm-services-concierge-inner"><div><div class="eyebrow">Search language</div><h2 id="ivm141-en">You do not need to know the word concierge.</h2></div><div><p>If your brief sounds more like Luxury travel planning, Bespoke travel or Custom travel, Itinerary planning, Destination services, On-the-ground support, Travel coordination or Luxury travel services, start here. These are different ways clients describe support around an Ibiza stay, not separate Ibiza VIP Move products.</p></div></div></section>''',
+    'services': '''<section class="ivm-services-concierge ivm-phase141-vocabulary" aria-labelledby="ivm141-en">
+<div class="ivm-services-concierge-inner">
+<div><h2 id="ivm141-en">A weekend in Ibiza for two guests</h2></div>
+<div>
+<p>Two guests wanted to spend the day at a beach club, enjoy a dinner show and go out afterwards. Our Ibiza concierge arranged the airport transfers and planned the evening around the show time, including a chauffeur for the late return.</p>
+<p><a href="/case-studies/weekend-concierge-two-guests/">See how we planned their weekend</a>.</p>
+<p>Planning a stay for yourself or a client? <a href="/contact/">Send your dates, guest count and any bookings with fixed times</a> so we can put together a proposal.</p>
+<details><summary>Travel planning terms for assistants and advisors</summary>
+<p>Luxury travel planning, Bespoke travel and Custom travel can all start with the same brief. Itinerary planning and Travel coordination cover timings and transfers. Destination services, On-the-ground support and Luxury travel services describe the local help you can request during your stay.</p></details>
+</div></div></section>''',
     'fr/services': '''<section class="ivm-services-concierge ivm-phase141-vocabulary" aria-labelledby="ivm141-fr"><div class="ivm-services-concierge-inner"><div><div class="eyebrow">Vocabulaire de recherche</div><h2 id="ivm141-fr">Vous n’avez pas besoin d’utiliser le mot « concierge ».</h2></div><div><p>Si votre besoin ressemble davantage à une Organisation de voyages de luxe, des Voyages sur mesure, une Création d’itinéraires, des Services à destination, une Assistance sur place, une Coordination de voyages ou des Services de voyage haut de gamme, commencez ici. Ces expressions décrivent différentes façons de demander un accompagnement pour un séjour à Ibiza, et non des services Ibiza VIP Move distincts.</p></div></div></section>''',
     'de/services': '''<section class="ivm-services-concierge ivm-phase141-vocabulary" aria-labelledby="ivm141-de"><div class="ivm-services-concierge-inner"><div><div class="eyebrow">Suchbegriffe</div><h2 id="ivm141-de">Sie müssen nicht nach „Concierge“ suchen.</h2></div><div><p>Wenn Ihr Anliegen eher als Luxusreiseplanung, Maßgeschneiderte Reisen (Schweiz: Massgeschneiderte Reisen), Individuelle Reiseplanung, Services am Urlaubsort, Betreuung vor Ort, Reisekoordination oder Luxusreiseservice beschrieben wird, können Sie hier beginnen. Diese Begriffe beschreiben unterschiedliche Arten, Unterstützung für einen Ibiza-Aufenthalt zu suchen, und keine separaten Ibiza VIP Move Services.</p></div></div></section>''',
     'ar/services': '''<section class="ivm-services-concierge ivm-phase141-vocabulary" aria-labelledby="ivm141-ar"><div class="ivm-services-concierge-inner"><div><div class="eyebrow">مصطلحات البحث</div><h2 id="ivm141-ar">لست بحاجة إلى استخدام كلمة «كونسيرج».</h2></div><div><p>إذا كان طلبك أقرب إلى تخطيط السفر الفاخر، أو رحلات مصممة حسب الطلب، أو تخطيط برامج الرحلات، أو خدمات الوجهة السياحية، أو مساعدة أثناء الإقامة، أو تنسيق السفر، أو خدمات السفر الفاخر، فيمكنك البدء من هنا. هذه تعبيرات مختلفة لوصف الدعم المطلوب لإقامة في إيبيزا، وليست خدمات منفصلة جديدة لدى Ibiza VIP Move.</p></div></div></section>''',
@@ -30,6 +42,10 @@ def enhance():
     for slug, block in COPY.items():
         path = ROOT / slug / 'index.html'
         html = path.read_text(encoding='utf-8')
+        if slug == 'services' and html.count(PREVIOUS_ENGLISH_BLOCK) == 1 and html.count(MARKER) == 1:
+            path.write_text(html.replace(PREVIOUS_ENGLISH_BLOCK, block), encoding='utf-8')
+            changed += 1
+            continue
         if MARKER in html:
             if html.count(MARKER) != 1 or block not in html:
                 raise SystemExit(f'Phase 141: malformed existing vocabulary bridge in {slug}')
