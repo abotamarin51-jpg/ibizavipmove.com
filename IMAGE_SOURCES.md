@@ -30,3 +30,9 @@ These editorial images are intentionally treated as a premium interim visual lay
 The Home cards use the three original photographs supplied in `Ibiza_VIP_Move_Borrador_Experiencias (4).html`: Villa Lucy (Taste Ibiza reference), the supplied editorial yacht, and the original Lío Ibiza image (Ibiza Spotlight reference). The owner explicitly requested keeping that nightlife photograph, superseding the generated alternative. No generated image is used in this release. These illustrate possible requests and do not demonstrate availability, affiliation or completed bookings.
 
 Optimized 480px/960px JPEG and WebP files are stored under `editorial-assets/home-experiences/`; their original source references, dimensions, byte sizes and SHA-256 values are recorded in `manifest.json`. They are encoded from the supplied photos without retouching or removing logos. The build verifies and copies local bytes; it makes no image-provider request.
+
+## French yacht enquiry page · 6 November 2026
+
+The hero on `/fr/location-yacht-ibiza/` is a standalone, owner-approved AI illustration generated from a text description of a fictional superyacht in a Mediterranean anchorage. It used no reference photograph. The visible French caption identifies it as illustrative and makes yacht options conditional on the client's dates and availability. It represents neither specific inventory nor a confirmed charter.
+
+Generated PNG SHA-256: `8a9156a420d08ef8f259ff74f735e838f492dc6a94ac3570626881a5fc38f683`. The approved WebP is stored in `editorial-assets/fr-yacht/superyacht-1672.webp`. The smaller WebP is a resized version of that same asset. Basis for use: [OpenAI’s European terms, Content](https://openai.com/es-ES/policies/eu-terms-of-use/). Font license notices accompany the locally served fonts.
