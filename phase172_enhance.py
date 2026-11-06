@@ -8,6 +8,7 @@ TARGET = ROOT / 'de' / 'private-events-ibiza' / 'index.html'
 SITEMAP = ROOT / 'sitemap.xml'
 CANONICAL = 'https://ibizavipmove.com/de/private-events-ibiza/'
 TITLE = 'Eventkoordination Ibiza | Private Events | Ibiza VIP Move'
+META_DESC = 'Sie planen eine private Feier oder ein Firmenevent auf Ibiza? Wir koordinieren Gästetransfers und den Ablauf vor Ort. Nennen Sie uns Datum und Gästezahl.'
 DESC = 'Private Event- und Veranstaltungskoordination auf Ibiza für Feiern und Firmenevents: Gäste, Location, Anbieter, Transport und Timing aus einem Briefing.'
 H1 = 'Private Events & Eventkoordination auf Ibiza.'
 LEAD = 'Private Feiern und ausgewählte Firmenevents brauchen klare Veranstaltungskoordination: Gäste, Location, Transport, Anbieter und Timing in einem operativen Briefing.'
@@ -24,7 +25,7 @@ if f'<link rel="canonical" href="{CANONICAL}">' not in text or '<html lang="de"'
 
 text = re.sub(r'<title>.*?</title>', f'<title>{htmllib.escape(TITLE)}</title>', text, count=1, flags=re.I | re.S)
 for attr, key, value in [
-    ('name', 'description', DESC),
+    ('name', 'description', META_DESC),
     ('property', 'og:title', TITLE),
     ('property', 'og:description', DESC),
     ('name', 'twitter:title', TITLE),
