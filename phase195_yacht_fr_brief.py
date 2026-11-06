@@ -1,12 +1,9 @@
-"""Keep the French yacht enquiry context on its three service-specific CTAs.
-
-No generic/header/footer/mobile contact, number, visible copy, metadata,
-script, style, sitemap or other page changes. The message is an editable
-draft; opening a link does not send an enquiry or confirm a reservation.
-"""
+"""Prepare French yacht contact links, then install the approved enquiry hero."""
 from pathlib import Path
 import re
 from urllib.parse import quote
+
+from phase197_french_yacht import MARKER, publish_hero
 
 ROUTE = 'fr/location-yacht-ibiza/index.html'
 CANONICAL = 'https://ibizavipmove.com/fr/location-yacht-ibiza/'
@@ -70,10 +67,11 @@ def transform(html):
 def enhance(root=Path('_site')):
     path = root / ROUTE
     before = path.read_text(encoding='utf-8')
-    after = transform(before)
+    with_links = before if MARKER in before else transform(before)
+    after = publish_hero(with_links, root, DRAFT_URL)
     if after != before:
         path.write_text(after, encoding='utf-8')
-    print('PASS: French yacht brief — three service CTAs, approved number and generic access preserved')
+    print('PASS: French yacht brief — approved illustration, enquiry form and contextual contact routes')
 
 
 if __name__ == '__main__':

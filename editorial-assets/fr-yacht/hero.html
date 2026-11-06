@@ -1,0 +1,26 @@
+<section class="fr-yacht-hero" aria-labelledby="yacht-heading">
+  <div class="fr-yacht-layout">
+    <div class="fr-yacht-copy">
+      <p class="fr-yacht-kicker">Ibiza &amp; Formentera</p>
+      <h1 id="yacht-heading">Location de yacht privé à Ibiza</h1>
+      <p class="fr-yacht-intro">Une journée en mer, avec Formentera pour escale si les conditions le permettent. Indiquez-nous votre date et le nombre de passagers pour recevoir une proposition adaptée à votre groupe.</p>
+      <form id="yacht-enquiry" hidden>
+        <div class="fr-yacht-fields">
+          <label for="yacht-date">Date souhaitée<input type="date" id="yacht-date" name="date" required></label>
+          <label for="yacht-guests">Nombre de passagers<input type="number" id="yacht-guests" name="guests" min="1" step="1" placeholder="Ex. 6" required></label>
+        </div>
+        <button type="submit" class="fr-yacht-button">Préparer ma demande</button>
+        <p class="fr-yacht-help">Vous pourrez relire votre demande avant de l’envoyer sur WhatsApp.</p>
+        <div id="yacht-message" hidden aria-live="polite">
+          <p id="yacht-message-text"></p>
+          <a id="yacht-whatsapp" target="_blank" rel="noopener noreferrer">Continuer sur WhatsApp <span aria-hidden="true">↗</span></a>
+        </div>
+      </form>
+      <noscript><a class="btn dark" href="__FALLBACK_URL__">Demander un devis sur WhatsApp</a></noscript>
+    </div>
+    <figure class="fr-yacht-figure">
+      <img src="/assets/fr-yacht/superyacht-1672.webp" srcset="/assets/fr-yacht/superyacht-768.webp 768w, /assets/fr-yacht/superyacht-1672.webp 1672w" sizes="(max-width:760px) 90vw, (max-width:1600px) 54vw, 870px" alt="Illustration d’un superyacht vu de la poupe, avec une terrasse en teck et une piscine" width="1672" height="941" fetchpriority="high">
+      <figcaption>Image d’illustration créée avec l’IA. Les yachts proposés dépendent de vos dates et des disponibilités.</figcaption>
+    </figure>
+  </div>
+</section>

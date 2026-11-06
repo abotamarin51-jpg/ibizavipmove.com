@@ -240,16 +240,30 @@ def review_french_concierge(page, origin, mode, width, height, output):
 def review_french_yacht_heading(page, origin, mode, width, height, output):
     """Check the French yacht offer on both viewports without activating contacts."""
     route = '/fr/location-yacht-ibiza/'
-    heading = 'Location de yacht privé à Ibiza, intégrée à votre séjour.'
+    heading = 'Location de yacht privé à Ibiza'
     response = page.goto(origin + route, wait_until='load', timeout=15000)
     assert response and response.status == 200
     assert page.locator('html').get_attribute('lang') == 'fr'
     assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com' + route
     h1 = page.locator('main h1')
     assert h1.count() == 1 and h1.inner_text().strip() == heading
-    image = page.locator('main .page-hero-media img')
+    image = page.locator('main .fr-yacht-figure img')
     assert image.count() == 1
-    assert (image.get_attribute('alt') or '').startswith(heading + ' — Ibiza VIP Move')
+    assert image.evaluate('e => e.complete && e.naturalWidth > 0 && e.currentSrc.includes("/assets/fr-yacht/superyacht-")')
+    assert 'illustration créée avec l’IA' in page.locator('.fr-yacht-figure figcaption').inner_text()
+    form = page.locator('#yacht-enquiry')
+    date = page.locator('#yacht-date').get_attribute('min')
+    form.get_by_label('Date souhaitée').fill(date)
+    form.get_by_label('Nombre de passagers').fill('6')
+    form.get_by_role('button', name='Préparer ma demande').click()
+    draft = form.get_by_role('link', name='Continuer sur WhatsApp')
+    handoff = urlsplit(draft.get_attribute('href'))
+    assert (handoff.scheme, handoff.netloc, handoff.path) == ('https', 'wa.me', '/34600703303')
+    assert '6 passagers' in parse_qs(handoff.query)['text'][0]
+    assert parse_qs(handoff.query)['text'][0] == form.locator('#yacht-message-text').inner_text()
+    form.get_by_label('Nombre de passagers').fill('7')
+    assert form.locator('#yacht-message').is_hidden()
+    assert form.locator('#yacht-whatsapp').get_attribute('href') is None
     wa_links = page.locator('main a[href^="https://wa.me/"]')
     assert wa_links.count() >= 1
     assert all(urlsplit(wa_links.nth(i).get_attribute('href')).path == '/34600703303'
