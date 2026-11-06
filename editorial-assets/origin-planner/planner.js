@@ -6,6 +6,9 @@
   const custom = planner.querySelector('#origin-custom');
   const service = planner.querySelector('#origin-service');
   const whatsapp = planner.querySelector('#origin-whatsapp');
+  const share = planner.querySelector('#origin-share');
+  const shareStatus = planner.querySelector('#origin-share-status');
+  const shareInput = planner.querySelector('#origin-share-url');
   const groups = Array.from(city.querySelectorAll('optgroup'));
   const locale = document.documentElement.lang || 'en';
 
@@ -44,15 +47,37 @@
     const link = new URL('https://wa.me/34600703303');
     link.searchParams.set('text', message);
     whatsapp.href = link.href;
+    share.closest('.origin-share').hidden = !country.value || country.value === 'other' || city.value === 'other';
+    shareStatus.textContent = '';
+    shareInput.closest('label').hidden = true;
     updateClocks();
+  }
+
+  function originHash() {
+    const key = country.value && country.value !== 'other' ? country.value.toLowerCase() : '';
+    const cityKey = city.value && city.value !== 'other' ? '-' + city.value : '';
+    return key ? 'from-' + key + cityKey : 'origin-planner';
   }
 
   function updateLocation() {
     const url = new URL(location.href);
-    const key = country.value && country.value !== 'other' ? country.value.toLowerCase() : '';
-    const cityKey = city.value && city.value !== 'other' ? '-' + city.value : '';
-    url.hash = key ? 'from-' + key + cityKey : 'origin-planner';
+    url.hash = originHash();
     history.replaceState(null, '', url);
+  }
+
+  async function copyOrigin() {
+    // Share the localized hub and origin only, even if the visitor arrived with campaign parameters.
+    const url = new URL(location.pathname, location.origin);
+    url.hash = originHash();
+    try {
+      await navigator.clipboard.writeText(url.href);
+      shareStatus.textContent = share.dataset.copied;
+    } catch {
+      shareInput.value = url.href;
+      shareInput.closest('label').hidden = false;
+      shareInput.focus();
+      shareInput.select();
+    }
   }
 
   function openSharedOrigin() {
@@ -71,6 +96,7 @@
   city.addEventListener('change', () => { custom.value = ''; refresh(); updateLocation(); });
   custom.addEventListener('input', refresh);
   service.addEventListener('change', refresh);
+  share.addEventListener('click', copyOrigin);
   window.addEventListener('hashchange', openSharedOrigin);
   document.addEventListener('visibilitychange', () => { if (!document.hidden) updateClocks(); });
   window.setInterval(() => { if (!document.hidden) updateClocks(); }, 60000);

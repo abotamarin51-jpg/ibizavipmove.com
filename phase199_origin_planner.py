@@ -72,7 +72,10 @@ def planner_html(language, copy, groups, markets):
 <label class="origin-wide">{t['service']}<select id="origin-service">{service_options}</select></label>
 <div class="origin-clocks"><span id="origin-local-clock" hidden>{t['local']}<strong></strong></span><span>{t['ibiza']}<strong id="origin-ibiza-time"></strong></span></div>
 </div><div class="origin-actions"><a class="origin-primary" id="origin-whatsapp" href="{WA}">{t['action']}</a>
-<a href="{t['contact']}">{t['form']}</a></div></div></div></section>{END}"""
+<a href="{t['contact']}">{t['form']}</a></div>
+<div class="origin-share" hidden><button id="origin-share" type="button" data-copied="{t['copied']}">{t['share']}</button>
+<span id="origin-share-status" role="status"></span>
+<label hidden>{t['copyManually']}<input id="origin-share-url" type="text" dir="ltr" readonly></label></div></div></div></section>{END}"""
 
 
 def add_planners(markets):

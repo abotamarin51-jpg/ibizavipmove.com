@@ -23,6 +23,9 @@
     "action": "Prepare a WhatsApp request",
     "form": "Use the private request form",
     "guides": "Ibiza concierge by departure city",
+    "share": "Copy the link for this origin",
+    "copied": "Link copied",
+    "copyManually": "Copy this link",
     "message": "Hello Ibiza VIP Move. I would like to arrange {service} in Ibiza. Planning from: {origin}. Stay dates: __. Number of guests: __."
   },
   "es": {
@@ -49,6 +52,9 @@
     "action": "Preparar consulta por WhatsApp",
     "form": "Usar el formulario privado",
     "guides": "Concierge en Ibiza por ciudad de origen",
+    "share": "Copiar el enlace de este origen",
+    "copied": "Enlace copiado",
+    "copyManually": "Copia este enlace",
     "message": "Hola, Ibiza VIP Move. Me interesa este servicio en Ibiza: {service}. Organizo el viaje desde {origin}. Fechas: __. Número de huéspedes: __."
   },
   "fr": {
@@ -75,6 +81,9 @@
     "action": "Préparer une demande sur WhatsApp",
     "form": "Utiliser le formulaire privé",
     "guides": "Conciergerie à Ibiza par ville de départ",
+    "share": "Copier le lien pour ce lieu de départ",
+    "copied": "Lien copié",
+    "copyManually": "Copiez ce lien",
     "message": "Bonjour Ibiza VIP Move. Voici ma demande pour Ibiza : {service}. J’organise le voyage depuis {origin}. Dates : __. Nombre de personnes : __."
   },
   "de": {
@@ -101,6 +110,9 @@
     "action": "WhatsApp-Anfrage vorbereiten",
     "form": "Privates Anfrageformular öffnen",
     "guides": "Ibiza-Concierge nach Abreiseort",
+    "share": "Link für diesen Ausgangsort kopieren",
+    "copied": "Link kopiert",
+    "copyManually": "Diesen Link kopieren",
     "message": "Hallo Ibiza VIP Move. Für meinen Aufenthalt auf Ibiza interessiere ich mich für: {service}. Ich plane von {origin} aus. Reisedaten: __. Anzahl der Gäste: __."
   },
   "ar": {
@@ -127,6 +139,9 @@
     "action": "إعداد طلب عبر واتساب",
     "form": "فتح نموذج الطلب الخاص",
     "guides": "خدمات الكونسيرج في إيبيزا حسب مدينة المغادرة",
+    "share": "نسخ رابط مكان المغادرة",
+    "copied": "تم نسخ الرابط",
+    "copyManually": "انسخ هذا الرابط",
     "message": "مرحباً Ibiza VIP Move. أرغب في ترتيب الخدمة التالية في إيبيزا: {service}. أخطّط للرحلة من {origin}. تواريخ الإقامة: __. عدد الضيوف: __."
   }
 }
