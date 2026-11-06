@@ -11,15 +11,6 @@ DATA = {
         'international': 'clients-internationaux',
         'contact': '/fr/contact/',
         'contact_label': 'Préparer la demande avec le formulaire',
-        'international_contact_label': 'Préparer ma demande',
-        'international_heading_old': 'Coordonnez votre brief à Ibiza.',
-        'international_heading': 'Coordonnez votre demande à Ibiza.',
-        'international_copy_old': 'Envoyez les dates, le profil des invités et les services requis. Nous poursuivrons la conversation à partir de là.',
-        'international_copy': 'Envoyez-nous vos dates, le nombre d’invités et les services souhaités. Un interlocuteur à Ibiza poursuivra la conversation en privé et vous indiquera les prochaines étapes.',
-        'international_whatsapp_old': 'WhatsApp Concierge',
-        'international_whatsapp': 'Contacter la conciergerie sur WhatsApp',
-        'international_email_old': 'Email Partnerships',
-        'international_email': 'E-mail pour partenaires et demandes professionnelles',
         'audiences': [
             ('Clients privés et familles', '/fr/conciergerie-privee-ibiza/'),
             ('Assistants personnels', '/fr/private-office/'),
@@ -80,9 +71,8 @@ def enhance():
     sitemap = (ROOT / 'sitemap.xml').read_bytes()
     pending = {}
     for lang, data in DATA.items():
+        contact = '<p><a class="text-link" data-ivm113="contact" href="' + data['contact'] + '">' + escape(data['contact_label']) + '</a></p>'
         for slug in (data['international'], 'private-office'):
-            contact_label = data.get('international_contact_label', data['contact_label']) if slug == data['international'] else data['contact_label']
-            contact = '<p><a class="text-link" data-ivm113="contact" href="' + data['contact'] + '">' + escape(contact_label) + '</a></p>'
             path = ROOT / lang / slug / 'index.html'
             original = path.read_text(encoding='utf-8')
             if 'data-ivm113=' in original:
@@ -99,11 +89,6 @@ def enhance():
                     old = '<b>' + escape(label) + '</b>'
                     new = '<b><a class="text-link" data-ivm113="audience" href="' + href + '">' + escape(label) + '</a></b>'
                     main = replace_once(main, old, new, str(path) + ' audience ' + label)
-                if lang == 'fr':
-                    main = replace_once(main, '<h2>' + escape(data['international_heading_old']) + '</h2>', '<h2>' + escape(data['international_heading']) + '</h2>', str(path) + ' closing heading')
-                    main = replace_once(main, '<p>' + escape(data['international_copy_old']) + '</p>', '<p>' + escape(data['international_copy']) + '</p>', str(path) + ' closing copy')
-                    main = replace_once(main, '>' + escape(data['international_whatsapp_old']) + '</a>', '>' + escape(data['international_whatsapp']) + '</a>', str(path) + ' WhatsApp label')
-                    main = replace_once(main, '>' + escape(data['international_email_old']) + '</a>', '>' + escape(data['international_email']) + '</a>', str(path) + ' email label')
                 marker = '<div class="hero-actions" style="justify-content:center">'
                 main = replace_once(main, marker, contact + marker, str(path) + ' contact actions')
             else:
