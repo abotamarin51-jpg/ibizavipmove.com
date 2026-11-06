@@ -193,7 +193,24 @@ def service_page(slug,name,tag,img,items):
     })
     bullets=''.join(f'<li>{x}</li>' for x in items)
     faq_html=''.join(f'<details><summary>{escape(q)}</summary><p>{escape(a)}</p></details>' for q,a in page['faqs'])
-    body=f'''<section class="page-hero service-hero" style="--hero:url('{IMG[img]}')"><div><div class="kicker light">Ibiza VIP Move · Private Service</div><h1>{name}</h1><p>{tag}</p><a class="btn gold" href="{WA}">Request this service</a></div></section><section class="editorial service-detail"><div><div class="kicker dark">Private coordination</div><h2>{page['heading']}</h2></div><div><p class="large">{page['lead']}</p><p>{page['detail']}</p><ul class="premium-list">{bullets}</ul></div></section><section class="process"><div class="section-head"><div class="kicker dark">How it works</div><h2>Simple for you. Detailed behind the scenes.</h2></div><div class="process-grid"><article><span>01</span><h3>Brief</h3><p>Share dates, guests, preferences and priorities.</p></article><article><span>02</span><h3>Clarify</h3><p>We confirm the operational details needed for the request.</p></article><article><span>03</span><h3>Confirm</h3><p>Availability, scope and applicable terms are agreed in writing.</p></article><article><span>04</span><h3>Coordinate</h3><p>The service is aligned with the confirmed Ibiza itinerary.</p></article></div></section><section class="faq"><div class="section-head"><div class="kicker dark">Private client FAQ</div><h2>Before you book.</h2></div>{faq_html}<details><summary>Can this be combined with other Ibiza VIP Move services?</summary><p>Yes. Multiple confirmed services can be coordinated through one point of contact and aligned around the same itinerary.</p></details></section><section class="closing-simple"><h2>Request {name}</h2><p>Send the dates, guest count and practical requirements for a tailored response.</p><a class="btn dark" href="{WA}">WhatsApp Concierge</a></section>'''
+    if slug == "luxury-car-rental-ibiza":
+        process_html = (
+            '<section class="process"><div class="section-head">'
+            '<h2>Plan your luxury sports car hire in Ibiza</h2>'
+            '<p>Have a particular model in mind? Share your preferred car, dates and where you’d like it delivered in Ibiza. '
+            'We’ll check availability and confirm the exact vehicle, delivery options and terms before you book.</p>'
+            '</div></section>'
+        )
+    else:
+        process_html = (
+            '<section class="process"><div class="section-head"><div class="kicker dark">How it works</div><h2>Simple for you. Detailed behind the scenes.</h2></div><div class="process-grid">'
+            '<article><span>01</span><h3>Brief</h3><p>Share dates, guests, preferences and priorities.</p></article>'
+            '<article><span>02</span><h3>Clarify</h3><p>We confirm the operational details needed for the request.</p></article>'
+            '<article><span>03</span><h3>Confirm</h3><p>Availability, scope and applicable terms are agreed in writing.</p></article>'
+            '<article><span>04</span><h3>Coordinate</h3><p>The service is aligned with the confirmed Ibiza itinerary.</p></article>'
+            '</div></section>'
+        )
+    body=f'''<section class="page-hero service-hero" style="--hero:url('{IMG[img]}')"><div><div class="kicker light">Ibiza VIP Move · Private Service</div><h1>{name}</h1><p>{tag}</p><a class="btn gold" href="{WA}">Request this service</a></div></section><section class="editorial service-detail"><div><div class="kicker dark">Private coordination</div><h2>{page['heading']}</h2></div><div><p class="large">{page['lead']}</p><p>{page['detail']}</p><ul class="premium-list">{bullets}</ul></div></section>{process_html}<section class="faq"><div class="section-head"><div class="kicker dark">Private client FAQ</div><h2>Before you book.</h2></div>{faq_html}<details><summary>Can this be combined with other Ibiza VIP Move services?</summary><p>Yes. Multiple confirmed services can be coordinated through one point of contact and aligned around the same itinerary.</p></details></section><section class="closing-simple"><h2>Request {name}</h2><p>Send the dates, guest count and practical requirements for a tailored response.</p><a class="btn dark" href="{WA}">WhatsApp Concierge</a></section>'''
     return shell(body,f'{name} in Ibiza | Ibiza VIP Move',f'{name} in Ibiza with private coordination, discreet support and tailored concierge service.',f'/{slug}/',IMG[img])
 
 def concierge():
