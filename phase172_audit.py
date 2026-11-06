@@ -7,6 +7,7 @@ TARGET = ROOT / 'de' / 'private-events-ibiza' / 'index.html'
 SITEMAP = ROOT / 'sitemap.xml'
 CANONICAL = 'https://ibizavipmove.com/de/private-events-ibiza/'
 TITLE = 'Eventkoordination Ibiza | Private Events | Ibiza VIP Move'
+META_DESC = 'Sie planen eine private Feier oder ein Firmenevent auf Ibiza? Wir koordinieren Gästetransfers und den Ablauf vor Ort. Nennen Sie uns Datum und Gästezahl.'
 DESC = 'Private Event- und Veranstaltungskoordination auf Ibiza für Feiern und Firmenevents: Gäste, Location, Anbieter, Transport und Timing aus einem Briefing.'
 H1 = 'Private Events & Eventkoordination auf Ibiza.'
 
@@ -17,7 +18,7 @@ checks = {
     'self canonical': f'<link rel="canonical" href="{CANONICAL}">' in text,
     'indexable robots': '<meta name="robots" content="index,follow,max-image-preview:large">' in text,
     'concise title': f'<title>{TITLE}</title>' in text and len(TITLE) <= 60,
-    'concise meta description': f'<meta name="description" content="{DESC}">' in text and len(DESC) <= 160,
+    'concise meta description': f'<meta name="description" content="{META_DESC}">' in text and len(META_DESC) <= 160,
     'one H1 with Eventkoordination': text.count('<h1>') == 1 and '<h1>Private Events &amp; Eventkoordination auf Ibiza.</h1>' in text,
     'visible Veranstaltungskoordination': 'Veranstaltungskoordination' in text,
     'visible Firmenevents': 'Firmenevents' in text,
