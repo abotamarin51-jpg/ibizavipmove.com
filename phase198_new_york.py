@@ -26,6 +26,9 @@ class Market:
     language: str = "en"
     path: str = ""
     page_title: str = ""
+    city_label: str = ""
+    enquiry: str = ""
+    service_reference: tuple[str, str, str] | None = None
 
     @property
     def route(self):
@@ -37,7 +40,7 @@ class Market:
 
     @property
     def hub(self):
-        return {"en": HUB, "fr": "/fr/clients-internationaux/"}[self.language]
+        return {"en": HUB, "fr": "/fr/clients-internationaux/", "de": "/de/internationale-kunden/"}[self.language]
 
 
 MARKETS = (
@@ -68,6 +71,34 @@ MARKETS = (
            "/assets/images/experience-villa-960.jpg", language="fr",
            path="/fr/conciergerie-ibiza-depuis-paris/",
            page_title="Conciergerie privée à Ibiza depuis Paris | Ibiza VIP Move"),
+    Market("Munich",
+           "Planen Sie Ihren Ibiza-Aufenthalt von München aus. Fragen Sie Villa, Geschäftsessen, "
+           "Veranstaltungsraum und Chauffeur für Ihre Gruppe an.",
+           "/assets/images/experience-villa-960.jpg", language="de", city_label="München",
+           path="/de/concierge-ibiza-ab-muenchen/",
+           page_title="Privater Concierge auf Ibiza für Gäste aus München | Ibiza VIP Move",
+           enquiry="Hallo Ibiza VIP Move, wir planen von München aus einen Aufenthalt auf Ibiza. "
+                   "Reisedaten: __. Übernachtungsgäste: __. Weitere Teilnehmer: __. Anlass und feste Termine: __.",
+           service_reference=("/de/private-events-ibiza/", "editorial",
+                              "Villenaufenthalt und Geschäftsessen von München aus planen")),
+    Market("Amsterdam",
+           "Arrange villa concierge services in Ibiza from Amsterdam. Coordinate the host handover, "
+           "separate airport pickups, a private chef and plans for the group.",
+           "/assets/images/experience-villa-960.jpg",
+           page_title="Ibiza Villa Concierge for Guests from Amsterdam | Ibiza VIP Move",
+           enquiry="Hello Ibiza VIP Move, I’m arranging an Ibiza villa stay from Amsterdam. Dates: __. "
+                   "Villa area: __. Arrival groups: __. What we would like ready at the villa: __.",
+           service_reference=("/luxury-villas-ibiza/", "editorial service-detail",
+                              "Plan an Ibiza villa stay from Amsterdam")),
+    Market("Milan",
+           "Plan an Ibiza celebration from Milan. Request restaurant and VIP table options for "
+           "different guest numbers, with chauffeur pickups and agreed return times.",
+           "/assets/images/experience-nightlife-960.jpg",
+           page_title="Ibiza Concierge for Guests from Milan | Ibiza VIP Move",
+           enquiry="Hello Ibiza VIP Move, I’m planning an Ibiza celebration from Milan. Date: __. "
+                   "Dinner guests: __. Club guests: __. Preferred venue and chauffeur needs: __.",
+           service_reference=("/vip-tables-club-access-ibiza/", "partners-strip",
+                              "Plan an Ibiza dinner and VIP table from Milan")),
 )
 
 
@@ -95,6 +126,9 @@ def page_schema(market):
     if market.language == "fr":
         service["name"] = f"Conciergerie privée à Ibiza depuis {market.city}"
         trail = [("Accueil", "/fr/"), ("Clients internationaux", market.hub), (market.city, market.route)]
+    elif market.language == "de":
+        service["name"] = f"Privater Concierge auf Ibiza für Gäste aus {market.city_label}"
+        trail = [("Startseite", "/de/"), ("Internationale Kunden", market.hub), (market.city_label, market.route)]
     else:
         trail = [("Home", "/"), ("International clients", market.hub), (market.city, market.route)]
     breadcrumb = {
@@ -118,7 +152,7 @@ def render(hub, market):
     if market.language == "fr":
         message = (f"Bonjour Ibiza VIP Move. J’organise un séjour à Ibiza depuis {market.city} et je souhaite "
                    "un devis. Dates : __. Nombre de personnes : __. Lieu du séjour : __. Services demandés : __.")
-    default_wa = whatsapp(message)
+    default_wa = whatsapp(market.enquiry or message)
     requests = {key: whatsapp("Hello Ibiza VIP Move. " + text) for key, text in market.requests}
     template = ASSETS / slug(market.city) / "main.html"
     main = Template(template.read_text(encoding="utf-8")).substitute(whatsapp=default_wa, **requests)
@@ -146,12 +180,31 @@ def render(hub, market):
 
 
 def linked_hub(html):
-    # Retain the original contextual New York link as well as the selector's three guide links.
+    # Retain the original contextual New York link as well as the selector's guide links.
     link = f'<a class="text-link" href="{MARKETS[0].route}">Planning an Ibiza stay from New York</a>'
     if link in html:
         return html
     paragraph_end = "clear communication and reliable execution on the island.</p>"
     return replace_once(html, re.escape(paragraph_end), paragraph_end + f"<p>{link}</p>")
+
+
+def link_from_service(market):
+    path, section_class, label = market.service_reference
+    source = ROOT / path.strip("/") / "index.html"
+    html = source.read_text(encoding="utf-8")
+    marker = f'data-origin-reference="{slug(market.city)}"'
+    link = f'<p {marker}><a class="text-link" href="{market.route}">{escape(label)}</a></p>'
+    if marker in html:
+        if html.count(marker) != 1 or link not in html:
+            raise ValueError(f"Unexpected existing origin link in {path}")
+        return
+    opening = f'<section class="{section_class}"'
+    if html.count(opening) != 1:
+        raise ValueError(f"Expected one {section_class} section in {path}")
+    start = html.index(opening)
+    end = html.index("</section>", start)
+    after_intro = html.index("</p>", start, end) + len("</p>")
+    source.write_text(html[:after_intro] + link + html[after_intro:], encoding="utf-8")
 
 
 def update_sitemaps(hub_paths):
@@ -203,6 +256,8 @@ def build():
         html = render(template, market)
         target.parent.mkdir(exist_ok=True)
         target.write_text(html, encoding="utf-8")
+        if market.service_reference:
+            link_from_service(market)
     hub_file.write_text(linked_hub(hub), encoding="utf-8")
     hub_paths = add_planners(MARKETS)
     update_sitemaps(hub_paths)
