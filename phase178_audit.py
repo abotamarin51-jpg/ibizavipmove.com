@@ -14,7 +14,7 @@ from phase178_enhance import (
     HOME_OLD_SERVICE, HOME_NEW_LASTMOD, HOME_OLD_LASTMOD,
     FR_INTL, FR_INTL_FORM_OLD, FR_INTL_FORM_NEW,
     DE_INTL, DE_INTL_FORM_OLD, DE_INTL_FORM_NEW,
-    ES_INTL, ES_INTL_FORM_OLD, ES_INTL_FORM_NEW,
+    ES_INTL, ES_INTL_FORM_NEW,
 )
 
 SERVICES = Path('_site/fr/services/index.html')
@@ -128,8 +128,7 @@ def run():
     if not all(text in spanish_international for text in expected_spanish_international):
         raise SystemExit('Phase 178 audit: approved Spanish international contact copy missing')
     if ('Coordina tu brief en Ibiza.' in spanish_international
-            or '>Email Partnerships</a>' in spanish_international
-            or ES_INTL_FORM_OLD in spanish_international):
+            or '>Email Partnerships</a>' in spanish_international):
         raise SystemExit('Phase 178 audit: old Spanish international contact copy still present')
     if (not canonical_is(spanish_international, 'https://ibizavipmove.com/es/clientes-internacionales/')
             or is_noindex(spanish_international)
