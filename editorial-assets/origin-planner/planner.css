@@ -24,5 +24,9 @@
 .origin-guides span { width: 100%; font-size: .82rem; }
 .origin-guides a { gap: 4px; }
 .origin-guides small { font-size: .64rem; text-decoration: none; }
+.origin-share { margin-block-start: .5rem; }
+.origin-share button { min-height: 44px; border: 0; padding: 0; background: transparent; color: inherit; font: inherit; font-size: .9rem; text-decoration: underline; text-underline-offset: .23em; cursor: pointer; }
+.origin-share [role="status"] { margin-inline-start: .6rem; font-size: .85rem; }
+.origin-share input { display: block; min-height: 44px; width: 100%; border: 1px solid #918a7a; padding: 8px; font: inherit; }
 @media(max-width: 760px) { .origin-layout { grid-template-columns: 1fr; } }
 @media(max-width: 440px) { .origin-fields { grid-template-columns: minmax(0,1fr); } }

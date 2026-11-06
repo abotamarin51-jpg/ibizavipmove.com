@@ -32,11 +32,26 @@ def review_origins(page, origin, mode, output):
         assert page.locator('#origin-planner .origin-guides a').count() == 5
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), (mode, path)
     assert page.locator('html').get_attribute('dir') == 'rtl'
+    page.goto(origin + '/international-clients/?utm_source=qa#from-gb-london')
+    expect(page.locator('#origin-city')).to_have_value('london')
+    # Use a stub clipboard so automated checks do not change the runner clipboard.
+    page.evaluate("""Object.defineProperty(navigator, 'clipboard', {configurable:true,
+        value:{writeText: async text => { window.originCopiedInTest = text; }}})""")
+    page.locator('#origin-share').click()
+    expect(page.locator('#origin-share-status')).to_have_text('Link copied')
+    assert page.evaluate('window.originCopiedInTest') == origin + '/international-clients/#from-gb-london'
+    page.evaluate("""Object.defineProperty(navigator, 'clipboard', {configurable:true,
+        value:{writeText: () => Promise.reject(new Error('denied'))}})""")
+    page.locator('#origin-country').select_option('CH')
+    page.locator('#origin-share').click()
+    expect(page.locator('#origin-share-url')).to_be_visible()
+    assert page.locator('#origin-share-url').input_value() == origin + '/international-clients/#from-ch'
     page.goto(origin + '/international-clients/#from-us')
     expect(page.locator('#origin-city')).to_have_value('')
     expect(page.locator('#origin-local-clock')).to_be_hidden()
     assert 'United States' in message(page.locator('#origin-whatsapp'))
     page.locator('#origin-country').select_option('other')
+    expect(page.locator('#origin-share')).to_be_hidden()
     page.locator('#origin-custom').fill('Nassau, Bahamas')
     page.locator('#origin-service').select_option(label='Villa and chauffeur')
     brief = message(page.locator('#origin-whatsapp'))
