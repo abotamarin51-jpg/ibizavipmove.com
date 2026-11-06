@@ -35,8 +35,8 @@ COPY = {
     ('fr','concierge'): {
         'title':'Conciergerie privée Ibiza | Luxury Concierge | Ibiza VIP Move',
         'desc':'Conciergerie privée à Ibiza pour chauffeur, villas, yachts, aviation privée, restaurants, sécurité, wellness et demandes sur mesure via un seul contact.',
-        'h1':'Conciergerie privée à Ibiza, gérée comme un seul service.',
-        'lead':'Un point de contact unique pour coordonner votre séjour privé à Ibiza, de l’arrivée au départ.',
+        'h1':'Votre conciergerie privée à Ibiza',
+        'lead':'Un seul interlocuteur sur l’île pour organiser vos trajets avec chauffeur, réserver votre villa ou préparer une journée en yacht suivie d’une soirée avec table VIP.',
         'large':'Un interlocuteur basé à Ibiza relie les éléments confirmés du séjour autour de l’itinéraire des invités.',
         'availability':'Disponibilités, conditions des prestataires et détails opérationnels restent soumis à confirmation pour chaque demande.',
         'eyebrow':'Conciergerie privée · Ibiza','section':'Du brief à l’exécution.','cta':'Demander une assistance privée',

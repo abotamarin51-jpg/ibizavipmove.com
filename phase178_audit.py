@@ -69,7 +69,7 @@ def run():
     if is_noindex(services) or is_noindex(concierge):
         raise SystemExit('Phase 178 audit: French Services or Concierge became noindex')
 
-    if '<h1>Conciergerie privée à Ibiza, gérée comme un seul service.</h1>' not in concierge:
+    if '<h1>Votre conciergerie privée à Ibiza</h1>' not in concierge:
         raise SystemExit('Phase 178 audit: French Concierge target identity changed')
 
     print('PASS: Phase 178 audit — French contextual Concierge pathway; canonicals/indexability unchanged')

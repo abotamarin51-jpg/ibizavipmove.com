@@ -210,6 +210,31 @@ def review_localized_contact_copy(page, origin, mode, width, height, output):
                         'geometry': geometry, 'screenshot': shot.name})
     return results
 
+def review_french_concierge(page, origin, mode, width, height, output):
+    response = page.goto(origin + '/fr/conciergerie-privee-ibiza/', wait_until='load')
+    assert response and response.status == 200
+    hero = page.locator('main .page-hero')
+    title = hero.locator('h1')
+    lead = hero.locator('h1 + p')
+    cta = hero.locator('h1 + p + a')
+    assert title.inner_text() == 'Votre conciergerie privée à Ibiza'
+    assert lead.inner_text() == (
+        'Un seul interlocuteur sur l’île pour organiser vos trajets avec chauffeur, '
+        'réserver votre villa ou préparer une journée en yacht suivie d’une soirée avec table VIP.'
+    )
+    assert cta.get_attribute('href') == 'https://wa.me/34600703303'
+    page.evaluate('document.fonts.ready')
+    bounds = [item.bounding_box() for item in (title, lead, cta)]
+    assert all(b and b['height'] > 0 and b['x'] >= -1 and
+               b['x'] + b['width'] <= width + 1 for b in bounds), (mode, bounds)
+    assert all(a['y'] + a['height'] <= b['y'] + 1 for a, b in zip(bounds, bounds[1:])), (mode, bounds)
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), mode
+    shot = output / f'fr-concierge-hero-{mode}.png'
+    page.screenshot(path=str(shot))
+    verify_image(shot, (width, height))
+    return {'mode': mode, 'bounds': bounds, 'screenshot': shot.name}
+
+
 def review_french_yacht_heading(page, origin, mode, width, height, output):
     """Check the French yacht offer on both viewports without activating contacts."""
     route = '/fr/location-yacht-ibiza/'
@@ -474,6 +499,9 @@ def main():
                         )
                         assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         print(f'PASS: Localized WhatsApp labels and help, mobile/desktop: {mode}')
+                        report.setdefault('frenchConcierge', []).append(
+                            review_french_concierge(page, origin, mode, width, height, output)
+                        )
                         report.setdefault('frenchYacht', []).append(
                             review_french_yacht_heading(page, origin, mode, width, height, output)
                         )
