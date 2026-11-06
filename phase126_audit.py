@@ -11,7 +11,7 @@ URL = BASE + '/luxury-car-rental-ibiza/'
 PAGE = ROOT / 'luxury-car-rental-ibiza' / 'index.html'
 SITEMAP = ROOT / 'sitemap.xml'
 NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
-LASTMOD = '2026-09-13'
+LASTMOD = '2026-11-06'
 TITLE = 'Luxury Car Hire & Rental Ibiza | Supercars | Ibiza VIP Move'
 DESCRIPTION = (
     'Luxury car hire and rental in Ibiza, including executive cars, luxury SUVs, '

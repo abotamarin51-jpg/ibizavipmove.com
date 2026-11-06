@@ -171,6 +171,20 @@ def main():
                             'document.documentElement.scrollWidth > innerWidth + 1'
                         ), 'Home horizontal overflow after copy edit'
 
+                        response = page.goto(origin + '/luxury-car-rental-ibiza/', wait_until='load')
+                        assert response and response.ok, 'Luxury car page unavailable'
+                        heading = page.get_by_role('heading', name='Plan your luxury sports car hire in Ibiza', exact=True)
+                        heading.scroll_into_view_if_needed()
+                        paragraph = heading.locator('..').locator('p')
+                        assert paragraph.inner_text() == (
+                            'Have a particular model in mind? Share your preferred car, dates and where you’d like it delivered in Ibiza. '
+                            'We’ll check availability and confirm the exact vehicle, delivery options and terms before you book.'
+                        )
+                        for element in (heading, paragraph):
+                            element.scroll_into_view_if_needed()
+                            assert element.is_visible() and element.evaluate(INSIDE_JS), 'Car enquiry copy clipped'
+                        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
+
                         assert not errors and not missing, {
                             'javascriptErrors': errors,
                             'missingLocalResources': missing,

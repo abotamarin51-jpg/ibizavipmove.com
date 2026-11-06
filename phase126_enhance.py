@@ -2,7 +2,7 @@
 
 This phase does not create a synonym URL. It keeps the established canonical and adds
 natural "hire" + "rental" language to the same service page, then records a truthful
-lastmod for the significant 2026-09-13 copy/metadata change.
+lastmod for the latest change to the English service copy.
 """
 from pathlib import Path
 from html import escape
@@ -16,7 +16,7 @@ URL = BASE + '/luxury-car-rental-ibiza/'
 PAGE = ROOT / 'luxury-car-rental-ibiza' / 'index.html'
 SITEMAP = ROOT / 'sitemap.xml'
 NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
-LASTMOD = '2026-09-13'
+LASTMOD = '2026-11-06'
 
 TITLE = 'Luxury Car Hire & Rental Ibiza | Supercars | Ibiza VIP Move'
 DESCRIPTION = (
