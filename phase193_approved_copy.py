@@ -1,4 +1,4 @@
-"""Scoped English SEO and booking copy for five existing pages.
+"""Scoped English SEO and booking copy for existing pages.
 
 Run after phase192 within phase178_enhance.py. Keep the branded design, H1,
 URLs, booking flows, existing FAQs and consent unchanged. Keep changed
@@ -82,8 +82,16 @@ STAFFING_NEW_PROCESS = (
     'Share changes to guest numbers or timings early.</p></article></div></section>'
 )
 
+BESPOKE_ROUTE = 'bespoke-concierge-ibiza/index.html'
+BESPOKE_URL = 'https://ibizavipmove.com/bespoke-concierge-ibiza/'
+BESPOKE_INTRO = (
+    '<p>Looking for a particular gift, a hard-to-find item or help with a last-minute request in Ibiza? '
+    'Tell us what you need and by when. We’ll check local options and confirm what can be arranged.</p>'
+)
+
 # Exact reviewed source phrases: never replace unknown sections or general keywords.
 CHANGES = {
+    BESPOKE_ROUTE: (('<p>Whatever you need, handled discreetly.</p>', BESPOKE_INTRO, 1),),
     OFFICE_ROUTE: (
         (OFFICE_OLD_TITLE, OFFICE_NEW_TITLE, 3),
         (escape(OFFICE_OLD_TITLE), escape(OFFICE_NEW_TITLE), 2),
@@ -134,6 +142,7 @@ CHANGES = {
 }
 
 CANONICALS = {
+    BESPOKE_ROUTE: (BESPOKE_URL, '<h1>Lifestyle & Bespoke Requests</h1>'),
     OFFICE_ROUTE: (OFFICE_URL, '<h1>Ibiza concierge support for family offices and personal assistants.</h1>'),
     STAFFING_ROUTE: (STAFFING_URL, '<h1>Private Chefs & Villa Staffing</h1>'),
     'index.html': ('https://ibizavipmove.com/',
@@ -249,7 +258,7 @@ def inspect(relative, before, after):
 
 
 def enhance(root=Path('_site')):
-    """Validate all five pages and sitemap in memory before writing; reruns are safe."""
+    """Validate all reviewed pages and sitemap in memory before writing; reruns are safe."""
     pending = []
     for relative, changes in CHANGES.items():
         path = root / relative
@@ -268,7 +277,8 @@ def enhance(root=Path('_site')):
         pending.append((path, before, after))
     sitemap_path = root / 'sitemap.xml'
     sitemap = sitemap_path.read_text(encoding='utf-8')
-    for url, updated in ((STAFFING_URL, STAFFING_DATE), (OFFICE_URL, OFFICE_DATE)):
+    for url, updated in ((STAFFING_URL, STAFFING_DATE), (OFFICE_URL, OFFICE_DATE),
+                         (BESPOKE_URL, '2026-11-06')):
         pattern = rf'(<url>\s*<loc>{re.escape(url)}</loc>\s*<lastmod>)[^<]+(</lastmod>)'
         sitemap, count = re.subn(pattern, lambda m: m.group(1) + updated + m.group(2), sitemap)
         require(count == 1, 'expected one existing sitemap entry: ' + url)
