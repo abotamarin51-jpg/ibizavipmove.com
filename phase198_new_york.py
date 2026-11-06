@@ -23,14 +23,21 @@ class Market:
     description: str
     photo: str
     requests: tuple = ()
+    language: str = "en"
+    path: str = ""
+    page_title: str = ""
 
     @property
     def route(self):
-        return "/" + slug(self.city) + "-to-ibiza-concierge/"
+        return self.path or "/" + slug(self.city) + "-to-ibiza-concierge/"
 
     @property
     def title(self):
-        return f"Ibiza Concierge for Travelers from {self.city} | Ibiza VIP Move"
+        return self.page_title or f"Ibiza Concierge for Travelers from {self.city} | Ibiza VIP Move"
+
+    @property
+    def hub(self):
+        return {"en": HUB, "fr": "/fr/clients-internationaux/"}[self.language]
 
 
 MARKETS = (
@@ -50,6 +57,17 @@ MARKETS = (
            "/assets/images/experience-villa-960.jpg",
            (("family", "I’m planning a family stay in Ibiza from Dubai. Dates: __. Group size: __. Villa, staff or chauffeur needs: __."),
             ("office", "I’m coordinating an Ibiza itinerary from a Dubai office. Dates: __. Priorities: __. Approval contact: __."))),
+    Market("London",
+           "Plan a private Ibiza weekend from London. Arrange a chauffeur, a Formentera yacht day, "
+           "dinner and late-night returns around your arrival and flight home.",
+           "/assets/images/experience-nightlife-960.jpg",
+           page_title="Ibiza Concierge for a Weekend from London | Ibiza VIP Move"),
+    Market("Paris",
+           "Organisez votre séjour à Ibiza depuis Paris. Demandez un devis en français pour un dîner "
+           "en villa, un chef privé, une journée en yacht ou les trajets de vos invités.",
+           "/assets/images/experience-villa-960.jpg", language="fr",
+           path="/fr/conciergerie-ibiza-depuis-paris/",
+           page_title="Conciergerie privée à Ibiza depuis Paris | Ibiza VIP Move"),
 )
 
 
@@ -64,7 +82,7 @@ def page_schema(market):
     canonical = BASE + market.route
     webpage = {
         "@type": "WebPage", "@id": canonical + "#webpage", "url": canonical,
-        "name": market.title, "description": market.description, "inLanguage": "en", "dateModified": UPDATED,
+        "name": market.title, "description": market.description, "inLanguage": market.language, "dateModified": UPDATED,
         "isPartOf": {"@id": BASE + "/#website"}, "publisher": {"@id": BASE + "/#organization"},
         "about": {"@id": canonical + "#service"}, "primaryImageOfPage": BASE + market.photo,
     }
@@ -74,7 +92,11 @@ def page_schema(market):
         "areaServed": {"@type": "Place", "name": "Ibiza, Spain"},
         "provider": {"@id": BASE + "/#organization"},
     }
-    trail = [("Home", "/"), ("International clients", HUB), (market.city, market.route)]
+    if market.language == "fr":
+        service["name"] = f"Conciergerie privée à Ibiza depuis {market.city}"
+        trail = [("Accueil", "/fr/"), ("Clients internationaux", market.hub), (market.city, market.route)]
+    else:
+        trail = [("Home", "/"), ("International clients", market.hub), (market.city, market.route)]
     breadcrumb = {
         "@type": "BreadcrumbList", "itemListElement": [
             {"@type": "ListItem", "position": i, "name": label, "item": BASE + path}
@@ -93,6 +115,9 @@ def render(hub, market):
     canonical = BASE + market.route
     message = (f"Hello Ibiza VIP Move, I’m planning an Ibiza stay from {market.city} and would like a quote. "
                "Stay dates: __. Guests: __. Villa or hotel area: __. Services requested: __.")
+    if market.language == "fr":
+        message = (f"Bonjour Ibiza VIP Move. J’organise un séjour à Ibiza depuis {market.city} et je souhaite "
+                   "un devis. Dates : __. Nombre de personnes : __. Lieu du séjour : __. Services demandés : __.")
     default_wa = whatsapp(message)
     requests = {key: whatsapp("Hello Ibiza VIP Move. " + text) for key, text in market.requests}
     template = ASSETS / slug(market.city) / "main.html"
@@ -172,7 +197,10 @@ def build():
             raise ValueError(f"Existing page at {market.route} has another owner")
         if not (ROOT / market.photo.lstrip("/")).is_file():
             raise ValueError(f"Missing approved hero image: {market.photo}")
-        html = render(hub, market)
+        template = without_planner((ROOT / market.hub.strip("/") / "index.html").read_text(encoding="utf-8"))
+        if f'<html lang="{market.language}"' not in template:
+            raise ValueError(f"Wrong template language for {market.city}")
+        html = render(template, market)
         target.parent.mkdir(exist_ok=True)
         target.write_text(html, encoding="utf-8")
     hub_file.write_text(linked_hub(hub), encoding="utf-8")

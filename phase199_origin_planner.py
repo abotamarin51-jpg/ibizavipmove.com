@@ -58,7 +58,9 @@ def planner_html(language, copy, groups, markets):
                           for key, (names, zone) in sorted(group["cities"].items(), key=lambda pair: pair[1][0][language]))
         cities.append(f'<optgroup data-country="{code}" label="{name}">{options}</optgroup>')
     service_options = "".join(f'<option>{escape(name)}</option>' for name in copy["services"])
-    guides = "".join(f'<a lang="en" hreflang="en" href="{m.route}">{escape(m.city)}</a>' for m in markets)
+    city_names = {key: names[language] for group in groups.values() for key, (names, _) in group["cities"].items()}
+    guides = "".join(f'<a hreflang="{m.language}" href="{m.route}">{escape(city_names[slug(m.city)])} '
+                     f'<small aria-hidden="true">{m.language.upper()}</small></a>' for m in markets)
     t = {k: escape(v, quote=True) for k, v in copy.items() if isinstance(v, str)}
     return f"""{START}<section id="origin-planner" aria-labelledby="origin-title" data-message="{t['message']}">
 <div class="origin-layout"><div><h2 id="origin-title">{t['heading']}</h2><p>{t['intro']}</p>

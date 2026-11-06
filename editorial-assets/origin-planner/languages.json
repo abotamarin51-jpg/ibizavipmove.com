@@ -22,7 +22,7 @@
     "ibiza": "Ibiza time",
     "action": "Prepare a WhatsApp request",
     "form": "Use the private request form",
-    "guides": "City guides in English",
+    "guides": "Ibiza concierge by departure city",
     "message": "Hello Ibiza VIP Move. I would like to arrange {service} in Ibiza. Planning from: {origin}. Stay dates: __. Number of guests: __."
   },
   "es": {
@@ -48,7 +48,7 @@
     "ibiza": "Hora en Ibiza",
     "action": "Preparar consulta por WhatsApp",
     "form": "Usar el formulario privado",
-    "guides": "Guías por ciudad en inglés",
+    "guides": "Concierge en Ibiza por ciudad de origen",
     "message": "Hola, Ibiza VIP Move. Me interesa este servicio en Ibiza: {service}. Organizo el viaje desde {origin}. Fechas: __. Número de huéspedes: __."
   },
   "fr": {
@@ -74,7 +74,7 @@
     "ibiza": "Heure à Ibiza",
     "action": "Préparer une demande sur WhatsApp",
     "form": "Utiliser le formulaire privé",
-    "guides": "Guides par ville en anglais",
+    "guides": "Conciergerie à Ibiza par ville de départ",
     "message": "Bonjour Ibiza VIP Move. Voici ma demande pour Ibiza : {service}. J’organise le voyage depuis {origin}. Dates : __. Nombre de personnes : __."
   },
   "de": {
@@ -100,7 +100,7 @@
     "ibiza": "Uhrzeit auf Ibiza",
     "action": "WhatsApp-Anfrage vorbereiten",
     "form": "Privates Anfrageformular öffnen",
-    "guides": "Städteführer auf Englisch",
+    "guides": "Ibiza-Concierge nach Abreiseort",
     "message": "Hallo Ibiza VIP Move. Für meinen Aufenthalt auf Ibiza interessiere ich mich für: {service}. Ich plane von {origin} aus. Reisedaten: __. Anzahl der Gäste: __."
   },
   "ar": {
@@ -126,7 +126,7 @@
     "ibiza": "التوقيت في إيبيزا",
     "action": "إعداد طلب عبر واتساب",
     "form": "فتح نموذج الطلب الخاص",
-    "guides": "أدلة المدن باللغة الإنجليزية",
+    "guides": "خدمات الكونسيرج في إيبيزا حسب مدينة المغادرة",
     "message": "مرحباً Ibiza VIP Move. أرغب في ترتيب الخدمة التالية في إيبيزا: {service}. أخطّط للرحلة من {origin}. تواريخ الإقامة: __. عدد الضيوف: __."
   }
 }

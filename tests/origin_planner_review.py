@@ -29,7 +29,7 @@ def review_origins(page, origin, mode, output):
         assert city in message(page.locator('#origin-whatsapp'))
         assert region in message(page.locator('#origin-whatsapp'))
         assert page.locator('link[rel="canonical"]').get_attribute('href') == f'https://ibizavipmove.com/{path}/'
-        assert page.locator('#origin-planner .origin-guides a').count() == 3
+        assert page.locator('#origin-planner .origin-guides a').count() == 5
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), (mode, path)
     assert page.locator('html').get_attribute('dir') == 'rtl'
     page.goto(origin + '/international-clients/#from-us')
@@ -67,4 +67,20 @@ def review_origins(page, origin, mode, output):
         assert len(set(briefs)) == len(requests) and all(city in b for b in briefs)
         page.evaluate("window.scrollTo({top:0, behavior:'instant'})")
         page.screenshot(path=str(output / f'origin-{guide}-{mode}.png'), animations='disabled')
-    return {'mode': mode, 'localizedHubs': len(cases), 'guides': ['Miami', 'Dubai']}
+    for label, language, path, form, main_copy in (
+        ('London', 'en', '/london-to-ibiza-concierge/', '/contact/?service=travel-concierge', 'weekend'),
+        ('Paris', 'fr', '/fr/conciergerie-ibiza-depuis-paris/', '/fr/contact/', 'depuis Paris'),
+    ):
+        page.goto(origin + '/international-clients/')
+        page.locator('#origin-planner').get_by_role('link', name=label, exact=True).click()
+        page.wait_for_url(origin + path)
+        assert page.locator('html').get_attribute('lang') == language
+        expect(page.locator('h1')).to_contain_text(main_copy)
+        assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com' + path
+        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
+        assert label in message(page.locator('main .ny-button').first)
+        link = page.locator('main a[href="' + form + '"]').first
+        link.click()
+        page.wait_for_url(origin + form)
+        assert page.locator('html').get_attribute('lang') == language
+    return {'mode': mode, 'localizedHubs': len(cases), 'guides': ['Miami', 'Dubai', 'London', 'Paris']}
