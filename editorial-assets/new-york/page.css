@@ -1,0 +1,100 @@
+.ny-stay {
+  --ny-ink: #151915;
+  --ny-paper: #f5f1e9;
+  --ny-rule: #cfc8ba;
+  color: var(--ny-ink);
+  background: var(--ny-paper);
+}
+.ny-hero {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+  color: #f8f4ec;
+  background: #151915;
+}
+.ny-intro {
+  padding: clamp(112px, 10vw, 160px) clamp(28px, 5.5vw, 100px) clamp(58px, 6vw, 96px);
+  align-self: center;
+}
+.ny-breadcrumb {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.7em;
+  margin-bottom: clamp(24px, 3vw, 48px);
+  font-size: 0.85rem;
+  color: #e2d9c9;
+}
+.ny-breadcrumb a, .ny-form-link { display: inline-flex; align-items: center; min-height: 44px; }
+.ny-stay h1, .ny-stay h2 {
+  font-family: Georgia, 'Times New Roman', serif !important;
+  font-weight: 400 !important;
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+.ny-stay h1 {
+  font-size: clamp(3.3rem, 5vw, 6.2rem);
+  line-height: 1.01;
+  margin: 0 0 1.65rem;
+  color: inherit;
+}
+.ny-stay h1 em { display: block; color: #dec9a5; font-weight: inherit; }
+.ny-city { white-space: nowrap; }
+.ny-stay p { font-size: 1.05rem; line-height: 1.65; margin: 0; }
+.ny-intro p { max-width: 36em; margin-bottom: 1.7rem; color: #e6e1d6; }
+.ny-photo { display: block; min-width: 0; overflow: hidden; }
+.ny-photo img { display: block; width: 100%; height: 100%; object-fit: cover; object-position: 54% 55%; }
+.ny-stay a { color: inherit; text-decoration: underline; text-underline-offset: 0.22em; }
+.ny-stay a:focus-visible { outline: 2px solid currentColor; outline-offset: 4px; }
+.ny-stay .ny-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 0.8em 1.35em;
+  background: #ede3cf;
+  color: #171b17;
+  text-decoration: none;
+  font-weight: 600;
+  line-height: 1.35;
+  text-align: center;
+}
+.ny-stay .ny-button:focus-visible { outline-color: #fff; }
+.ny-stay .ny-button:hover { background: #fff6e5; }
+.ny-form-link { margin: 0.25rem 0 0 0; padding-inline: 0.9rem; font-size: 0.9rem; }
+.ny-section, .ny-closing {
+  display: grid;
+  grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+  gap: clamp(32px, 8vw, 128px);
+  padding: clamp(56px, 6.5vw, 110px) max(6vw, calc((100vw - 1320px) / 2));
+}
+.ny-section + .ny-section { border-top: 1px solid var(--ny-rule); }
+.ny-section h2, .ny-closing h2 {
+  margin: 0;
+  font-size: clamp(2.5rem, 4vw, 4.6rem);
+  line-height: 1.04;
+  color: inherit;
+}
+.ny-section p + p, .ny-closing p + p { margin-top: 1rem; }
+.ny-section h3 {
+  margin: 0 0 0.5rem;
+  font-family: inherit;
+  font-size: 1.14rem;
+  font-weight: 600;
+  letter-spacing: normal;
+}
+.ny-route-note { margin-top: 1.6rem; padding-left: 1.25rem; border-left: 2px solid #9b8766; }
+.ny-route-note p { font-size: 0.96rem; }
+.ny-itinerary > div + div { border-top: 1px solid var(--ny-rule); padding-top: 1.4rem; margin-top: 1.4rem; }
+.ny-closing { color: #f8f4ec; background: #232922; }
+.ny-closing .ny-button { margin-top: 1.5rem; }
+@media (max-width: 760px) {
+  .ny-hero, .ny-section, .ny-closing { grid-template-columns: minmax(0, 1fr); }
+  .ny-intro { padding: 92px 6vw 36px; }
+  .ny-breadcrumb { margin-bottom: 14px; }
+  .ny-stay h1 { font-size: clamp(2.7rem, 10vw, 4.8rem); }
+  .ny-photo img { height: auto; aspect-ratio: 16 / 9; }
+  .ny-section, .ny-closing { gap: 24px; padding: 46px 6vw; }
+}
+@media (max-width: 420px) {
+  .ny-form-link { display: flex; width: fit-content; padding-inline: 0; }
+}

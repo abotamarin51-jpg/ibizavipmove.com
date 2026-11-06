@@ -169,6 +169,7 @@ jobs:
           python3 phase190_club_guides.py
           python3 phase190_audit.py
           python3 phase194_home_experiences.py
+          python3 phase198_new_york.py
           python3 phase67_final_audit.py
           python3 phase174_whatsapp_access.py
       - name: Test generated contact activation without network calls

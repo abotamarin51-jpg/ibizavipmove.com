@@ -385,6 +385,29 @@ def review_spanish_faq_briefs(page, origin, mode, width, height, output):
     return results
 
 
+def review_new_york(page, origin, mode, output):
+    path = '/new-york-to-ibiza-concierge/'
+    page.goto(origin + '/international-clients/')
+    page.get_by_role('link', name='Planning an Ibiza stay from New York').click()
+    page.wait_for_url(origin + path)
+    assert page.get_by_role('heading', level=1, name='Private concierge in Ibiza for New York travelers').is_visible()
+    assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com' + path
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), mode
+    assert page.locator('.ny-photo img').evaluate('img => img.complete && img.naturalWidth > 0')
+    for cta in page.locator('main a[href^="https://wa.me/"]').all():
+        destination = urlsplit(cta.get_attribute('href'))
+        assert (destination.netloc, destination.path) == ('wa.me', '/34600703303')
+        assert 'from New York' in parse_qs(destination.query)['text'][0]
+        cta.click(trial=True)
+    page.evaluate("window.scrollTo({top:0, behavior:'instant'})")
+    photo = output / f'new-york-concierge-{mode}.png'
+    page.screenshot(path=str(photo), animations='disabled')
+    page.get_by_role('link', name='Use the private request form').click()
+    page.wait_for_url(origin + '/contact/?service=travel-concierge')
+    assert page.locator('#fService').input_value() == 'Luxury Travel Concierge'
+    return {'mode': mode, 'screenshot': photo.name, 'path': path}
+
+
 def main():
     root = Path('_site').resolve()
     output = (Path(os.environ['RUNNER_TEMP']) / 'ivm-contact-review').resolve()
@@ -503,6 +526,9 @@ def main():
                         print(f'PASS: Home first-brief copy, layout and contact hit targets: {mode}')
                         report.setdefault('homeExperiences', []).append(
                             review_home_experiences(page, origin, mode, width, height, output)
+                        )
+                        report.setdefault('newYorkConcierge', []).append(
+                            review_new_york(page, origin, mode, output)
                         )
                         assert not errors and not missing, {'scriptErrors': errors, 'missingLocalResources': missing}
                         report.setdefault('homeDMC', []).append(
