@@ -185,6 +185,22 @@ def main():
                             assert element.is_visible() and element.evaluate(INSIDE_JS), 'Car enquiry copy clipped'
                         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
 
+                        response = page.goto(origin + '/bespoke-concierge-ibiza/', wait_until='load')
+                        assert response and response.ok, 'Bespoke page unavailable'
+                        hero = page.locator('.service-hero')
+                        intro = hero.locator('p')
+                        assert intro.inner_text() == (
+                            'Looking for a particular gift, a hard-to-find item or help with a last-minute request in Ibiza? '
+                            'Tell us what you need and by when. We’ll check local options and confirm what can be arranged.'
+                        )
+                        action = hero.get_by_role('link', name='Request this service')
+                        assert action.get_attribute('href').startswith(EXPECTED_WA)
+                        for element in (intro, action):
+                            element.scroll_into_view_if_needed()
+                            assert element.is_visible() and element.evaluate(INSIDE_JS), 'Bespoke hero content clipped'
+                        assert intro.bounding_box()['y'] + intro.bounding_box()['height'] <= action.bounding_box()['y'] + 1
+                        assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
+
                         assert not errors and not missing, {
                             'javascriptErrors': errors,
                             'missingLocalResources': missing,
