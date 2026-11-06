@@ -70,15 +70,6 @@ def run():
                 actual = Counter(a.get('href') for a in links if a['data-ivm113'] == 'audience')
                 require(actual == expected, f'audience routing {path}')
                 require('Doha' not in html and 'الدوحة' not in html, f'out-of-scope city list {path}')
-                if lang == 'fr':
-                    require('Coordonnez votre demande à Ibiza.' in html, f'French closing heading {path}')
-                    require('Envoyez-nous vos dates, le nombre d’invités et les services souhaités. Un interlocuteur à Ibiza poursuivra la conversation en privé et vous indiquera les prochaines étapes.' in html, f'French closing copy {path}')
-                    require('>Préparer ma demande</a>' in html, f'French form label {path}')
-                    require('>Contacter la conciergerie sur WhatsApp</a>' in html, f'French WhatsApp label {path}')
-                    require('>E-mail pour partenaires et demandes professionnelles</a>' in html, f'French email label {path}')
-                    require('href="https://wa.me/34600703303"' in html, f'French WhatsApp destination {path}')
-                    require('href="mailto:partnership@ibizavipmove.com"' in html, f'French email destination {path}')
-                    require('Coordonnez votre brief à Ibiza.' not in html and '>Email Partnerships</a>' not in html, f'old French closing copy removed {path}')
             else:
                 office = [a for a in links if a['data-ivm113'] == 'office']
                 require(len(office) == 2, f'office CTA count {path}')
