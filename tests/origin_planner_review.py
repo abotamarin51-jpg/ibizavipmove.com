@@ -29,7 +29,7 @@ def review_origins(page, origin, mode, output):
         assert city in message(page.locator('#origin-whatsapp'))
         assert region in message(page.locator('#origin-whatsapp'))
         assert page.locator('link[rel="canonical"]').get_attribute('href') == f'https://ibizavipmove.com/{path}/'
-        assert page.locator('#origin-planner .origin-guides a').count() == 5
+        assert page.locator('#origin-planner .origin-guides a').count() == 8
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), (mode, path)
     assert page.locator('html').get_attribute('dir') == 'rtl'
     page.goto(origin + '/international-clients/?utm_source=qa#from-gb-london')
@@ -82,9 +82,12 @@ def review_origins(page, origin, mode, output):
         assert len(set(briefs)) == len(requests) and all(city in b for b in briefs)
         page.evaluate("window.scrollTo({top:0, behavior:'instant'})")
         page.screenshot(path=str(output / f'origin-{guide}-{mode}.png'), animations='disabled')
-    for label, language, path, form, main_copy in (
-        ('London', 'en', '/london-to-ibiza-concierge/', '/contact/?service=travel-concierge', 'weekend'),
-        ('Paris', 'fr', '/fr/conciergerie-ibiza-depuis-paris/', '/fr/contact/', 'depuis Paris'),
+    for label, language, path, form, main_copy, request_city in (
+        ('London', 'en', '/london-to-ibiza-concierge/', '/contact/?service=travel-concierge', 'weekend', 'London'),
+        ('Paris', 'fr', '/fr/conciergerie-ibiza-depuis-paris/', '/fr/contact/', 'depuis Paris', 'Paris'),
+        ('Munich', 'de', '/de/concierge-ibiza-ab-muenchen/', '/de/kontakt/', 'München', 'München'),
+        ('Amsterdam', 'en', '/amsterdam-to-ibiza-concierge/', '/contact/?service=villas', 'Amsterdam', 'Amsterdam'),
+        ('Milan', 'en', '/milan-to-ibiza-concierge/', '/contact/?service=access', 'Milan', 'Milan'),
     ):
         page.goto(origin + '/international-clients/')
         page.locator('#origin-planner').get_by_role('link', name=label, exact=True).click()
@@ -93,9 +96,27 @@ def review_origins(page, origin, mode, output):
         expect(page.locator('h1')).to_contain_text(main_copy)
         assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com' + path
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1')
-        assert label in message(page.locator('main .ny-button').first)
+        assert request_city in message(page.locator('main .ny-button').first)
         link = page.locator('main a[href="' + form + '"]').first
         link.click()
         page.wait_for_url(origin + form)
         assert page.locator('html').get_attribute('lang') == language
-    return {'mode': mode, 'localizedHubs': len(cases), 'guides': ['Miami', 'Dubai', 'London', 'Paris']}
+        if form.endswith('service=villas'):
+            expect(page.locator('#fService')).to_have_value('Luxury Villas & Private Stays')
+        if form.endswith('service=access'):
+            expect(page.locator('#fService')).to_have_value('Restaurants, Beach Clubs & Nightlife')
+
+    for service, city, destination in (
+        ('/de/private-events-ibiza/', 'munich', '/de/concierge-ibiza-ab-muenchen/'),
+        ('/luxury-villas-ibiza/', 'amsterdam', '/amsterdam-to-ibiza-concierge/'),
+        ('/vip-tables-club-access-ibiza/', 'milan', '/milan-to-ibiza-concierge/'),
+    ):
+        page.goto(origin + service)
+        link = page.locator(f'main [data-origin-reference="{city}"] a')
+        expect(link).to_have_count(1)
+        assert link.get_attribute('href') == destination
+        link.click()
+        page.wait_for_url(origin + destination)
+        expect(page.locator('main a[href="' + service + '"]').first).to_be_visible()
+    return {'mode': mode, 'localizedHubs': len(cases), 'newServiceLinks': 3,
+            'guides': ['Miami', 'Dubai', 'London', 'Paris', 'Munich', 'Amsterdam', 'Milan']}
