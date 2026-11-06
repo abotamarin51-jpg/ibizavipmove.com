@@ -1,0 +1,110 @@
+country_code	country	city	timezone	es	fr	de	ar
+AE	United Arab Emirates	Abu Dhabi	Asia/Dubai	Abu Dabi	Abou Dabi	Abu Dhabi	أبوظبي
+AE	United Arab Emirates	Dubai	Asia/Dubai	Dubái	Dubaï	Dubai	دبي
+AR	Argentina	Buenos Aires	America/Argentina/Buenos_Aires	Buenos Aires	Buenos Aires	Buenos Aires	بوينس آيرس
+AT	Austria	Vienna	Europe/Vienna	Viena	Vienne	Wien	فيينا
+AU	Australia	Brisbane	Australia/Brisbane	Brisbane	Brisbane	Brisbane	بريزبن
+AU	Australia	Melbourne	Australia/Melbourne	Melbourne	Melbourne	Melbourne	ملبورن
+AU	Australia	Perth	Australia/Perth	Perth	Perth	Perth	بيرث
+AU	Australia	Sydney	Australia/Sydney	Sídney	Sydney	Sydney	سيدني
+BE	Belgium	Antwerp	Europe/Brussels	Amberes	Anvers	Antwerpen	أنتويرب
+BE	Belgium	Brussels	Europe/Brussels	Bruselas	Bruxelles	Brüssel	بروكسل
+BH	Bahrain	Manama	Asia/Bahrain	Manama	Manama	Manama	المنامة
+BR	Brazil	Rio de Janeiro	America/Sao_Paulo	Río de Janeiro	Rio de Janeiro	Rio de Janeiro	ريو دي جانيرو
+BR	Brazil	São Paulo	America/Sao_Paulo	São Paulo	São Paulo	São Paulo	ساو باولو
+CA	Canada	Calgary	America/Edmonton	Calgary	Calgary	Calgary	كالغاري
+CA	Canada	Montréal	America/Toronto	Montreal	Montréal	Montréal	مونتريال
+CA	Canada	Toronto	America/Toronto	Toronto	Toronto	Toronto	تورونتو
+CA	Canada	Vancouver	America/Vancouver	Vancouver	Vancouver	Vancouver	فانكوفر
+CH	Switzerland	Basel	Europe/Zurich	Basilea	Bâle	Basel	بازل
+CH	Switzerland	Geneva	Europe/Zurich	Ginebra	Genève	Genf	جنيف
+CH	Switzerland	Lugano	Europe/Zurich	Lugano	Lugano	Lugano	لوغانو
+CH	Switzerland	Zürich	Europe/Zurich	Zúrich	Zurich	Zürich	زيورخ
+CL	Chile	Santiago	America/Santiago	Santiago	Santiago	Santiago	سانتياغو
+CN	China	Beijing	Asia/Shanghai	Pekín	Pékin	Peking	بكين
+CN	China	Guangzhou	Asia/Shanghai	Cantón	Canton	Guangzhou	غوانزو
+CN	China	Hangzhou	Asia/Shanghai	Hangzhou	Hangzhou	Hangzhou	هانغتشو
+CN	China	Shanghai	Asia/Shanghai	Shanghái	Shanghai	Shanghai	شنغهاي
+CN	China	Shenzhen	Asia/Shanghai	Shenzhen	Shenzhen	Shenzhen	شنتشن
+CO	Colombia	Bogotá	America/Bogota	Bogotá	Bogotá	Bogotá	بوغوتا
+DE	Germany	Berlin	Europe/Berlin	Berlín	Berlin	Berlin	برلين
+DE	Germany	Düsseldorf	Europe/Berlin	Düsseldorf	Düsseldorf	Düsseldorf	دوسلدورف
+DE	Germany	Frankfurt	Europe/Berlin	Fráncfort	Francfort	Frankfurt	فرانكفورت
+DE	Germany	Hamburg	Europe/Berlin	Hamburgo	Hambourg	Hamburg	هامبورغ
+DE	Germany	Munich	Europe/Berlin	Múnich	Munich	München	ميونخ
+DK	Denmark	Copenhagen	Europe/Copenhagen	Copenhague	Copenhague	Kopenhagen	كوبنهاغن
+ES	Spain	Barcelona	Europe/Madrid	Barcelona	Barcelone	Barcelona	برشلونة
+ES	Spain	Madrid	Europe/Madrid	Madrid	Madrid	Madrid	مدريد
+ES	Spain	Marbella	Europe/Madrid	Marbella	Marbella	Marbella	ماربيا
+FR	France	Cannes	Europe/Paris	Cannes	Cannes	Cannes	كان
+FR	France	Èze	Europe/Paris	Èze	Èze	Èze	إيز
+FR	France	Lyon	Europe/Paris	Lyon	Lyon	Lyon	ليون
+FR	France	Nice	Europe/Paris	Niza	Nice	Nizza	نيس
+FR	France	Paris	Europe/Paris	París	Paris	Paris	باريس
+FR	France	Saint-Tropez	Europe/Paris	Saint-Tropez	Saint-Tropez	Saint-Tropez	سان تروبيه
+GB	United Kingdom	Edinburgh	Europe/London	Edimburgo	Édimbourg	Edinburgh	إدنبرة
+GB	United Kingdom	London	Europe/London	Londres	Londres	London	لندن
+GB	United Kingdom	Manchester	Europe/London	Manchester	Manchester	Manchester	مانشستر
+GB	United Kingdom	Trafford	Europe/London	Trafford	Trafford	Trafford	ترافورد
+GR	Greece	Athens	Europe/Athens	Atenas	Athènes	Athen	أثينا
+HK	Hong Kong	Hong Kong	Asia/Hong_Kong	Hong Kong	Hong Kong	Hongkong	هونغ كونغ
+ID	Indonesia	Jakarta	Asia/Jakarta	Yakarta	Jakarta	Jakarta	جاكرتا
+IE	Ireland	Dublin	Europe/Dublin	Dublín	Dublin	Dublin	دبلن
+IL	Israel	Herzliya	Asia/Jerusalem	Herzliya	Herzliya	Herzliya	هرتسليا
+IL	Israel	Tel Aviv	Asia/Jerusalem	Tel Aviv	Tel Aviv	Tel Aviv	تل أبيب
+IN	India	Bengaluru	Asia/Kolkata	Bangalore	Bengaluru	Bengaluru	بنغالورو
+IN	India	Delhi	Asia/Kolkata	Delhi	Delhi	Delhi	دلهي
+IN	India	Mumbai	Asia/Kolkata	Bombay	Mumbai	Mumbai	مومباي
+IT	Italy	Milan	Europe/Rome	Milán	Milan	Mailand	ميلانو
+IT	Italy	Rome	Europe/Rome	Roma	Rome	Rom	روما
+JP	Japan	Kobe	Asia/Tokyo	Kobe	Kobe	Kobe	كوبي
+JP	Japan	Kyoto	Asia/Tokyo	Kioto	Kyoto	Kyoto	كيوتو
+JP	Japan	Osaka	Asia/Tokyo	Osaka	Osaka	Osaka	أوساكا
+JP	Japan	Tokyo	Asia/Tokyo	Tokio	Tokyo	Tokio	طوكيو
+KR	South Korea	Seoul	Asia/Seoul	Seúl	Séoul	Seoul	سيول
+KW	Kuwait	Kuwait City	Asia/Kuwait	Ciudad de Kuwait	Ville de Koweït	Kuwait-Stadt	مدينة الكويت
+LU	Luxembourg	Luxembourg City	Europe/Luxembourg	Ciudad de Luxemburgo	Luxembourg-Ville	Luxemburg-Stadt	مدينة لوكسمبورغ
+MC	Monaco	Monaco	Europe/Monaco	Mónaco	Monaco	Monaco	موناكو
+MX	Mexico	Mexico City	America/Mexico_City	Ciudad de México	Mexico	Mexiko-Stadt	مدينة مكسيكو
+MX	Mexico	Monterrey	America/Monterrey	Monterrey	Monterrey	Monterrey	مونتيري
+MY	Malaysia	Kuala Lumpur	Asia/Kuala_Lumpur	Kuala Lumpur	Kuala Lumpur	Kuala Lumpur	كوالالمبور
+NG	Nigeria	Lagos	Africa/Lagos	Lagos	Lagos	Lagos	لاغوس
+NL	Netherlands	Amsterdam	Europe/Amsterdam	Ámsterdam	Amsterdam	Amsterdam	أمستردام
+NO	Norway	Oslo	Europe/Oslo	Oslo	Oslo	Oslo	أوسلو
+NZ	New Zealand	Auckland	Pacific/Auckland	Auckland	Auckland	Auckland	أوكلاند
+OM	Oman	Muscat	Asia/Muscat	Mascate	Mascate	Maskat	مسقط
+PA	Panama	Panama City	America/Panama	Ciudad de Panamá	Ville de Panama	Panama-Stadt	مدينة بنما
+PL	Poland	Warsaw	Europe/Warsaw	Varsovia	Varsovie	Warschau	وارسو
+PT	Portugal	Lisbon	Europe/Lisbon	Lisboa	Lisbonne	Lissabon	لشبونة
+QA	Qatar	Doha	Asia/Qatar	Doha	Doha	Doha	الدوحة
+RU	Russia	Moscow	Europe/Moscow	Moscú	Moscou	Moskau	موسكو
+SA	Saudi Arabia	Jeddah	Asia/Riyadh	Yeda	Djeddah	Dschidda	جدة
+SA	Saudi Arabia	Riyadh	Asia/Riyadh	Riad	Riyad	Riad	الرياض
+SE	Sweden	Stockholm	Europe/Stockholm	Estocolmo	Stockholm	Stockholm	ستوكهولم
+SG	Singapore	Singapore	Asia/Singapore	Singapur	Singapour	Singapur	سنغافورة
+TH	Thailand	Bangkok	Asia/Bangkok	Bangkok	Bangkok	Bangkok	بانكوك
+TR	Türkiye	Istanbul	Europe/Istanbul	Estambul	Istanbul	Istanbul	إسطنبول
+TW	Taiwan	Taipei	Asia/Taipei	Taipéi	Taipei	Taipei	تايبيه
+US	United States	Aspen	America/Denver	Aspen	Aspen	Aspen	أسبن
+US	United States	Atlanta	America/New_York	Atlanta	Atlanta	Atlanta	أتلانتا
+US	United States	Austin	America/Chicago	Austin	Austin	Austin	أوستن
+US	United States	Beverly Hills	America/Los_Angeles	Beverly Hills	Beverly Hills	Beverly Hills	بيفرلي هيلز
+US	United States	Boston	America/New_York	Boston	Boston	Boston	بوسطن
+US	United States	Chicago	America/Chicago	Chicago	Chicago	Chicago	شيكاغو
+US	United States	Dallas	America/Chicago	Dallas	Dallas	Dallas	دالاس
+US	United States	Houston	America/Chicago	Houston	Houston	Houston	هيوستن
+US	United States	Los Angeles	America/Los_Angeles	Los Ángeles	Los Angeles	Los Angeles	لوس أنجلوس
+US	United States	Miami	America/New_York	Miami	Miami	Miami	ميامي
+US	United States	New York	America/New_York	Nueva York	New York	New York	نيويورك
+US	United States	Palm Beach	America/New_York	Palm Beach	Palm Beach	Palm Beach	بالم بيتش
+US	United States	Palo Alto	America/Los_Angeles	Palo Alto	Palo Alto	Palo Alto	بالو ألتو
+US	United States	San Francisco	America/Los_Angeles	San Francisco	San Francisco	San Francisco	سان فرانسيسكو
+US	United States	San Jose	America/Los_Angeles	San José	San Jose	San Jose	سان خوسيه
+US	United States	Scottsdale	America/Phoenix	Scottsdale	Scottsdale	Scottsdale	سكوتسديل
+US	United States	Seattle	America/Los_Angeles	Seattle	Seattle	Seattle	سياتل
+US	United States	Washington, DC	America/New_York	Washington D. C.	Washington	Washington, D.C.	واشنطن العاصمة
+US	United States	West Palm Beach	America/New_York	West Palm Beach	West Palm Beach	West Palm Beach	ويست بالم بيتش
+UY	Uruguay	Montevideo	America/Montevideo	Montevideo	Montevideo	Montevideo	مونتيفيديو
+UY	Uruguay	Punta del Este	America/Montevideo	Punta del Este	Punta del Este	Punta del Este	بونتا ديل إستي
+ZA	South Africa	Cape Town	Africa/Johannesburg	Ciudad del Cabo	Le Cap	Kapstadt	كيب تاون
+ZA	South Africa	Johannesburg	Africa/Johannesburg	Johannesburgo	Johannesburg	Johannesburg	جوهانسبرغ
