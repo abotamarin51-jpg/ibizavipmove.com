@@ -12,6 +12,7 @@ from phase186_vip_services_context import audit as audit_vip_services_context
 from phase178_enhance import (
     HOME, HOME_SITEMAP, HOME_NEW_LEAD, HOME_NEW_SERVICE, HOME_OLD_LEAD,
     HOME_OLD_SERVICE, HOME_NEW_LASTMOD, HOME_OLD_LASTMOD,
+    FR_INTL, FR_INTL_FORM_OLD, FR_INTL_FORM_NEW,
 )
 
 SERVICES = Path('_site/fr/services/index.html')
@@ -71,6 +72,27 @@ def run():
 
     if '<h1>Votre conciergerie privée à Ibiza</h1>' not in concierge:
         raise SystemExit('Phase 178 audit: French Concierge target identity changed')
+
+    international = FR_INTL.read_text(encoding='utf-8')
+    expected_international = (
+        'Coordonnez votre demande à Ibiza.',
+        'Envoyez-nous vos dates, le nombre d’invités et les services souhaités. Un interlocuteur à Ibiza poursuivra la conversation en privé et vous indiquera les prochaines étapes.',
+        'Contacter la conciergerie sur WhatsApp',
+        'E-mail pour partenaires et demandes professionnelles',
+        FR_INTL_FORM_NEW,
+    )
+    if not all(text in international for text in expected_international):
+        raise SystemExit('Phase 178 audit: approved French international contact copy missing')
+    if ('Coordonnez votre brief à Ibiza.' in international
+            or '>Email Partnerships</a>' in international
+            or FR_INTL_FORM_OLD in international):
+        raise SystemExit('Phase 178 audit: old French international contact copy still present')
+    if (not canonical_is(international, 'https://ibizavipmove.com/fr/clients-internationaux/')
+            or is_noindex(international)
+            or 'https://wa.me/34600703303' not in international
+            or 'mailto:partnership@ibizavipmove.com' not in international
+            or '/fr/contact/' not in international):
+        raise SystemExit('Phase 178 audit: French international routes or indexability changed')
 
     print('PASS: Phase 178 audit — French contextual Concierge pathway; canonicals/indexability unchanged')
 
