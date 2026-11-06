@@ -3,7 +3,7 @@ from functools import partial
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
 from threading import Thread
-from urllib.parse import urlsplit
+from urllib.parse import parse_qs, urlsplit
 import json
 import os
 import shutil
@@ -222,7 +222,9 @@ def review_french_concierge(page, origin, mode, width, height, output):
         'Un seul interlocuteur sur l’île pour organiser vos trajets avec chauffeur, '
         'réserver votre villa ou préparer une journée en yacht suivie d’une soirée avec table VIP.'
     )
-    assert cta.get_attribute('href') == 'https://wa.me/34600703303'
+    dest = urlsplit(cta.get_attribute('href'))
+    assert (dest.scheme, dest.netloc, dest.path) == ('https', 'wa.me', '/34600703303')
+    assert parse_qs(dest.query)['text'][0].startswith('Bonjour Ibiza VIP Move,')
     page.evaluate('document.fonts.ready')
     bounds = [item.bounding_box() for item in (title, lead, cta)]
     assert all(b and b['height'] > 0 and b['x'] >= -1 and
