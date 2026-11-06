@@ -13,6 +13,7 @@ from phase178_enhance import (
     HOME, HOME_SITEMAP, HOME_NEW_LEAD, HOME_NEW_SERVICE, HOME_OLD_LEAD,
     HOME_OLD_SERVICE, HOME_NEW_LASTMOD, HOME_OLD_LASTMOD,
     FR_INTL, FR_INTL_FORM_OLD, FR_INTL_FORM_NEW,
+    DE_INTL, DE_INTL_FORM_OLD, DE_INTL_FORM_NEW,
 )
 
 SERVICES = Path('_site/fr/services/index.html')
@@ -93,6 +94,27 @@ def run():
             or 'mailto:partnership@ibizavipmove.com' not in international
             or '/fr/contact/' not in international):
         raise SystemExit('Phase 178 audit: French international routes or indexability changed')
+
+    german_international = DE_INTL.read_text(encoding='utf-8')
+    expected_german_international = (
+        'Koordinieren Sie Ihre Anfrage für Ibiza.',
+        'Senden Sie uns Ihre Reisedaten, die Gästezahl und die gewünschten Leistungen. Ein Ansprechpartner auf Ibiza führt die Abstimmung diskret fort und erklärt die nächsten Schritte.',
+        'Concierge über WhatsApp kontaktieren',
+        'E-Mail für Partner und professionelle Anfragen',
+        DE_INTL_FORM_NEW,
+    )
+    if not all(text in german_international for text in expected_german_international):
+        raise SystemExit('Phase 178 audit: approved German international contact copy missing')
+    if ('Koordinieren Sie Ihren Ibiza-Brief.' in german_international
+            or '>Email Partnerships</a>' in german_international
+            or DE_INTL_FORM_OLD in german_international):
+        raise SystemExit('Phase 178 audit: old German international contact copy still present')
+    if (not canonical_is(german_international, 'https://ibizavipmove.com/de/internationale-kunden/')
+            or is_noindex(german_international)
+            or 'https://wa.me/34600703303' not in german_international
+            or 'mailto:partnership@ibizavipmove.com' not in german_international
+            or '/de/kontakt/' not in german_international):
+        raise SystemExit('Phase 178 audit: German international routes or indexability changed')
 
     print('PASS: Phase 178 audit — French contextual Concierge pathway; canonicals/indexability unchanged')
 
