@@ -31,6 +31,9 @@ HOME_OLD_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-09-03</las
 HOME_NEW_LASTMOD = '<loc>https://ibizavipmove.com/</loc><lastmod>2026-10-31</lastmod>'
 
 PATH = Path('_site/fr/services/index.html')
+FR_INTL = Path('_site/fr/clients-internationaux/index.html')
+FR_INTL_FORM_OLD = '>Préparer la demande avec le formulaire</a>'
+FR_INTL_FORM_NEW = '>Préparer ma demande</a>'
 OLD = 'Passez par le concierge plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'
 NEW = 'Passez par la <a class="text-link" href="/fr/conciergerie-privee-ibiza/">conciergerie privée</a> plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'
 
@@ -49,6 +52,21 @@ def enhance():
     PATH.write_text(html.replace(OLD, NEW, 1), encoding='utf-8')
     print('PASS: Phase 178 — one French Services-to-Concierge pathway added')
 
+
+
+
+def enhance_french_international_contact_label():
+    """Keep the final French international-client form handoff fully in French."""
+    html = FR_INTL.read_text(encoding='utf-8')
+    if FR_INTL_FORM_NEW in html and FR_INTL_FORM_OLD not in html:
+        if html.count(FR_INTL_FORM_NEW) != 1:
+            raise SystemExit('French international contact: duplicate form label')
+        print('PASS: French international contact — localized form label already present')
+        return
+    if html.count(FR_INTL_FORM_OLD) != 1 or FR_INTL_FORM_NEW in html:
+        raise SystemExit('French international contact: expected one existing form label')
+    FR_INTL.write_text(html.replace(FR_INTL_FORM_OLD, FR_INTL_FORM_NEW, 1), encoding='utf-8')
+    print('PASS: French international contact — concise localized form label')
 
 
 def enhance_home_readability():
@@ -207,3 +225,4 @@ if __name__ == '__main__':
     enhance_seo_copy()
     enhance_french_yacht_brief()
     enhance_english_yacht_brief()
+    enhance_french_international_contact_label()
