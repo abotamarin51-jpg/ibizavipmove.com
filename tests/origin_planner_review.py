@@ -88,7 +88,7 @@ def review_origins(page, origin, mode, output):
         ('Munich', 'de', '/de/concierge-ibiza-ab-muenchen/', '/de/kontakt/', 'München', 'München'),
         ('Amsterdam', 'en', '/amsterdam-to-ibiza-concierge/', '/contact/?service=villas', 'Amsterdam', 'Amsterdam'),
         ('Milan', 'en', '/milan-to-ibiza-concierge/', '/contact/?service=access', 'Milan', 'Milan'),
-        ('Zurich', 'de', '/de/concierge-ibiza-ab-zuerich/', '/de/kontakt/', 'Zürich', 'Zürich'),
+        ('Zürich', 'de', '/de/concierge-ibiza-ab-zuerich/', '/de/kontakt/', 'Zürich', 'Zürich'),
     ):
         page.goto(origin + '/international-clients/')
         page.locator('#origin-planner').get_by_role('link', name=label, exact=True).click()
