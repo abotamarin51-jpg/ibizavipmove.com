@@ -29,6 +29,7 @@ class Market:
     city_label: str = ""
     enquiry: str = ""
     service_reference: tuple[str, str, str] | None = None
+    updated: str = UPDATED
 
     @property
     def route(self):
@@ -99,6 +100,18 @@ MARKETS = (
                    "Dinner guests: __. Club guests: __. Preferred venue and chauffeur needs: __.",
            service_reference=("/vip-tables-club-access-ibiza/", "partners-strip",
                               "Plan an Ibiza dinner and VIP table from Milan")),
+    Market("Zurich",
+           "Planen Sie Ihre Ibiza-Ferien ab Zürich mit privatem Concierge. Fragen Sie Villa, "
+           "Privatkoch, Hauspersonal und Chauffeur mit abgestimmten Aufgaben und Einsatzzeiten an.",
+           "/assets/images/experience-villa-960.jpg", language="de", city_label="Zürich",
+           path="/de/concierge-ibiza-ab-zuerich/",
+           page_title="Ibiza Concierge für Gäste aus Zürich | Villa & Personal | Ibiza VIP Move",
+           enquiry="Hallo Ibiza VIP Move, ich plane Villenferien auf Ibiza ab Zürich. Reisedaten: __. "
+                   "Erwachsene und Kinder: __. Villa bereits gebucht: __. Gewünschtes Personal und Einsatzzeiten: __. "
+                   "Chauffeurbedarf: __.",
+           service_reference=("/de/luxusvillen-ibiza/", "editorial",
+                              "Villenferien mit Privatkoch und Personal ab Zürich planen"),
+           updated="2026-11-07"),
 )
 
 
@@ -113,7 +126,7 @@ def page_schema(market):
     canonical = BASE + market.route
     webpage = {
         "@type": "WebPage", "@id": canonical + "#webpage", "url": canonical,
-        "name": market.title, "description": market.description, "inLanguage": market.language, "dateModified": UPDATED,
+        "name": market.title, "description": market.description, "inLanguage": market.language, "dateModified": market.updated,
         "isPartOf": {"@id": BASE + "/#website"}, "publisher": {"@id": BASE + "/#organization"},
         "about": {"@id": canonical + "#service"}, "primaryImageOfPage": BASE + market.photo,
     }
@@ -212,6 +225,8 @@ def update_sitemaps(hub_paths):
     ET.register_namespace("image", IMAGE_NS)
     url_tag, loc_tag, date_tag = [f"{{{SITEMAP_NS}}}{key}" for key in ("url", "loc", "lastmod")]
     photos = {market.route: market.photo for market in MARKETS}
+    modified = {market.route: market.updated for market in MARKETS}
+    hub_updated = max(modified.values())
     for name in ("sitemap.xml", "image-sitemap.xml"):
         tree = ET.parse(ROOT / name)
         root = tree.getroot()
@@ -229,7 +244,7 @@ def update_sitemaps(hub_paths):
                 date = entry.find(date_tag)
                 if date is None:
                     date = ET.SubElement(entry, date_tag)
-                date.text = max(date.text or "", UPDATED)
+                date.text = max(date.text or "", modified.get(path, hub_updated))
             else:
                 image_tag = f"{{{IMAGE_NS}}}image"
                 image_loc = f"{{{IMAGE_NS}}}loc"
