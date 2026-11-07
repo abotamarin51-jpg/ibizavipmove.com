@@ -223,6 +223,16 @@ def review_french_concierge(page, origin, mode, width, height, output):
         'Un seul interlocuteur sur l’île pour organiser vos trajets avec chauffeur, '
         'réserver votre villa ou préparer une journée en yacht suivie d’une soirée avec table VIP.'
     )
+    # The shared premium.js script enriches generic WhatsApp links after the
+    # document is parsed. Wait for that client-side handoff before inspecting it.
+    page.wait_for_function("""() => {
+        const link = document.querySelector('main .page-hero h1 + p + a');
+        if (!link) return false;
+        try {
+            const url = new URL(link.href);
+            return url.searchParams.get('text')?.startsWith('Bonjour Ibiza VIP Move,') === true;
+        } catch (_) { return false; }
+    }""", timeout=5000)
     dest = urlsplit(cta.get_attribute('href'))
     assert (dest.scheme, dest.netloc, dest.path) == ('https', 'wa.me', '/34600703303')
     assert parse_qs(dest.query)['text'][0].startswith('Bonjour Ibiza VIP Move,')
