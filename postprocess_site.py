@@ -83,6 +83,10 @@ SEO = {
         'Ibiza Concierge Partner for Travel Advisors & Family Offices | Ibiza VIP Move',
         'B2B Ibiza concierge support for family offices, personal assistants, luxury travel advisors, hospitality partners and international concierge firms.'
     ),
+    'destination-management-ibiza': (
+        'Destination Management Company Ibiza | Luxury DMC – Ibiza VIP Move',
+        'Ibiza-based destination management for luxury travel advisors, concierge firms and family offices. Coordinate chauffeurs, villas, yachts and guest logistics.'
+    ),
     'about': (
         'About Ibiza VIP Move | Private Concierge Ibiza',
         'Discover Ibiza VIP Move, a private concierge and lifestyle management service focused on discreet, responsive and precise Ibiza coordination.'
