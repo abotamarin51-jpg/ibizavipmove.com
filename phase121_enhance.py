@@ -6,6 +6,7 @@ ROOT = Path('_site')
 BASE = 'https://ibizavipmove.com'
 NS = 'http://www.sitemaps.org/schemas/sitemap/0.9'
 VERIFIED = {
+    '/fr/chef-prive-personnel-villa-ibiza/': '2026-11-07',
     '/contact/': '2026-09-12', '/es/contacto/': '2026-09-12', '/fr/contact/': '2026-09-12',
     '/de/kontakt/': '2026-09-12', '/ar/contact/': '2026-09-12',
     '/fr/partners/': '2026-09-12', '/de/partners/': '2026-09-12', '/ar/partners/': '2026-09-12',
