@@ -29,7 +29,7 @@ def review_origins(page, origin, mode, output):
         assert city in message(page.locator('#origin-whatsapp'))
         assert region in message(page.locator('#origin-whatsapp'))
         assert page.locator('link[rel="canonical"]').get_attribute('href') == f'https://ibizavipmove.com/{path}/'
-        assert page.locator('#origin-planner .origin-guides a').count() == 8
+        assert page.locator('#origin-planner .origin-guides a').count() == 9
         assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), (mode, path)
     assert page.locator('html').get_attribute('dir') == 'rtl'
     page.goto(origin + '/international-clients/?utm_source=qa#from-gb-london')
@@ -88,6 +88,7 @@ def review_origins(page, origin, mode, output):
         ('Munich', 'de', '/de/concierge-ibiza-ab-muenchen/', '/de/kontakt/', 'München', 'München'),
         ('Amsterdam', 'en', '/amsterdam-to-ibiza-concierge/', '/contact/?service=villas', 'Amsterdam', 'Amsterdam'),
         ('Milan', 'en', '/milan-to-ibiza-concierge/', '/contact/?service=access', 'Milan', 'Milan'),
+        ('Zürich', 'de', '/de/concierge-ibiza-ab-zuerich/', '/de/kontakt/', 'Zürich', 'Zürich'),
     ):
         page.goto(origin + '/international-clients/')
         page.locator('#origin-planner').get_by_role('link', name=label, exact=True).click()
@@ -110,6 +111,7 @@ def review_origins(page, origin, mode, output):
         ('/de/private-events-ibiza/', 'munich', '/de/concierge-ibiza-ab-muenchen/'),
         ('/luxury-villas-ibiza/', 'amsterdam', '/amsterdam-to-ibiza-concierge/'),
         ('/vip-tables-club-access-ibiza/', 'milan', '/milan-to-ibiza-concierge/'),
+        ('/de/luxusvillen-ibiza/', 'zurich', '/de/concierge-ibiza-ab-zuerich/'),
     ):
         page.goto(origin + service)
         link = page.locator(f'main [data-origin-reference="{city}"] a')
@@ -118,5 +120,5 @@ def review_origins(page, origin, mode, output):
         link.click()
         page.wait_for_url(origin + destination)
         expect(page.locator('main a[href="' + service + '"]').first).to_be_visible()
-    return {'mode': mode, 'localizedHubs': len(cases), 'newServiceLinks': 3,
-            'guides': ['Miami', 'Dubai', 'London', 'Paris', 'Munich', 'Amsterdam', 'Milan']}
+    return {'mode': mode, 'localizedHubs': len(cases), 'newServiceLinks': 4,
+            'guides': ['Miami', 'Dubai', 'London', 'Paris', 'Munich', 'Amsterdam', 'Milan', 'Zurich']}
