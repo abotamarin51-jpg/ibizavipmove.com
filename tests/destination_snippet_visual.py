@@ -12,8 +12,9 @@ import shutil
 from PIL import Image, ImageChops, ImageStat
 from playwright.sync_api import sync_playwright
 
-EXPECTED_TITLE = 'Destination Management Company in Ibiza | Ibiza VIP Move'
-EXPECTED_DESC = 'Destination management company in Ibiza for luxury travel advisors and concierge firms. We coordinate transport, villas, yachts and guest logistics.'
+EXPECTED_TITLE = 'Destination Management Company Ibiza | Luxury DMC – Ibiza VIP Move'
+EXPECTED_META_DESC = 'Ibiza-based destination management for luxury travel advisors, concierge firms and family offices. Coordinate chauffeurs, villas, yachts and guest logistics.'
+EXPECTED_VISIBLE_SUMMARY = 'Destination management company in Ibiza for luxury travel advisors and concierge firms. We coordinate transport, villas, yachts and guest logistics.'
 CANONICAL = 'https://ibizavipmove.com/destination-management-ibiza/'
 
 
@@ -105,12 +106,12 @@ def main():
                         assert hero_image.evaluate(
                             '(img) => img.complete && img.naturalWidth > 0 && img.naturalHeight > 0'
                         )
-                        assert page.locator('meta[name="description"]').get_attribute('content') == EXPECTED_DESC
+                        assert page.locator('meta[name="description"]').get_attribute('content') == EXPECTED_META_DESC
                         assert page.locator('link[rel="canonical"]').get_attribute('href') == CANONICAL
                         assert page.locator('h1').count() == 1
 
                         summary = page.locator('section.page-hero p').first
-                        assert summary.inner_text().strip() == EXPECTED_DESC
+                        assert summary.inner_text().strip() == EXPECTED_VISIBLE_SUMMARY
                         summary.scroll_into_view_if_needed()
                         assert summary.is_visible()
 
@@ -162,7 +163,7 @@ def main():
                             'javascriptErrors': errors,
                             'missingLocalResources': missing,
                             'title': EXPECTED_TITLE,
-                            'description': EXPECTED_DESC,
+                            'description': EXPECTED_META_DESC,
                         })
                         print(f'PASS: Destination snippet visible without overflow: {mode}')
                         # Also verify the private-client photo is visibly painted,
