@@ -39,6 +39,8 @@ DE_INTL_FORM_OLD = '>Anfrage im Formular vorbereiten</a>'
 DE_INTL_FORM_NEW = '>Anfrage vorbereiten</a>'
 ES_INTL = Path('_site/es/clientes-internacionales/index.html')
 ES_INTL_FORM_NEW = '<p><a class="text-link" data-ivm178="contact" href="/es/contacto/">Preparar mi solicitud</a></p>'
+AR_INTL = Path('_site/ar/international-clients/index.html')
+AR_INTL_FORM_NEW = '<p><a class="text-link" data-ivm178="contact" href="/ar/contact/">إعداد طلبي</a></p>'
 OLD = 'Passez par le concierge plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'
 NEW = 'Passez par la <a class="text-link" href="/fr/conciergerie-privee-ibiza/">conciergerie privée</a> plutôt que de gérer chaque catégorie séparément. Partagez dates, invités et priorités ; nous clarifions le brief et poursuivons en privé.'
 
@@ -101,6 +103,21 @@ def enhance_spanish_international_contact_label():
         raise SystemExit('Spanish international contact: expected one closing action group')
     ES_INTL.write_text(html.replace(marker, ES_INTL_FORM_NEW + marker, 1), encoding='utf-8')
     print('PASS: Spanish international contact — localized form handoff added')
+
+
+def enhance_arabic_international_contact_label():
+    """Add the approved Arabic form handoff before the existing contact actions."""
+    html = AR_INTL.read_text(encoding='utf-8')
+    if AR_INTL_FORM_NEW in html:
+        if html.count(AR_INTL_FORM_NEW) != 1:
+            raise SystemExit('Arabic international contact: duplicate form handoff')
+        print('PASS: Arabic international contact — localized form handoff already present')
+        return
+    marker = '<div class="hero-actions" style="justify-content:center">'
+    if html.count(marker) != 1:
+        raise SystemExit('Arabic international contact: expected one closing action group')
+    AR_INTL.write_text(html.replace(marker, AR_INTL_FORM_NEW + marker, 1), encoding='utf-8')
+    print('PASS: Arabic international contact — localized form handoff added')
 
 
 def enhance_home_readability():
@@ -262,3 +279,4 @@ if __name__ == '__main__':
     enhance_french_international_contact_label()
     enhance_german_international_contact_label()
     enhance_spanish_international_contact_label()
+    enhance_arabic_international_contact_label()
