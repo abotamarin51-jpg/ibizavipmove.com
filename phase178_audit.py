@@ -15,6 +15,7 @@ from phase178_enhance import (
     FR_INTL, FR_INTL_FORM_OLD, FR_INTL_FORM_NEW,
     DE_INTL, DE_INTL_FORM_OLD, DE_INTL_FORM_NEW,
     ES_INTL, ES_INTL_FORM_NEW,
+    AR_INTL, AR_INTL_FORM_NEW,
 )
 
 SERVICES = Path('_site/fr/services/index.html')
@@ -136,6 +137,30 @@ def run():
             or 'mailto:partnership@ibizavipmove.com' not in spanish_international
             or '/es/contacto/' not in spanish_international):
         raise SystemExit('Phase 178 audit: Spanish international routes or indexability changed')
+
+    arabic_international = AR_INTL.read_text(encoding='utf-8')
+    expected_arabic_international = (
+        'نسّق طلبك الخاص في إيبيزا.',
+        'أرسل لنا تواريخ الإقامة وعدد الضيوف والخدمات المطلوبة. سيتابع معك مسؤول واحد في إيبيزا بشكل خاص ويوضح لك الخطوات التالية.',
+        'التواصل مع الكونسيرج عبر واتساب',
+        'البريد الإلكتروني للشركاء والطلبات المهنية',
+        AR_INTL_FORM_NEW,
+    )
+    if not all(text in arabic_international for text in expected_arabic_international):
+        raise SystemExit('Phase 178 audit: approved Arabic international contact copy missing')
+    if ('نسق طلبك في إيبيزا.' in arabic_international
+            or '>بريد الشراكات</a>' in arabic_international):
+        raise SystemExit('Phase 178 audit: old Arabic international contact copy still present')
+    arabic_tags = Tags(arabic_international).tags
+    if not any(tag == 'html' and attrs.get('lang') == 'ar' and attrs.get('dir') == 'rtl'
+               for tag, attrs in arabic_tags):
+        raise SystemExit('Phase 178 audit: Arabic international page lost RTL language markup')
+    if (not canonical_is(arabic_international, 'https://ibizavipmove.com/ar/international-clients/')
+            or is_noindex(arabic_international)
+            or 'https://wa.me/34600703303' not in arabic_international
+            or 'mailto:partnership@ibizavipmove.com' not in arabic_international
+            or '/ar/contact/' not in arabic_international):
+        raise SystemExit('Phase 178 audit: Arabic international routes or indexability changed')
 
     print('PASS: Phase 178 audit — French contextual Concierge pathway; canonicals/indexability unchanged')
 
