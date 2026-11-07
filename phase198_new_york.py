@@ -112,6 +112,18 @@ MARKETS = (
            service_reference=("/de/luxusvillen-ibiza/", "editorial",
                               "Villenferien mit Privatkoch und Personal ab Zürich planen"),
            updated="2026-11-07"),
+    Market("Geneva",
+           "Organisez un séjour privé à Ibiza depuis Genève. Un relais local pour votre assistant : "
+           "arrivées, réservations, chauffeurs et changements de programme à faire valider.",
+           "/assets/images/experience-villa-960.jpg", language="fr", city_label="Genève",
+           path="/fr/conciergerie-ibiza-depuis-geneve/",
+           page_title="Conciergerie privée à Ibiza depuis Genève | Ibiza VIP Move",
+           enquiry="Bonjour Ibiza VIP Move, j’organise un séjour à Ibiza depuis Genève. Dates : __. "
+                   "Voyageurs : __. Réservations déjà confirmées : __. Prestations à organiser : __. "
+                   "Personne chargée des validations : __.",
+           service_reference=("/fr/private-office/", "ivm-b2b-overview",
+                              "Préparer un séjour à Ibiza depuis Genève"),
+           updated="2026-11-07"),
 )
 
 
@@ -137,8 +149,9 @@ def page_schema(market):
         "provider": {"@id": BASE + "/#organization"},
     }
     if market.language == "fr":
-        service["name"] = f"Conciergerie privée à Ibiza depuis {market.city}"
-        trail = [("Accueil", "/fr/"), ("Clients internationaux", market.hub), (market.city, market.route)]
+        city = market.city_label or market.city
+        service["name"] = f"Conciergerie privée à Ibiza depuis {city}"
+        trail = [("Accueil", "/fr/"), ("Clients internationaux", market.hub), (city, market.route)]
     elif market.language == "de":
         service["name"] = f"Privater Concierge auf Ibiza für Gäste aus {market.city_label}"
         trail = [("Startseite", "/de/"), ("Internationale Kunden", market.hub), (market.city_label, market.route)]
