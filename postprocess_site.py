@@ -209,8 +209,14 @@ for path in ROOT.rglob('*.html'):
 
     # Give direct WhatsApp CTAs contextual, pre-filled messages while keeping the form custom.
     interest = service_label(canonical, page_name)
-    wa_message = f"Hello Ibiza VIP Move, I'm interested in {interest}. Could you please help me with availability and the next steps? Thank you."
-    contextual_wa = NEW_WA + '?text=' + quote(wa_message)
+    language = grab(r'<html\\b[^>]*\\blang="([^"]+)"', text, 'en').split('-', 1)[0].lower()
+    if language == 'en':
+        wa_message = f"Hello Ibiza VIP Move, I'm interested in {interest}. Could you please help me with availability and the next steps? Thank you."
+        contextual_wa = NEW_WA + '?text=' + quote(wa_message)
+    else:
+        # Leave localized links generic so premium.js can add its native-language
+        # WhatsApp draft. An English prefill here would block that client-side step.
+        contextual_wa = NEW_WA
     text = re.sub(rf'href="{re.escape(NEW_WA)}"', f'href="{contextual_wa}"', text)
 
     # Social crawlers are more reliable with absolute image URLs.
