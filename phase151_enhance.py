@@ -16,7 +16,7 @@ ROOT = Path('_site')
 PHONE = '34600703303'
 GENERIC_MESSAGE = "Hello Ibiza VIP Move, I'm interested in private concierge support in Ibiza. Could you please help me with availability and the next steps? Thank you."
 GENERIC_HREF = f'https://wa.me/{PHONE}?text={quote(GENERIC_MESSAGE)}'
-WA_LINK_RE = re.compile(r'href="https://wa\\.me/34600703303(?:\\?text=[^"]*)?"')
+WA_LINK_RE = re.compile(r'href="https://wa\.me/34600703303(?:\?text=[^"]*)?"')
 PAGES = {
     'fr/partners': "Bonjour Ibiza VIP Move, je vous contacte au sujet d’un éventuel partenariat B2B pour Ibiza. Je souhaite présenter notre société et discuter de la manière dont nous pourrions travailler ensemble.",
     'de/partners': "Hallo Ibiza VIP Move, ich kontaktiere Sie wegen einer möglichen B2B-Partnerschaft für Ibiza. Ich möchte unser Unternehmen vorstellen und besprechen, wie wir zusammenarbeiten könnten.",
