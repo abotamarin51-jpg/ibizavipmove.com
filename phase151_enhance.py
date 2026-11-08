@@ -35,18 +35,29 @@ def enhance(root: Path = ROOT) -> None:
         path = root / slug / 'index.html'
         html = path.read_text(encoding='utf-8')
         target = href(message)
-        links = WA_LINK_RE.findall(html)
         target_count = html.count(target)
-        if len(links) != 3:
-            raise SystemExit(
-                f'Phase 151: expected exactly three approved WhatsApp links on {slug}, found {len(links)}'
-            )
         if target_count == 3:
             continue
-        # Localize all three handoffs, including older page-specific English
-        # prefills. The page-specific B2B message is the correct destination
-        # for every WhatsApp entry point on a Partners landing.
-        pending[path] = WA_LINK_RE.sub(f'href="{target}"', html)
+        # Only the footer and persistent mobile bar are the two generic
+        # residual handoffs covered by this phase. Preserve the page's other
+        # service-specific WhatsApp CTAs and their existing context.
+        for label, pattern in (
+            ('footer', re.compile(r'<footer\\b.*?</footer>', re.I | re.S)),
+            ('mobile bar', re.compile(r'<div\\s+class="mobile-bar">.*?</div>', re.I | re.S)),
+        ):
+            match = pattern.search(html)
+            if not match:
+                raise SystemExit(f'Phase 151: {label} missing on {slug}')
+            block = match.group(0)
+            if target in block:
+                continue
+            if len(WA_LINK_RE.findall(block)) != 1:
+                raise SystemExit(f'Phase 151: expected one WhatsApp link in {label} on {slug}')
+            updated = WA_LINK_RE.sub(f'href="{target}"', block, count=1)
+            html = html[:match.start()] + updated + html[match.end():]
+        if html.count(target) != 3:
+            raise SystemExit(f'Phase 151: expected three localized B2B WhatsApp handoffs on {slug}, found {html.count(target)}')
+        pending[path] = html
 
     for path, html in pending.items():
         path.write_text(html, encoding='utf-8')
