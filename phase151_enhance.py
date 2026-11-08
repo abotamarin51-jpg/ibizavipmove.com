@@ -1,7 +1,7 @@
 """Phase 151: localize residual Partners-page WhatsApp handoff messages.
 
-Replace only the two generic English WhatsApp prefill URLs that remain on each FR/DE/AR
-Partners page (footer + mobile contact bar) with the B2B partnership message already used
+Replace only the two shared navigation WhatsApp handoffs that remain on each FR/DE/AR
+Partners page (header CTA + mobile menu) with the B2B partnership message already used
 on that same localized page. No visible copy, phone number, URL, schema, tracking, form,
 price, policy, sitemap or navigation change.
 """
@@ -38,12 +38,12 @@ def enhance(root: Path = ROOT) -> None:
         target_count = html.count(target)
         if target_count == 3:
             continue
-        # Only the footer and persistent mobile bar are the two generic
-        # residual handoffs covered by this phase. Preserve the page's other
-        # service-specific WhatsApp CTAs and their existing context.
+        # Only the shared header CTA and mobile-menu WhatsApp link are the
+        # two residual navigation handoffs covered by this phase. Preserve
+        # the four route-card messages and all other service-specific CTAs.
         for label, pattern in (
-            ('footer', re.compile(r'<footer\b.*?</footer>', re.I | re.S)),
-            ('mobile bar', re.compile(r'<div\s+class="mobile-bar">.*?</div>', re.I | re.S)),
+            ('header', re.compile(r'<header\b.*?</header>', re.I | re.S)),
+            ('mobile menu', re.compile(r'<div\b[^>]*class="[^"]*\\bmobile-menu\\b[^"]*"[^>]*>.*?</div>', re.I | re.S)),
         ):
             match = pattern.search(html)
             if not match:
