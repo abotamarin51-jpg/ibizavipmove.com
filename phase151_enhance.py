@@ -42,8 +42,8 @@ def enhance(root: Path = ROOT) -> None:
         # residual handoffs covered by this phase. Preserve the page's other
         # service-specific WhatsApp CTAs and their existing context.
         for label, pattern in (
-            ('footer', re.compile(r'<footer\\b.*?</footer>', re.I | re.S)),
-            ('mobile bar', re.compile(r'<div\\s+class="mobile-bar">.*?</div>', re.I | re.S)),
+            ('footer', re.compile(r'<footer\b.*?</footer>', re.I | re.S)),
+            ('mobile bar', re.compile(r'<div\s+class="mobile-bar">.*?</div>', re.I | re.S)),
         ):
             match = pattern.search(html)
             if not match:
