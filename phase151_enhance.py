@@ -43,7 +43,7 @@ def enhance(root: Path = ROOT) -> None:
         # the four route-card messages and all other service-specific CTAs.
         for label, pattern in (
             ('header', re.compile(r'<header\b.*?</header>', re.I | re.S)),
-            ('mobile menu', re.compile(r'<div\b[^>]*class="[^"]*\\bmobile-menu\\b[^"]*"[^>]*>.*?</div>', re.I | re.S)),
+            ('mobile menu', re.compile(r'<div\b[^>]*class="[^"]*\bmobile-menu\b[^"]*"[^>]*>.*?</div>', re.I | re.S)),
         ):
             match = pattern.search(html)
             if not match:
