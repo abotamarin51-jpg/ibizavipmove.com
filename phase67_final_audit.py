@@ -168,6 +168,8 @@ for path in hubs:
 expected_titles={
     '/es/contacto/':'Contacto Ibiza VIP Move | Solicitudes privadas en Ibiza',
     '/es/servicios/':'Servicios privados en Ibiza | Ibiza VIP Move',
+    '/fr/contact/':'Contact Ibiza VIP Move | Demandes privées à Ibiza',
+    '/fr/services/':'Services privés à Ibiza | Ibiza VIP Move',
 }
 for path,expected in expected_titles.items():
     p=page(path)
