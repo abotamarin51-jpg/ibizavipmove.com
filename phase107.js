@@ -42,6 +42,18 @@
     }
   };
   const c=copy[lang]||copy.en;
+  // This names the enquiry page, not the visitor's location or residence.
+  // Only the explicit New York pilot link may add context to the English form.
+  const origins=new URLSearchParams(window.location.search).getAll('origin');
+  const enquiryPage=lang==='en'&&window.location.pathname==='/contact/'&&
+    origins.length===1&&origins[0]==='new-york'?'New York → Ibiza':'';
+  if(enquiryPage){
+    const note=document.createElement('p');
+    note.id='ivm-enquiry-page';
+    note.textContent='Enquiry page: '+enquiryPage;
+    note.style.cssText='font-size:13px;line-height:1.65;margin:0 0 20px';
+    f.before(note);
+  }
   const g=id=>document.getElementById(id)?.value||'';
   const selectedText=id=>{
     const el=document.getElementById(id);
@@ -139,6 +151,7 @@
       c.hello,
       '',
       c.intro,
+      ...(enquiryPage?['Enquiry page: '+enquiryPage]:[]),
       '',
       `${c.role}: ${selectedText('fClientType')||c.tbc}`,
       `${c.area}: ${selectedText('fArea')||c.tbc}`,

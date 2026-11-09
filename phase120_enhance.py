@@ -11,7 +11,7 @@ CONTACTS = [
     'ar/contact/index.html',
 ]
 OLD_REF = '/assets/phase107.js?v=119'
-NEW_REF = '/assets/phase107.js?v=120'
+NEW_REF = '/assets/phase107.js?v=121'
 
 MESSAGES = {
     "phoneBlank:'Please enter your WhatsApp or phone number, not only spaces.'": "phoneBlank:'Please enter your WhatsApp or phone number, not only spaces.',phoneDigits:'Please enter a complete international phone number with at least seven digits.'",

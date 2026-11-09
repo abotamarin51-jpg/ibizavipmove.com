@@ -55,7 +55,7 @@ def run():
         path = ROOT / rel
         require(path.is_file(), 'contact missing: ' + rel)
         html = path.read_text(encoding='utf-8')
-        require(html.count('/assets/phase107.js?v=120') == 1, 'v120 runtime reference: ' + rel)
+        require(html.count('/assets/phase107.js?v=121') == 1, 'v121 runtime reference: ' + rel)
         require('/assets/phase107.js?v=119' not in html, 'stale v119 runtime reference: ' + rel)
         tags = re.findall(r'<input\b[^>]*\bid="fPhone"[^>]*>', html, re.I)
         require(len(tags) == 1, 'phone field cardinality: ' + rel)
