@@ -164,6 +164,22 @@ for path in hubs:
     main=coll[0].get('mainEntity',{})
     if main.get('@type')!='ItemList' or len(main.get('itemListElement',[]))!=11:fail(f'hub ItemList != 11: {path}')
 
+# 5b) Spanish contact and services titles must stay differentiated from the concierge landing.
+expected_titles={
+    '/es/contacto/':'Contacto Ibiza VIP Move | Solicitudes privadas en Ibiza',
+    '/es/servicios/':'Servicios privados en Ibiza | Ibiza VIP Move',
+}
+for path,expected in expected_titles.items():
+    p=page(path)
+    if not p.exists():
+        fail(f'Spanish title target missing: {path}')
+        continue
+    text=p.read_text(encoding='utf-8')
+    m=re.search(r'<title>(.*?)</title>',text,re.I|re.S)
+    actual=unescape(m.group(1)).strip() if m else ''
+    if actual!=expected:
+        fail(f'Spanish title mismatch {path}: {actual!r}')
+
 # 6) Official entity: identity, contacts and canonical 11-service OfferCatalog.
 home=(ROOT/'index.html').read_text(encoding='utf-8')
 orgs=[o for o in schemas(home) if o.get('@id')==ORG]
