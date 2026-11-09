@@ -123,6 +123,7 @@ on:
       - "luxury-overrides.css"
       - "premium.js"
       - "tests/phase174_browser_check.py"
+      - "4bc81edf337bdca6f1912b4379afc992.txt"
       - "brand-logo.jpg"
       - "brand-logo.svg"
       - "brand-mark.svg"
@@ -260,6 +261,8 @@ jobs:
           python3 phase174_whatsapp_access.py
           "$RUNNER_TEMP/ivm-image-tools/bin/python" -m pip install --disable-pip-version-check --only-binary=:all: "playwright==1.57.0"
           "$RUNNER_TEMP/ivm-image-tools/bin/python" tests/phase174_browser_check.py
+          cp 4bc81edf337bdca6f1912b4379afc992.txt _site/4bc81edf337bdca6f1912b4379afc992.txt
+          test "$(cat _site/4bc81edf337bdca6f1912b4379afc992.txt)" = "4bc81edf337bdca6f1912b4379afc992"
 
       - name: Configure GitHub Pages
         uses: actions/configure-pages@v5
