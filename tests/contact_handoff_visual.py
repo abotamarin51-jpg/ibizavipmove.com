@@ -7,6 +7,7 @@ from urllib.parse import parse_qs, urlsplit
 import json
 import os
 import shutil
+import subprocess
 
 from PIL import Image, ImageStat
 from playwright.sync_api import sync_playwright
@@ -404,12 +405,22 @@ def review_new_york(page, origin, mode, output):
     photo = output / f'new-york-concierge-{mode}.png'
     page.screenshot(path=str(photo), animations='disabled')
     page.get_by_role('link', name='Use the private request form').click()
-    page.wait_for_url(origin + '/contact/?service=travel-concierge')
+    page.wait_for_url(origin + '/contact/?service=travel-concierge&origin=new-york')
     assert page.locator('#fService').input_value() == 'Luxury Travel Concierge'
+    note = page.locator('#ivm-enquiry-page')
+    assert note.count() == 1 and note.inner_text() == 'Enquiry page: New York → Ibiza'
+    note.scroll_into_view_if_needed()
+    assert note.is_visible()
+    assert page.locator('#fBrief').input_value() == ''
+    assert page.locator('#fClientType').input_value() == ''
+    assert page.locator('link[rel="canonical"]').get_attribute('href') == 'https://ibizavipmove.com/contact/'
+    assert page.evaluate('document.documentElement.scrollWidth <= innerWidth + 1'), mode
+    page.screenshot(path=str(output / f'new-york-contact-context-{mode}.png'))
     return {'mode': mode, 'screenshot': photo.name, 'path': path}
 
 
 def main():
+    subprocess.run(['node', 'tests/origin_contact_context.cjs'], check=True)
     root = Path('_site').resolve()
     output = (Path(os.environ['RUNNER_TEMP']) / 'ivm-contact-review').resolve()
     assert (root / 'contact/index.html').is_file(), 'Built Contact page missing'
