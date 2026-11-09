@@ -182,6 +182,20 @@ for path,expected in expected_titles.items():
     if actual!=expected:
         fail(f'Spanish title mismatch {path}: {actual!r}')
 
+# 5c) English chauffeur landing must preserve its approved search title without changing the visible service name.
+chauffeur=page('/private-chauffeur-ibiza/')
+if not chauffeur.exists():
+    fail('private chauffeur landing missing')
+else:
+    text=chauffeur.read_text(encoding='utf-8')
+    m=re.search(r'<title>(.*?)</title>',text,re.I|re.S)
+    actual=unescape(m.group(1)).strip() if m else ''
+    expected='Private Chauffeur Service Ibiza | Ibiza VIP Move'
+    if actual!=expected:
+        fail(f'private chauffeur title mismatch: {actual!r}')
+    if '<h1>Private Chauffeur &amp; Transportation</h1>' not in text and '<h1>Private Chauffeur & Transportation</h1>' not in text:
+        fail('private chauffeur visible H1 changed unexpectedly')
+
 # 6) Official entity: identity, contacts and canonical 11-service OfferCatalog.
 home=(ROOT/'index.html').read_text(encoding='utf-8')
 orgs=[o for o in schemas(home) if o.get('@id')==ORG]
