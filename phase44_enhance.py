@@ -18,7 +18,7 @@ HUBS = {
 
 COPY = {
 'es': {
- 'title':'Servicios de concierge privado en Ibiza | Ibiza VIP Move',
+ 'title':'Servicios privados en Ibiza | Ibiza VIP Move',
  'desc':'Servicios privados en Ibiza: chófer, villas, yates, restaurantes y nightlife, aviación, seguridad, chefs, wellness, eventos y peticiones a medida.',
  'kicker':'Servicios privados · Ibiza','h1':'Un ecosistema privado.\nTodo conectado.','lead':'Movilidad, estancias, yates, acceso, aviación, protección y lifestyle coordinados desde un único contacto de confianza en Ibiza.',
  'core_label':'Seis universos principales','core_h2':'La estructura detrás de una estancia excepcional.','core_p':'Cada servicio puede solicitarse de forma independiente. Cuando el brief incluye varios, coordinamos horarios, personas y detalles operativos alrededor de un mismo itinerario.',
