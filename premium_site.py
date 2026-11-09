@@ -87,7 +87,7 @@ def service_page(slug,name,tag,img,items):
         'luxury-villas-ibiza': {
             'heading': 'Luxury villa concierge from selection to daily support.',
             'lead': 'Coordinate an Ibiza villa stay around the guests, preferred area, dates, privacy requirements and the services needed before arrival. Requests may include villa sourcing, provisioning, housekeeping, chefs, wellness, chauffeur transport and guest logistics.',
-            'detail': 'We focus on the complete stay rather than a property alone. For dedicated private chefs, butlers, housekeeping and family support, explore our <a href="/private-chef-staffing-ibiza/">Private Chefs & Villa Staffing in Ibiza</a> service. Availability, terms and supplier details are confirmed for the specific request before any reservation is accepted.',
+            'detail': 'We focus on the complete stay rather than a property alone. Availability, terms and supplier details are confirmed for the specific request before any reservation is accepted.',
             'faqs': [
                 ('Can you help source a luxury villa in Ibiza?', 'Villa requests can be assessed around dates, guest count, preferred areas, room requirements, amenities and budget. Suitable options and applicable terms are confirmed for the brief.'),
                 ('Can you prepare the villa before arrival?', 'Pre-arrival requests may include provisioning, housekeeping, staffing, transport planning and other practical details, subject to confirmation.'),
