@@ -36,7 +36,7 @@ SEO = {
         'Private concierge in Ibiza for high-touch lifestyle management, transport, reservations, villas, yachts and discreet on-island coordination.'
     ),
     'private-chauffeur-ibiza': (
-        'Private Chauffeur Ibiza | Luxury Driver Service | Ibiza VIP Move',
+        'Private Chauffeur Service Ibiza | Ibiza VIP Move',
         'Private chauffeur service in Ibiza for airport transfers, hourly drivers, villas, marinas, nightlife and discreet luxury transportation.'
     ),
     'luxury-villas-ibiza': (
