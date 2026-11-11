@@ -104,6 +104,16 @@ if not sitemap.is_file() or 'https://ibizavipmove.com/' not in sitemap.read_text
 if not robots.is_file() or 'Sitemap: https://ibizavipmove.com/sitemap.xml' not in robots.read_text(encoding='utf-8'):
     errors.append('robots.txt missing sitemap declaration')
 
+llms = ROOT / 'llms.txt'
+if not llms.is_file():
+    errors.append('llms.txt is missing')
+else:
+    llms_text = llms.read_text(encoding='utf-8')
+    if '- [Concierge privado en Ibiza — Español](https://ibizavipmove.com/es/)' not in llms_text:
+        errors.append('llms.txt missing Spanish language landing')
+    if 'Spanish, French, German and Arabic pages support international discovery and client communication.' not in llms_text:
+        errors.append('llms.txt language coverage statement is incomplete')
+
 if errors:
     print('\n'.join('FAIL: ' + e for e in errors))
     raise SystemExit(f'{len(errors)} validation issue(s) found')
