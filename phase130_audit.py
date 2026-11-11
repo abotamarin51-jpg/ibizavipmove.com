@@ -8,9 +8,9 @@ ROOT = Path('_site')
 TARGET = ROOT / 'de' / 'private-events-ibiza' / 'index.html'
 SITEMAP = ROOT / 'sitemap.xml'
 URL = 'https://ibizavipmove.com/de/private-events-ibiza/'
-TITLE = 'Private Events & Eventkoordination auf Ibiza | Ibiza VIP Move'
-DESC = 'Private Events und Eventkoordination auf Ibiza: Gäste, Location, Anbieter, Transport und Timing diskret über ein gemeinsames Briefing abgestimmt.'
-H1 = 'Private Events & Eventkoordination auf Ibiza.'
+TITLE = 'Eventkoordination auf Ibiza | Private Events – Ibiza VIP Move'
+DESC = 'Private Eventkoordination auf Ibiza für Feiern, Villa-Dinner und besondere Anlässe. Wir koordinieren Gäste, Location, Anbieter, Transport und Timing.'
+H1 = 'Private Events, als ein gemeinsames Briefing koordiniert.'
 
 text = TARGET.read_text(encoding='utf-8')
 
@@ -66,7 +66,7 @@ checks = {
     'Service schema aligned': bool(service and service.get('name') == H1 and service.get('description') == DESC and service.get('serviceType') == 'Private Events und Eventkoordination auf Ibiza'),
     'sitemap inventory unchanged': len(urls) == 156,
     'target remains in sitemap once': sum(1 for n in urls if n.find('s:loc', ns) is not None and n.find('s:loc', ns).text == URL) == 1,
-    'truthful target lastmod': bool(entry is not None and entry.find('s:lastmod', ns) is not None and entry.find('s:lastmod', ns).text == '2026-09-13'),
+    'truthful target lastmod': bool(entry is not None and entry.find('s:lastmod', ns) is not None and entry.find('s:lastmod', ns).text == '2026-11-08'),
 }
 for name, ok in checks.items():
     print(f"{'PASS' if ok else 'FAIL'}: {name}")

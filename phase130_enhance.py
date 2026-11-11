@@ -8,14 +8,14 @@ ROOT = Path('_site')
 TARGET = ROOT / 'de' / 'private-events-ibiza' / 'index.html'
 SITEMAP = ROOT / 'sitemap.xml'
 URL = 'https://ibizavipmove.com/de/private-events-ibiza/'
-LASTMOD = '2026-09-13'
+LASTMOD = '2026-11-08'
 
-OLD_TITLE = 'Private Events auf Ibiza | Ibiza VIP Move'
-NEW_TITLE = 'Private Events & Eventkoordination auf Ibiza | Ibiza VIP Move'
-OLD_DESC = 'Private Events und Feiern auf Ibiza mit Koordination von Gästen, Location, Anbietern, Transport und Timing durch Ibiza VIP Move.'
-NEW_DESC = 'Private Events und Eventkoordination auf Ibiza: Gäste, Location, Anbieter, Transport und Timing diskret über ein gemeinsames Briefing abgestimmt.'
+OLD_TITLE = 'Eventkoordination auf Ibiza | Private Events – Ibiza VIP Move'
+NEW_TITLE = 'Eventkoordination auf Ibiza | Private Events – Ibiza VIP Move'
+OLD_DESC = 'Private Eventkoordination auf Ibiza für Feiern, Villa-Dinner und besondere Anlässe. Wir koordinieren Gäste, Location, Anbieter, Transport und Timing.'
+NEW_DESC = 'Private Eventkoordination auf Ibiza für Feiern, Villa-Dinner und besondere Anlässe. Wir koordinieren Gäste, Location, Anbieter, Transport und Timing.'
 OLD_H1 = 'Private Events, als ein gemeinsames Briefing koordiniert.'
-NEW_H1 = 'Private Events & Eventkoordination auf Ibiza.'
+NEW_H1 = 'Private Events, als ein gemeinsames Briefing koordiniert.'
 
 if not TARGET.is_file() or not SITEMAP.is_file():
     raise SystemExit('Phase 130 target or sitemap missing')
@@ -51,7 +51,8 @@ def update_ld(match):
         data['name'] = NEW_TITLE
         data['description'] = NEW_DESC
         changed = True
-    if data.get('@type') == 'Service' and data.get('@id') == URL + '#service':
+    if data.get('@type') == 'Service' and (data.get('@id') == URL + '#service' or data.get('url') == URL):
+        data['@id'] = URL + '#service'
         data['name'] = NEW_H1
         data['serviceType'] = 'Private Events und Eventkoordination auf Ibiza'
         data['description'] = NEW_DESC
