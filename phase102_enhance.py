@@ -201,7 +201,7 @@ PAGES = [
     },
     {
         'slug': 'destination-management-ibiza',
-        'title': 'Destination Management Company Ibiza | Luxury DMC – Ibiza VIP Move',
+        'title': 'Destination Management Company Ibiza | Ibiza VIP Move',
         'description': 'Destination management company in Ibiza for luxury travel advisors and concierge firms. We coordinate transport, villas, yachts and guest logistics.',
         'kicker': 'Luxury DMC · Destination Management · Ibiza',
         'h1': 'One Ibiza operator<br><em>behind the itinerary.</em>',
