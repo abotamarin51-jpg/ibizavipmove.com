@@ -104,6 +104,22 @@ if not sitemap.is_file() or 'https://ibizavipmove.com/' not in sitemap.read_text
 if not robots.is_file() or 'Sitemap: https://ibizavipmove.com/sitemap.xml' not in robots.read_text(encoding='utf-8'):
     errors.append('robots.txt missing sitemap declaration')
 
+llms = ROOT / 'llms.txt'
+if not llms.is_file():
+    errors.append('llms.txt is missing')
+else:
+    llms_text = llms.read_text(encoding='utf-8')
+    required_llms_links = (
+        'https://ibizavipmove.com/fr/conciergerie-privee-ibiza/',
+        'https://ibizavipmove.com/fr/chauffeur-prive-ibiza/',
+        'https://ibizavipmove.com/de/privater-concierge-ibiza/',
+        'https://ibizavipmove.com/de/privater-chauffeur-ibiza/',
+        'https://ibizavipmove.com/ar/private-concierge-ibiza/',
+        'https://ibizavipmove.com/ar/private-chauffeur-ibiza/',
+    )
+    if any(link not in llms_text for link in required_llms_links):
+        errors.append('llms.txt missing one or more French/German/Arabic core pages')
+
 if errors:
     print('\n'.join('FAIL: ' + e for e in errors))
     raise SystemExit(f'{len(errors)} validation issue(s) found')
