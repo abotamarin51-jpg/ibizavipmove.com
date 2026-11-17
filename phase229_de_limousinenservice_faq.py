@@ -70,11 +70,17 @@ def faq_nodes(html):
 
 
 def visible_insert(html):
-    require(html.count(ANCHOR_QUESTION) == 1, "anchor FAQ question missing or duplicated")
-    start = html.index(ANCHOR_QUESTION)
-    details_end = html.find("</details>", start)
-    require(details_end != -1, "anchor FAQ details close missing")
-    details_end += len("</details>")
+    # The anchor question is present both in the visible FAQ and its JSON-LD.
+    # Match the actual <summary> within one <details> instead of counting text
+    # throughout the entire HTML document (which falsely reports duplicates).
+    summary_re = re.compile(
+        r"<summary\\b[^>]*>\\s*" + re.escape(ANCHOR_QUESTION) + r"\\s*</summary>",
+        re.S | re.I,
+    )
+    detail_blocks = re.finditer(r"<details\\b[^>]*>.*?</details>", html, re.S | re.I)
+    anchors = [block for block in detail_blocks if summary_re.search(block.group(0))]
+    require(len(anchors) == 1, "expected exactly one visible V-Class/Sprinter FAQ")
+    details_end = anchors[0].end()
     detail = (
         f'<details id="{QID}"><summary>{QUESTION}</summary>'
         f'<p id="{AID}">{ANSWER}</p></details>'
