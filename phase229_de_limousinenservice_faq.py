@@ -74,10 +74,10 @@ def visible_insert(html):
     # Match the actual <summary> within one <details> instead of counting text
     # throughout the entire HTML document (which falsely reports duplicates).
     summary_re = re.compile(
-        r"<summary\\b[^>]*>\\s*" + re.escape(ANCHOR_QUESTION) + r"\\s*</summary>",
+        r"<summary\b[^>]*>\s*" + re.escape(ANCHOR_QUESTION) + r"\s*</summary>",
         re.S | re.I,
     )
-    detail_blocks = re.finditer(r"<details\\b[^>]*>.*?</details>", html, re.S | re.I)
+    detail_blocks = re.finditer(r"<details\b[^>]*>.*?</details>", html, re.S | re.I)
     anchors = [block for block in detail_blocks if summary_re.search(block.group(0))]
     require(len(anchors) == 1, "expected exactly one visible V-Class/Sprinter FAQ")
     details_end = anchors[0].end()
