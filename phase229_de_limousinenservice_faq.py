@@ -70,8 +70,9 @@ def faq_nodes(html):
 
 
 def visible_insert(html):
-    require(html.count(ANCHOR_QUESTION) == 1, "anchor FAQ question missing or duplicated")
-    start = html.index(ANCHOR_QUESTION)
+    visible_anchor = f"<summary>{ANCHOR_QUESTION}</summary>"
+    require(html.count(visible_anchor) == 1, "visible anchor FAQ question missing or duplicated")
+    start = html.index(visible_anchor)
     details_end = html.find("</details>", start)
     require(details_end != -1, "anchor FAQ details close missing")
     details_end += len("</details>")
