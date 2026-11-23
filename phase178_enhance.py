@@ -18,6 +18,7 @@ from phase192_booking_clarity import enhance as enhance_booking_clarity
 from phase193_approved_copy import enhance as enhance_seo_copy
 from phase195_yacht_fr_brief import enhance as enhance_french_yacht_brief
 from phase196_yacht_en_brief import enhance as enhance_english_yacht_brief
+from phase241_villa_internal_link import enhance as enhance_villa_internal_link
 
 
 # One Home-only editorial refinement. Preserve SEO metadata, headings, layout and contact routes.
@@ -280,3 +281,4 @@ if __name__ == '__main__':
     enhance_german_international_contact_label()
     enhance_spanish_international_contact_label()
     enhance_arabic_international_contact_label()
+    enhance_villa_internal_link()
