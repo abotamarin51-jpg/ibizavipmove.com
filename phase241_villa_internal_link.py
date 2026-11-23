@@ -38,15 +38,19 @@ def enhance() -> None:
     if source_html.count(NEW) == 1 and source_html.count(OLD) == 0:
         print("PASS: Phase 241 existing Villa Concierge link; no duplicate")
         return
-    if source_html.count(OLD) != 1 or source_html.count('href="/luxury-villas-ibiza/"') != 0:
-        raise SystemExit("Phase 241: expected one original villa brief and no existing Villa link")
+    if "<main" not in source_html or "</main>" not in source_html:
+        raise SystemExit("Phase 241: missing main landmark")
+    main_html = source_html.split("<main", 1)[1].split("</main>", 1)[0]
+    if source_html.count(OLD) != 1 or 'href="/luxury-villas-ibiza/"' in main_html:
+        raise SystemExit("Phase 241: expected one original villa brief and no existing main-content Villa link")
     updated = source_html.replace(OLD, NEW, 1)
     if updated.replace(NEW, OLD, 1) != source_html:
         raise SystemExit("Phase 241: unrelated HTML changed")
     if updated.split("</head>", 1)[0] != source_html.split("</head>", 1)[0]:
         raise SystemExit("Phase 241: metadata drift")
-    if updated.count('href="/luxury-villas-ibiza/"') != 1:
-        raise SystemExit("Phase 241: villa link missing or duplicated")
+    updated_main = updated.split("<main", 1)[1].split("</main>", 1)[0]
+    if updated_main.count('href="/luxury-villas-ibiza/"') != 1:
+        raise SystemExit("Phase 241: main-content villa link missing or duplicated")
     SOURCE.write_text(updated, encoding="utf-8")
     print("PASS: Phase 241 — one contextual villa link in existing Private Office brief")
 
